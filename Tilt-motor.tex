@@ -1,19 +1,43 @@
 \documentclass[12pt,parskip=full]{scrartcl}
 \usepackage[short,ddmmyyyy,level,12hr]{datetime}
 \usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+\usepackage{libris}
+\usepackage[math]{anttor}
+
 \begin{document}
-The is an example
-This is paragraph\footnote{para in \LaTeX} two of the example.\\Here is a new line.
+Regular text\\
+\textrm{Roman Numerals in Times new Roman}\\
+\textsf{Helvetica text}\\
+\texttt{Courier}\\
 
-Item \#1: Our travel expenditure came to \$2000.00 \& our equipment expenditure came to \pounds100.00 plus vat @ 17.5\%.
+\begin{tabular}{rcc}
+tabbed text
+
+next line
+
+third line
+\end{tabular}
 
 
-Chlo\"{e} collected Zo\"{e} from the cr\^{e}che. They stopped to admire the fa\c{c}ade of a new \'{cafe} and then went to the matin\'{e}e.
-\begin{itemize}
-\item animal
-\item[\ddag] second
-\item minerals
-\end{itemize}
 
+\begin{description}
+	\item[Village] {A small collection of dwelling places, eg;
+		\begin{enumerate}
+			\item Marlingford
+			\item Saxlingham Nethergate
+		\end{enumerate}
+	}
+	\item[Town] has wings
+	\item[fish] has no legs or wings
+\end{description}
+\begin{itshape} some italic text. \begin{large}This text is large.\end{large} \end{itshape} Back to normal.
+\mdseries
+\textit{italic here.}
+\textup{upright} text
+\url{https://github.com}
+
+\normalfont
 This is a second paragraph surely.I'm using \LaTeX\ logo on the \today.
 \end{document}
