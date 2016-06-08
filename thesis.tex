@@ -18,12 +18,12 @@
 %	Paragraph indent:	0pt
 %=====================================================================
 
-\documentclass[a4paper, 11pt, twoside, openright, parskip=full]{book}
+\documentclass[a4paper, 11pt, oneside, openright, parskip=full]{book}
 
 %---------------------------------------------------------------------
 %	PACKAGES
 %---------------------------------------------------------------------
-\usepackage[margin = 1in]{geometry}		
+\usepackage[margin = 2cm]{geometry}		
 \usepackage{lscape}
 \usepackage{rotating}
 \usepackage{hyphenat}
@@ -132,33 +132,9 @@
 	{\fontfamily{#1}\selectfont #2}
 }					
 %---------------------------------------------------------------------
-% NRF statement for those funded by the NRF - comment out if unnecessary
-%---------------------------------------------------------------------
-\newcommand{\nrf}									   
-{	
-The financial assistance of the National Research Foundation (NRF) towards this research is hereby acknowledged. Opinions expressed and conclusions arrived at, are those of the author and are not necessarily to be attributed to the NRF.
-}
-%---------------------------------------------------------------------
 % Creates an block for a block diagram
 %---------------------------------------------------------------------
 \tikzstyle{arrow}=[->,shorten <=1pt,>=stealth',semithick]
-%---------------------------------------------------------------------
-% Multiplexer
-%---------------------------------------------------------------------
-\newcommand{\mux}									
-{
-	\begin{tikzpicture}
-		\draw 	(0,0)coordinate  		(O)--++
-		 	 	(30:1.5)coordinate 		(A)--++
-		  		(90:1.5)coordinate 		(B)--++
-		  		(150:1.5)coordinate		(C)--cycle;
-		\draw ($(A)!0.5!(B)$)--++(0:1)node[right]{$O$};
-		\draw ($(O)!0.5!(A)$)--++(-90:1)--++(180:1.3)node[left]{$S0$};
-		\foreach \y/\t in {0.3/0,0.6/1} {
-			\draw ($(C)! \y*1 !(O)$)--++(180:1.5) node[left] {$I \t$};}
-			\draw (0,1.5) node[right]{$MUX$};
-	\end{tikzpicture}
-}
 %---------------------------------------------------------------------
 %block 1
 %---------------------------------------------------------------------
@@ -366,9 +342,10 @@ I, \auth,  hereby:
 			\vskip 1cm
 \end{center}
 %---------------------------------------------------------------------
-The aim of this thesis is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring thrust produced by the lift propellers. To achieve this the air-frames' structure needs to be changed dynamically during flight, namely adding 2 additional axes of actuation about which each lift propeller can be rotated. The introduction of such actuation  to what is otherwise a well understood platform results in an over-actuated control problem. The allocation of actuator priority is the primary contribution of this paper with novel elements of non-linear control treatment for UAV airspace platforms.
+The aim of this thesis is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring thrust produced by the lift propellers. To achieve this the air-frames' structure needs to be able to be changed dynamically during flight, namely adding 2 additional axes of actuation about which each lift propeller can be rotated. The introduction of such actuation  to what is otherwise a well understood platform results in an over-actuated control problem. The allocation of actuator priority is the primary contribution of this paper with novel elements of non-linear control treatment for UAV airspace platforms.
 \par
-An indepth simulation environment was constructed around the proposed design afterwhich control algorithms where developed.
+A high fidelity simulation environment was constructed which incorporated all known non-linearities associated with airspace bodies. The effects unique to the proposed design were investigated and incorporated too. After which control algorithms where developed and compared, the affects which discretization would have on the system were included in this comparison. The relative performance of the controllers was evaluated on standard performance metrics of attitude and position controllers. Finally the design built and tested using readily available Radio-Control components.
+\par
 %---------------------------------------------------------------------
 %	Acknowledgements
 %---------------------------------------------------------------------
@@ -378,7 +355,7 @@ An indepth simulation environment was constructed around the proposed design aft
 % Acknowledge all people who have helped you complete this work including.
 % Comment out /nrf macro if unneeded.
 %---------------------------------------------------------------------
-\nrf
+
 %---------------------------------------------------------------------
 %	Dedication (optional)
 %---------------------------------------------------------------------
