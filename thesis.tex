@@ -1,0 +1,445 @@
+%=====================================================================
+%	UCT MECHATRONICS GROUP LaTeX THESIS/DISSERTATION TEMPLATE
+%---------------------------------------------------------------------
+%	Created by:		R.A. Verrinder
+% 	Modified by:	N.R. Von Klemperer
+%	Date Modified:	June 2016
+%---------------------------------------------------------------------
+%	Compile with:	TexMaker 
+%=====================================================================
+%	Document properties:
+%---------------------------------------------------------------------
+%	Paper size:			A4
+%	Margins:			1 inch margins (top,bottom,left,right)
+%	Printing:			Double sided (twoside book)
+%	Base font size:		11pt
+%	Line spacing:		
+%	Paragraph spacing:	10pt
+%	Paragraph indent:	0pt
+%=====================================================================
+
+\documentclass[a4paper, 11pt, twoside, openright, parskip=full]{book}
+
+%---------------------------------------------------------------------
+%	PACKAGES
+%---------------------------------------------------------------------
+\usepackage[margin = 1in]{geometry}		
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{hyphenat}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{lastpage}
+\usepackage{fancyref}
+\usepackage{fancyvrb}
+
+\usepackage{cite}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx}					% Can include graphics
+\usepackage{float}						% Can place figures at exact places in text
+\usepackage{wrapfig}					% Can wrap text around figures
+\usepackage{import}
+
+\usepackage{array}						% Can set column widths in tables
+\usepackage{mdframed}					% Can draw boxes around text etc.
+\usepackage{subcaption}					% Can place figures side by side
+\usepackage{tikz}
+\usetikzlibrary{positioning}		
+\usetikzlibrary{shapes.geometric, arrows} % For block diagrams
+\usetikzlibrary{circuits.logic.US} 
+\usetikzlibrary{calc}
+\usepackage[siunitx]{circuitikz}		% Can draw circuits
+\usepackage{tikz-timing}				% Can draw timing diagrams
+\usepackage{enumerate}
+
+\usepackage{xspace}						% For box spaces
+\usepackage{caption}					% Captions and subcaptions
+
+\usepackage{fix-cm}						% Can set font size
+\usepackage{color}						% Can change font color
+
+\usepackage[scaled=0.9]{helvet}			% Helvetica font scaled \phv
+\usepackage{courier}					% Courier font \pcr
+%\usepackage{mathptmx}					% Times New Roman font
+%\usepackage{cmbright}					% Sans serif font
+%\normalfont 							% in case the EC fonts aren't available
+%\usepackage[T1]{fontenc}				% Used to switch to type 1 font encoding
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{datetime}					% Can use dates and times
+\usepackage{gensymb}				
+
+\usepackage{multirow}
+\usepackage{hhline}
+
+%---------------------------------------------------------------------
+% 	PAGE FORMATTING
+%---------------------------------------------------------------------
+% Include page formatting here. 
+%---------------------------------------------------------------------
+\parskip	= 10pt						% Paragraph spacing
+\parindent 	= 0pt						% No para. indent
+
+% Caption margins 80% of text
+\captionsetup{width=0.8\textwidth,font=small,labelfont=bf}		
+
+%---------------------------------------------------------------------
+%	DOCUMENT PROPERTIES
+%---------------------------------------------------------------------
+% Fill in your details here. These macro commands can the be used 
+% throughout the document. Comment out what is unnecessary.
+%---------------------------------------------------------------------
+\newcommand{\auth}{Nicholas Von Klemperer}								% Author
+\newcommand{\titl}{Bi-Directional Tilting Quadrotor}						% Thesis title
+\newcommand{\subtitle}{An investigation into the overactuatedness thereof}						% Thesis subtitle
+\newcommand{\dept}{Department of Electrical Engineering}% Department 
+\newcommand{\uni}{University of Cape Town}				% University
+\newcommand{\city}{Rondebosch, Cape Town}				% City
+\newcommand{\country}{South Africa}						% Country
+\newcommand{\degre}{Masters of Science}				% Degree (Doctor of Philosophy 
+														% or Master of Science)
+\newcommand{\degreeabv}{MSc}							% Degree abbreviation (PhD or MSc.)			
+\newcommand{\aemail}{studentnumber@myuct.ac.za}			% Author email address
+\newcommand{\supervisor}{Supervisor}					% Supervisor
+\newcommand{\hod}{Prof. E. Boje}						% Head of Department
+
+\newcommand{\logo}										% UCT Logo
+{	
+	\includegraphics[scale = 0.3]{figs/uctLogo}
+}
+
+\newdateformat{mydate}{\monthname[\THEMONTH] \THEYEAR} % Month Year date
+\newcommand{\key}{Control, Allocation, Non-linear, Autopilot}					   % Keywords (add logical keywords)
+
+%---------------------------------------------------------------------
+%	MACROS
+%---------------------------------------------------------------------
+% Signature box
+%---------------------------------------------------------------------
+\newcommand*{\signature}[1]
+{
+	\par\noindent\makebox [5cm]{\hrulefill}
+	\par\noindent\makebox [5cm][1]{#1}
+}
+%---------------------------------------------------------------------
+% Macro to select font style
+% phv = helvetica (sans serif)
+% pcr = courier	  (typewritter font)
+%---------------------------------------------------------------------
+\def\nfont#1#2
+{
+	{\fontfamily{#1}\selectfont #2}
+}					
+%---------------------------------------------------------------------
+% NRF statement for those funded by the NRF - comment out if unnecessary
+%---------------------------------------------------------------------
+\newcommand{\nrf}									   
+{	
+The financial assistance of the National Research Foundation (NRF) towards this research is hereby acknowledged. Opinions expressed and conclusions arrived at, are those of the author and are not necessarily to be attributed to the NRF.
+}
+%---------------------------------------------------------------------
+% Creates an block for a block diagram
+%---------------------------------------------------------------------
+\tikzstyle{arrow}=[->,shorten <=1pt,>=stealth',semithick]
+%---------------------------------------------------------------------
+% Multiplexer
+%---------------------------------------------------------------------
+\newcommand{\mux}									
+{
+	\begin{tikzpicture}
+		\draw 	(0,0)coordinate  		(O)--++
+		 	 	(30:1.5)coordinate 		(A)--++
+		  		(90:1.5)coordinate 		(B)--++
+		  		(150:1.5)coordinate		(C)--cycle;
+		\draw ($(A)!0.5!(B)$)--++(0:1)node[right]{$O$};
+		\draw ($(O)!0.5!(A)$)--++(-90:1)--++(180:1.3)node[left]{$S0$};
+		\foreach \y/\t in {0.3/0,0.6/1} {
+			\draw ($(C)! \y*1 !(O)$)--++(180:1.5) node[left] {$I \t$};}
+			\draw (0,1.5) node[right]{$MUX$};
+	\end{tikzpicture}
+}
+%---------------------------------------------------------------------
+%block 1
+%---------------------------------------------------------------------
+\tikzstyle{block}=[rectangle,
+				   draw=black,
+				   fill=gray!10,
+				   thick, 
+				   minimum height = 2cm, 
+				   text width=0.15*\columnwidth,]
+\tikzstyle{input}  		= [coordinate]
+\tikzstyle{output} 		= [coordinate]
+\tikzstyle{pinstyle} 	= [pin edge={to-,thin,black}]
+\tikzstyle{sum} 		= [draw, fill=blue!20, circle, node distance=1cm]
+%---------------------------------------------------------------------
+%block 2
+%---------------------------------------------------------------------
+\tikzstyle{block2}=[rectangle,
+				   draw=black,
+				   fill=gray!10,
+				   thick, 
+				   minimum height = 1.8cm, 
+				   text width=0.1*\columnwidth,]
+\tikzstyle{input}  		= [coordinate]
+\tikzstyle{output} 		= [coordinate]
+\tikzstyle{pinstyle} 	= [pin edge={to-,thin,black}]
+\tikzstyle{sum} 		= [draw, fill=blue!20, circle, node distance=1cm]
+%---------------------------------------------------------------------
+%flow charts
+%---------------------------------------------------------------------
+\tikzstyle{state}     = 	[rectangle, 
+							 text width=0.15*\columnwidth=2cm, 
+							 minimum  height=1.5cm, 
+							 text centered, 
+							 draw=black]
+							 
+\tikzstyle{statement}  = 	[rectangle, 
+							 text width=0.15*\columnwidth=2cm, 
+							 minimum  height=0.5cm, 
+							 text centered, 
+							 draw=black]							 
+							 
+\tikzstyle{condition}  = 	[rectangle, 
+							 text width=0.15*\columnwidth=2cm, 
+							 minimum  height=1cm, 
+							 rounded corners =10pt,
+							 text centered, 
+							 draw=black]
+\tikzstyle{decision}  = 	[diamond, 
+			                 minimum width=2cm, 
+			                 minimum height=1cm, 
+			                 text centered, 
+			                 draw=black]
+\tikzstyle{line} = [draw, -latex']
+
+%=====================================================================
+%	Start of the document
+%---------------------------------------------------------------------
+\begin{document}
+
+%=====================================================================
+%	TITLE PAGE
+%=====================================================================
+\begin{titlepage}
+	\centering
+	\vspace*{1cm}
+
+%---------------------------------------------------------------------
+% Title
+%---------------------------------------------------------------------	
+	\begin{Huge}					
+		\bfseries\titl\par
+		\vskip 5mm
+		%\hrule
+		%\vskip 1.2cm
+	\end{Huge}
+%---------------------------------------------------------------------
+% Subtitle	(optional)
+%---------------------------------------------------------------------
+	\begin{Large}					
+		\subtitle\\*
+		\vskip 3cm
+	\end{Large}
+%---------------------------------------------------------------------
+% UCT logo
+%---------------------------------------------------------------------	
+	\logo							
+	\vskip 1.5cm	
+%---------------------------------------------------------------------
+% Author	
+%---------------------------------------------------------------------	
+	\begin{Large}					
+		\bfseries\auth\\
+	\end{Large}
+%---------------------------------------------------------------------
+% Author's address	
+%---------------------------------------------------------------------		
+	\begin{normalsize}				
+		\vskip 2mm	
+		\dept\\*
+		\uni\\*
+		\city\\*
+		\country\\*
+		
+		\vskip 15mm	
+	\end{normalsize}
+%---------------------------------------------------------------------
+% Supervisor (optional)	
+%---------------------------------------------------------------------		
+%	\begin{large}					
+%		{\itshape Supervisor: \\*}
+%		\supervisor\\
+%		\vskip 5mm
+%	\end{large}
+%---------------------------------------------------------------------
+% Date	
+%---------------------------------------------------------------------
+	\begin{Large}					
+		{\bfseries \mydate\today}
+		\vskip 15mm	
+	\end{Large}
+%---------------------------------------------------------------------
+% Degree	
+%---------------------------------------------------------------------		
+		\degreeabv\ thesis submitted in fulfilment of the requirements for the degree of \degre\ in the \dept\ at the \uni
+		
+		\vskip 15mm	
+%---------------------------------------------------------------------
+% Keywords	
+%---------------------------------------------------------------------		
+	\begin{normalsize}				
+		{\itshape Keywords:}
+		\key			
+	\end{normalsize}	
+\end{titlepage}
+
+%=====================================================================
+%	FRONT MATTER
+%=====================================================================
+\frontmatter
+%---------------------------------------------------------------------
+%	Declaration
+%---------------------------------------------------------------------
+\chapter{Declaration}				
+\label{ch:decl}
+% Change name
+I, \auth,  hereby:
+
+\begin{enumerate}
+	\item		grant the \uni\  free license to reproduce the above thesis in whole or in part, for the purpose of research;
+	\item		declare that:
+	
+	\begin{enumerate}
+		\item		this thesis is my own unaided work, both in concept and execution, and apart from the normal guidance from my supervisor, I have received no assistance except as stated below:
+				% Note any exceptions
+		\item		neither the substance nor any part of the above thesis has been submitted in the past, or is being, or is to be submitted for a degree at this University or at any other university, except as stated below.
+				% Note any exceptions
+	\end{enumerate}	
+\end{enumerate}
+
+\begin{flushright}	% Signature field
+	\vskip 6cm
+	\noindent \signature{x}
+	\noindent \auth \\*
+	\vskip 2mm
+	\noindent \dept \\*
+	\noindent \uni \\*
+	\vskip 2mm
+	\noindent \today
+\end{flushright}
+
+%---------------------------------------------------------------------
+%	Abstract
+%---------------------------------------------------------------------
+\chapter{Abstract}				
+\label{ch:abs}
+%---------------------------------------------------------------------
+% TAKEN FROM UCT WEBSITE
+% The Doctoral Degrees Board recommends that candidates include an abstract 
+% that fits onto one page, and which includes the author's full name, thesis 
+% title and date. The text should not exceed 350 words. Candidates may also 
+% include a more substantial summary of their work, in addition to the abstract.
+% Follow the same format for an MSc. abstract.
+
+% The abstract should stand on its own. It should answer the following questions:
+%	1.	What did the author do? What ideas, notions, hypotheses, 
+%		concepts, theories or thoughts were investigated?
+%	2.	How did the author do the work? What data were generated and used? 
+%		What was the origin of the data? How were data gathered? 
+%		What tests, scales, indices, or summary measures were used? 
+%		In other words, how was the analysis and/or synthesis done?
+%	3.	What were the conclusions and what were the significant findings?
+%
+% Some studies cannot readily be summarised in this way and require more 
+% descriptive abstracts. Do not use telegraphic phrases. Do not repeat 
+% information given in the title. Do not use abbreviations. The purpose of 
+% an abstract is to enable a researcher/examiner to understand the essential 
+% hypothesis, method and findings of the research.
+%---------------------------------------------------------------------
+\begin{center}
+	\textbf{\Large \titl}\\
+			\vskip 0.2cm
+			\auth\\
+			\vskip 0.2cm
+	\textit{\footnotesize\today}
+			\vskip 1cm
+\end{center}
+%---------------------------------------------------------------------
+The aim of this thesis is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring thrust produced by the lift propellers. To achieve this the air-frames' structure needs to be changed dynamically during flight, namely adding 2 additional axes of actuation about which each lift propeller can be rotated. The introduction of such actuation  to what is otherwise a well understood platform results in an over-actuated control problem. The allocation of actuator priority is the primary contribution of this paper with novel elements of non-linear control treatment for UAV airspace platforms.
+\par
+An indepth simulation environment was constructed around the proposed design afterwhich control algorithms where developed.
+%---------------------------------------------------------------------
+%	Acknowledgements
+%---------------------------------------------------------------------
+\chapter{Acknowledgements}		
+\label{ch:ack}
+%---------------------------------------------------------------------
+% Acknowledge all people who have helped you complete this work including.
+% Comment out /nrf macro if unneeded.
+%---------------------------------------------------------------------
+\nrf
+%---------------------------------------------------------------------
+%	Dedication (optional)
+%---------------------------------------------------------------------
+%\begin{flushright}
+%	\vspace*{10cm}
+%	{\itshape dedication .....}
+%\end{flushright}
+%---------------------------------------------------------------------
+%	Table of Contents
+%---------------------------------------------------------------------
+\tableofcontents
+
+%---------------------------------------------------------------------
+%	List of Figures
+%---------------------------------------------------------------------
+\listoffigures
+
+%---------------------------------------------------------------------
+%	List of Tables
+%---------------------------------------------------------------------
+\listoftables
+
+%---------------------------------------------------------------------
+%	List of Symbols/Document conventions (optional)
+%---------------------------------------------------------------------
+
+%---------------------------------------------------------------------
+%	Glossary (optional)
+%---------------------------------------------------------------------
+
+%=====================================================================
+%	MAIN MATTER
+%=====================================================================
+% Create a separate file for each chapter. You may chose to rename these
+% chapters as needed.
+%---------------------------------------------------------------------
+\mainmatter
+
+\include{ch1}
+%\include{ch2}
+%\include{ch3}
+%\include{ch4}
+%\include{ch5}
+
+%\include{appendix}
+
+%=====================================================================
+%	BACK MATTER
+%=====================================================================
+
+\backmatter
+
+%---------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%---------------------------------------------------------------------
+
+\bibliographystyle{plain}
+\bibliography{thesis}
+
+%---------------------------------------------------------------------
+\end{document}
+%---------------------------------------------------------------------
+%	End of the document
+%=====================================================================
