@@ -7,35 +7,47 @@
 \section{A Brief Background to the Study}
 \label{sec:ch1.study}
 %====================================================
-Currently the most popular topic for control and automation research is the quadrotor UAV, specifically the control thereof. Much work has been done on quadrotors and their attitude control, specifically control around a stable trim point adjacent the inertial frames origin, to which the control algorithm always tends to. The highly coupled non-linear dynamics for a bodies linear and angular motions arise as a result of gyroscopic torques and Coriolis accelerations. Such affects are elegantly linearized around the origin when they can be approximated to 0, decoupling the system and allowing for traditional SISO control techniques to be applied.
+Currently the most popular topic for control and automation research is the quadrotor UAV, specifically the control thereof. Much work has been done on quadrotors and their attitude control, specifically control around a stable trim point adjacent to the inertial frames origin, to which the control algorithm always tends to. The highly coupled non-linear dynamics for a bodies linear and angular motions arise as a result of gyroscopic torques and Coriolis accelerations. Such affects are elegantly linearised around the origin when they can be approximated to 0 \cite{quaddynamics} , thus decoupling the system and allowing for traditional SISO control techniques to be applied.
 \par
-As every quadrotor based research paper will tell you, the current interest in them is as a result of the recent spur in availability of MEMS systems and low-cost ARM based microprocessors to perform complicated control calculations and state estimation. This led to development and expansion in the field and introduction of a large range of hobbyist solutions, from professionally made units to DIY kits with room for modification. A rapidly growing enthusiast community was borne out of this progression which was no longer open only to those willing spend lots of money on their pass times.
+As every quadrotor based research paper will tell you, the current interest in them is as a result of the recent emergence in availability of MEMS systems and low-cost ARM microprocessor sectors, allowing the on-board flight computer to perform complicated control calculations and state estimation in real time. As a result this led to development and expansion in the field and introduction of a large range of hobbyist solutions, from professionally made units to DIY kits, with large room for modification, depending on how much your wallet can spare. A rapidly growing enthusiast community was borne from this progression, meaning the environment was no longer open only to those willing spend lots of money.
 \par
-The avenues of potential applications for both fixed wing and VTOL UAVs is expansive and the quadrotor configuration provides a mechanically simple and low cost platform on which to test advanced aerospace control algorithms. Considering that commercial drone usage is such an emerging sector; especially in Southern Africa following the revision of aviation laws which have legalized the use of UAVs for commercial application, any research into a non-trivial aspect of the field is extremely valuable. 
+The avenues of potential applications for both fixed wing and VTOL UAVs is expansive and the quadrotor configuration provides a mechanically simple and low cost platform on which to test advanced aerospace control algorithms. Considering that commercial drone usage is such an emerging sector; especially in Southern Africa following the revision of aviation laws \cite{safedrone} which have legalized the use of UAVs for commercial application, any research into a non-trivial aspect of the field is extremely valuable. 
 \par
-Large scale quadrotor, hexrotor and even octorotor UAVs are a popular intermediate choice for aerial cinematography.  Whilst still expensive, the cost of a commercial drone like the SteadiDrone Maverik \cite{steadidrone} is far less than the cost of chartering a helicopter to achieve the same panoramic aerial scenes. Another interesting application for UAVs is in the agricultural sector, introducing crop dusting drones instead of the traditional bi-planes which perform the same job. One difficulty which hinders the progress of the commercial drone sector is that of inertia, specifically when scaling up any vehicle, its performance is adversely affected, due to the increased mass inertial effect.
+Large scale quadrotor, hexrotor and even octorotor UAVs are a popular intermediate choice for aerial cinematography.  Whilst still expensive, the cost of a commercial drone like the SteadiDrone Maverik \cite{steadidrone} is far less than the cost of chartering a helicopter to achieve the same panoramic aerial scenes or on-site inspections. Another interesting application for UAVs is in the agricultural sector, introducing crop dusting drones instead of the traditional bi-planes which perform the same job. One difficulty which hinders the progress of the commercial drone sector is that of inertia, specifically when scaling up any vehicle, its performance is adversely affected, due to the increased mass inertial effect.
 %====================================================
 \section{Research Questions \& Hypotheses}
 \label{sec:ch1.hypotheses}
 %====================================================
-The difficulty with a quadrotors' control is that fundamentally it's under-actuated, having only 4 controllable inputs (each propellers rotational speed and hence lift force) available to manipulate all 6 degrees of freedom (linear X-Y-Z position and angular Pitch, $\phi$, Roll, $\theta$ and Yaw, $\psi$ rotations). The resulting solution is to control the perpendicular heave thrust, $\vec{T}$, and angular torques about each axis, $[\tau_\phi\;\tau_\theta\;\tau_\psi]^T$. So the attitude control problem of a quadrotor is a zero set point problem as any other attempt to track attitude is inherently unstable.
+The difficulty with a quadrotors' control is that fundamentally it's unstable and under-actuated, having only 4 controllable inputs (each propellers rotational speed and hence net lift force) available to manipulate all 6 degrees of freedom (linear X-Y-Z position and angular Pitch, $\phi$, Roll, $\theta$ and Yaw, $\psi$ rotations). The resulting solution, whose derivation is explored in Appendix \ref{app:stddynamics}, is to control the perpendicular heave thrust, $\vec{T}$, and angular torques about each axis, $[\tau_\phi\;\tau_\theta\;\tau_\psi]^T$. So the attitude control problem of a quadrotor is a zero set point problem as any other attempt to track attitude can't be achieved.
+\par
+The research outcome of this project is to solve the underlying problem of dynamic attitude tracking with a 6-DOF aerospace frame in free-body rotation. Inherent to this investigation is the expansion and simulation of existing kinematic models describing the quadrotor vehicles' motion. Thereafter, design, development and control of a new actuator suite to be implemented on such a quadrotor platform are required, and finally the simulation and prototype construction thereof are the key outcomes for the project.
+\par
+To leverage of all 6 degrees of freedom associated with an aerospace body in rotation additional actuators need to be added to redirect the thrust force. Some work has been done before on this concept, one such paper added only a single axis of rotation to each motor \cite{tiltpropellerflight} , which over-actuated the system but still required a complicated and unintuitive control approach. For this project the aim is to add two additional actuators per lift propeller, one for both the X and Y axis rotations. The resultant vectored thrust force exists in 3-Dimensions with respect to the body frame, unlike a traditional quadrotor helicopter which has a bound perpendicular lift force. In theory this means that the net forces and torques experienced by the body are more directly actuated.
+\par
+Hopefully the final outcome of the project is to design and produce a working prototype which implements the proposed actuation scheme to achieve bi-directional tilt operation. Inherent to this goal is the investigation, expansion and simulation of existing kinematic models describing the quadrotor vehicles motion, development of a high-fidelity kinematic model to be used for non-linear control law design to stabilize the quadrotors attitude and operation.   
+\par
+Inherent instability of a 6 Degree-of-freedom rigid body in free rotation will require a complicated control law which takes into account and actively compensates aerodynamic and torque responses wholly unique to the complicated relative rotations of the body. The over-actuation brings about the need for a control allocator which distributes the 6 commanded system inputs (net torques and forces) among the actuator set in order to optimize a particular cost function. Part of the control research question is the multivariate treatment of the system without simplifying the non-linear dynamics involved in the quadrotors motion or making any simplifying assumptions about its' operational conditions.
 %====================================================
 \section{Significance of Study}
 \label{sec:ch1.significance}
 %====================================================
-
+Given the of popularity of quadrotor platforms as research tools, any research which furthers the general body of knowledge on such vehicles is going to be valuable to the community as a whole. With that being said, for the proposed systems identification and control treatment (design and allocation), a generic and modular approach is adopted. The intention is that applicability here falls not only within the UAV and quadrotor sections but to other aerospace bodies such as orbital satellites or underwater vehicles. Or perhaps further and more in-depth research can be done on a system subset without compromising the functionality of the remainder of the system. 
+\par
+At the time of writing, there appears to be only two other projects have been published which bear some similarity. Discussed is given later in Section \ref{sec:ch2.existingwork} where comparison is made to justify how they are different and why this project is still unique and perhaps even novel. The concepts developed here are unique to the application of quadrotor control, mostly having been developed in the late 90s for satellite control. Similarly, the non-linearity with which the control solution is uncommon with respect to UAV control.
+\par
+Whilst the control treatment does close the position  and attitude control loops, there is no discussion of trajectory or flight path planning. Such topics are well discussed and it is the Authors opinion that once closed loop position and attitude control has been achieved, the control algorithms can be adjusted to account for velocity and acceleration set point tracking to be used with nodal way point planning. The heuristics involved with flight path planning are well documented elsewhere and 
+%====================================================
+\section{Scope and Limitations}
+\label{sec:ch1.scope}
+%====================================================
+\subsection{Scope}
+%----------------------------------------------------
+The scope of the project ranges from the investigation of free body kinematics, \ref{ch3:
 %====================================================
 \section{Other Applications of Proposed Investigation}
 \label{sec:ch1.applications}
 %====================================================
 
-%====================================================
-\section{Scope and Limitations}
-\label{sec:ch1.scope}
-%====================================================
-
-\subsection{Subsection}
-\label{subsec:ch1.section1.subsec1}
 %----------------------------------------------------
 
 %****************************************************
