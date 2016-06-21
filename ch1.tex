@@ -43,7 +43,8 @@ One possible improvement that the investigation could yield is a higher actuator
 At the time of writing, there appears to be only two other projects which have been published that bear some similarity. Discussion is given later in Section \ref{subsec:ch1.lit.related} where comparison is made to justify how they are different and why this project is still unique and perhaps even novel. The concepts developed here are unique to the application of quadrotor control, mostly having been developed in the late 90s for satellite control. Similarly, the non-linearity with which the control solution is developed is uncommon with respect to UAV control.
 \par
 Whilst the control treatment does close the position  and attitude control loops, there is no discussion of trajectory or flight path planning. Such topics are well discussed and it is the Authors opinion that once closed loop position and attitude control has been achieved, the control algorithms can be adjusted to account for velocity and acceleration set point tracking to be used with nodal way point planning. The heuristics involved with flight path planning are well documented elsewhere and implementation of them is an academic task.
-\par
+%====================================================
+%Needs work from here onwards CH1
 %====================================================
 \subsection{Scope and Limitations}
 \label{subsec:intro.foreward.scopeandlim}
@@ -76,10 +77,22 @@ Some of the discretionary elements of the whole system will limit performance an
 \subsection{Existing \& Related Work}
 \label{subsec:intro.lit.related}
 %====================================================
-It is worth mentioning that  hardly any research has been done into aerospace frames that can dynamically transform their structure during flight. Rigid body dynamics are mostly used to solve the control problem so introducing relative motion within the body frame during flight complicates matters. In two reports, \cite{tiltpropellercontrol},\cite{tiltpropellerflight}, M. Ryll et al adapted and tested a QuadroXL from MikroKopter \cite{mikrokopter} which has a single axis of tilt aligned with the X-axis to change the direction of the propellers. Their dynamic equations neglect any second order aerodynamic responses and the \underline{gyroscopic and inertial} effects. The simplified solution also fails to address the inherent singularity associated with their Rotation Matrix solution. A similar implementation of single axis tilting was done by Nemati et al \cite{singleaxistilting} but had a far more brief kinematic derivation and only featured a simulation as proof of concept.
+The field of transformable aerospace frames is not necessarily a new one, with many commercial examples having seen a lot of success over their life time. The most notable tilting-rotor application is that of the Boeing/Bell V22 Osprey aircraft. Having the ability to pitch its' two lift propellers forward to aid in translational flight after the VTOL manoeuvre has been completed. In addition to this there have been a handful of papers published on similar tilting bi-rotor UAVs' \ref{fig:dualaxistilt}\footnote{Image used from G. Gress: \cite{gres2007}} for research purposes.
 \par
-An expensive commercial quadrotor which has some transformation capability is the Inspire 1 \cite{inspire}\footnote{Both images were sourced from the drones patent, held by SZ DJI Tech Co\cite{djinspire}}
-, made by Shenzen DJI Technologies who are more commonly known for their Phantom drone. The Inspire can articulate its' supporting arms up and down [as shown in Fig\ref{fig:inspire1}]. The purpose of such movements is to both alter the center of gravity and further expose the belly mounted camera gimbal to achieve panoramic sequences. The change in the center of gravity affects the bodies inertial response to angular acceleration (reducing the magnitude of the mass moment of inertia about each axis). However the range of "transformation" the frame can undergo is just limited to articulating the arms up and down.
+The particular research field is termed Opposed Active 
+Tilting actuation, wherein the design either adopts an \emph{oblique} 45\textdegree tilting axis relative to the body; \cite{obliquepitch,tiltrotorcontrol,passiveobliquetilting}, or a tilting axis adjacent to the body, \emph{opposed lateral tilting}; \cite{smalltwotilting,tiltrotorUAV}. More advanced papers have proposed introducing dual-axis tilting in which each propeller can pitch and roll, \cite{gres2007,opposedlateraldualaxis}. The control of which ranges from basic PD \cite{obliquepitch} and PID \cite{tiltrotorUAV} to Ideal and Adaptive backstepping controllers,presented in \cite{smalltwotilting} and \cite{adaptivebackstep} respectively.
+\\
+In an interesting progression from the norm, Lee et al,  \cite{autopilotPSO}, proposed a PID co-efficient selection algorithm Swarm-Optimization technique which iteratively searched for the globally optimzied design. However their performance criterion was a basic ITAE term and not anything more unique involving effects specific to flight. 
+\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figs/dualaxistilt}
+\caption{General Structure for Opposed Tilting Platform}
+\label{fig:dualaxistilt}
+\end{figure}
+\par
+Quadrotor UAVs' mostly have a fixed and rigid body with no capacity for relative movement. Some hobbyists and enthusaists introduce an angled bracket to pitch the motors in order to improve forward translational speeds. This however adds no extra actuation and reliance is put on the autopilot flight controller to account for the actuator changes. An expensive commercial quadrotor which has some transformation capability is the Inspire 1 \cite{inspire}, made by Shenzen DJI Technologies who are more commonly known for their Phantom drone.
+\par
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{.5\textwidth}
@@ -97,8 +110,10 @@ An expensive commercial quadrotor which has some transformation capability is th
 \caption{DJI Inspire 1}
 \label{fig:inspire1}
 \end{figure}
+The Inspire can articulate its' supporting arms up and down [Fig: \ref{fig:inspire1} \footnote{Both images were sourced from the drones patent, held by SZ DJI Tech Co\cite{djinspire}}]. The purpose of such movements is to both alter the center of gravity and further expose the belly mounted camera gimbal to achieve panoramic sequences. The change in the center of gravity affects the bodies inertial response to angular acceleration (reducing the magnitude of the mass moment of inertia about each axis). However the range of "transformation" the frame can undergo is just limited to articulating the arms up and down.
+%======================================================
 \par
-Another interesting project is that by G.Gres \cite{gres2007} which attempts to use oblique active tilting of a bi-rotor helicopter to induce gyroscopic torques. Whilst the eVader prototype referred to in the paper has dual axis tilting, the actuators are coupled together making the tilt axis 45\textdegree to the bodies' frame. The paper discusses in depth the mechanical system identification aspects of the prototype but, however, gives no insight into attitude control. The author instead discusses the dynamic equations of motion applicable in different flight modes. Whilst the later is irrelevant to quadrotor attitude control, the derivation of induced gyroscopic torque responses as a result of pitching the propellers from their principle plane of rotation is highly pertinent and appears to be the most accurate and well thought out of its' kind.
+It is worth mentioning that  hardly any research has been done into aerospace frames that can dynamically transform their structure during flight. Rigid body dynamics are mostly used to solve the control problem so introducing relative motion within the body frame during flight complicates matters. In two reports, \cite{tiltpropellercontrol},\cite{tiltpropellerflight}, M. Ryll et al adapted and tested a QuadroXL from MikroKopter \cite{mikrokopter} which has a single axis of tilt aligned with the X-axis to change the direction of the propellers. Their dynamic equations neglect any second order aerodynamic responses and the \underline{gyroscopic and inertial} effects. The simplified solution also fails to address the inherent singularity associated with their Rotation Matrix solution. A similar implementation of single axis tilting was done by Nemati et al \cite{singleaxistilting} but had a far more brief kinematic derivation and only featured a simulation as proof of concept.
 \par
 Lastly, the most advanced implementation of over actuation for quadrotor control is that of Pau Segui Gasco \cite{tiltgasco}, which was a dual presented MSc project with Yazan Al-Rihani \cite{tiltrihani}. At the time of writing, this would appear to be the only published project which bears semblance to the proposed concept of this paper. The work was split between the two authors who completed the control/electronic design and the mechanical platform design for their respect MSc projects. Shown in Fig:\ref{fig:tiltrotor-gasco} \footnote{Development of a Dual Axis Tilt Rotorcraft UAV: Modelling, Simulation and Control \cite{tiltgasco}}, their dual-axis articulation is achieved with an adapted helicopter tail bracket, reducing the mass of the articulated component but limiting the range of rotation. Their justification for adding extra actuations is to ensure control reliability even in the event of losing up to 2 rotors.
 \begin{figure}[hbtp]
@@ -111,6 +126,12 @@ Lastly, the most advanced implementation of over actuation for quadrotor control
 In the control and dynamics derivation, Gesco et al provides an excellent model for 6-DOF motion. As is standard fare with quadrotor papers, the dynamic equations are linearised around a trim point parallel to the inertial frame to allow for SISO control analysis of the system. It is important to note the difference between this papers' prototype and the Bi-Directional Tilting Quadrotor Prototype developed in Chapter \cite{ch:design} ,the added actuation in \cite{tiltgasco} is not used to vector thrust produced but rather to leverage induced gyroscopic torques as an actuation input. The control allocation technique developed is wholly unique, fusing differential torque and torques induced from the relative motion with a (simplified) weighted pseudo inverse method. This all resulted in a control plant with a far higher control bandwidth. 
 \par
 In practice the gyroscopic response (see Section \ref{ch3:gyroscpic torque}), or rather regarding the spinning propellers as control moment gyroscopes \cite{cmg}, has a response two orders of magnitude smaller than that of the inertial response from pitching the mass of the motor \& propeller combination. And so such an inertial response is far more important to account for, weather it be compensation or exploitation, that the gyroscopic torques induced.
+\par
+
+
+
+Another interesting project is that by G.Gres \cite{gres2007} which attempts to use oblique active tilting of a bi-rotor helicopter to induce gyroscopic torques. Whilst the eVader prototype referred to in the paper has dual axis tilting, the actuators are coupled together making the tilt axis 45\textdegree to the bodies' frame. The paper discusses in depth the mechanical system identification aspects of the prototype but, however, gives no insight into attitude control. The author instead discusses the dynamic equations of motion applicable in different flight modes. Whilst the later is irrelevant to quadrotor attitude control, the derivation of induced gyroscopic torque responses as a result of pitching the propellers from their principle plane of rotation is highly pertinent and appears to be the most accurate and well thought out of its' kind.
+
 \subsection{Notable Quadrotor Control Implementations}
 \label{subsec:intro.lit.control}
 %----------------------------------------------------
