@@ -74,65 +74,105 @@
 }
 %---------------------------------------------------------
 
-
+%To be organized and sorted
 
 %=================unpublished=reports=====================
 % tech reports
 %---------------------------------------------------------
-%1: Starmac Prototype
-@techreport{starmac,
-	address = {California, United States of America},
-	author = {Hoffmann, G. and Huang, H. and Waslander, S. and Tomlin, C.},
-	institution={Department of Aeronautics \& Astronautics, Stanford University},
+%1: Starmac Prototype Conference Paper
+@conference{starmac,
+	author={Hoffmann, G. and Huang, H. and Waslander, S. and Tomlin, C.},
 	title={Quadrotor Helicopter Flight Dynamics and Control: Theory and Experiment},
-	type = {Report},
-	year={2010}
+	booktitle={Guidance, Navigation and Control Conference and Exhibit},
+	year={2010},
+	pages={1-19},
+	address = {Hilton Head, South Carolina},
+	month=8,
+	organization={American Institute of Aeronautics and Astronautics},
+	publisher={American Institute of Aeronautics and Astronautics},
+	note={Derivation of advanced aerodynamic affects on STARMAC Quadrotor Prototype}
 }
 %---------------------------------------------------------
 %2: Quadcopter Modelling Aalto United
-@techreport{modelingquadcopter,
-	address ={ Eepso, Finland},
-	author = {Luukkonen, T.},
-	institution = {Aalto University: School of Science},
-	title = {Modelling and Control of a Quadcopter},
-	type = {Report},
-	year = {2011}
+@mastersthesis{modelingquadcopter,
+	author={Luukkonen, Teppo},
+	title={Modelling and Control of a Quadcopter},
+	school={Aalto University: School of Science},
+	year={2011},
+	address ={Eepso, Finland},
+	month=8,
+	note={Independent research project in applied mathematics}
 }
 %---------------------------------------------------------
 %3: quadcopter frames & dynamics
 @techreport{quaddynamics,
-	title = {Quadcopter Dynamics and Control},
-	author = {Breard Randal},
-	institution = {Brigham Young University},
-	type = {Report},
-	year = {2013}
+	author={Beard Randal},
+	title={Quadrotor Dynamics and Control},
+	institution={Brigham Young University},
+	type={Report},
+	year={2008},
+	month=2,
+	note={Part of the Electrical and Computer Engineering Commons}
 }
 %---------------------------------------------------------
 %4: Full Control of a Quadrotor
-@techreport{fullquadcoptercontrol,
-	title = {Full Control of a Quadrotor},
-	author = {Bouabdallah, S. and Siegwart, R.},
-	institution = {Swiss Federal Institue of Technology, Autonomous Systems Lab},
-	type = {Report},
-	year = {2006}
+@article{fullquadcoptercontrol,
+	author={Bouabdallah, S. and Siegwart, R.},
+	title={Full Control of a Quadrotor},
+	journal={IEEE International Conference on Intelligent Robots and Systems}
+	year={2007},
+	month=11,
+	pages={153-158},
+	issn={2153-0858},
+	note={Written for Autonomous Systems Lab at Swiss Federal Institute of Technology}
 }
 %---------------------------------------------------------
 %5: Rigid Body Dynamics
-@techreport{rigidbodylecture,
-	title = {3D Rigid Body Namics: Euler Angles},
+@misc{rigidbodylecture,
 	author = {Peraire, J. and Widnall, S.},
+	title = {3D Rigid Body Dynamics: Euler Angles},
+	howpublished={Lecture notes for Dynamics Course},
 	institution = {Massachusetts Institute of Technolgy, Open Course Ware},
-	type = {Notes},
-	year = {2009}
+	year = {2009},
+	note={Dynamics course notes, fall 2007}
 }
 %---------------------------------------------------------
 %6: Rigid Body Dynamics using Eulers Equations
-@techreport{eulerrigidbody,
+@unpubished{eulerrigidbody,
 	title = {Rigid Body Dynamics using Euler's Equations, Rungekutta and Quaternions},
 	author = {Mandre, I.},
+	month=2,
+	year = {2006}
+}
+%---------------------------------------------------------
+%7: Nonlinear dynamic modelling
+@conference{nonlineardynamics,
+	title = {Non-Linear Dynamic Modelling for High Performance Control of a Quadrotor},
+	year=2012,
+	author = {Bangura, M. and Mahony, R.},
+	booktitle = {Australasian Conference on Robotics and Automation, Victoria University of Wellington},
+	year = {2012},
+	month=12,
+	organization={Victoria Unversity of Wellington},
+	note={Published in Conference Proceedings}
+}
+%---------------------------------------------------------
+UPTOHERENICHOLAS
+%8: Quaternions and Dynamics
+@techreport{quaterniondynamics,
+	title = {Quaternions and Dynamics},
+	author = {Graf, Basile},
+	institution = {Mathematics - Dynamical Systems},
+	type = {Report},
+	year = {2007}
+}
+%9: Quadcopter Dynamics, Simulation and Control
+@techreport{quadsimulationcontrol,
+	title = {Quadcopter Dynamics, Simulation and Control},
+	author = {N/A},
 	institution = {N/A},
 	type = {Report},
-	year = {2006}
+	year = {N/A}
 }
 
 
@@ -314,10 +354,148 @@ Overview and Development Status of Oblique Active Tilting},
 	year = {2009}
 }
 %---------------------------------------------------------
-
-
-
-
+%17: Propeller Performance at Low Reynolds Numbers
+@article{lowreynolds,
+	author = {Brandt, J. and Selig, M.},
+	issn = {2011-1255},
+	journal = {American Institude of Aeronautics and Astronautics Sciences Meeting, 49th},
+	month = jan,
+	pages = {1-18},
+	title = {Propeller Performance Data at Low Reynolds Numbers},
+	year = {2011}
+}
+%---------------------------------------------------------
+%18: BEM with Wake Deflection
+@article{bem,
+	author = {Rwigema, M.K.},
+	issn = {N/A},
+	journal = {International Congress of the Aeronautical Sciences, 27th},
+	month = jan,
+	pages = {1-9},
+	title = {Propeller Blade Element Momentum Theory with Vortex Wake Deflection},
+	year = {2010}
+}
+%---------------------------------------------------------
+%19: Modelling of tiltrotor quad
+@article{tiltpropellercontrol,
+	author = {Ryll, M. and Bulthoff, H. and Robuffo Giordano, P.},
+	issn = {1050-4729},
+	journal = {IEEE International Conference on Robotics and Automation},
+	month = may,
+	pages = {4606-4613},
+	title = {Modelling and COntrol of a Quadrotor UAV with Tilting Propellers},
+	year = {2012}
+}
+%---------------------------------------------------------
+%20: flight tests of tiltrotor quad
+@article{tiltpropellerflight,
+	author = {Ryll, M. and Bulthoff, H. and Robuffo Giordano, P.},
+	issn = {1050-4729},
+	journal = {IEEE International Conference on Robotics and Automation},
+	month = may,
+	pages = {295-302},
+	title = {Modelling and COntrol of a Quadrotor UAV with Tilting Propellers},
+	year = {2013}
+}
+%---------------------------------------------------------
+%21: single axis tilting quadcopter
+@article{singleaxistilting,
+	author={Nemati, A. and Kumar, M.},
+	issn={978-1-4799-3274-0},
+	journal={American Control Conference},
+	month = jun,
+	pages = {3077-3082},
+	title={Modeling and Control of a Single Axis Tilting Quadcopter},
+	year = {2014}
+}
+%---------------------------------------------------------
+%22: the attitude control problem
+@article{attitudecontrolproblem,
+	author={Ting-Yung Wen, John and Kreutz-Delgado, Kenneth},
+	issn={0018-9286},
+	journal={IEEE Transactions on Automatic Control},
+	month = oct,
+	pages = {1148-1162},
+	title={The Attitude Control Problem},
+	year = {1991}
+}
+%---------------------------------------------------------
+%23: Introduction to quaternions
+@article{spacecraftattitutdequaternions,
+	author={Groÿekatthöfer, Karsten and Yoon, Zizung},
+	issn={0018-9286},
+	journal={Technical University of Berlin: Department of Astronautics and Aeronatuics},
+	month = may,
+	pages = {1-16},
+	title={Introudction into Quaternions for Spacecraft Attitude Representation},
+	year = {2012}
+}
+%---------------------------------------------------------
+%24: Disturbances to a Quadcopter
+@article{adaptivedisturbancecontrol,
+	author={Razinkove, Anastasia and Gaponov, Igor and Cho, Hyun-Chan},
+	issn={95560},
+	journal={International Conference on Control, Automation and Systems},
+	month = oct,
+	pages = {386-390},
+	title={Adaptive Control over Quadcopter UAV under Disturbances},
+	year = {2014}
+}
+%---------------------------------------------------------
+%25: ITAE Tuned Quadcopter PID
+@article{optomizedpidquadcopter,
+	author={Bolandi, Hossein and Rezaei, Mohammed and Mohsenipour, Rezo and Nemati, Hossein and Smailzadeh, Seed Majid},
+	issn={335-342},
+	journal={Intelligent Control and Automation},
+	month = aug,
+	pages = {335-342},
+	title={Attitude Control of a Quadrotor with Optimized PID},
+	year = {2013}
+}
+%---------------------------------------------------------
+%26: Backstepping Control in Rotation Matrices
+@article{backsteppingquadcoptercontrol,
+	author={Madani, Tarek and Benallegue, Abdelaziz},
+	issn={1-4244-0259-X},
+	journal={International COnference on Intelligent Robots and Systems},
+	month = oct,
+	pages = {3255-3260},
+	title={Backstepping Control for a Quadrotor Helicopter},
+	year = {2006}
+}
+%---------------------------------------------------------
+%27: Euler Angle Singularity
+@article{euleranglesingularity,
+	author={Singla, Puneet and Mortari, Daniele and Junkins, John L.},
+	issn={N/A},
+	journal={Advances in the Astronautical Sciences},
+	month = jan,
+	pages = {1409-1426},
+	title={How to Avoid Singularity When Using Euler Angles?},
+	year = {2005}
+}
+%---------------------------------------------------------
+%28: Quaternion Unwinding
+@article{unwinding,
+	author={Mayhew, Christopher G. and Sanfelice, Ricardo G. and Teel, Andrew R.},
+	issn={978-1-4577-0081-1},
+	journal={American Control Conference},
+	month = jun,
+	pages = {299-304},
+	title={On Quaternion Based Attitude Control and the Unwinding Phenomenon},
+	year = {2011}
+}
+%---------------------------------------------------------
+%29: First noted use of quaternions for attitude control
+@article{attitudestabilization,
+	author={Tayebi, Abdelhamid and McGilvray, Stephen},
+	issn={1063-6536},
+	journal={IEEE Transactions on Control Systems Technology},
+	month = may,
+	pages = {562-571},
+	title={Attitude Stabilization of a VTOL Quadrotor Aircraft},
+	year = {2006}
+}
 
 %=====================masters=reports=====================
 % books
@@ -329,4 +507,50 @@ Overview and Development Status of Oblique Active Tilting},
 	publisher = {University of Calgary, Department of Mechanical Engineering},
 	title = {Passive Stabilization of VTOL Aircraft Having Obliquely Tilting Propellers},
 	year = {2014}
-}	
+}
+%---------------------------------------------------------	
+%2: Dual Axis Tilt Rotor Gasco
+@book{tiltgasco,
+  	title={Development of a Dual Axis Tilt Rotorcraft UAV: Modelling, Simulation and Control},
+  	author={Gasco, Pau. S},
+  	volume={1},
+  	year={2012},
+	type = {Msc Thesis},
+  	publisher={Cranfield University: School of Engineering}
+}
+%---------------------------------------------------------
+%3: Dual Axis Tilt Rotor Rihani
+@book{tiltrihani,
+  	title={Development of a dual axis tilt rotorcraft uav: Design, prototyping and control.},
+  	author={Al-Rihani, Yazan},
+  	volume={1},
+  	year={2012},
+	type = {Msc Thesis},
+  	publisher={Cranfield University: School of Engineering}
+}
+%=====================Textbooks===========================
+% books
+%---------------------------------------------------------
+%4: Quaternion and Rotation Sequences
+@inbook{rotationsequences,
+	author={Kuipers, Jack B.},
+  	title={Quaternions and Rotation Sequences: A Prier with Aplication to Orbital Aerospace and Virtual Reality},
+  	pages{127-143},
+	publisher={Princeton University Press},
+	year={2002},
+	month=sep,
+	note={Used for Quaternion and Rotation Matrix reference}
+}
+%=====================patents=============================
+% patents
+%---------------------------------------------------------
+
+@Patent{djinspire,
+	author = {Wang, Tao and Zhao, Tao and Hao, Du and Wang, Mingxi},
+	title = {Transformable Aerial Vehicle},
+	year = {2014},
+	month = {09},
+	number = {US20140263823},
+	version = {A1},
+	url = {http://www.google.com/patents/US20140263823}
+}
