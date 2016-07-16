@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.6.10)  11 JUL 2016 15:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.6.10)  15 JUL 2016 18:46
 entering extended mode
 **./thesis.tex
 (thesis.tex
@@ -1650,14 +1650,30 @@ Package pdftex.def Info: figs/arducopter-pi.png used on input line 159.
 LaTeX Warning: Citation `optimizedpidquadcopter' on page 9 undefined on input l
 ine 171.
 
+[9 <./figs/arducopter-pi.png>]pdfTeX warning (ext4): destination with the same 
+identifier (name{equation.1.2.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.194 \begin{equation}
+                       \label{eq:3.2}pdfTeX warning (ext4): destination with th
+e same identifier (name{equation.1.2.2}) has been already used, duplicate ignor
+ed
+<to be read again> 
+                   \relax 
+l.206 \begin{equation}
+                      ) [10pdfTeX warning (ext4): destination with the same ide
+ntifier (name{equation.1.2.1}) has been already used, duplicate ignored
 
-LaTeX Warning: Citation `backstepping' on page 9 undefined on input line 183.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.376 \include{ch1}
+                   pdfTeX warning (ext4): destination with the same identifier 
+(name{equation.1.2.3}) has been already used, duplicate ignored
 
-[9 <./figs/arducopter-pi.png>]
-
-LaTeX Warning: Citation `optimizedPID' on page 10 undefined on input line 185.
-
-) [10]
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.376 \include{ch1}
+                   ]
 \openout2 = `ch2.aux'.
 
  (ch2.tex
@@ -1713,15 +1729,21 @@ Appendix A.
 ]
 Missing character: There is no ÿ in font cmr10!
 Missing character: There is no ö in font cmr10!
+Missing character: There is no – in font cmr10!
 
-Overfull \hbox (7.46593pt too wide) in paragraph at lines 180--184
+Overfull \hbox (7.46593pt too wide) in paragraph at lines 194--198
 []\OT1/cmr/m/n/10.95 LibrePilot.  Open-pilot/librepilot wiki.  Web-site: http:/
 /opwiki.readthedocs.io/en/latest/index.html,
  []
 
-[18]
+[18] [19]
 Missing character: There is no ñ in font cmr10!
- [19]) 
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 358.
+
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+))
+
 AED: lastpage setting LastPage
 [20]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 398.
@@ -1739,38 +1761,40 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 398.
  ) 
 Here is how much of TeX's memory you used:
- 40365 strings out of 493335
- 877952 string characters out of 3136683
- 1075930 words of memory out of 3000000
- 43054 multiletter control sequences out of 15000+200000
- 19628 words of font info for 72 fonts, out of 3000000 for 9000
+ 40412 strings out of 493335
+ 878638 string characters out of 3136683
+ 1076173 words of memory out of 3000000
+ 43089 multiletter control sequences out of 15000+200000
+ 20143 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,17n,98p,10457b,822s stack positions out of 5000i,500n,10000p,200000b,50000s
 pdfTeX warning (dest): name{Hfootnote.8} has been referenced but does not exi
 st, replaced by a fixed one
 
- <C:\Users\Nick\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi1244\tc
-bx1200.pk> <C:\Users\Nick\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
-dpi657\tcrm1000.pk> <C:\Users\Nick\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jkn
-appen\ec\dpi657\tcbx1000.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
-/amsfonts/cm/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmmi10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmmi8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmr6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8
-.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb
-><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><
-C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Pr
-ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti7.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (29 pages, 1124815 bytes).
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc} <C:\Users\N
+ick\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi1244\tcbx1200.pk> <
+C:\Users\Nick\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi657\tcrm1
+000.pk> <C:\Users\Nick\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi
+657\tcbx1000.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mmi10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmm
+i8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.
+pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb
+><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Fil
+es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files 
+(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti7.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files (x86)
+/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on thesis.pdf (29 pages, 1144854 bytes).
 PDF statistics:
- 799 PDF objects out of 1000 (max. 8388607)
- 171 named destinations out of 1000 (max. 500000)
+ 823 PDF objects out of 1000 (max. 8388607)
+ 178 named destinations out of 1000 (max. 500000)
  549 words of extra memory for PDF output out of 10000 (max. 10000000)
 

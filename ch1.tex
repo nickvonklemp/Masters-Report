@@ -134,7 +134,7 @@ One approach to improving quadrotor flight operation is to alter the manner in w
 Regardless of his strong initial theoretical grounding in the early stages of his project, it would appear that Napsholms research suffered due to time constraints. The introductory derivation on aero-dynamical effects and deliberation over the design provide clear insight into the projects goals. However the control solution and system architecture, electronic and software, are left wanting. A brief proposal of an MPC attitude control system detracted from the comprehensive dynamics discussed. The project obviously ended before testing, simulation and results could be achieved. Unfortunately, despite the novel and over-actuated design, there was no discussion given on how the allocation would be performed.
 \par
 Finally, the most crucial research to mention is that of a project completed by Pau Segui Gasco \cite{tiltgasco}, which was a dual presented MSc project with Yazan Al-Rihani \cite{tiltrihani}. At the time of writing, this would appear to be the only project published pertaining to \emph{over-actuation} in aerospace bodies implemented on a quadrotor platform. The research was split between the two authors who completed the control/electronic design and the mechanical platform design for their respective dissertations. Shown in Fig:\ref{fig:tiltrotor-gasco}\footnote{Development of a Dual Axis Tilt Rotorcraft UAV: Modelling, Simulation and Control \cite{tiltgasco}}, the dual-axis articulation is achieved using an RC helicopter tail bracket and push-rod mechanism; reducing the mass of the articulated component but limiting the range of actuation. Considering the spinning propellers and their induced gyroscopic torque as an actuator plant, the commanded virtual control is then distributed by weighted inversion amongst the actuator set. The whole projects justifies the extra actuation as redundancy but doesn't necessarily prove how the redundancy could be beneficial.
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{figs/gasco-mech}
 \caption{Dual-axis tilt-rotor mechanism}
@@ -146,7 +146,7 @@ Finally, the most crucial research to mention is that of a project completed by 
 %====================================================
 \subsubsection*{Quadcopter Attitude Control}
 %====================================================
-Attitude control of a 6-DOF body is a well understood topic, best described by \emph{The Attitude Control Problem} \cite{attitudecontrolproblem}, whereby a body currently has an attitude state $E_s$ and a desired state $E_d$. The problem is to then find a torque control law:
+Attitude control of a 6-DOF body is a well understood topic, best described by \emph{The Attitude Control Problem} \cite{attitudecontrolproblem}, whereby a rigid body currently has an attitude state $E_s$ and a desired state $E_d$. The problem is to then find a torque control law:
 \begin{equation} \label{eq:2}
 \tau = f(E_s,E_d,\omega_s,\omega_d)
 \end{equation}
@@ -160,7 +160,7 @@ Quadrotor plant dynamics, as mentioned before, are often linearised; especially 
 \caption{ArduCopter PI Euler Angle Attitude Control loop}
 \label{fig:arducopter-pi}
 \end{figure}
-Commercial flight controllers (Arducopter\cite{arducoptersite}, Openpilot\cite{openpilotsite}\footnote{\underline{NOTE:} OpenPilot's firmware branch is now maintained by LibrePilot} etc \ldots) for custom fabricated UAV platforms all apply their own structured attitude controllers and state estimation algorithms, based on onboard hardware sensor fusion. The article \emph{Build Your Own Quadrotor}\cite{buildyourownquad} summarizes the control structures implemented on a range of common flight controllers. The most popular of which, the Arducopter, implements a feed-forward PI compensation controller (Fig:\ref{fig:arducopter-pi}\footnote{Image sourced from \emph{Build your own Quadrotor}\cite{buildyourownquad}}).  PI, PD and PID controllers are all easy and effective independent solutions for general attitude control once the plants have been linearised. Table:\ref{tab:controllers} collectively lists the common attitude control blocks (not exclusively quadrotors but UAVs' and MAVs') and which projects they've been implemented in, after which a critique on the more unique adaptations is given.
+Commercial flight controllers (Arducopter\cite{arducoptersite}, Openpilot\cite{openpilotsite}\footnote{\underline{NOTE:} OpenPilot's firmware branch is now maintained by LibrePilot} etc \ldots) for custom fabricated UAV platforms all apply their own structured attitude controllers and state estimation algorithms, based on onboard hardware sensor fusion. The article \emph{Build Your Own Quadrotor}\cite{buildyourownquad} summarizes the control structures implemented on a range of common flight controllers. The most popular of which, the Arducopter, implements a feed-forward PI compensation controller (Fig:\ref{fig:arducopter-pi}\footnote{Image sourced from \emph{Build your own Quadrotor}\cite{buildyourownquad}}).  PI, PD and PID controllers are all easy and effective independent solutions for general attitude control once the plants have been linearised. Table:\ref{tab:controllers} collectively lists the common attitude control blocks (not exclusively quadrotors UAVs but MAVs too) and which projects they've been implemented in, after which a critique on the more unique adaptations is given.
 \begin{table}[h]
 \centering
 \begin{tabular}{ |c|l|l|c| }
@@ -178,16 +178,40 @@ LQR & \cite{pidlqr} & LQR & LQR\\ \hline
 \label{tab:controllers}
 \end{table}
 \par
-In a collection of papers, written by Bouabdallah et al \ldots (2003,2004,2007) arguably the most prolific early quadrotor authors, a range of different control implementations is derived and reviewed. Their last paper (2007)\cite{fullquadcoptercontrol} derived and pratically tested an Integral Backstepping attitude controller on an OS4 quadrotor. This builds on their research from an earlier paper (2003)\cite{pidlqr} wherein an analysis of PID vs LQR attitude controllers in the context of quadrotors is posed. LQR controllers aim to optimize the controller effort ($||\mathbb{U}||$ or the $L_2$ norm of the plant input) and although, in theory, solving the Ricatti equation may produce an optimially stable and efficient control law but it requires exact plant matching. In practice, direct plant identification is difficult to achieve for an aerospace frame.  The resultant controller in \cite{pidlqr} achieved asymptotic stability but performed poorly due to low fidelity of actuator dynamics and poor confidence inertial measurements.
+In a collection of papers, written by Bouabdallah et al \ldots (2003,2004,2007) arguably the most prolific early quadrotor authors, a range of different control implementations are derived and reviewed. Their last paper (2007)\cite{fullquadcoptercontrol} derived and pratically tested an Integral Backstepping attitude controller on an OS4 quadrotor. It builds on their research from an earlier paper (2003)\cite{pidlqr} wherein an analysis of PID vs LQR attitude controllers in the context of quadrotors is posed. LQR controllers aim to optimize the controller effort (that being $||\mathbb{U}||$ or the $L_2$ norm of the plant input) and although, in theory, solving the assocaited Ricatti cost function may produce an optimially stable and efficient control law it needs exact plant matching. In practice, direct plant identification is difficult to achieve for a quadcopter or any aerospace body for that matter. The resultant controller in \cite{pidlqr} achieved asymptotic stability but had poor steady state performance due to low fidelity of actuator dynamics and poor confidence inertial measurements.
 \par
-Adaptive Backstepping Control\cite{backstepping} expands on IBC fundamentals by introducing an added estimated disturbance state term in the LCF used for the backstepping iteration. The caveat of using such an approach is that, from the Lyupanov control theorem, a time derivative for the estimated disturbance (or \emph{update law}) is needed. The complexity involved in disturbance approximation for a signal without any apriori approximations is that some heuristic needs to be adopted with the approximation. In \cite{nonlinearadaptive} a stastical $proj(.)$ operator is applied to changes in estimate update laws but still r
-\par
-A PID strucuture for attitude controllers are the norm, with \cite{optimizedPID},\cite{quaddynamics},\cite{tiltpropellerflight} all implementing standard PID controllers and even \cite{singleaxistilting} using only a PD controller despite having an over-actuated platform. 
+Adaptive Backstepping Control\cite{backstepping}(Any of the examples in Table:\ref{tab:controllers}) expands on nominal IBC fundamentals by introducing an added estimated disturbance state term in the LCF used for the backstepping iteration. The caveat with the Backstepping approach is that, from the Lyupanov control theorem, a time derivative for the estimated disturbance (or an \emph{update law}) is needed. Disturbance approximation has been investigated thoroughly but, for a signal without any apriori information, some heuristic needs to be adopted with the approximation. In one example, \cite{nonlinearadaptive}, the authors implemented a statistical $proj(.)$ operator based technique. When used in adaptive control the projection operator \cite{outputfeedback}, $proj(.)$, ensures a derivative based estimator is bound for adaptive regression approxmation \cite{nonlinearregression}. 
 %====================================================
-\subsubsection*{Single \& Dual Axis Allocation}
+\subsubsection*{Single/Dual Axis Control \& Allocation}
 %====================================================
-Dual axis poop
-
+The extra actuation introduced with single and dual axis articulation provides room for extra control goals to be achieved as the system actuation increases. Of the few papers published on tilting-axis quadrotors, PD (Nemati et al.[2014]\cite{singleaxistilting} and again in Gasco \& Rihani \cite{tiltgasco,tiltrihani}) and PID (Ryll et al.[2012,2013]\cite{tiltpropellercontrol,tiltpropellerflight}) are the norm for control blocks. For both of these systems there needs to be an allocation rule to distribute a commanded input amongst the actuator set. In \cite{allocation}, Johansen et al. describes the control allocation problem for a dynamic plant:
+\begin{subequations} 
+\raggedright
+\begin{equation} \label{eq:3.1}
+\dot{x}=f(x,t)+g(x,t)\tau
+\end{equation}
+\vspace{-25pt}
+\begin{equation} \label{eq:3.2}
+y=l(x,t)
+\end{equation}
+\end{subequations}
+\\\emph{\color{Gray} Note in state space Equation:\ref{eq:3.1}, it's assumed the plant input, $\tau$, has a multiplicative relationship with the response, $g(x,t)\tau$.}
+\\
+With a state $x\in \mathbb{R}^n$ and $f(x,t)$ \& $g(x,t)$ being the plants' dynamic and input responses respectively. In set point tracking, the output is then \emph{tracking} the state $y = x$, and hence $y \in \mathbb{R}^n$. In an ideal well posed system the number of actuator inputs equals the number of controllable variable outputs; $dim(x)=dim(\tau)\in \mathbb{R}^n$. In the case where $\tau \in \mathbb{R}^m,m>n$ the problem is overactuated and a level of abstraction is needed; a virtual control input $\nu_d$ is designed by a control law $\nu_d=H(x_e,t)$ to effect dynamics. The objective is to then find a function that maps $\mathbb{R}^m \rightarrow \mathbb{R}^n$. 
+\begin{subequations}
+\begin{equation} \label{eq:3.3}
+\dot{x}=f(x,t)+g(x,t)\nu_d,~\nu_d \in \mathbb{R}^n
+\end{equation}
+\vspace{-25pt}
+\begin{equation}
+\nu_d=B(x,t,\mathbb{U})\approx B(x,t)\mathbb{U}, ~\mathbb{U}\in \mathbb{R}^m
+\end{equation}
+\vspace{-25pt}
+\begin{equation}
+y=x
+\end{equation}
+\end{subequations}
+$B(x,t,\mathbb{U})$ is the allocation rule and can, if the plant permits it, be abstracted to a multiplicative relationship $B(x,t)\mathbb{U}$ such that; $B(x,t)\in\mathbb{R}^{n\times m}$. The only overactuated quadrotor literature which covers allocation of the given actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse 
 %====================================================
 \subsubsection*{Satellite Attitude Control}
 %====================================================
