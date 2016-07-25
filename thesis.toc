@@ -12,63 +12,63 @@
 \contentsline {section}{\numberline {1.2}Literature Review}{5}{section.1.2}
 \contentsline {subsection}{\numberline {1.2.1}Existing \& Related Work}{5}{subsection.1.2.1}
 \contentsline {subsection}{\numberline {1.2.2}Notable Quadrotor Control Implementations}{8}{subsection.1.2.2}
-\contentsline {chapter}{\numberline {2}Prototype Design}{11}{chapter.2}
-\contentsline {section}{\numberline {2.1}Conventions Used}{11}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Reference Frames Convention}{11}{subsection.2.1.1}
-\contentsline {subsection}{\numberline {2.1.2}Motor Axis Layout}{11}{subsection.2.1.2}
-\contentsline {section}{\numberline {2.2}Design}{11}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Gimbal Articulation}{11}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Inertial Matrix Function}{11}{subsection.2.2.2}
-\contentsline {subsection}{\numberline {2.2.3}Overall Aspects}{11}{subsection.2.2.3}
-\contentsline {subsubsection}{Vibration Damping}{11}{subsection.2.2.3}
-\contentsline {subsubsection}{Duct}{11}{subsection.2.2.3}
-\contentsline {subsubsection}{Landing Skids}{11}{subsection.2.2.3}
-\contentsline {subsubsection}{Motors \& ESCs}{11}{subsection.2.2.3}
-\contentsline {section}{\numberline {2.3}System Layout}{11}{section.2.3}
-\contentsline {chapter}{\numberline {3}Kinematics \$ Dynamics}{12}{chapter.3}
-\contentsline {section}{\numberline {3.1}Rigid Body Dynamics}{12}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Lagrange Derivation}{12}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}Rotation Matrix Peculiarities}{12}{subsection.3.1.2}
-\contentsline {subsection}{\numberline {3.1.3}Quaternion Dynamics}{12}{subsection.3.1.3}
-\contentsline {subsection}{\numberline {3.1.4}The Unwinding Problem}{12}{subsection.3.1.4}
-\contentsline {section}{\numberline {3.2}Non-linearities}{12}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Gyroscopic Torques}{12}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Coriolis Acceleration}{12}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Inertial Matrix}{12}{subsection.3.2.3}
-\contentsline {section}{\numberline {3.3}Aerodynamics}{12}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}Thrust Forces \& Propeller Torques}{12}{subsection.3.3.1}
-\contentsline {subsection}{\numberline {3.3.2}Drag}{12}{subsection.3.3.2}
-\contentsline {subsection}{\numberline {3.3.3}Conning \& Flapping}{12}{subsection.3.3.3}
-\contentsline {subsection}{\numberline {3.3.4}Vortex Ring State}{12}{subsection.3.3.4}
-\contentsline {section}{\numberline {3.4}Consolidated Model}{12}{section.3.4}
-\contentsline {chapter}{\numberline {4}Control Treatment}{13}{chapter.4}
-\contentsline {section}{\numberline {4.1}Attitude Control}{14}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}The Attitude Control Problem}{14}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Quaternion Based Controllers}{14}{subsection.4.1.2}
-\contentsline {subsubsection}{PD Controller}{14}{subsection.4.1.2}
-\contentsline {subsubsection}{Auxilliary Plant Controller}{14}{subsection.4.1.2}
-\contentsline {subsubsection}{PID Controller}{14}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Non-linear Controllers}{14}{subsection.4.1.3}
-\contentsline {subsubsection}{Ideal Back-stepping Controller}{14}{subsection.4.1.3}
-\contentsline {subsubsection}{Adaptive Back-stepping Controller}{14}{subsection.4.1.3}
-\contentsline {subsubsection}{Lyupanov Derived Ideal Controller}{14}{subsection.4.1.3}
-\contentsline {section}{\numberline {4.2}Position Control}{14}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Backstepping Position Controller}{14}{subsection.4.2.1}
-\contentsline {section}{\numberline {4.3}Controller Allocation}{14}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Non-linear Plant Control Allocation}{14}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Pseudo Inverse Allocator}{14}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}Weighted Pseudo Inverse Allocator}{14}{subsection.4.3.3}
-\contentsline {subsection}{\numberline {4.3.4}Priority Norm Inverse Allocator}{14}{subsection.4.3.4}
-\contentsline {subsection}{\numberline {4.3.5}Online Optimized Secondary Goal Allocator}{14}{subsection.4.3.5}
-\contentsline {chapter}{\numberline {5}Simulations \& Results}{15}{chapter.5}
-\contentsline {section}{\numberline {5.1}Controller Tuning}{15}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{15}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{15}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{15}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{15}{subsection.5.1.4}
-\contentsline {section}{\numberline {5.2}Simulation Block}{15}{section.5.2}
-\contentsline {section}{\numberline {5.3}Optimized Controller Comparisons}{15}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}Allocator Performance}{15}{subsection.5.3.1}
-\contentsline {subsection}{\numberline {5.3.2}Attitude Control Results}{15}{subsection.5.3.2}
-\contentsline {subsection}{\numberline {5.3.3}Autopilot Outcome}{15}{subsection.5.3.3}
-\contentsline {chapter}{\numberline {A}Standard Quadrotor Dynamics}{16}{appendix.A}
+\contentsline {chapter}{\numberline {2}Prototype Design}{12}{chapter.2}
+\contentsline {section}{\numberline {2.1}Conventions Used}{12}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Reference Frames Convention}{12}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Motor Axis Layout}{12}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}Design}{12}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Gimbal Articulation}{12}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Inertial Matrix Function}{12}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Overall Aspects}{12}{subsection.2.2.3}
+\contentsline {subsubsection}{Vibration Damping}{12}{subsection.2.2.3}
+\contentsline {subsubsection}{Duct}{12}{subsection.2.2.3}
+\contentsline {subsubsection}{Landing Skids}{12}{subsection.2.2.3}
+\contentsline {subsubsection}{Motors \& ESCs}{12}{subsection.2.2.3}
+\contentsline {section}{\numberline {2.3}System Layout}{12}{section.2.3}
+\contentsline {chapter}{\numberline {3}Kinematics \$ Dynamics}{13}{chapter.3}
+\contentsline {section}{\numberline {3.1}Rigid Body Dynamics}{13}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Lagrange Derivation}{13}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Rotation Matrix Peculiarities}{13}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Quaternion Dynamics}{13}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}The Unwinding Problem}{13}{subsection.3.1.4}
+\contentsline {section}{\numberline {3.2}Non-linearities}{13}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Gyroscopic Torques}{13}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Coriolis Acceleration}{13}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Inertial Matrix}{13}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}Aerodynamics}{13}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Thrust Forces \& Propeller Torques}{13}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Drag}{13}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Conning \& Flapping}{13}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.4}Vortex Ring State}{13}{subsection.3.3.4}
+\contentsline {section}{\numberline {3.4}Consolidated Model}{13}{section.3.4}
+\contentsline {chapter}{\numberline {4}Control Treatment}{14}{chapter.4}
+\contentsline {section}{\numberline {4.1}Attitude Control}{15}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}The Attitude Control Problem}{15}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Quaternion Based Controllers}{15}{subsection.4.1.2}
+\contentsline {subsubsection}{PD Controller}{15}{subsection.4.1.2}
+\contentsline {subsubsection}{Auxilliary Plant Controller}{15}{subsection.4.1.2}
+\contentsline {subsubsection}{PID Controller}{15}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Non-linear Controllers}{15}{subsection.4.1.3}
+\contentsline {subsubsection}{Ideal Back-stepping Controller}{15}{subsection.4.1.3}
+\contentsline {subsubsection}{Adaptive Back-stepping Controller}{15}{subsection.4.1.3}
+\contentsline {subsubsection}{Lyupanov Derived Ideal Controller}{15}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Position Control}{15}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Backstepping Position Controller}{15}{subsection.4.2.1}
+\contentsline {section}{\numberline {4.3}Controller Allocation}{15}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Non-linear Plant Control Allocation}{15}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Pseudo Inverse Allocator}{15}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Weighted Pseudo Inverse Allocator}{15}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Priority Norm Inverse Allocator}{15}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Online Optimized Secondary Goal Allocator}{15}{subsection.4.3.5}
+\contentsline {chapter}{\numberline {5}Simulations \& Results}{16}{chapter.5}
+\contentsline {section}{\numberline {5.1}Controller Tuning}{16}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{16}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{16}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{16}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{16}{subsection.5.1.4}
+\contentsline {section}{\numberline {5.2}Simulation Block}{16}{section.5.2}
+\contentsline {section}{\numberline {5.3}Optimized Controller Comparisons}{16}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Allocator Performance}{16}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Attitude Control Results}{16}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Autopilot Outcome}{16}{subsection.5.3.3}
+\contentsline {chapter}{\numberline {A}Standard Quadrotor Dynamics}{17}{appendix.A}
