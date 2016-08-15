@@ -23,13 +23,19 @@ The relative angular displacement between the two frames is commonly measured by
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\mu)\big)\big(\vec{v}\cdot \hat{n}\big)\hat{n}+cos(\mu)\vec{v}+sin(\mu)\big(\hat{n}\times\vec{v}\big)
 \end{equation}
-Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, the relationship can be simplified to produce the common rotation matrices $\mathbb{R}_x(\psi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\phi)$. Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a rotation operator, the output vector still exists in the same reference frame, for a vector $\vec{v}\in\mathcal{F}^i$;
+Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, can be simplified to produce the common rotation matrices $\mathbb{R}_x(\psi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\phi)$. Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a \emph{rotation} operator, the output vector still exists in the same reference frame, for a vector $\vec{v}\in\mathcal{F}^i$;
 \begin{subequations}
-\begin{equation}
-\vec{v}~'=\mathbb{R}_
-\end{equation} 
+\begin{equation}\label{eq:rotationoperator.a}
+\vec{v}~'=\mathbb{R}_{x}(\psi)\vec{v}
+\end{equation}
+\vspace{-20pt}
+\begin{equation}\label{eq:rotationoperator.b}
+\vec{v}~'\in\mathcal{F}^i
+\end{equation}
 \end{subequations}
-\par
+The persistence of the relationship in Eq:\ref{eq:rotationoperator.a}
+
+
 A rotation matrix $\mathbb{R}_{x}(\psi)$ represents a rotation around the $\vec{X}$ axis by $\psi$ radians and can similarly be extrapolated for other axes.
 Vectors are rotated by a multiplication operation, for a vector, $\vec{v}$, in a given reference frame $i$(not necessarily the inertial frame) it follows that:
 \begin{subequations}
