@@ -45,7 +45,13 @@ A \emph{transformation} changes the vectors reference frame. The transformation 
 \vec{v}_b\in\mathcal{F}^b~\text{and}~\vec{v}_i\in\mathcal{F}^i
 \end{equation}
 \end{subequations}
-The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformationoperator} is the sense of the angular operand, and hence the effect it has on the argument vector. The transformation of a vector from $\mathcal{F}^i$ to $\mathcal{F}^b$ is the product of three sequential operations about each of the axes. The sequence of operations dictate which 
+The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformationoperator} is the sense of the angular operand, and hence the effect it has on the argument vector. The transformation of a vector from $\mathcal{F}^i$ to $\mathcal{F}^b$ is the product of three sequential operations about each of the axes. The sequence of those operations will effect the Euler set and the consequences of chosen order is well documented in \emph{Quaternions and Rotation Sequence}, \cite{rotationsequences}.
+ In this dissertation the ZYX sequence is used and so a transformation of a vector $\vec{v}$ from the inertial to the body frame is applied by:
+\begin{subequations}
+\begin{equation}\label{eq:inertialbodytransformation}
+\vec{v}_b=\mathbb{R}_z(-\phi)\mathbb{R}_y(-\theta)\mathbb{R}_x(-\psi)\vec{v}_i
+\end{equation}
+\end{subequations}
 \par
 An inherent singularity does exists with such attitude representations. Indeed Quaternions are used later in Sec: \ref{subsec:dynamics.rigidbody.quaternion} in lieu of Euler angles, but they are easily understood and well suited to conventional definitions made here.
 \par
