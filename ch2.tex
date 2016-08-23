@@ -6,7 +6,7 @@
 %====================================================
 \section{Conventions Used}
 \label{sec:proto.conventions}
-The attitude conventions used for the systems' dynamic derivations in the following Chapter:\ref{ch:dynamics} are first briefly discussed here. Often these aspects are omitted or assumed to be known already, it's important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty in the kinematics. Rotation matrices and angles are included briefly but focus is on the \emph{contrast} between rotation and transformation operations. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in depth and thorough explanation of rotation matrices and DCM attitude representation if such concepts are unfamiliar to the reader.
+The attitude conventions used for the systems' dynamic derivations in the following Chapter:\ref{ch:dynamics} are first briefly discussed here. Often these aspects are omitted or assumed to be known already. It's important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included briefly but focus is on the \emph{contrast} between a rotation and transformation operation. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in depth and thorough explanation of rotation matrices and DCM attitude representation if such concepts are unfamiliar to the reader.
 %====================================================
 \subsection{Reference Frames Convention}
 \label{subsec:proto.conventions.frames}
@@ -17,9 +17,9 @@ The attitude conventions used for the systems' dynamic derivations in the follow
 \caption{Inertial and Body Reference Frames}
 \label{fig:ref_frame}
 \end{figure}
-Regular (Euler) aerospace frames are used for principle inertial and body directions. Shown in Fig: \ref{fig:ref_frame}, the inertial frame,~$\mathcal{F}^i$, is aligned such that the $\vec{X}_i$ axis is in the $\hat{N}$orth direction, $\vec{Y}_i$ is in the $\hat{E}$ast direction and $\vec{Z}_i$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earths' center. Sometimes referred to as the NED convention}. The body frame, $\mathcal{F}^b$, then has both $\vec{X}_b$ and $\vec{Y}_b$ aligned with two perpendicular arms of the quadrotors' body and finally the $\vec{Z}_b$ axis pointing in the body's normal direction. The body frames' axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $i$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vectors' coordinates exists in.
+Euler (aerospace) frames are used for principle inertial and body directions (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^i$, is aligned such that the $\vec{X}_i$ axis is in the $\hat{N}$orth direction, $\vec{Y}_i$ is in the $\hat{E}$ast direction and $\vec{Z}_i$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earths' center. Sometimes referred to as the NED convention}. The body frame, $\mathcal{F}^b$, then has both $\vec{X}_b$ and $\vec{Y}_b$ aligned with two perpendicular arms of the quadrotors' body and the $\vec{Z}_b$ axis in the body's normal direction. The body frames' axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $i$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vectors' coordinates exists in.
 \par
-The relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler set $[\psi ~\theta ~\psi]^T$ represents rotations about the $\vec{X}$,$\vec{Y}$ and $\vec{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation for a rotation of a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived in \cite{quaddynamics}}:
+The relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler set $[\psi ~\theta ~\psi]^T$ represents rotations about the $\vec{X}$,$\vec{Y}$ and $\vec{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to rotate a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived in \cite{quaddynamics}}:
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\mu)\big)\big(\vec{v}\cdot \hat{n}\big)\hat{n}+cos(\mu)\vec{v}+sin(\mu)\big(\hat{n}\times\vec{v}\big)
 \end{equation}
@@ -61,12 +61,11 @@ The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformati
 \end{subequations}
 The relation in Eq:\ref{eq:inertialbodytransformation.c} is as an inversion of the rotation matrix. A rotation matrix's inverse can be used interchangeably to maintain a positive sense of the rotational angle. To ensure clarity, for the remainder of the dissertation, a negative angular sense implies a \emph{transformation} to a different reference frame. When applicable, the order of rotation will indicate the sequence direction and the angles sign defines a rotation or transformation operation.
 \par
-An inherent singularity does exists with such attitude representations. Indeed Quaternions are used later in Sec: \ref{subsec:dynamics.rigidbody.quaternion} in lieu of Euler angles, but they are easily understood and well suited to conventional definitions made here. Quaternion operations are similarly sequenced;
-\begin{subequations}
+An inherent singularity does exists with such attitude representations. Indeed Quaternions are used later in Sec: \ref{subsec:dynamics.rigidbody.quaternion} in lieu of Euler angles. 3 set angular attitude representation is, however, easily understood and well suited to conventional definitions made here. Quaternion operations are similarly sequenced in the ZYX order;
 \begin{equation}
-\mathbb{R}_i^b \iff Q_z^* Q_y^*
+\mathbb{R}_i^b~\vec{v_i} \iff Q_z^* Q_y^* Q_x^* \otimes \vec{v_i} \otimes Q_x Q_y Q_z
 \end{equation}
-\end{subequations}
+Wherein $\otimes$ is the Hamilton product (or quaternion operator) and $Q_i$ is a unit quaternion as defined later in Sec:\ref{subsec:dynamics.rigidbody.quaternion}.
 \par
 
 \subsection{Motor Axis Layout}
