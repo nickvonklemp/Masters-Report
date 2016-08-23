@@ -23,38 +23,43 @@ The relative angular displacement between two frames is commonly measured by the
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\mu)\big)\big(\vec{v}\cdot \hat{n}\big)\hat{n}+cos(\mu)\vec{v}+sin(\mu)\big(\hat{n}\times\vec{v}\big)
 \end{equation}
-Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, can be simplified to produce the common rotation matrices $\mathbb{R}_x(\psi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\phi)$. Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a \emph{rotation} operator, the resultant vector still exists in the same reference frame, for a vector $\vec{v}\in\mathcal{F}^i$;
+Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, can be simplified to produce the common rotation matrices $\mathbb{R}_x(\psi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\phi)$. Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a \emph{rotation} operator, the resultant vector still exists in the same reference frame, for a vector $\vec{v}\in\mathcal{F}^1$;
 \begin{subequations} \label{eq:rotationoperator}
 \begin{equation}\label{eq:rotationoperator.a}
 \vec{v}~'=\mathbb{R}_{x}(\psi)\vec{v}
 \end{equation}
 \vspace{-20pt}
 \begin{equation}\label{eq:rotationoperator.b}
-\vec{v}~',\vec{v}\in\mathcal{F}^i
+\vec{v}~',\vec{v}\in\mathcal{F}^1
 \end{equation}
 \end{subequations}
 \emph{\color{Gray} No subscripts are used in Eq: \ref{eq:rotationoperator} to indicate reference frame ownership because all vectors are in the same frame}
 \par
-A \emph{transformation} changes the vectors reference frame. The transformation is a rotation by an angle which is the difference between the resulting and principle reference frames. A transformation from frame $\mathcal{F}^i$ to $\mathcal{F}^b$ by an angle of $\psi$ about the $\vec{X}$ axis is then:
+A \emph{transformation} changes the vectors reference frame. The transformation is a rotation by an angle which is the difference between the resulting and principle reference frames. A transformation from frame $\mathcal{F}^1$ to $\mathcal{F}^2$ by an angle of $\psi$ about the $\vec{X}$ axis is then:
 \begin{subequations}\label{eq:transformationoperator}
 \begin{equation}\label{eq:transformationoperator.a}
-\vec{v}_b=\mathbb{R}_x(-\psi)\vec{v}_i
+\vec{v}_2=\mathbb{R}_x(-\psi)\vec{v}_1
 \end{equation}
 \vspace{-20pt}
 \begin{equation}\label{eq:transformationoperator.b}
-\vec{v}_b\in\mathcal{F}^b~\text{and}~\vec{v}_i\in\mathcal{F}^i
+\vec{v}_2\in\mathcal{F}^2~\text{and}~\vec{v}_1\in\mathcal{F}^1
 \end{equation}
 \end{subequations}
 The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformationoperator} is the sense of the angular operand, and hence the effect it has on the argument vector. The transformation of a vector from $\mathcal{F}^i$ to $\mathcal{F}^b$ is the product of three sequential operations about each of the axes. Because each subsequent rotation is applied to a new  intermediate set of axes, the sequence of those operations will effect the Euler set. Any consequences of that chosen order is something well documented in \emph{Quaternions and Rotation Sequence}, \cite{rotationsequences}. In this dissertation the ZYX sequence is used. Hence a transformation of a vector $\vec{v}$ from the inertial to the body frame is applied by:
 \begin{subequations}
-\begin{equation}\label{eq:inertialbodytransformation}
+\begin{equation}\label{eq:inertialbodytransformation.a}
 \vec{v}_b=\mathbb{R}_i^b(\psi,\theta,\phi)\vec{v}_i
 \end{equation}
 \vspace{-20pt}
-\begin{equation}
-\mathbb{R}_{i}^{b}\triangleq\mathbb{R}_z(-\phi)\mathbb{R}_y(-\theta)\mathbb{R}_x(-\psi)
+\begin{equation}\label{eq:inertialbodytransformation.b}
+\mathbb{R}_{i}^{b}\triangleq\mathbb{R}_z(-\psi)\mathbb{R}_y(-\theta)\mathbb{R}_x(-\phi)
+\end{equation}
+\vspace{-20pt}
+\begin{equation} \label{eq:inertialbodytransformation.c}
+\mathbb{R}_z(-\psi)\mathbb{R}_y(-\theta)\mathbb{R}_x(-\phi) \iff \mathbb{R}_x(\phi)\mathbb{R}_y(\theta)\mathbb{R}_z(\psi)
 \end{equation}
 \end{subequations}
+The relation in Eq:\ref{eq:inertialbodytransformation.c} is as an inversion of the rotation matrix. A rotation matrix's inverse can be used interchangeably to maintain a positive sense of the rotational angle. To ensure clarity, for the remainder of the dissertation, a negative angular sense implies a \emph{transformation} to a different reference frame. When applicable, the order of rotation will indicate the sequence direction and the angles sign defines a rotation or transformation operation.
 \par
 An inherent singularity does exists with such attitude representations. Indeed Quaternions are used later in Sec: \ref{subsec:dynamics.rigidbody.quaternion} in lieu of Euler angles, but they are easily understood and well suited to conventional definitions made here. Quaternion operations are similarly sequenced;
 \begin{subequations}
