@@ -6,7 +6,7 @@
 %====================================================
 \section{Conventions Used}
 \label{sec:proto.conventions}
-The attitude conventions used for the systems' dynamic derivations in the following Chapter:\ref{ch:dynamics} are first briefly discussed here. Often these aspects are omitted or assumed to be known already. It's important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included briefly but focus is on the \emph{contrast} between a rotation and transformation operation. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in depth and thorough explanation of rotation matrices and DCM attitude representation if such concepts are unfamiliar to the reader.
+The attitude conventions used for the systems' dynamic derivations in the following Chapter:\ref{ch:dynamics} are first briefly discussed here. Often these aspects are omitted or assumed to be known already. It's important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included but focus remains on the \emph{contrast} between a rotation and transformation operation. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in depth and thorough explanation of rotation matrices and DCM attitude representation if such concepts are unfamiliar to the reader.
 %====================================================
 \subsection{Reference Frames Convention}
 \label{subsec:proto.conventions.frames}
@@ -19,7 +19,7 @@ The attitude conventions used for the systems' dynamic derivations in the follow
 \end{figure}
 Euler (aerospace) frames are used for principle inertial and body directions (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^i$, is aligned such that the $\vec{X}_i$ axis is in the $\hat{N}$orth direction, $\vec{Y}_i$ is in the $\hat{E}$ast direction and $\vec{Z}_i$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earths' center. Sometimes referred to as the NED convention}. The body frame, $\mathcal{F}^b$, then has both $\vec{X}_b$ and $\vec{Y}_b$ aligned with two perpendicular arms of the quadrotors' body and the $\vec{Z}_b$ axis in the body's normal direction. The body frames' axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $i$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vectors' coordinates exists in.
 \par
-The relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler set $[\phi ~\theta ~\psi]^T$ represents rotations about the $\vec{X}$,$\vec{Y}$ and $\vec{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to rotate a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived in \cite{quaddynamics}}:
+Relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler set $[\phi ~\theta ~\psi]^T$ represents rotations about the $\vec{X}$,$\vec{Y}$ and $\vec{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to rotate a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived in \cite{quaddynamics}}:
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\mu)\big)\big(\vec{v}\cdot \hat{n}\big)\hat{n}+cos(\mu)\vec{v}+sin(\mu)\big(\hat{n}\times\vec{v}\big)
 \end{equation}
@@ -76,13 +76,32 @@ With $\otimes$ being the Hamilton product (or quaternion operator). Each quatern
 \subsection{Motor Axis Layout}
 \label{subsec:proto.conventions.motoraxis}
 %====================================================
-Fundamentally the whole structure, although treated as a rigid body in the kinematics, consists of multiple relative modules. Each propeller and motor pair is actuated by two servos. If the propeller is rotating about the motors' $\vec{Z}$ axis, the two servos are aligned with $\vec{Y}$ and $\vec{X}$ axes to pitch and roll the propeller away from its principle axis of rotation. Each of the four motors' have their own reference frame, $\mathcal{F}^{M_i}$, aligned as in Fig:\ref{fig:motor-axes}.
-\begin{figure}[htbp]\label{fig:motor-axes}
+Fundamentally the whole structure, although treated as rigid in the kinematics, consists of multiple relative bodies. Each propeller and motor pair is actuated by two servos. If the propeller is rotating about the motors' $\vec{Z}$ axis, the two servos are aligned with $\vec{Y}$ and $\vec{X}$ axes to pitch and roll the propeller away from its principle axis of rotation. Each of the four motors' have their own reference frame, $\mathcal{F}^{M_i}$, aligned as in Fig:\ref{fig:motor-axes}.
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{figs/motor-axes}
+\includegraphics[width=0.8\textwidth]{figs/motor-axes}
 \caption{Aligned Motor Frame Axes}
+\label{fig:motor-axes}
 \end{figure}
-The motor frames, numbered $1-4$, transform to the body frame first by a rotation of $\lambda$ about its' $\vec{X}_{M_i}$ axis 
+\par
+The motor frames, numbered $1-4$, transform to the body frame first by an angle of $\lambda_i$ about the $\vec{X}_{M_i}$ axis. Then by $\eta_i$ about the $\vec{Y}_{M_i'}$ axis in an intermediate $M_i'$ frame. The second servo actuates $\eta_i$ to produce a second intermediate axis $M_i''$, the servo is fixed in the $M_i'$ frame. Finally there is a relative $\vec{Z}$ rotation between $\mathcal{F}^b$ and $\mathcal{F}^{M_i''}$. The layout of all four motor modules are such that the $\vec{Z}$ axis transformation between intermediate frame $\mathcal{F}^{M_i''}$ and $\mathcal{F}^b$ are all constants; $0,~90^{\circ},~180^{\circ}~\text{or}~270^{\circ}$.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/motor-frame}
+\caption{Intermediate Motor Frames}
+\label{fig:motor-frame}
+\end{figure}
+\par
+The four motor modules are aligned relative to the body's XYZ axes as show in Fig:\ref{fig:body-frame}. Transformation relationships from each of the motor frames to the body are then characterized by:
+\begin{equation}
+\vec{v}_b=\mathbb{R}_z(-\sigma_i)\mathbb{R}_y(-\eta_i)\mathbb{R}_z(-\lambda_i)\vec{v}_{M_i},~\sigma_i\in[0, 90^{\circ}, 180^{\circ}, 270^{\circ}]
+\end{equation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figs/body-frame}
+\caption{Body Frame Axes Layout}
+\label{fig:body-frame}
+\end{figure}
 
 %====================================================
 \section{Design}
