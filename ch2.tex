@@ -76,7 +76,7 @@ With $\otimes$ being the Hamilton product (or quaternion operator). Each quatern
 \subsection{Motor Axis Layout}
 \label{subsec:proto.conventions.motoraxis}
 %====================================================
-Fundamentally the whole structure, although treated as rigid in the kinematics, consists of multiple relative bodies. Each propeller and motor pair is actuated by two servos. If the propeller is rotating about the motors' $\vec{Z}$ axis, the two servos are aligned with $\vec{Y}$ and $\vec{X}$ axes to pitch and roll the propeller away from its principle axis of rotation. Each of the four motors' have their own reference frame, $\mathcal{F}^{M_i}$, aligned as in Fig:\ref{fig:motor-axes}.
+Fundamentally the whole structure, although treated as rigid in the kinematics, consists of multiple relative bodies. Each propeller and motor pair is actuated by two servos. If the propeller rotates about the motors' $\vec{Z}$ axis, then two servos are aligned with $\vec{Y}$ and $\vec{X}$ axes to pitch and roll the propeller away from its principle axis of rotation. Each of the four motors' have their own reference frame, $\mathcal{F}^{M_i}$, aligned as in Fig:\ref{fig:motor-axes}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/motor-axes}
@@ -92,13 +92,17 @@ The motor frames, numbered $1-4$, transform to the body frame first by an angle 
 \label{fig:motor-frame}
 \end{figure}
 \par
-The four motor modules are aligned relative to the body's XYZ axes as show in Fig:\ref{fig:body-frame}. Transformation relationships from each of the motor frames to the body are then characterized by:
+The four motor modules are aligned relative to the body's XYZ axes as show in Fig:\ref{fig:body-frame}. Modules 1 and 3 have their X-axes in the positive and negative X direction of the body frame. Similarly Modules 2 and 4 have their X-axes in the positive and negative Y directions of the body frame. Transformation relationships from each of the motor frames to the body can be characterized as:
 \begin{equation}
 \vec{v}_b=\mathbb{R}_z(-\sigma_i)\mathbb{R}_y(-\eta_i)\mathbb{R}_z(-\lambda_i)\vec{v}_{M_i},~\sigma_i\in[0, 90^{\circ}, 180^{\circ}, 270^{\circ}]
 \end{equation}
+The actuator space,including propeller speed $\omega_i~[rps]$, is then $\in\mathbb{R}^{12}~$\footnote{Disambiguation: An omission of axial subscript on the $\mathbb{R}$ symbol implies a real space of the superscript dimension.}, or rather $\mathbb{U}\in\mathbb{R}^{12}$. The actuator set $u \in \mathbb{U}$ is then structured as:
+\begin{equation}
+u_{\in\mathbb{U}}=\big[ \omega_{1} ~ \lambda_{1} ~ \eta_{1} ~ \ldots ~ \omega_{4} ~ \lambda_{4} ~ \eta_{4}  \big]^T
+\end{equation}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{figs/body-frame}
+\includegraphics[width=0.8\textwidth]{figs/body-frame}
 \caption{Body Frame Axes Layout}
 \label{fig:body-frame}
 \end{figure}
