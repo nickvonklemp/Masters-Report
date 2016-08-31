@@ -204,7 +204,7 @@ With a state $x\in \mathbb{R}^n$ and $f(x,t)$ \& $g(x,t)$ being the plants' dyna
 \dot{x}=f(x,t)+g(x,t)\nu_d,~\nu_d \in \mathbb{R}^n
 \end{equation}
 \vspace{-20pt}
-\begin{equation}
+\begin{equation} \label{eq:3.4}
 \nu_c=B(x,t,u)\approx B(x,t)u, ~u\in \mathbb{U}^m,~\nu_c\in\mathbb{R}^n
 \end{equation}
 \vspace{-20pt}
@@ -212,23 +212,22 @@ With a state $x\in \mathbb{R}^n$ and $f(x,t)$ \& $g(x,t)$ being the plants' dyna
 y=x
 \end{equation}
 \end{subequations}
-$B(x,t,u)$ is the effectiveness function and can, if the plants' dynamics permit it, be abstracted to a multiplicative relationship $B(x,t)u$ such that; $B(x,t)\in\mathbb{R}^{n\times m}$. The $B(x,t)$ matrix by definition dictates how the actuator input $u$ relate to the virtual commanded input $\nu_c$. If the primary objective is setpoint tracking, then assuming the control law designs a desired virtual control input $\nu_d$ that achieves well that goal, the allocation rule then has to solve $u$ for $\nu_c$ such that a slack variable $s=\nu_c-\nu_d$ is minimized:
+$B(x,t,u)$ is the effectiveness function which formulates how the actuator inputs $u$ relate to the virtual commanded input $\nu_c$. $B(x,t,u)$ can be abstracted to a multiplicative relationship $B(x,t)u$ if the plants' dynamics permit it, such that; $B(x,t)\in\mathbb{R}^{n\times m}$. For setpoint tracking the control law will design a desired virtual control input $\nu_d$, the allocation rule then has to solve $u$ for $\nu_c$ such that a slack variable $s=\nu_c-\nu_d$ is minimized:
 \begin{equation}\label{eq:quadraticallocator}
 \underset{u \in \mathbb{R}^m ,s \in \mathbb{R}^n}{min}\norm{Q_s} ~\text{subject to} ~\nu_c - h(x_e,t)=\nu_c-\nu_d=s,~u \in \mathbb{U}
 \end{equation}
-Which ensures the commanded input $\nu_c$ tracks the control designed input $\nu_d$; $\nu_c\rightarrow\nu_d$. In an overactuated system it then follows that for an unique actuator solution (rather than a family solution set) to Eq:\ref{eq:quadraticallocator} a secondary objective function is needed, $J(x,t,u)$. Eq:\ref{eq:quadraticallocator} then becomes;
-\begin{equation}
+Which ensures the commanded input $\nu_c$ tracks the desired control input $\nu_d$; $\nu_c\rightarrow\nu_d$ as per some cost function of the slack variable $Q_s$. Mostly the L2 norm, $\norm{Q_s}$, is used. In an overactuated system it then follows that there is a set of inputs for each $\nu_c$. A unique actuator solution (rather than a family solution set) to Eq:\ref{eq:quadraticallocator} needs a secondary objective function, $J(x,t,u)$. Eq:\ref{eq:quadraticallocator} then becomes;
+\begin{equation} \label{eq:quadraticallocatorcost}
 \underset{u \in \mathbb{R}^m ,s \in \mathbb{R}^n}{min}(\norm{Q_s}+J(x,t,u)) ~\text{subject to} ~\nu_c - h(x_e,t)=s, u \in \mathbb{U}
 \end{equation}
 \par
-Over-actuation is not something often applied to quadrotors and as a result rather than providing a comprehensive literature review of associated papers here (which is mostly theoretical derivation), the contextual application and solutions to the above posed problems are expanded later in Section: \ref{subsec:control.allocation.allocators}. The only overactuated quadrotor (birotor dual-axis tilting makes the system critically actuated and so requires no allocation) literature which covers allocation of the given actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse (sic Moore Penrose Inverse \cite{moorepenrose}) allocation rule.
+Over-actuation is not something often applied to quadrotors and as a result rather than providing a comprehensive literature review of associated papers here (which are all mostly theoretical derivation), the contextual application and solutions to the above posed problems are expanded later in Section: \ref{subsec:control.allocation.allocators}. The only overactuated quadrotor (birotor dual-axis tilting makes the system critically actuated and so requires no allocation) literature which covers allocation of the given actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse (sic Moore Penrose Inverse \cite{moorepenrose}) allocation rule.
 %====================================================
 \subsubsection*{Satellite Attitude Control}
 %====================================================
-Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion based or otherwise, is a topic well covered in the field of satellite attitude control; \cite{axissymmetricspacecraft, satellitebackstepping,lpvbackstepping}. The \emph{status quo} for recent research is on non-linear adaptive attitude back-stepping control systems, wherein the adaptive update rule is the novel focus. Often plant uncertainty affects the inertia tensor of a satellite. In \cite{lpvbackstepping}, the authors Wang Jia, et al. [2010], proposed applying adaptive back-stepping to compensate for steady state (asymmetric) inertial estimation errors. Alternatively, in lieu of deliberating on an costly non-orbital prelaunch inertial measurements, \cite{inertiaestimation} developed an algorithm for estimating the inertia tensor based on single axis controlled perturbations.
+Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion based or otherwise, is a topic well covered in the field of satellite attitude control; \cite{axissymmetricspacecraft, satellitebackstepping,lpvbackstepping}. The \emph{status quo} for recent research is on non-linear adaptive attitude back-stepping control systems, wherein the adaptive update rule is the novel focus. Often plant uncertainty affects the inertia tensor of a satellite. In \cite{lpvbackstepping}, the authors Wang Jia, et al. [2010], proposed applying adaptive back-stepping to compensate for steady state (asymmetric) inertial estimation errors. Alternatively, instead of deliberating on costly non-orbital prelaunch inertial measurements, \cite{inertiaestimation} developed an algorithm for estimating the inertia tensor based on single axis controlled perturbations. However that does assume any initial estimates are sufficiently similar to the actual inertia of the body such that stability can be ensured.
 \par
-Satellite actuator sets tend to include additional redundant effectors, to ensure fault tollerance and reliability, and hence require control allocation. Seen in the paper \cite{satellitebackstepping}; the authors, Kristiansen et al. [2005], address the over-actuation with direct and well-matched inversion before applying quaternion based back-stepping for attitude control. 
-\vspace{-10pt}
+Satellite actuator sets tend to include additional redundant effectors, to ensure fault tollerance and reliability, and hence require control allocation. Seen in the paper \cite{satellitebackstepping}; the authors, Kristiansen et al. [2005], address the over-actuation with direct and well-matched inversion before applying quaternion based back-stepping for attitude control. A quadratic pseudo inverse solution to Eq:\ref{eq:quadraticallocatorcost} is:
 \begin{subequations}\label{eq:pseudoinv}
 \begin{equation}\label{eq:pseudoinva}
 u=B^{\dagger}({\tau_a}^{b}-D{\omega_{ib}}^b)
@@ -238,4 +237,4 @@ u=B^{\dagger}({\tau_a}^{b}-D{\omega_{ib}}^b)
 B^\dagger=B^T(BB^T)^{-1}
 \end{equation}
 \end{subequations}
-Where $B$ is the control effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix. The controller designed actuator torque ${\tau_a}^b$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of control distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
+Where $B$ is the control effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque ${\tau_a}^b$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of control distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 

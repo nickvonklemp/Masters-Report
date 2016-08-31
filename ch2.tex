@@ -17,13 +17,13 @@ The attitude conventions used for the systems' dynamic derivations in the follow
 \caption{Inertial and Body Reference Frames}
 \label{fig:ref_frame}
 \end{figure}
-Euler (aerospace) frames are used for principle inertial and body directions (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^i$, is aligned such that the $\vec{X}_i$ axis is in the $\hat{N}$orth direction, $\vec{Y}_i$ is in the $\hat{E}$ast direction and $\vec{Z}_i$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earths' center. Sometimes referred to as the NED convention}. The body frame, $\mathcal{F}^b$, then has both $\vec{X}_b$ and $\vec{Y}_b$ aligned with two perpendicular arms of the quadrotors' body and the $\vec{Z}_b$ axis in the body's normal direction. The body frames' axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $i$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vectors' coordinates exists in.
+Euler (aerospace) frames are used for principle inertial and body coordinates (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^i$, is aligned such that the $\vec{X}_i$ axis is in the $\hat{N}$orth direction, $\vec{Y}_i$ is in the $\hat{E}$ast direction and $\vec{Z}_i$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earths' center. Sometimes referred to as the NED convention}. The body frame, $\mathcal{F}^b$, then has both $\vec{X}_b$ and $\vec{Y}_b$ aligned with two perpendicular arms of the quadrotors' body and the $\vec{Z}_b$ axis in the body's normal direction (Fig:\ref{fig:body-frame}). The body frames' axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $i$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vectors' coordinates exists in.
 \par
-Relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler set $[\phi ~\theta ~\psi]^T$ represents rotations about the $\vec{X}$,$\vec{Y}$ and $\vec{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to rotate a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived in \cite{quaddynamics}}:
+Relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler angles $[\phi ~\theta ~\psi]^T$ represents rotations about the $\vec{X}$,$\vec{Y}$ and $\vec{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to rotate a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived and proven in \emph{Quadrotor Dynamics and Control}\cite{quaddynamics}}:
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\mu)\big)\big(\vec{v}\cdot \hat{n}\big)\hat{n}+cos(\mu)\vec{v}+sin(\mu)\big(\hat{n}\times\vec{v}\big)
 \end{equation}
-Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, can be simplified to produce the common rotation matrices $\mathbb{R}_x(\phi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\psi)$. Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a \emph{rotation} operator, the resultant vector still exists in the same reference frame, for a vector $\vec{v}\in\mathcal{F}^1$;
+Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, can be simplified to produce the common rotation matrices $\mathbb{R}_x(\phi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\psi)$. Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a left-handed\emph{rotation} operator, the resultant vector still exists in the same reference frame;
 \begin{subequations} \label{eq:rotationoperator}
 \begin{equation}\label{eq:rotationoperator.a}
 \vec{v}~'=\mathbb{R}_{x}(\phi)\vec{v}
@@ -35,7 +35,7 @@ Which, when $\hat{n}$ is either $\vec{X}$,$\vec{Y}$ or $\vec{Z}$ axes, can be si
 \end{subequations}
 \emph{\color{Gray} No subscripts are used in Eq: \ref{eq:rotationoperator} to indicate reference frame ownership because all vectors are in the same frame}
 \par
-A \emph{transformation} changes the vectors reference frame. The transformation is a rotation by an angle which is the difference between the resulting and principle reference frames. A transformation from frame $\mathcal{F}^1$ to $\mathcal{F}^2$ by an angle of $\phi$ about the $\vec{X}$ axis is then:
+A \emph{transformation} changes the vectors reference frame. The transformation is a rotation by an angle of the difference between the resulting and principle reference frames. A transformation from frame $\mathcal{F}^1$ to $\mathcal{F}^2$, differing by an angle of $\phi$ about the $\vec{X}$ axis is then:
 \begin{subequations}\label{eq:transformationoperator}
 \begin{equation}\label{eq:transformationoperator.a}
 \vec{v}_2=\mathbb{R}_x(-\phi)\vec{v}_1
@@ -59,7 +59,7 @@ The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformati
 \mathbb{R}_z(-\psi)\mathbb{R}_y(-\theta)\mathbb{R}_x(-\phi) \iff \mathbb{R}_x(\phi)\mathbb{R}_y(\theta)\mathbb{R}_z(\psi)
 \end{equation}
 \end{subequations}
-The relation in Eq:\ref{eq:inertialbodytransformation.c} is as an inversion of the rotation matrix. A rotation matrix's inverse can be used interchangeably to maintain a positive sense of the rotational angle. To ensure clarity it's adopted that a negative angular sense implies a \emph{transformation} to a different reference frame. Where applicable, the order of rotation will indicate the sequence direction and an angular sign differentiates a rotation or transformation operation.
+The relation in Eq:\ref{eq:inertialbodytransformation.c} is as an inversion (\emph{transpose}) of the rotation matrix. A rotation matrix's inverse can be used interchangeably to maintain a positive sense of the rotational angle. To ensure clarity it's adopted that a negative angular sense implies a \emph{transformation} to a different reference frame. Where applicable, the order of rotation will indicate the sequence direction and an angular sign differentiates a rotation or transformation operation.
 \par
 An inherent singularity does exists with such attitude representations. Indeed Quaternions are used later in Sec: \ref{subsec:dynamics.rigidbody.quaternion} in lieu of Euler angles. Euler angular attitude representation is, however, easily understood and well suited to the conventional distinctions made here. Quaternion operations are similarly sequenced in the ZYX order:
 \begin{subequations}
@@ -76,7 +76,7 @@ With $\otimes$ being the Hamilton product (or quaternion operator). Each quatern
 \subsection{Motor Axis Layout}
 \label{subsec:proto.conventions.motoraxis}
 %====================================================
-Fundamentally the whole structure, although treated as rigid in the kinematics, consists of multiple relative bodies. Each propeller and motor pair is actuated by two servos. If the propeller rotates about the motors' $\vec{Z}$ axis, then two servos are aligned with $\vec{Y}$ and $\vec{X}$ axes to pitch and roll the propeller away from its principle axis of rotation. Each of the four motors' have their own reference frame, $\mathcal{F}^{M_i}$, aligned as in Fig:\ref{fig:motor-axes}.
+Fundamentally the whole structure, although treated as rigid in the kinematics, consists of multiple relative bodies. Each propeller and motor pair is actuated by two servos. If the propeller rotates about the motors' $\vec{Z}$ axis, then two servos are aligned with $\vec{Y}$ and $\vec{X}$ axes to pitch and roll the propeller away from its principle axis of rotation. Each of the four motors have their own reference frame, $\mathcal{F}^{M_i}$, aligned as in Fig:\ref{fig:motor-axes}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/motor-axes}
@@ -84,7 +84,7 @@ Fundamentally the whole structure, although treated as rigid in the kinematics, 
 \label{fig:motor-axes}
 \end{figure}
 \par
-The motor frames, numbered $1-4$, transform to the body frame first by an angle of $\lambda_i$ about the $\vec{X}_{M_i}$ axis. Then by $\eta_i$ about the $\vec{Y}_{M_i'}$ axis in an intermediate $M_i'$ frame. The second servo actuates $\eta_i$ to produce a second intermediate axis $M_i''$, the servo is fixed in the $M_i'$ frame. Finally there is a relative $\vec{Z}$ rotation between $\mathcal{F}^b$ and $\mathcal{F}^{M_i''}$. The layout of all four motor modules are such that the $\vec{Z}$ axis transformation between intermediate frame $\mathcal{F}^{M_i''}$ and $\mathcal{F}^b$ are all constants; $0,~90^{\circ},~180^{\circ}~\text{or}~270^{\circ}$.
+The motor frames, numbered $1-4$, transform to the body frame first by an angle of $\lambda_i$ about the $\vec{X}_{M_i}$ axis. Then by $\eta_i$ about the $\vec{Y}_{M_i'}$ axis in an intermediate $M_i'$ frame. The second servo actuates $\eta_i$ to produce a second intermediate frame $M_i''$, the servo is fixed in the $M_i'$ frame. Finally there is a relative $\vec{Z}_{M_i''}$ rotation between $\mathcal{F}^b$ and $\mathcal{F}^{M_i''}$. The layout of all four motor modules are such that the $\vec{Z}$ axis transformation between intermediate frame $\mathcal{F}^{M_i''}$ and $\mathcal{F}^b$ are all constants; $0,~90^{\circ},~180^{\circ}~\text{or}~270^{\circ}$.
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.6\textwidth]{figs/motor-frame}
@@ -92,27 +92,86 @@ The motor frames, numbered $1-4$, transform to the body frame first by an angle 
 \label{fig:motor-frame}
 \end{figure}
 \par
-The four motor modules are aligned relative to the body's XYZ axes as show in Fig:\ref{fig:body-frame}. Modules 1 and 3 have their X-axes in the positive and negative X direction of the body frame. Similarly Modules 2 and 4 have their X-axes in the positive and negative Y directions of the body frame. Transformation relationships from each of the motor frames to the body can be characterized as:
-\begin{equation}
-\vec{v}_b=\mathbb{R}_z(-\sigma_i)\mathbb{R}_y(-\eta_i)\mathbb{R}_z(-\lambda_i)\vec{v}_{M_i},~\sigma_i\in[0, 90^{\circ}, 180^{\circ}, 270^{\circ}]
-\end{equation}
-The actuator space,including propeller speed $\omega_i~[rps]$, is then $\in\mathbb{R}^{12}~$\footnote{Disambiguation: An omission of axial subscript on the $\mathbb{R}$ symbol implies a real space of the superscript dimension.}, or rather $\mathbb{U}\in\mathbb{R}^{12}$. The actuator set $u \in \mathbb{U}$ is then structured as:
-\begin{equation}
-u_{\in\mathbb{U}}=\big[ \omega_{1} ~ \lambda_{1} ~ \eta_{1} ~ \ldots ~ \omega_{4} ~ \lambda_{4} ~ \eta_{4}  \big]^T
-\end{equation}
+The four motor modules are aligned relative to the body's XYZ axes as show in Fig:\ref{fig:body-frame}. Modules 1 and 3 have their X-axes in the positive and negative X direction of the body frame. Similarly Modules 2 and 4 have their X-axes in the positive and negative Y directions of the body frame.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/body-frame}
 \caption{Body Frame Axes Layout}
 \label{fig:body-frame}
 \end{figure}
-
+\par
+Transformation relationships from each of the motor frames to the body can be characterized as:
+\begin{subequations}
+\begin{equation}
+\vec{v}_b=\mathbb{R}_z(-\sigma_i)\mathbb{R}_y(-\eta_i)\mathbb{R}_z(-\lambda_i)\vec{v}_{M_i},~\sigma_i\in[0, 90^{\circ}, 180^{\circ}, 270^{\circ}]
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\mathbb{R}_z=\begin{bmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{bmatrix}, \begin{bmatrix}
+0 & -1 & 0\\
+1 & 0 & 0\\
+0 & 0 & 1
+\end{bmatrix}, \begin{bmatrix}
+-1 & 0 & 0\\
+0 & -1 & 0\\
+0 & 0 & 1
+\end{bmatrix}, \begin{bmatrix}
+0 & 1 & 0\\
+-1 & 0 & 0\\
+0 & 0 & 1
+\end{bmatrix}~\text{for}~i\in[1,2,3,4]~\text{respectively}
+\end{equation}
+\end{subequations}
+The actuator space,including propeller speed $\omega_i~[rps]$, is then ($\in\mathbb{R}^{12}$)\footnote{Disambiguation: An omission of axial subscript on the $\mathbb{R}$ symbol implies a real space of the superscript dimension.}, or rather $\mathbb{U}\in\mathbb{R}^{12}$. The actuator input set $u \in \mathbb{U}$ is then structured as:
+\begin{equation}
+u_{\in\mathbb{U}}=\big[ \omega_{1} ~ \lambda_{1} ~ \eta_{1} ~ \ldots ~ \omega_{4} ~ \lambda_{4} ~ \eta_{4}  \big]^T
+\end{equation}
 %====================================================
 \section{Design}
 \label{sec:proto.design}
 %====================================================
-\subsection{Gimbal Articulation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figs/iso-design}
+\label{fig:iso-design}
+\caption{Isometric layout of the designed prototype}
+\end{figure}
+The actual prototype went through multiple different design iterations, all aimed at using mostly off the shelf RC components and optimizing construction costs. Important design aspects are discussed here to give context to some of the dynamics derived in the next chapter. Sub-system identification and associated electrical characteristics are presented here. A review of the physical prototype built and control loop implementation is given in Chapter:\ref{ch:flight}~along with actual flight test results.
+%====================================================
+\subsection{Articulation}
 \label{subsec:proto.design.actuation}
+%====================================================
+\begin{figure}[hbtp]
+\begin{subfigure}{.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/motor-assembly}
+\caption{Motor Module Supporting Assembly}
+\label{fig:motor_assembly}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/motor-support}
+\caption{Motor Frame Damping Support Assemblies}
+\label{fig:motor_support}
+\end{subfigure}
+\caption{Motor Assembly}
+\end{figure}
+The novel aspect of the design is that each of the motor modules can be redirected independently. Two servos affixed onto sequential rings to pitch and roll the substructures' axes. A gyroscope-like frame surrounds each motor/propeller pair to allow for the extra movements. Each servo has a coaxial support bearing and all mounting brackets are 3D printed from CAD models. Each module is designed such that the centre of mass occurs at the intersection of both rotating axes. As a result when servos induce relative rotation of the bodies, there is no torque arm from unbalanced mass (Fig:\ref{fig:motor_assembly}). The primary frame has silicon damping balls between brackets which attach to the motor gyroscope assembly (Fig:\ref{fig:motor_support}). There is a complete bill of materials for all the 3D printed parts used in Appendix:\ref{app:bom}
+\par
+The propellers rotational plane is not exactly the aligned with the plane made by the $\vec{X}_{M_i}$ and $\vec{Y}_{M_i}$ rotational servo axes (Fig:\ref{fig:motor_prop}). The offset is approximately (mm) and has to be considered when evaluating pitch/roll gyroscopic torque responses.Power for the BLDC and servo motors is supplied conventionally and the transmission lines are affixed such that they don't impede rotation. The servos themselves have a range of $180^{\circ}$, positioned such that a $\text{zero}^{\text{th}}$ offset aligns the motor modules with the body frame and has a $\pm 90^{\circ}$ range.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/motor-prop}
+\caption{Difference between propeller and motor planes}
+\label{fig:motor_prop}
+\end{figure}
+\par
+The servos used are metal gear Corona DS-339MG digital servos, as a resul
+
 %====================================================
 \subsection{Inertial Matrix Function}
 \label{subsec:proto.design.inertia}
@@ -131,3 +190,5 @@ u_{\in\mathbb{U}}=\big[ \omega_{1} ~ \lambda_{1} ~ \eta_{1} ~ \ldots ~ \omega_{4
 \section{System Layout}
 \label{sec:proto.layout}
 %====================================================
+\subsection{Electrical Design}
+\subsection{Component Characteristics}
