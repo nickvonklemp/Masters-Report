@@ -179,20 +179,19 @@ The primary frame has silicon damping balls between brackets which attach to the
 The propellers rotational plane is not exactly the aligned with the plane made by the $\vec{X}_{M_i}$ and $\vec{Y}_{M_i}$ rotational servo axes (Fig:\ref{fig:motor_prop}). The offset is approximately 28.2 mm and must be considered when evaluating pitch/roll gyroscopic torque responses later in Section:\ref{subsec:dynamics.nonlinearities.gyrotorques}. The propellers are 6 inch ($6 \times 4$) 3-Blade plastic Gemfam propellers, powered Turnigy DST-700KV Outrunner Brushless DC motors. The thrust produced as a funciton of angular velocity (in RPS) for the propellers is derived in Section:\ref{subsec:dynamics.aero.bem}. The BLDC motors are controlled with Hobbywing XRotor 15A ESC modules with an inline Orange RPM Sensor. The transfer function for the combined unit is presented subsequently in Section:\ref{subsec:proto.design.transfer}. Power for the quadrotor is supplied not from a battery bank but from a power tether. Tethered power will ensure consistent flight time and reduces the concern of payload strain on the available lift actuation. Power lines to both the BLDC motors and servos are both supplied conventionally, however an ideal construction would see slip-rings for each module's supply. Power transmission lines are affixed such that they don't impede rotation. 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}{0.45\textwidth}
+\begin{subfigure}{0.49\textwidth}
 \includegraphics[width=\textwidth]{figs/motor-esc}
 \caption{BLDC ESC \& RPM Sensor Assembly}
 \label{fig:bldc-esc}
 \end{subfigure}
-\begin{subfigure}{0.45\textwidth}
+\begin{subfigure}{0.49\textwidth}
 \includegraphics[width=\textwidth]{figs/motor-bldc}
 \caption{Turnigy DST-700KV BLDC Motor}
 \label{fig:bldc-motor}
 \end{subfigure}
 \end{figure}
 \par
-Metal gear Corona DS-339MG digital servos are used for the two axes of rotation. Each servo has a range of $180^{\circ}$, positioned such that a $\text{zero}^{\text{th}}$ offset aligns the motor modules  adjacent to the body frame and has a $\pm 90^{\circ}$ range. A digital servo updates at 330 Hz, faster than a 50 Hz analogue servo equivalent (Table:\ref{tab:servo}). This means the otherwise $20$ms zero-order analogue sampling becomes a less significant $3.30$ms zero-order holding time. Both the $\vec{X}_{M_i}$ and $\vec{Y}_{M_i}$ axis servos will be rotating a large loading mass and so their \emph{open loop} plant dynamics are determined empirically in Section:\ref{subsec:proto.design.transfer}.
-\par
+Metal gear Corona DS-339MG digital servos are used for the two axes of rotation (Fig:\ref{fig:motor-servo}). Each servo has a range of $180^{\circ}$, positioned such that a $\text{zero}^{\text{th}}$ offset aligns the motor modules  adjacent to the body frame and has a $\pm 90^{\circ}$ range. A digital servo updates at 330 Hz, faster than a 50 Hz analogue servo equivalent (Table:\ref{tab:servo}). This means the otherwise $20$ms zero-order analogue sampling becomes a less significant $3.30$ms zero-order holding time. Both the $\vec{X}_{M_i}$ and $\vec{Y}_{M_i}$ axis servos will be rotating a large loading mass and so their \emph{open loop} plant dynamics are determined empirically in Section:\ref{subsec:proto.design.transfer} using test data included in Appendix:\ref{app:systemdat}.
 \begin{table}[h]
 \centering
 \fbox{
@@ -207,11 +206,34 @@ Digital Servo&1{L} 15{1.5{H} 1.53{L}}\\
 \caption{Analogue \& Digital Timing Signals}
 \label{tab:servo}
 \end{table}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/motor-servo}
+\caption{Corona Servo Bracket}
+\label{fig:motor-servo}
+\end{figure}
 %====================================================
 \subsection{Inertial Matrices \& Mass}
 \label{subsec:proto.design.inertia}
 %====================================================
-An undesirable side effect of the added rotations are the inertial responses produced from such rotations. Given Newtons' Second Law of rotational motion, the induced rotations are going to have an equal but opposite reaction onto the principle inducing plane. Similarly a gyroscopic cross product of rotational velocities is also present. Such first and second order effects are often neglected but are explored in more detail in Section:\ref{sec:dynamics.nonlinearities}. Both 
+An undesirable side effect of the added rotations are the inertial responses produced from such rotations. Given Newtons' Second Law of rotational motion\footnote{This shouldn't have to be referenced}, the induced rotations are going to produce an equal but opposite reaction onto the principle inducing frame. Similarly a gyroscopic cross product from rotational velocities is also present. Such first and second order effects are mostly negligible, angular rates are usually small enough to approximate as zero, $\omega_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is however going to produce sizeable time varying body angular velocities and accelerations so, unlike a standard quadrotor, such effects have to be accounted for.
+\par
+The manifestation of the aforementioned torque responses are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Both of those effects are dependent on the inertial tensor\footnote{All inertias calculated in Solidworks with overridden mass properties} of the body about its rotational axes which is obviously as a result of the design structure. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inner ring assembly rotates about its $\vec{X}_{M_i}$ axis. Rotated by $\lambda_i$, so the inertial tensor is $\mathbb{I}_{\lambda}=[kgm.s]$. The effect of a rotating propeller on the moment of inertia is small enough to be neglected so the inner ring moment of inertia is regarded consistent and symmetrical.
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figs/inertia-inner}
+\caption{Inner Ring Rotational Structure}
+\label{fig:inertia-inner}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figs/inertia-middle}
+\caption{Middle Ring Rotational Structure}
+\label{fig:inertia-middle}
+\end{subfigure}
+\end{figure}
+\par
+
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}
