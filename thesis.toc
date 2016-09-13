@@ -1,10 +1,84 @@
 \contentsline {chapter}{Declaration}{i}{chapter*.1}
 \contentsline {chapter}{Abstract}{ii}{chapter*.2}
 \contentsline {chapter}{Acknowledgements}{iii}{chapter*.3}
-\contentsline {chapter}{\numberline {A}Standard Quadrotor Dynamics}{1}{appendix.A}
-\contentsline {chapter}{\numberline {B}Design Bill of Materials}{2}{appendix.B}
-\contentsline {section}{\numberline {B.1}Parts List}{2}{section.B.1}
-\contentsline {section}{\numberline {B.2}3D Printed Parts}{3}{section.B.2}
-\contentsline {section}{\numberline {B.3}Lasercut Components}{5}{section.B.3}
-\contentsline {section}{\numberline {B.4}Assembly}{5}{section.B.4}
-\contentsline {chapter}{\numberline {C}System ID Test Data}{7}{appendix.C}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Foreword}{1}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}A Brief Background to the Study}{1}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Research Questions \& Hypotheses}{2}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}Significance of Study}{3}{subsection.1.1.3}
+\contentsline {subsection}{\numberline {1.1.4}Scope and Limitations}{3}{subsection.1.1.4}
+\contentsline {subsubsection}{Scope}{3}{subsection.1.1.4}
+\contentsline {subsubsection}{Limitations}{4}{subsection.1.1.4}
+\contentsline {section}{\numberline {1.2}Literature Review}{5}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Existing \& Related Work}{5}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Notable Quadrotor Control Implementations}{8}{subsection.1.2.2}
+\contentsline {chapter}{\numberline {2}Prototype Design}{13}{chapter.2}
+\contentsline {section}{\numberline {2.1}Conventions Used}{13}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Reference Frames Convention}{13}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Motor Axis Layout}{15}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}Design}{17}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Actuation}{17}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Inertial Matrices \& Mass}{20}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Actuator Transfer Functions}{21}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.4}Overall Aspects}{21}{subsection.2.2.4}
+\contentsline {subsubsection}{Vibration Damping}{21}{subsection.2.2.4}
+\contentsline {subsubsection}{Landing Skids}{21}{subsection.2.2.4}
+\contentsline {subsubsection}{Motors \& ESCs}{21}{subsection.2.2.4}
+\contentsline {section}{\numberline {2.3}System Layout}{21}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Electrical Design}{21}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Component Characteristics}{21}{subsection.2.3.2}
+\contentsline {chapter}{\numberline {3}Kinematics \& Dynamics}{22}{chapter.3}
+\contentsline {section}{\numberline {3.1}Rigid Body Dynamics}{22}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Lagrange Derivation}{22}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Rotation Matrix Peculiarities}{22}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Quaternion Dynamics}{22}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}The Unwinding Problem}{22}{subsection.3.1.4}
+\contentsline {section}{\numberline {3.2}Non-linearities}{22}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Gyroscopic Torques}{22}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Coriolis Acceleration}{22}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Inertial Matrix}{22}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}Aerodynamics}{22}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Thrust Forces \& Propeller Torques}{22}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Drag}{22}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Conning \& Flapping}{22}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.4}Vortex Ring State}{22}{subsection.3.3.4}
+\contentsline {section}{\numberline {3.4}Consolidated Model}{22}{section.3.4}
+\contentsline {chapter}{\numberline {4}Control Treatment}{23}{chapter.4}
+\contentsline {section}{\numberline {4.1}Attitude Control}{24}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}The Attitude Control Problem}{24}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Quaternion Based Controllers}{24}{subsection.4.1.2}
+\contentsline {subsubsection}{PD Controller}{24}{subsection.4.1.2}
+\contentsline {subsubsection}{Auxilliary Plant Controller}{24}{subsection.4.1.2}
+\contentsline {subsubsection}{PID Controller}{24}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Non-linear Controllers}{24}{subsection.4.1.3}
+\contentsline {subsubsection}{Ideal Back-stepping Controller}{24}{subsection.4.1.3}
+\contentsline {subsubsection}{Adaptive Back-stepping Controller}{24}{subsection.4.1.3}
+\contentsline {subsubsection}{Lyupanov Derived Ideal Controller}{24}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Position Control}{24}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Backstepping Position Controller}{24}{subsection.4.2.1}
+\contentsline {section}{\numberline {4.3}Controller Allocation}{24}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Non-linear Plant Control Allocation}{24}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Pseudo Inverse Allocator}{24}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Weighted Pseudo Inverse Allocator}{24}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Priority Norm Inverse Allocator}{24}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Online Optimized Secondary Goal Allocator}{24}{subsection.4.3.5}
+\contentsline {chapter}{\numberline {5}Simulations \& Results}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Controller Tuning}{25}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{25}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{25}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{25}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{25}{subsection.5.1.4}
+\contentsline {section}{\numberline {5.2}Simulation Block}{25}{section.5.2}
+\contentsline {section}{\numberline {5.3}State Estimation}{25}{section.5.3}
+\contentsline {section}{\numberline {5.4}Optimized Controller Comparisons}{25}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Allocator Performance}{25}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Attitude Control Results}{25}{subsection.5.4.2}
+\contentsline {subsection}{\numberline {5.4.3}Autopilot Outcome}{25}{subsection.5.4.3}
+\contentsline {chapter}{\numberline {6}Prototype Flight Results}{26}{chapter.6}
+\contentsline {chapter}{\numberline {A}Standard Quadrotor Dynamics}{27}{appendix.A}
+\contentsline {chapter}{\numberline {B}Design Bill of Materials}{28}{appendix.B}
+\contentsline {section}{\numberline {B.1}Parts List}{28}{section.B.1}
+\contentsline {section}{\numberline {B.2}3D Printed Parts}{29}{section.B.2}
+\contentsline {section}{\numberline {B.3}Lasercut Components}{31}{section.B.3}
+\contentsline {section}{\numberline {B.4}Assembly}{31}{section.B.4}
+\contentsline {chapter}{\numberline {C}System ID Test Data}{33}{appendix.C}

@@ -218,7 +218,10 @@ Digital Servo&1{L} 15{1.5{H} 1.53{L}}\\
 %====================================================
 An undesirable side effect of the added rotations are the inertial responses produced from such rotations. Given Newtons' Second Law of rotational motion\footnote{This shouldn't have to be referenced}, the induced rotations are going to produce an equal but opposite reaction onto the principle inducing frame. Similarly a gyroscopic cross product from rotational velocities is also present. Such first and second order effects are mostly negligible, angular rates are usually small enough to approximate as zero, $\omega_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is however going to produce sizeable time varying body angular velocities and accelerations so, unlike a standard quadrotor, such effects have to be accounted for.
 \par
-The manifestation of the aforementioned torque responses are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Both of those effects are dependent on the inertial tensor\footnote{All inertias calculated in Solidworks with overridden mass properties} of the body about its rotational axes which is obviously as a result of the design structure. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inner ring assembly rotates about its $\vec{X}_{M_i}$ axis. Rotated by $\lambda_i$, so the inertial tensor is $\mathbb{I}_{\lambda}=[kgm.s]$. The effect of a rotating propeller on the moment of inertia is small enough to be neglected so the inner ring moment of inertia is regarded consistent and symmetrical.
+%====================================================
+% 13/9/2016 Added here, uncommitted additions from home
+%====================================================
+The manifestation of the aforementioned torque responses are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Both of those effects are dependent on the rotational body's moment of inertia\footnote{All inertias calculated in Solidworks with overridden mass properties} about its respective rotational axis. The magnitude of the inertia is obviously a product of the structures' design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inner most ring structure (Fig:\ref{fig:inertia-inner}) is a 99g assembly (all parts included). The rotational center is also the center its of mass, rotated by $\lambda_i^{~\circ}$ about its $\vec{X}_{M_i}$ axis. The inertial tensor about that axis is $\mathbb{I}_{\lambda}=[kgm.s]$. The effect of a rotating propeller on the moment of inertia is small enough to be neglected such the inner ring moment of inertia is regarded consistent and symmetrical.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -233,7 +236,11 @@ The manifestation of the aforementioned torque responses are explored in thoroug
 \end{subfigure}
 \end{figure}
 \par
+The inner rings' actuating servo and bearing support is affixed to an intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i~'}$, is on a 102g structure not including the inner most ring. Together its 201g for both the inner and middle rings. That middle ring is then rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis.
 
+The mass of the co-axial servo and bearing are not balanced so the structures' centre of mass is not at its rotational centre. 
+
+ The next sequential ring rotates
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}
