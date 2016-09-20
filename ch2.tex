@@ -229,25 +229,47 @@ An undesirable side effect of the added rotations are the inertial responses pro
 \caption{Middle Ring Rotational Structure}
 \label{fig:inertia-middle}
 \end{subfigure}
+\caption{Inertial Measurement References}
 \end{figure}
 \par
 The manifestation of the aforementioned torque responses are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Both of those effects are dependent on the rotational body's moment of inertia\footnote{All inertias calculated in Solidworks with overridden mass properties} about its respective rotational axis. The magnitude of the inertia is obviously a byproduct of the structures' design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inner most ring structure (Fig:\ref{fig:inertia-inner}) is a 99g assembly (all parts included). The rotational center is also the center its of mass, rotated by $\lambda_i^{~\circ}$ about its $\vec{X}_{M_i}$ axis. The inner rings' moment of inertia (centered as in Fig:\ref{fig:inertia-inner}) is found to be:
 \begin{subequations}
-\begin{equation}
+\begin{equation} \label{eq:inertia.inner.a}
 \mathbb{I}_{M_i}=\begin{bmatrix}
-588.851 & -0.276 & 0.248\\
--0276 & 2129.127 & 0.897\\
-0.248 & 0.897 & 1966.602\\
-\end{bmatrix}~g.cm^2
+588.841 & -0.276 & 0.249\\
+-0.276 & 1966.600 & 0.897\\
+0.249 & 0.897 & 2141.779\\
+\end{bmatrix}~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
-\begin{equation}
-\approx diag\big(588.8 ~2129.1 ~1966.6\big)\times10^{-7} kg.m^2
+\begin{equation} \label{eq:inertia.inner.b}
+\approx diag\big(588.84 ~1966.60 ~2141.78\big)\times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-The effect of a rotating propeller on the moment of inertia can be approximated by a solid disc and so the inner ring moment of inertia is regarded consistent and symmetrical. The inertial tensor about that $\vec{X}_{M_i}$ axis is then $\mathbb{I}_{\lambda}=588.8\times10^{-7} [kg.m^2]$.
+The effect of a rotating propeller on the moment of inertia can be approximated by a solid disc and hence the inner rings' moment of inertia is regarded as consistent and symmetrical. The inertial tensor about that $\vec{X}_{M_i}$ axis is then $\mathbb{I}_{\lambda}=588.8\times10^{-7} [kg.m^2]$.
 \par
-The $\lambda_i$ actuating servos and bearing supports are affixed to an intermediate middle ring assembly. The middle ring frame, $\mathcal{F}^{M_i~'}$, is a 102g structure not including the inner most ring. Together its 201g for both the inner and middle rings. That middle ring is then rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis.
+The second $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i~'}$, is a 102g structure, excluding the inner most ring. Collectively it's 201g for both the inner and middle rings structures. That middle ring is then rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis. The compound body's inertia about its axis of rotation, $\vec{Y}_{M_i}$, is a combination of both the middle rings' inertia and the inner ring.  The latter's contribution being a function of the rotation angle $\lambda_i^{~\circ}$ which, from the conservation of angular momentum theory \cite{inertiatensor}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}_x~^{-1}$ always exists}, is:
+\begin{subequations}
+\begin{equation}\label{eq:inertia.middle.a}
+\mathbb{I}_{M_i~'}=\mathbb{I}_{middle}+\mathbb{R}_x(\lambda_i)\big(\mathbb{I}_{inner}\big)\mathbb{R}_x(\lambda_i)^{-1}
+\end{equation}
+\begin{equation} \label{eq:inertia.middle.b}
+\text{If} ~~\mathbb{I}_{middle}=\begin{bmatrix}
+3024.303 & -0.395 & 406.870\\
+-0.395 & 8791.879 & -0.013\\
+406.870 & -0.013 & 11580.579\\
+\end{bmatrix}~~[g.cm^2]
+\end{equation}
+\begin{equation} \label{eq:inertia.middle.c}
+\rightarrow\begin{bmatrix}
+588.851 & -0.276 & 0.248\\
+-0.276 & 1966.602 & 0.897\\
+0.248 & 0.897 & 2129.127\\
+\end{bmatrix}
+\end{equation}
+\end{subequations}
+With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a} which is rotated by $\mathbb{R}_x(\lambda_i)$. The complete inertia, as a function of rotation angle, is then Eq:\ref{eq:inertia.middle.c}. This is the first of many non-trivial aspects to this aircrafts' design which require a heavily plant dependent control solution. 
+
 
 The mass of the co-axial servo and bearing are not balanced so the structures' centre of mass is not at its rotational centre. 
 
