@@ -319,13 +319,19 @@ Using the Parallel Axis theorem$^{\dagger}$, that same net body inertia about th
 \end{bmatrix} \times10^{-7}~[kg.m^2]
 \end{equation}
 \end{subequations}
-Net inertia about that origin is a combination of all of the above inertias, with motor module inertias being extrapolated four times and transformed to the body frame. That transformation is analogous to that of Eq: \ref{eq:motor-module-rotation}. Reiterating that the the origin is co-planar to the modules center of rotation, each modules inertia, $\mathbb{I}_{M_i'}$ defined in Eq:\ref{eq:inertia.middle.d}, is further rotated by $\mathbb{R}_{Y_{M_i'}}(\eta_i)$ and finally a $\vec{Z}$ orthogonal rotation. Still centered on their rotational center, each motor module's inertial contribution is:
+Net inertia about that origin is a combination of all of the above inertias, with motor module inertias being extrapolated four times and transformed to the body frame. That transformation is analogous to that of Eq: \ref{eq:motor-module-rotation}. Reiterating that the the origin is co-planar to the modules center of rotation, each modules inertia, $\mathbb{I}_{M_i'}$ defined in Eq:\ref{eq:inertia.middle.d}, is further rotated by $\mathbb{R}_{Y_{M_i'}}(\eta_i)$ and finally a $\vec{Z}$ orthogonal rotation. Still measured with respect to their rotational center, each motor module's inertial contribution is:
 \begin{equation}
 \mathbb{I}_{i^{th} motor}=\mathbb{R}_{Z_{M_i''}}(\sigma_i)\mathbb{R}_{Y_{M_i'}}(\eta_i)\big(\mathbb{I}_{M_i'}\big)\mathbb{R}_{Y_{M_i'}}^{-1}(\eta_i)\mathbb{R}_{Z_{M_i''}}^{-1}(\sigma_i)
 \end{equation} 
+The parallel axis arm, $R_{arm}=lmm$ measured from the origin, transforms each motor module's inertia to $\vec{\mathbf{O}}_b$. The net inertia around that center is:
+\begin{subequations}
+\begin{equation}
+\mathbb{I}_b=\sum_{i=1}^{4}
+\end{equation}
+\end{subequations}
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.8\textwidth]{figs/inertia-frame}
+\includegraphics[width=0.9\textwidth]{figs/inertia-frame}
 \caption{Inertial Center \& Mass Center}
 \label{fig:inertia-frame}
 \end{figure}
