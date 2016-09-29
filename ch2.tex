@@ -106,11 +106,11 @@ The four motor modules are aligned relative to the body's XYZ axes as show in Fi
 \par
 \emph{\color{Gray}Not shown in Fig:\ref{fig:body-frame} is the relative Z axis position with respect to the structure. The Z height of the body's motion centroid such that its origin is co-planar with the four motor modules rotational centres. The centre of motion is not the center of mass, an aspect which is quantified in the following Section:\ref{subsec:proto.design.inertia}.}\\ Transformation relationships from each of the motor frames to the body can be characterized as:
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:motor-module-rotation.a}
 \vec{v}_b=\mathbb{R}_z(-\sigma_i)\mathbb{R}_y(-\eta_i)\mathbb{R}_z(-\lambda_i)\vec{v}_{M_i},~\sigma_i\in[0, 90^{\circ}, 180^{\circ}, 270^{\circ}]
 \end{equation}
 \vspace{-15pt}
-\begin{equation}
+\begin{equation}\label{eq:motor-module-rotation.b}
 \mathbb{R}_z=\begin{bmatrix}
 1 & 0 & 0\\
 0 & 1 & 0\\
@@ -218,9 +218,9 @@ Digital Servo&1{L} 15{1.5{H} 1.53{L}}\\
 \subsection{Inertial Matrices \& Mass}
 \label{subsec:proto.design.inertia}
 %====================================================
-\emph{\color{Gray} Although inertias are presented here rounded to either 2 or 0 decimal places, full floating point numbers are used in simulation and prototype software. Un-rounded inertias are included in Appendix:\ref{app:eq}. Similarly rotation matrices produce a more cumbersome results for Eq:\ref{eq:inertia.middle.d,}, which are susceptible to singularities. Quaternion operators are used in practice.}
+\emph{\color{Gray} Although inertias are presented here rounded to either 2 or 0 decimal places, full floating point numbers are used in simulation and prototype software. Un-rounded inertias are included in Appendix:\ref{app:eq}. Similarly rotation matrices produce a more cumbersome results for Eq:\ref{eq:inertia.middle}\ref{eq:module-inertia}\ref{eq:body-inerta}, which are susceptible to singularities. Quaternion operators are used in practice.}
 \subsubsection*{Inertias}
-An undesirable side effect of the added rotations are the inertial responses produced from such rotations. Given Newton's Second Law of rotational motion$^{\dagger}$, the applied rotations are going to produce an equal but opposite reaction onto the principle inducing frame. Similarly a gyroscopic cross product from rotational velocities is also present. Such first and second order effects are mostly negligible, angular rates are usually small enough to approximate as zero, $\vec{\omega}_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is however going to produce sizable time varying body angular velocities and accelerations so, unlike a standard quadrotor, such effects have to be accounted for.
+An undesirable side effect of the rigid body rotations the structure undergoes are the inertial responses produced from such movements. Given Newton's Second Law of rotational motion$^{\dagger}$, the applied rotations are going to produce an equal but opposite reaction onto the principle inducing frame. Similarly a gyroscopic cross product from rotational velocities is also present. Such first and second order effects are often neglected given that angular rates are mostly small enough to approximate as zero, $\vec{\omega}_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is, however, going to produce sizable time varying body angular velocities and accelerations. Unlike a traditionally actuated quadrotor, such effects have to be accounted for.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -236,9 +236,10 @@ An undesirable side effect of the added rotations are the inertial responses pro
 \caption{Inertial Measurement References}
 \end{figure}
 \par
-The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's moment of inertia\footnote{All inertias are calculated in Solidworks with overridden masses to match physical prototype measurements in App:\ref{app:bom}} about the respective rotational axes. The magnitude of the inertias are obviously a byproduct of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inner most ring structure is a 99g assembly (all components incorporated). The rotational center coincides with the center its of mass, rotated by $\lambda_i^{~\circ}$ about the $\vec{X}_{M_i}$ axis. The inner ring's moment of inertia (centered as in Fig:\ref{fig:inertia-inner}) is calculated to:
-\\
-\begin{subequations}
+The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed asymmetrical and calculated in Solidworks with overridden masses to match physical prototype measurements in App:\ref{app:bom}} about the respective rotational axes. The magnitude of those inertias are obviously a byproduct of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 99g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center its of mass ($C.M=\begin{bmatrix}
+-1.40 &  -0.04 & -1.94\\
+\end{bmatrix}^T~~[mm]$ relative to its rotational center). The inner ring being rotated by $\lambda_i^{~\circ}$ about the $\vec{X}_{M_i}$ axis then has an inertial matrix (centered as in Fig:\ref{fig:inertia-inner}):
+\begin{subequations}\label{eq:inertia.inner}
 \begin{equation} \label{eq:inertia.inner.a}
 \mathbb{I}_{M_i}=\begin{bmatrix}
 588.84 & -0.28 & 0.25\\
@@ -251,42 +252,48 @@ The manifestation of the aforementioned torques are explored in thorough detail 
 \approx diag\big(588, ~1966, ~2141\big)\times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-The effect of a rotating propeller on the moment of inertia can be approximated by a solid disc and hence the inner ring's moment of inertia is regarded as consistent and symmetrical. The inertial tensor about that $\vec{X}_{M_i}$ axis is then $\mathbb{I}_{\lambda}=588.84\times10^{-7} [kg.m^2]$.
+The effect of a rotating propeller on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated by a solid disc and hence the inner ring's inertial products are regarded as negligible. The moment of inertia about that $\vec{X}_{M_i}$ axis, pertinent to $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}=588.84\times10^{-7}~~[kg.m^2]$.
 \par
-The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a 102g structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is 201g. That middle ring is rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis. The compound body's inertia about the axis of rotation, $\vec{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter's contribution being a function of the rotation angle $\lambda_i^{~\circ}$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}_x~^{-1}$ always exists}, is:
-\begin{subequations}
+The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a 102g structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is $m_{module}=201g$. That middle ring is rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis. The compound body's inertia about the axis of rotation, $\vec{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i^{~\circ}$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{X}$ always exists}, is:
+\begin{subequations}\label{eq:inertia.middle}
 \begin{equation} \label{eq:inertia.middle.a}
 \text{If} ~~\mathbb{I}_{middle}=\begin{bmatrix}
-3024.30 & -0.40 & 406.87\\
--0.40 & 8791.88 & -0.01\\
-406.87 & -0.01 & 11580.58\\
+3024.30 & 0.03 & 406.84\\
+0.03 & 8791.16 & 0.01\\
+406.87 & 0.01 & 11579.85\\
 \end{bmatrix}~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
+%Off diagonal elements, inertia products, have a different formula?
 \begin{equation}\label{eq:inertia.middle.b}
-\mathbb{I}_{M_i'}=\mathbb{I}_{middle}+\mathbb{R}_x(\lambda_i)\big(\mathbb{I}_{inner}\big)\mathbb{R}_x^{-1}(\lambda_i)
+\mathbb{I}_{M_i'}=\mathbb{I}_{middle}+\mathbb{R}_{X}(\lambda_i)\big(\mathbb{I}_{inner}\big)\mathbb{R}_{X}^{-1}(\lambda_i)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:inertia.middle.c}
 \mathbb{I}_{M_i'}(\lambda)=\mathbb{I}_{const}+\mathbb{I}_{M_i}(\lambda)
 \end{equation}
-\vspace{-15pt}
+\vspace{-10pt}
 \begin{equation} \label{eq:inertia.middle.d}
 \approx\begin{bmatrix}
-3613 & 0 & 407\\
-0 & 9774 & 0\\
-407 & 0 & 12651\\
+3609 & 0 & 407\\
+0 & 10842 & 0\\
+407 & 0 & 13630\\
 \end{bmatrix}
 +
 \begin{bmatrix}
 0 & 0 & 0\\
-0 & -2143s_{\lambda}+983c_{\lambda} & 983s_{2\lambda}-2143s_{\lambda}\\
-0 & 983s_{2\lambda}-2143s_{\lambda} & 1967s_{\lambda}+1071c_{2\lambda}\\
+0 & -88{c}_{2\lambda} & 2{c^2}_{\lambda}-91s_{2\lambda}\\
+0 & 2{c^2}_{\lambda}-91s_{2\lambda} & 88{c}_{2\lambda}\\
 \end{bmatrix}
 \times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a}, transformed by a rotation $\mathbb{R}_x(\lambda_i)$. The net inertia being a function of rotation angle, $\lambda_i$, and a constant inertia (Eq:\ref{eq:inertia.middle.c}) is then simplified\footnote{Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places, seeing that its units are already $\times10^{-7}$} to Eq:\ref{eq:inertia.middle.d}. This is the first of many non-trivial aspects to this aircraft's design which require a decidedly plant dependent control solution. Secondly, the center of mass for the motor module's compound assembly isn't coincidental with the two rotational axes intersection. As a result the structures net center of mass is going to be time varying, dependent on the angular rotation which the motor modules have been effected by.
+With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a}, transformed by a rotation $\mathbb{R}_x(\lambda_i)$. The net inertia being a function of rotation angle, $\lambda_i$, and a constant inertia (Eq:\ref{eq:inertia.middle.c}) is then simplified\footnote{Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places, seeing that its units are already $\times10^{-7}$} to Eq:\ref{eq:inertia.middle.d}. It's important to note the non-zero product of inertia, $\mathbb{I}_{yz}$, which is going to result in a $\tau_z$ response. The inertia then encountered by an $\eta_i$ rotation is:
+\begin{equation}\label{eq:inertia.middle.vpa}
+\mathbb{I}_\eta(\lambda)\approx[0,~ 10842-88{c}_{2\lambda},~ 2{c^2}_{\lambda}-91s_{2\lambda}]^T\times10^{-7}~~[kg.m^2]
+\end{equation}
+\par
+Variable inertias dependent on state input variables are the first of many non-trivial aspects unique to this aircraft's design. The resultant control solutions are thus decidedly plant dependent in their formulation. Secondly, the center of mass for the motor module's compound assembly isn't coincidental with either rotational axes intersection. As a result the effective center of mass for the entire structure is going to be time varying, dependent on the angular rotation which the motor modules have been effected by.
 \par
 \begin{figure}[htbp]
 \centering
@@ -294,48 +301,131 @@ With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:ine
 \caption{Body Frame Center of Mass}
 \label{fig:inertia-center}
 \end{figure}
-The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring structures) to the body frame. The inertial volume of the servo and bearing assemblies contribute then to the body's inertia, which excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs 84g and suspends the motor modules from the body frame with a set of silicon damping balls. The body center of mass (Fig:\ref{fig:inertia-center}) is centered on the XY axes and lies $\Delta Z=-13.46~mm$ below the Body Frame's origin, $\vec{O}\in\mathcal{F}^b$.\\
-\emph{\color{Gray}Note: the origin which all motion is calculated with respect to is co-planar to the motor module's rotational centers, not the net center of mass.}\\
+The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs 84g and suspends the motor modules from the body frame with a set of silicon damping balls. The body assembly's center of mass (Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-14.27~mm$ below the Body Frame's origin of motion, $\vec{O}\in\mathcal{F}^b$.
+\\
+\emph{\color{Gray}Note: the origin which all motion is calculated with respect to is co-planar to the motor module's rotational centers, \underline{not} the net center of mass.}
+\newpage
 The body's weight, including all four damping assemblies, totals to $814.7 g$. The body's net inertia (\emph{sans} motor modules) $\mathbb{I}_{body}$, about its center of mass is:
-\begin{subequations}
-\begin{equation}
+\begin{subequations}\label{eq:inertia.body}
+\begin{equation}\label{eq:inertia.body.a}
 \mathbb{I}_{body}=\begin{bmatrix}
-182024.95 & -0.42 & -7.83\\
--0.42 & 181901.47 & -17.33\\
--7.83 & -17.33 & 360078.62\\
+182018.63 & -0.44 & -80.30\\
+-0.44 & 181896.17 &	-17.75\\
+-80.30 & -17.75 & 360077.58\\
 \end{bmatrix}~~[g.cm^2]~\text{or}~\times10^{-7}~[kg.m^2]
 \end{equation}
-\\
 Using the Parallel Axis theorem$^{\dagger}$, that same net body inertia about the body frame's origin, $\vec{O}_b$, is:
-\begin{equation}
-{\mathbb{I}_{body}}'=\mathbb{I}_{body}+mr^2
+\begin{equation}\label{eq:inertia.body.b}
+{\mathbb{I}_{body}}'=\mathbb{I}_{body}+m(\vec{d}\cdot\vec{d}+\vec{d}\vec{d}^T)\approx\mathbb{I}_{body}+md^2
 \end{equation}
-\vspace{-15pt}
-\begin{equation}
+\vspace{-10pt}
+\begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\begin{bmatrix}
-183677.46 & -0.42 & -4.46\\
--0.42 &	183554.97 & -10.41\\
--4.46 & -10.41 & 360077.62\\
+183677.51 & -0.42 & -4.45\\
+-0.42 & 183555.03 & -10.41\\
+-4.45 & -10.41 & 360077.62\\
 \end{bmatrix} \times10^{-7}~[kg.m^2]
 \end{equation}
 \end{subequations}
-Net inertia about that origin is a combination of all of the above inertias, with motor module inertias being extrapolated four times and transformed to the body frame. That transformation is analogous to that of Eq: \ref{eq:motor-module-rotation}. Reiterating that the the origin is co-planar to the modules center of rotation, each modules inertia, $\mathbb{I}_{M_i'}$ defined in Eq:\ref{eq:inertia.middle.d}, is further rotated by $\mathbb{R}_{Y_{M_i'}}(\eta_i)$ and finally a $\vec{Z}$ orthogonal rotation. Still measured with respect to their rotational center, each motor module's inertial contribution is:
-\begin{equation}
-\mathbb{I}_{i^{th} motor}=\mathbb{R}_{Z_{M_i''}}(\sigma_i)\mathbb{R}_{Y_{M_i'}}(\eta_i)\big(\mathbb{I}_{M_i'}\big)\mathbb{R}_{Y_{M_i'}}^{-1}(\eta_i)\mathbb{R}_{Z_{M_i''}}^{-1}(\sigma_i)
-\end{equation} 
-The parallel axis arm, $R_{arm}=lmm$ measured from the origin, transforms each motor module's inertia to $\vec{\mathbf{O}}_b$. The net inertia around that center is:
-\begin{subequations}
-\begin{equation}
-\mathbb{I}_b=\sum_{i=1}^{4}
+Net inertia for the compound assembly, $\mathbb{I}_b$\footnote{Disambiguation: $\mathbb{I}_b$ is net body frame's inertia, different from $\mathbb{I}_{body}$ which is the inertia for \emph{just} the body structure}, about that origin $\vec{O}_b$ is a combination of all the relative attached bodies. That being; thefour motor modules, transformed and then translated to the center of motion, and the body structure itself. That transformation is analogous to that of Eq: \ref{eq:motor-module-rotation}. Reiterating that the the origin is co-planar to the modules center of rotation, each motor modules inertia, $\mathbb{I}_{M_i'}$\footnote{As defined in Eq:\ref{eq:inertia.middle.d}}, is further rotated by $\mathbb{R}_{Y}(\eta_i)$ and finally a $\vec{Z}$ orthogonal rotation onto $\mathcal{F}^b$. Still measured with respect to their individual centers, $\vec{\mathbf{M}}_i$, but re-orientated to align with $\vec{\mathbf{O}}_b$. Contribution of each motor module's inertia, with $\mathbb{R}_Z$ being the same as Eq:\ref{eq:motor-module-rotation.b}, is then:
+\begin{subequations}\label{eq:module-inertia}
+\begin{equation}\label{eq:module-inertia.a}
+\mathbb{I}_{i^{th} motor}=\mathbb{R}_{Z}(\sigma_i)\mathbb{R}_{Y}(\eta_i)\big(\mathbb{I}_{M_i'}\big)\mathbb{R}^{-1}_{Y}(\eta_i)\mathbb{R}^{-1}_{Z}(\sigma_i)
+\end{equation}
+Expanding to Inner Ring and Middle Ring components:
+\begin{equation}\label{eq:module-inertia.b}
+=\mathbb{R}_{Z}\mathbb{R}_{Y}(\eta)\big(\mathbb{I}_{middle}\big)\mathbb{R}^{-1}_{Y}(\eta)\mathbb{R}^{-1}_Z+\mathbb{R}_{Z}\mathbb{R}_{Y}(\eta)\mathbb{R}_{X}(\lambda)\big(\mathbb{I}_{inner}\big)\mathbb{R}^{-1}_{X}(\lambda)\mathbb{R}^{-1}_{Y}(\eta)\mathbb{R}^{-1}_Z
+\end{equation}
+\vspace{-10pt}
+\begin{equation}\label{eq:module-inertia.b}
+\text{With axes}~\vec{X}\in\mathcal{F}^{M_i},~~\vec{Y}\in\mathcal{F}^{M_i'},~~\vec{Z}\in\mathcal{F}^{M_i''}
 \end{equation}
 \end{subequations}
+\emph{\color{Gray}It's at this stage that, despite the simplifications, the symbolic inertial equation becomes overly cumbersome to include with numeric values\ldots For the sake of brevity, exact calculated inertia values for the input dependent plant are omitted.}
+\par
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.9\textwidth]{figs/inertia-frame}
 \caption{Inertial Center \& Mass Center}
 \label{fig:inertia-frame}
 \end{figure}
-\par
+Each module's rotational center is spaced equally relative to $\vec{\mathbf{O}}_b$ with a parallel axis arm $\vec{L}_{arm}=\begin{bmatrix}
+195.161 0 0
+\end{bmatrix}^T~~[mm]$ (Fig:\ref{fig:inertia-frame}). The net inertial equation about $\vec{\mathbf{O}}_b$, dependent on a the actuator suite $\mathbb{U}$ positions can be calculated as:
+\begin{subequations}\label{eq:body-inertia}
+\begin{equation}\label{eq:body-inertia.a}
+\underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4}\mathbb{M}_{i}~~[kg.m^2]
+\end{equation}
+\vspace{-10pt}
+\begin{equation}\label{eq:body-inertia.b}
+\mathbb{M}_i=\mathbb{I}_{i^{th}motor}+m_{module}\big(\vec{L} \cdot \vec{L} - \vec{L}.\vec{L}^{T}\big)
+\end{equation}
+\end{subequations}
+Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation and then to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point confidence of the resultant inertial tensor.  
+
+ rather than using each net inertias from the motor modules about their respective \emph{rotational} centers (Eg:\ref{eq:inertia.middle.d}) their center of gravity inertias are instead used. 
+
+
+It was found that each subsequent parallel axis translation further deteriorates the inertial value when compared to a true integral inertia. The net contributions used are translations of inertias from each respective center of mass to the origin $\vec{\mathbb{O}}\in\mathcal{F}^b$.
+\begin{subequations}
+\begin{equation}
+\mathbb{M}_i=\mathbb{M}_{inner}+\mathbb{M}_{middle}
+\end{equation}
+For each inner ring, W.R.T its center of mass, different from Eq:\ref{eq:inertia.inner.a};
+\begin{equation}
+\underset{C.M}{\mathbb{I}_{inner}}=\begin{bmatrix}
+585.11 & -0.34 & -2.44\\
+-0.34 & 1960.93 & 0.81\\
+-2.44 & 0.81 & 2139.84\\
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+C.M_{inner}=\begin{bmatrix}
+1.400 & -0.043 & -1.942
+\end{bmatrix}^T~~[mm]
+\end{equation}
+\begin{equation}
+\underset{||~\vec{\mathbf{O}}}{\mathbb{I}_{inner}}=\mathbb{R}_Z\mathbb{R}_y(\eta)\mathbb{R}_x(\lambda)\big(\mathbb{I}_{inner}\big)\mathbb{R}^{-1}_x(\lambda)\mathbb{R}^{-1}_y(\eta)\mathbb{R}^{-1}_Z
+\end{equation}
+\begin{equation}
+\mathbb{M}_{inner}=\underset{\vec{\mathbf{O}}}{\mathbb{I}_{inner}}=\underset{||~\vec{\mathbf{O}}}{\mathbb{I}_{inner}}+ m \big((\Delta L \cdot \Delta L)\mathbb{I}_{3x3} - \Delta L \times \Delta L^{T} \big)
+\end{equation}
+\end{subequations}
+Similarly for each middle ring:
+\begin{subequations}
+\begin{equation}
+\underset{C.M}{\mathbb{I}_{middle}}=\begin{bmatrix}
+2996.57 & 179.32 & 232.71\\
+179.32 & 6524.84 & 13.87\\
+232.71 & 13.87 & 9312.733\\
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+C.M_{middle}=\begin{bmatrix}
+47.00 & 3.74 & -3.63
+\end{bmatrix}^T~~[mm]
+\end{equation}
+\begin{equation}
+\mathbb{I}_{middle}=\underset{C.M}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta_{C.M} \cdot \Delta_{C.M})\mathbb{I}_{3x3} - \Delta_{C.M} . \Delta_{C.M} ^T \big)
+\end{equation}
+\begin{equation}
+\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}=\mathbb{R}_Z\mathbb{R}_y(\eta)\big(\mathbb{I}_{middle}\big)\mathbb{R}^{-1}_y(\eta)\mathbb{R}^{-1}_Z
+\end{equation}
+\begin{equation}
+\mathbb{M}_{i}=\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta_{L}\cdot\Delta_{L})\mathbb{I}_{3x3}-\Delta_{L}.\Delta_{L}^T\big)
+\end{equation}
+\end{subequations}
+The above equations begin to deviate from the true inertial value, the deviations stem from subsequent transformations.
+\begin{subequations}
+\begin{equation}
+\mathbb{M}_i=\mathbb{R}(\sigma_i,~\eta_i)\big(\mathbb{I}_{middle}+\mathbb{R}_X(\lambda_i)(\mathbb{I}_{inner})\mathbb{R}_X^{-1}(\lambda_i)\big)\mathbb{R}^{-1}(\sigma_i,~\eta_i)+L_im_i^2
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\sigma_i=\big[0^{\circ},~90^{\circ},~180^{\circ},~270^{\circ}\big]~\text{for}~i=[1:4]
+\end{equation}
+\end{subequations}
+Unless otherwise stated, any inertia $\mathbb{I}_b$, irrespective of the arguments listed, refers to Eq:\ref{eq:body-inerta}.
 
 \subsubsection*{Mass \& Center of Gravity}
 Seeing as the servo and bearings in $\mathcal{F}^{M_i'}$ are unbalanced, the center of gravity isn't coincidental with the center of rotation. The offset position of the center of gravity is going to produce a gravitational torque arm about the motor modules axes.

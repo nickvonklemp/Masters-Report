@@ -34,6 +34,8 @@
 \newlabel{fig:motor-frame}{{2.3}{15}{Intermediate Motor Frames\relax }{figure.caption.15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces Body Frame Axes Layout\relax }}{16}{figure.caption.16}}
 \newlabel{fig:body-frame}{{2.4}{16}{Body Frame Axes Layout\relax }{figure.caption.16}{}}
+\newlabel{eq:motor-module-rotation.a}{{2.6a}{16}{Motor Axis Layout}{equation.2.1.1}{}}
+\newlabel{eq:motor-module-rotation.b}{{2.6b}{16}{Motor Axis Layout}{equation.2.1.2}{}}
 \newlabel{eq:motor-module-rotation}{{2.6}{16}{Motor Axis Layout}{equation.2.1.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Design}{17}{section.2.2}}
 \newlabel{sec:proto.design}{{2.2}{17}{Design}{section.2.2}{}}
@@ -64,36 +66,49 @@
 \newlabel{fig:inertia-middle}{{2.10b}{20}{Middle Ring Rotational Structure\relax }{figure.caption.23}{}}
 \newlabel{sub@fig:inertia-middle}{{b}{20}{Middle Ring Rotational Structure\relax }{figure.caption.23}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.10}{\ignorespaces Inertial Measurement References\relax }}{20}{figure.caption.23}}
+\newlabel{eq:inertia.inner}{{2.8}{20}{}{equation.2.2.8}{}}
 \newlabel{eq:inertia.inner.a}{{2.8a}{20}{}{equation.2.2.1}{}}
-\newlabel{eq:inertia.inner.b}{{2.8b}{20}{}{equation.2.2.2}{}}
 \citation{rigidbodyinertia}
+\newlabel{eq:inertia.inner.b}{{2.8b}{21}{}{equation.2.2.2}{}}
+\newlabel{eq:inertia.middle}{{2.9}{21}{}{equation.2.2.9}{}}
 \newlabel{eq:inertia.middle.a}{{2.9a}{21}{}{equation.2.2.1}{}}
 \newlabel{eq:inertia.middle.b}{{2.9b}{21}{}{equation.2.2.2}{}}
 \newlabel{eq:inertia.middle.c}{{2.9c}{21}{}{equation.2.2.3}{}}
 \newlabel{eq:inertia.middle.d}{{2.9d}{21}{}{equation.2.2.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces Body Frame Center of Mass\relax }}{21}{figure.caption.24}}
-\newlabel{fig:inertia-center}{{2.11}{21}{Body Frame Center of Mass\relax }{figure.caption.24}{}}
+\newlabel{eq:inertia.middle.vpa}{{2.10}{21}{}{equation.2.2.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces Body Frame Center of Mass\relax }}{22}{figure.caption.24}}
+\newlabel{fig:inertia-center}{{2.11}{22}{Body Frame Center of Mass\relax }{figure.caption.24}{}}
+\newlabel{eq:inertia.body}{{2.11}{22}{}{equation.2.2.11}{}}
+\newlabel{eq:inertia.body.a}{{2.11a}{22}{}{equation.2.2.1}{}}
+\newlabel{eq:inertia.body.b}{{2.11b}{22}{}{equation.2.2.2}{}}
+\newlabel{eq:inertia.body.b}{{2.11c}{22}{}{equation.2.2.3}{}}
+\newlabel{eq:module-inertia}{{2.12}{22}{}{equation.2.2.12}{}}
+\newlabel{eq:module-inertia.a}{{2.12a}{22}{}{equation.2.2.1}{}}
+\newlabel{eq:module-inertia.b}{{2.12b}{22}{}{equation.2.2.2}{}}
+\newlabel{eq:module-inertia.b}{{2.12c}{22}{}{equation.2.2.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.12}{\ignorespaces Inertial Center \& Mass Center\relax }}{23}{figure.caption.25}}
 \newlabel{fig:inertia-frame}{{2.12}{23}{Inertial Center \& Mass Center\relax }{figure.caption.25}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Actuator Transfer Functions}{23}{subsection.2.2.3}}
-\newlabel{subsec:proto.design.transfer}{{2.2.3}{23}{Actuator Transfer Functions}{subsection.2.2.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}Overall Aspects}{23}{subsection.2.2.4}}
-\newlabel{subsec:proto.design.aspects}{{2.2.4}{23}{Overall Aspects}{subsection.2.2.4}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Vibration Damping}{23}{subsection.2.2.4}}
-\@writefile{toc}{\contentsline {subsubsection}{Landing Skids}{23}{subsection.2.2.4}}
-\@writefile{toc}{\contentsline {subsubsection}{Motors \& ESCs}{23}{subsection.2.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}System Layout}{23}{section.2.3}}
-\newlabel{sec:proto.layout}{{2.3}{23}{System Layout}{section.2.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Electrical Design}{23}{subsection.2.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Component Characteristics}{23}{subsection.2.3.2}}
+\newlabel{eq:body-inertia}{{2.13}{23}{}{equation.2.2.13}{}}
+\newlabel{eq:body-inertia.a}{{2.13a}{23}{}{equation.2.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Actuator Transfer Functions}{24}{subsection.2.2.3}}
+\newlabel{subsec:proto.design.transfer}{{2.2.3}{24}{Actuator Transfer Functions}{subsection.2.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}Overall Aspects}{24}{subsection.2.2.4}}
+\newlabel{subsec:proto.design.aspects}{{2.2.4}{24}{Overall Aspects}{subsection.2.2.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Vibration Damping}{24}{subsection.2.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{Landing Skids}{24}{subsection.2.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{Motors \& ESCs}{24}{subsection.2.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}System Layout}{24}{section.2.3}}
+\newlabel{sec:proto.layout}{{2.3}{24}{System Layout}{section.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Electrical Design}{24}{subsection.2.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Component Characteristics}{24}{subsection.2.3.2}}
 \@setckpt{ch2}{
-\setcounter{page}{24}
-\setcounter{equation}{12}
+\setcounter{page}{25}
+\setcounter{equation}{16}
 \setcounter{enumi}{2}
 \setcounter{enumii}{4}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
-\setcounter{footnote}{7}
+\setcounter{footnote}{9}
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{2}
@@ -106,7 +121,7 @@
 \setcounter{table}{1}
 \setcounter{r@tfl@t}{0}
 \setcounter{Item}{6}
-\setcounter{Hfootnote}{18}
+\setcounter{Hfootnote}{20}
 \setcounter{bookmark@seq@number}{24}
 \setcounter{vrcnt}{0}
 \setcounter{FancyVerbLine}{0}
@@ -123,6 +138,6 @@
 \setcounter{tikztimingrows}{0}
 \setcounter{tikztimingtrans}{-1}
 \setcounter{tikztimingtranspos}{0}
-\setcounter{parentequation}{12}
+\setcounter{parentequation}{16}
 \setcounter{section@level}{0}
 }
