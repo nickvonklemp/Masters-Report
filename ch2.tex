@@ -316,9 +316,9 @@ The body's weight, including all four damping assemblies, totals to $814.7 g$. T
 \end{equation}
 Using the Parallel Axis theorem$^{\dagger}$, that same net body inertia about the body frame's origin, $\vec{O}_b$, is:
 \begin{equation}\label{eq:inertia.body.b}
-{\mathbb{I}_{body}}'=\mathbb{I}_{body}+m(\vec{d}\cdot\vec{d}+\vec{d}\vec{d}^T)\approx\mathbb{I}_{body}+md^2
+{\mathbb{I}_{body}}'=\mathbb{I}_{body}+m(\vec{d}\cdot\vec{d}+\vec{d}\otimes\vec{d}^T)\approx\mathbb{I}_{body}+md^2
 \end{equation}
-\vspace{-10pt}
+Here $\otimes$ represents the Hamilton product of two 3X3 matrices, used later in Chapter:\ref{ch:dynamics} to indicate the quaternion operator.
 \begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\begin{bmatrix}
 183677.51 & -0.42 & -4.45\\
@@ -351,19 +351,17 @@ Expanding to Inner Ring and Middle Ring components:
 \end{figure}
 Each module's rotational center is spaced equally relative to $\vec{\mathbf{O}}_b$ with a parallel axis arm $\vec{L}_{arm}=\begin{bmatrix}
 195.161 0 0
-\end{bmatrix}^T~~[mm]$ (Fig:\ref{fig:inertia-frame}). The net inertial equation about $\vec{\mathbf{O}}_b$, dependent on a the actuator suite $\mathbb{U}$ positions can be calculated as:
+\end{bmatrix}^T~~[mm]$ (Fig:\ref{fig:inertia-frame}). The net inertial equation about $\vec{\mathbf{O}}_b$, dependent on a the actuator suite $\mathbb{U}$ positions, can be calculated as:
 \begin{subequations}\label{eq:body-inertia}
 \begin{equation}\label{eq:body-inertia.a}
 \underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4}\mathbb{M}_{i}~~[kg.m^2]
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:body-inertia.b}
-\mathbb{M}_i=\mathbb{I}_{i^{th}motor}+m_{module}\big(\vec{L} \cdot \vec{L} - \vec{L}.\vec{L}^{T}\big)
+\mathbb{M}_i=\mathbb{I}_{i^{th}motor}+m_{module}\big(\vec{L} \cdot \vec{L} - \vec{L}\otimes\vec{L}\big)
 \end{equation}
 \end{subequations}
-Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation and then to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point confidence of the resultant inertial tensor.  
-
- rather than using each net inertias from the motor modules about their respective \emph{rotational} centers (Eg:\ref{eq:inertia.middle.d}) their center of gravity inertias are instead used. 
+Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation and then to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point precision of the resultant inertial tensor. Transforming inertial tensors about each sub-body's center of mass directly to the body frame origin is going to improve results. Similarly, it is more intuitive for the reader to consider each sub-body's contribution separately, despite having been derived as compound inertial systems previously. The relative movement pertinent to Eq:\ref{eq:inertia.inner} and Eq:\ref{eq:inertia.middle} are conceptually separated from that affecting Eq:\ref{eq:body-inertia}.  
 
 
 It was found that each subsequent parallel axis translation further deteriorates the inertial value when compared to a true integral inertia. The net contributions used are translations of inertias from each respective center of mass to the origin $\vec{\mathbb{O}}\in\mathcal{F}^b$.
