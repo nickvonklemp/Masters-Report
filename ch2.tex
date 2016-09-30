@@ -318,7 +318,7 @@ Using the Parallel Axis theorem$^{\dagger}$, that same net body inertia about th
 \begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\mathbb{I}_{body}+m(\vec{d}\cdot\vec{d}+\vec{d}\otimes\vec{d}^T)\approx\mathbb{I}_{body}+md^2
 \end{equation}
-Here $\otimes$ represents the Hamilton product of two 3X3 matrices, used later in Chapter:\ref{ch:dynamics} to indicate the quaternion operator.
+\emph{\color{Gray}Here $\otimes$ represents the Hamilton product of two 3X3 matrices, it's used again later in Chapter:\ref{ch:dynamics} to indicate the quaternion operator.}
 \begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\begin{bmatrix}
 183677.51 & -0.42 & -4.45\\
@@ -327,7 +327,8 @@ Here $\otimes$ represents the Hamilton product of two 3X3 matrices, used later i
 \end{bmatrix} \times10^{-7}~[kg.m^2]
 \end{equation}
 \end{subequations}
-Net inertia for the compound assembly, $\mathbb{I}_b$\footnote{Disambiguation: $\mathbb{I}_b$ is net body frame's inertia, different from $\mathbb{I}_{body}$ which is the inertia for \emph{just} the body structure}, about that origin $\vec{O}_b$ is a combination of all the relative attached bodies. That being; thefour motor modules, transformed and then translated to the center of motion, and the body structure itself. That transformation is analogous to that of Eq: \ref{eq:motor-module-rotation}. Reiterating that the the origin is co-planar to the modules center of rotation, each motor modules inertia, $\mathbb{I}_{M_i'}$\footnote{As defined in Eq:\ref{eq:inertia.middle.d}}, is further rotated by $\mathbb{R}_{Y}(\eta_i)$ and finally a $\vec{Z}$ orthogonal rotation onto $\mathcal{F}^b$. Still measured with respect to their individual centers, $\vec{\mathbf{M}}_i$, but re-orientated to align with $\vec{\mathbf{O}}_b$. Contribution of each motor module's inertia, with $\mathbb{R}_Z$ being the same as Eq:\ref{eq:motor-module-rotation.b}, is then:
+Net inertia for the compound assembly, $\mathbb{I}_b$\footnote{Disambiguation: $\mathbb{I}_b$ is \emph{net} body frame's inertia, different from $\mathbb{I}_{body}$ which is the inertia for \emph{just} the body structure}, about that origin $\vec{O}_b$ is a combination of all the relative attached bodies. That being; the four motor modules, transformed and then translated to the center of motion, and the body structure itself. That transformation is analogous to that of Eq: \ref{eq:motor-module-rotation}. Reiterating that the the origin is co-planar to the modules center of rotation, each motor modules inertia, $\mathbb{I}_{M_i'}$\footnote{As defined in Eq:\ref{eq:inertia.middle.d}}, is further rotated by $\eta_{i}^{\circ}$ about $\vec{Y}_{M_i
+}$ and finally an orthogonal $\vec{Z}$ rotation onto $\mathcal{F}^b$. Still measured with respect to their individual centers, $\vec{\mathbf{M}}_i$, but re-orientated to align with $||\vec{\mathbf{O}}_b$. Contribution of each motor module's inertia, with $\mathbb{R}_Z$ being the same as Eq:\ref{eq:motor-module-rotation.b}, is then:
 \begin{subequations}\label{eq:module-inertia}
 \begin{equation}\label{eq:module-inertia.a}
 \mathbb{I}_{i^{th} motor}=\mathbb{R}_{Z}(\sigma_i)\mathbb{R}_{Y}(\eta_i)\big(\mathbb{I}_{M_i'}\big)\mathbb{R}^{-1}_{Y}(\eta_i)\mathbb{R}^{-1}_{Z}(\sigma_i)
@@ -341,7 +342,7 @@ Expanding to Inner Ring and Middle Ring components:
 \text{With axes}~\vec{X}\in\mathcal{F}^{M_i},~~\vec{Y}\in\mathcal{F}^{M_i'},~~\vec{Z}\in\mathcal{F}^{M_i''}
 \end{equation}
 \end{subequations}
-\emph{\color{Gray}It's at this stage that, despite the simplifications, the symbolic inertial equation becomes overly cumbersome to include with numeric values\ldots For the sake of brevity, exact calculated inertia values for the input dependent plant are omitted.}
+\emph{\color{Gray}It's at this stage that, despite simplifications, the symbolic inertial equation becomes overly cumbersome to include with numeric values\ldots For the sake of brevity, exact calculated inertia values for the input dependent plant are omitted.}
 \par
 \begin{figure}[hbtp]
 \centering
@@ -350,9 +351,10 @@ Expanding to Inner Ring and Middle Ring components:
 \label{fig:inertia-frame}
 \end{figure}
 Each module's rotational center is spaced equally relative to $\vec{\mathbf{O}}_b$ with a parallel axis arm $\vec{L}_{arm}=\begin{bmatrix}
-195.161 0 0
+195.161 & 0 & 0
 \end{bmatrix}^T~~[mm]$ (Fig:\ref{fig:inertia-frame}). The net inertial equation about $\vec{\mathbf{O}}_b$, dependent on a the actuator suite $\mathbb{U}$ positions, can be calculated as:
-\begin{subequations}\label{eq:body-inertia}
+\begin{subequations}
+\label{eq:body-inertia}
 \begin{equation}\label{eq:body-inertia.a}
 \underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4}\mathbb{M}_{i}~~[kg.m^2]
 \end{equation}
@@ -361,90 +363,101 @@ Each module's rotational center is spaced equally relative to $\vec{\mathbf{O}}_
 \mathbb{M}_i=\mathbb{I}_{i^{th}motor}+m_{module}\big(\vec{L} \cdot \vec{L} - \vec{L}\otimes\vec{L}\big)
 \end{equation}
 \end{subequations}
-Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation and then to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point precision of the resultant inertial tensor. Transforming inertial tensors about each sub-body's center of mass directly to the body frame origin is going to improve results. Similarly, it is more intuitive for the reader to consider each sub-body's contribution separately, despite having been derived as compound inertial systems previously. The relative movement pertinent to Eq:\ref{eq:inertia.inner} and Eq:\ref{eq:inertia.middle} are conceptually separated from that affecting Eq:\ref{eq:body-inertia}.  
-
-
-It was found that each subsequent parallel axis translation further deteriorates the inertial value when compared to a true integral inertia. The net contributions used are translations of inertias from each respective center of mass to the origin $\vec{\mathbb{O}}\in\mathcal{F}^b$.
-\begin{subequations}
-\begin{equation}
-\mathbb{M}_i=\mathbb{M}_{inner}+\mathbb{M}_{middle}
+Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation from their center of masses and then finally to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point precision of the resultant inertial tensor. Transforming inertial tensors about each sub-body's center of mass directly to the body frame origin will improve the reliability of the produced inertial equations. It is perhaps more intuitive to some to consider each sub-body's contribution individually, despite having been derived as combined inertial systems previously. 
+\begin{equation}\label{eq:body-net}
+\underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4} \mathbb{M}_{inner}+\sum_{i=1}^{4} \mathbb{M}_{middle}
 \end{equation}
-For each inner ring, W.R.T its center of mass, different from Eq:\ref{eq:inertia.inner.a};
+\par
+The relative movement pertinent to Eq:\ref{eq:inertia.inner} and Eq:\ref{eq:inertia.middle} are conceptually separated from that affecting Eq:\ref{eq:body-inertia}. For each inner ring, W.R.T its center of mass measured relative to its center of rotation, different from Eq:\ref{eq:inertia.inner.a};
+\begin{subequations}
+\label{eq:body-net-inner}
+\begin{equation}
+m_{inner}=99~~[g]
+\end{equation}
+\vspace{-10pt}
 \begin{equation}
 \underset{C.M}{\mathbb{I}_{inner}}=\begin{bmatrix}
 585.11 & -0.34 & -2.44\\
 -0.34 & 1960.93 & 0.81\\
 -2.44 & 0.81 & 2139.84\\
-\end{bmatrix}
+\end{bmatrix}~~[g.cm^2]
 \end{equation}
+\vspace{-5pt}
 \begin{equation}
 C.M_{inner}=\begin{bmatrix}
 1.400 & -0.043 & -1.942
 \end{bmatrix}^T~~[mm]
 \end{equation}
+\vspace{-10pt}
 \begin{equation}
-\underset{||~\vec{\mathbf{O}}}{\mathbb{I}_{inner}}=\mathbb{R}_Z\mathbb{R}_y(\eta)\mathbb{R}_x(\lambda)\big(\mathbb{I}_{inner}\big)\mathbb{R}^{-1}_x(\lambda)\mathbb{R}^{-1}_y(\eta)\mathbb{R}^{-1}_Z
+{C.M_{inner}}'=\mathbb{R}_Z\mathbb{R}_Y\mathbb{R}_X \big(C.M_{inner}\big)
 \end{equation}
+\vspace{-10pt}
 \begin{equation}
-\mathbb{M}_{inner}=\underset{\vec{\mathbf{O}}}{\mathbb{I}_{inner}}=\underset{||~\vec{\mathbf{O}}}{\mathbb{I}_{inner}}+ m \big((\Delta L \cdot \Delta L)\mathbb{I}_{3x3} - \Delta L \times \Delta L^{T} \big)
+\underset{||~\vec{\mathbf{O}}}{\mathbb{I}_{inner}}=\mathbb{R}_Z\mathbb{R}_Y(\eta)\mathbb{R}_X(\lambda)\big(\mathbb{I}_{inner}\big)\mathbb{R}^{-1}_X(\lambda)\mathbb{R}^{-1}_Y(\eta)\mathbb{R}^{-1}_Z
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\Delta L = \vec{L}_{arm}-{C.M_{inner}}'
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\mathbb{M}_{inner}=\underset{\vec{\mathbf{O}}}{\mathbb{I}_{inner}}=\underset{||~\vec{\mathbf{O}}}{\mathbb{I}_{inner}}+ m_{inner} \big((\Delta L \cdot \Delta L)\mathbb{I}_{3x3} - \Delta L \otimes \Delta L \big)
 \end{equation}
 \end{subequations}
 Similarly for each middle ring:
 \begin{subequations}
+\label{eq:body-net-middle}
+\begin{equation}
+m_{middle}=102~~[g]
+\end{equation}
+\vspace{-10pt}
 \begin{equation}
 \underset{C.M}{\mathbb{I}_{middle}}=\begin{bmatrix}
 2996.57 & 179.32 & 232.71\\
 179.32 & 6524.84 & 13.87\\
 232.71 & 13.87 & 9312.733\\
-\end{bmatrix}
+\end{bmatrix}~~[g.cm^2]
 \end{equation}
+\vspace{-5pt}
 \begin{equation}
 C.M_{middle}=\begin{bmatrix}
 47.00 & 3.74 & -3.63
 \end{bmatrix}^T~~[mm]
 \end{equation}
+\vspace{-10pt}
 \begin{equation}
-\mathbb{I}_{middle}=\underset{C.M}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta_{C.M} \cdot \Delta_{C.M})\mathbb{I}_{3x3} - \Delta_{C.M} . \Delta_{C.M} ^T \big)
-\end{equation}
-\begin{equation}
-\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}=\mathbb{R}_Z\mathbb{R}_y(\eta)\big(\mathbb{I}_{middle}\big)\mathbb{R}^{-1}_y(\eta)\mathbb{R}^{-1}_Z
-\end{equation}
-\begin{equation}
-\mathbb{M}_{i}=\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta_{L}\cdot\Delta_{L})\mathbb{I}_{3x3}-\Delta_{L}.\Delta_{L}^T\big)
-\end{equation}
-\end{subequations}
-The above equations begin to deviate from the true inertial value, the deviations stem from subsequent transformations.
-\begin{subequations}
-\begin{equation}
-\mathbb{M}_i=\mathbb{R}(\sigma_i,~\eta_i)\big(\mathbb{I}_{middle}+\mathbb{R}_X(\lambda_i)(\mathbb{I}_{inner})\mathbb{R}_X^{-1}(\lambda_i)\big)\mathbb{R}^{-1}(\sigma_i,~\eta_i)+L_im_i^2
+{C.M_{middle}}'=\mathbb{R}_{Z}\mathbb{R}_{Y}\big(C.M_{middle}\big)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\sigma_i=\big[0^{\circ},~90^{\circ},~180^{\circ},~270^{\circ}\big]~\text{for}~i=[1:4]
+\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}=\mathbb{R}_Z\mathbb{R}_Y(\eta)\big(\mathbb{I}_{middle}\big)\mathbb{R}^{-1}_Y(\eta)\mathbb{R}^{-1}_Z
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\Delta L = \vec{L}_{arm}-{C.M_{middle}}'
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\mathbb{M}_{middle}=\underset{\vec{\mathbf{O}}}{\mathbb{I}_{middle}}=\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta L\cdot\Delta L)\mathbb{I}_{3x3}-\Delta L \otimes \Delta L \big)
 \end{equation}
 \end{subequations}
-Unless otherwise stated, any inertia $\mathbb{I}_b$, irrespective of the arguments listed, refers to Eq:\ref{eq:body-inerta}.
-
-\subsubsection*{Mass \& Center of Gravity}
-Seeing as the servo and bearings in $\mathcal{F}^{M_i'}$ are unbalanced, the center of gravity isn't coincidental with the center of rotation. The offset position of the center of gravity is going to produce a gravitational torque arm about the motor modules axes.
-
+Unless otherwise stated, any inertia $\mathbb{I}_b$, irrespective of arguments, will refer to an instantaneous calculated solution to Eq:\ref{eq:body-net} given a particular $u\in\mathbb{U}$. The purpose of the derivations Eq:\ref{eq:body-net-inner} \& Eq:\ref{eq:body-net-middle} was twofold; highlighting both the inertial contributions and the variable center of masses for each sub-body. Seeing that the origin of the motion frame $\mathcal{F}^b$ and the net body's center of mass aren't coincidental, it's important to quantify the equation for the varying center of mass. If, for a collection of $n$ bodies, with each body's center $\vec{X}_i$ and a mass $m_i$, the net center of mass is:
+\begin{subequations}
+\label{eq:mass-center}
+\begin{equation}\label{eq:mass-center.a}
+C.M = \frac{\sum_{i=1}^{n} m_i.\vec{X}_i}{\sum_{i=1}^{n} m_i}
+\end{equation}
+\begin{equation}\label{eq:mass-center.b}
+=m_{body}.\vec{X}_{body}+\sum m_{inner}.\vec{X}_{inner}
+\end{equation}
+\end{subequations}
 
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}
 %====================================================
-
-%====================================================
-\subsection{Overall Aspects}
-\label{subsec:proto.design.aspects}
-%====================================================
-\subsubsection{Vibration Damping}
-%====================================================
-\subsubsection{Landing Skids}
-%====================================================
-\subsubsection{Motors \& ESCs}
-%====================================================
-
+Thaar be transfer functions here\ldots
 %====================================================
 \section{System Layout}
 \label{sec:proto.layout}
