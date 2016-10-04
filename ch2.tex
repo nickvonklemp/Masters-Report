@@ -351,8 +351,8 @@ Expanding to Inner Ring and Middle Ring components:
 \label{fig:inertia-frame}
 \end{figure}
 Each module's rotational center is spaced equally relative to $\vec{\mathbf{O}}_b$ with a parallel axis arm $\vec{L}_{arm}=\begin{bmatrix}
-195.161 & 0 & 0
-\end{bmatrix}^T~~[mm]$ (Fig:\ref{fig:inertia-frame}). The net inertial equation about $\vec{\mathbf{O}}_b$, dependent on a the actuator suite $\mathbb{U}$ positions, can be calculated as:
+195.16 & 0 & 0
+\end{bmatrix}^T~~[mm]$ (Fig:\ref{fig:inertia-frame}). The net inertial equation about $\vec{\mathbf{O}}_b$, dependent on the actuator suite $\mathbb{U}$ positions, can be calculated as:
 \begin{subequations}
 \label{eq:body-inertia}
 \begin{equation}\label{eq:body-inertia.a}
@@ -363,7 +363,7 @@ Each module's rotational center is spaced equally relative to $\vec{\mathbf{O}}_
 \mathbb{M}_i=\mathbb{I}_{i^{th}motor}+m_{module}\big(\vec{L} \cdot \vec{L} - \vec{L}\otimes\vec{L}\big)
 \end{equation}
 \end{subequations}
-Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation from their center of masses and then finally to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point precision of the resultant inertial tensor. Transforming inertial tensors about each sub-body's center of mass directly to the body frame origin will improve the reliability of the produced inertial equations. It is perhaps more intuitive to some to consider each sub-body's contribution individually, despite having been derived as combined inertial systems previously. 
+Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, the transformations to calculate $\mathbb{M}_i$ are compounded. Inertias are first translated to the center of rotation from their center of masses and then finally to the body frame's origin. Subsequent transformations are successively going to deteriorate the floating point precision of the resultant inertial tensor. Transforming inertial tensors about each sub-body's center of mass directly to the body frame origin will improve the reliability of the produced inertial equations. It is perhaps more intuitive to consider each sub-body's contribution individually, despite having been derived as combined inertial systems previously. 
 \begin{equation}\label{eq:body-net}
 \underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4} \mathbb{M}_{inner}+\sum_{i=1}^{4} \mathbb{M}_{middle}
 \end{equation}
@@ -389,7 +389,7 @@ C.M_{inner}=\begin{bmatrix}
 \end{bmatrix}^T~~[mm]
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:body-net-inner.d}
 {C.M_{inner}}'=\mathbb{R}_Z\mathbb{R}_Y\mathbb{R}_X \big(C.M_{inner}\big)
 \end{equation}
 \vspace{-10pt}
@@ -426,7 +426,7 @@ C.M_{middle}=\begin{bmatrix}
 \end{bmatrix}^T~~[mm]
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:body-net-middle.d}
 {C.M_{middle}}'=\mathbb{R}_{Z}\mathbb{R}_{Y}\big(C.M_{middle}\big)
 \end{equation}
 \vspace{-10pt}
@@ -442,25 +442,47 @@ C.M_{middle}=\begin{bmatrix}
 \mathbb{M}_{middle}=\underset{\vec{\mathbf{O}}}{\mathbb{I}_{middle}}=\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta L\cdot\Delta L)\mathbb{I}_{3x3}-\Delta L \otimes \Delta L \big)
 \end{equation}
 \end{subequations}
-Unless otherwise stated, any inertia $\mathbb{I}_b$, irrespective of arguments, will refer to an instantaneous calculated solution to Eq:\ref{eq:body-net} given a particular $u\in\mathbb{U}$. The purpose of the derivations Eq:\ref{eq:body-net-inner} \& Eq:\ref{eq:body-net-middle} was twofold; highlighting both the inertial contributions and the variable center of masses for each sub-body. Seeing that the origin of the motion frame $\mathcal{F}^b$ and the net body's center of mass aren't coincidental, it's important to quantify the equation for the varying center of mass. If, for a collection of $n$ bodies, with each body's center $\vec{X}_i$ and a mass $m_i$, the net center of mass is:
+Unless otherwise stated, any inertia $\mathbb{I}_b$, irrespective of arguments, will refer to an instantaneous calculated solution to Eq:\ref{eq:body-net} given a particular $u\in\mathbb{U}$. The purpose of the derivations Eq:\ref{eq:body-net-inner} \& Eq:\ref{eq:body-net-middle} is twofold; highlighting both the inertial contributions and the variable center of masses for each sub-body. Seeing that the origin of the motion frame $\mathcal{F}^b$ and the net body's center of mass aren't coincidental, it's important to quantify the equation for the varying center of mass. If, for a collection of $n$ bodies, with each body's center $\vec{X}_i$ and a mass $m_i$, the net center of mass is:
 \begin{subequations}
 \label{eq:mass-center}
 \begin{equation}\label{eq:mass-center.a}
 C.M = \frac{\sum_{i=1}^{n} m_i.\vec{X}_i}{\sum_{i=1}^{n} m_i}
 \end{equation}
+So then, with $\vec{X}_{inner}$ \& $\vec{X}_{middle}$ being defined in Eq:\ref{eq:body-net-inner.d} \& Eq:\ref{eq:body-net-middle.d} respectively, the body has a center of mass$^{\dagger}$:
 \begin{equation}\label{eq:mass-center.b}
-=m_{body}.\vec{X}_{body}+\sum m_{inner}.\vec{X}_{inner}
+=\frac{m_{body}.\vec{X}_{body}+\sum m_{inner}.\vec{X}_{inner}+\sum m_{middle}.\vec{X}_{middle}}{m_{body}+\sum m_{inner} + \sum m_{middle}}
 \end{equation}
 \end{subequations}
+%====================================================
+\newpage
+%====================================================
+\section{System Layout}
+\label{sec:proto.layout}
+%====================================================
+{\centering
+\fbox{
+\begin{minipage}{\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{pdfpages/electrical-schematic.pdf}
+\label{fig:electrical-schematic}
+\end{minipage}
+}
+\captionof{figure}{Electronic Schematic Diagram}
+}
+%-----------------------------------------------------
+\newpage
+%-----------------------------------------------------
+A schematic diagram for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It details the different peripherals used for the on-board control system and how they're connected. The structure of the autopilot system and control loops are addressed in different schematic diagrams later in Chapter:\ref{ch:flight}.
+\par
+The entire system is constructed around an ARM STM32F303\ref{} based $\mu$controller. The micro-processor board is a commercial flight control board, an SPRacing F3 Deluxe\ref{}\footnote{The reverse engineered electrical schematic for the board is included in \ref{app:deluxe-diagram}}, which has had its bootloader burnt and custom software developed for it. That software is later discussed in \ref{ch:}; the I/O for all the peripherals are detailed here however. The flight-controller board includes an I2C MPU-6050\ref{} 6-axis accelerometer , an HMC5883\ref{} magnetometer compass, 64 Mb of SPI flash memory and a MS5611\ref{} barometer. 
+There are two wireless communication
 
+%====================================================
+\newpage
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}
 %====================================================
 Thaar be transfer functions here\ldots
+
 %====================================================
-\section{System Layout}
-\label{sec:proto.layout}
-%====================================================
-\subsection{Electrical Design}
-\subsection{Component Characteristics}
