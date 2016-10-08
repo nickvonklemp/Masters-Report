@@ -463,7 +463,7 @@ So then, with $\vec{X}_{inner}$ \& $\vec{X}_{middle}$ being defined in Eq:\ref{e
 \fbox{
 \begin{minipage}{\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{pdfpages/electrical-schematic.pdf}
+\includegraphics[width=0.95\textwidth]{pdfpages/electrical-schematic.pdf}
 \label{fig:electrical-schematic}
 \end{minipage}
 }
@@ -472,16 +472,16 @@ So then, with $\vec{X}_{inner}$ \& $\vec{X}_{middle}$ being defined in Eq:\ref{e
 %-----------------------------------------------------
 \newpage
 %-----------------------------------------------------
-A hardware schematic for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It details the different peripherals used for the on-board control system and how they're connected. The structure of the autopilot system and control loops are addressed in different schematic diagrams later in Chapter:\ref{ch:flight}.
+An abstracted hardware diagram for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It's an illustration for the connection of different electronic peripherals used to aid the on-board control system. The structure of the autopilot system and control loops are addressed in a later Chapter:\ref{ch:flight}. This description aims to provide a brief overview of the specific modules used, their purpose and how they're interfaced. No code structure or control loops are considered yet\ldots
 \par
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.5\textwidth]{figs/f3-deluxe}
 \caption{SPRacing F3 Deluxe Flight Controller}
 \end{figure}
-The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $\mu$controller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight opensource software is used for the F3 but hardware specifications are not openly avaiable.\\The reverse engineered electrical schematic for the board is included in \ref{app:deluxe-diagram}}, which has had its bootloader burnt and custom software developed for it. That software is later discussed in \ref{ch:flight}; the I/O for all the peripherals are detailed here however. The flight-controller board includes an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer , an HMC5883\cite{hmc5883} magnetometer compass, a MS5611\cite{ms5611} barometer and 64 Mb of SPI flash memory. 
+The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $\mu$controller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight opensource software is regularly used for the F3 but hardware specifications are not openly avaiable.\\The reverse engineered electrical schematic for the board is included in Appendix:\ref{app:deluxe-diagram}}, which has had its bootloader removed and custom firmware, unique to this project, burnt to it. That software is later described in \ref{ch:flight}; the I/O for all the peripherals are detailed here however. The on-board flight-controller is an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer , an HMC5883\cite{hmc5883} magnetometer compass, a MS5611\cite{ms5611} barometer and 64 Mb of SPI flash memory. The connections of which are listed in App:\ref{app:deluxe-diagram}. 
 \\
-\emph{\color{Gray} The combination of above sensors fused for state estimation and the associated algorithms are dealt with in Section:\ref{sec:simulation.state} in Chapter:\ref{ch:simulation}.}
+\emph{\color{Gray} The combination of above sensors fused for state estimation and their associated algorithms are dealt with in Section:\ref{sec:simulation.state} in Chapter:\ref{ch:simulation}.}
 \par
 \begin{figure}[hbtp]
 \centering
@@ -489,7 +489,7 @@ The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $
 \caption{S.BUS Data Stream}
 \label{fig:sbus}
 \end{figure}
-There are two wireless communication channels used. First, the system relays state information from a ground control station via 2.4 GHz XBEE S1 module(s)\cite{xbees1}, connected via USART. Secondaly, an augmented pilot control input system, fail safe and secondary to complete autopilot, is transmitted via 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via the OrangeRx R615x\cite{r615x} receiver, are encoded to a single line S.BUS data stream. The S.BUS encoder \cite{sbusencoder} applies the USART derivative communication standard, Fig:\ref{fig:sbus} shows the sampled data stream which used to ascertain have the following parameters:
+Two wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1},  USART connected. Secondaly, an augmented pilot control input system, fail safe and secondary to autopilot, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded to a single line S.BUS data stream. The S.BUS encoder \cite{sbusencoder} implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the following parameters:
 \begin{itemize}
 \item 8-Bit data bytes
 \item 25 Bytes per transmissions
@@ -502,12 +502,22 @@ There are two wireless communication channels used. First, the system relays sta
 \item Inverted
 \item 100000 baud
 \end{itemize}
-\item 14 Ms Idle between transmissions
+\item 14 ms Idle between transmissions
 \item Up to 16 channels encoded
 \item Each channel is 11 bits of data
-\item Channel data is little endian ordered
+\item Channel data is little endian prioritized
 \end{itemize}
-
+{\color{red}
+The received information of the transmitted 6 channels are filtered through an Infinite-Impulse Response filter. The filters response is as follows:
+Any reference to received signals refers to post filtering data. Filtering for state estimates is performed on the Ground Control Station computer.}
+\par
+Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer channels, pulses ranging from 1ms - 2ms linearly represent rotatry position. The exact transfer function is empirically determined next in Section:\ref{subsec:proto.design.transfer}. Four 15A brushless DC speed controllers (ESCs) are driven with a 20 Hz PWM signal, no integrated feedback for instantaneous RPM values is included. Using discrete OrangeRX BLDC RPM sensors, measuring the phase of back Emf induced across two of the three BLDC phases, the exact RPM can be ascertained. The signal produced by the RPM sensors is a variable period, 50\% duty cycle square wave. The RPM sesnor output signal is calibrated to a $\underline{rate}$ gain, the relationship is shown in Fig:\ref{fig:rpm-sensor}.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/rpm-sensor}
+\caption{RPM sensor gain}
+\label{fig:rpm-sensor}
+\end{figure}
 
 %====================================================
 \newpage
