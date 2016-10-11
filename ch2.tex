@@ -218,9 +218,9 @@ Digital Servo&1{L} 15{1.5{H} 1.53{L}}\\
 \subsection{Inertial Matrices \& Mass}
 \label{subsec:proto.design.inertia}
 %====================================================
-\emph{\color{Gray} Although inertias are presented here rounded to either 2 or 0 decimal places, full floating point numbers are used in simulation and prototype software. Un-rounded inertias are included in Appendix:\ref{app:eq}. Similarly rotation matrices produce a more cumbersome results for Eq:\ref{eq:inertia.middle}\ref{eq:module-inertia}\ref{eq:body-inerta}, which are susceptible to singularities. Quaternion operators are used in practice.}
+\emph{\color{Gray} Although inertias are presented here rounded to either 2 or 0 decimal places, full floating point numbers are used in simulation and prototype software. Un-rounded inertias are included in Appendix:\ref{app:eq}. Similarly rotation matrices produce a more cumbersome results for Eq:\ref{eq:inertia.middle}\ref{eq:module-inertia}\ref{eq:body-net}, which are susceptible to singularities. Quaternion operators are used in practice.}
 \subsubsection*{Inertias}
-An undesirable side effect of the rigid body rotations the structure undergoes are the inertial responses produced from such movements. Given Newton's Second Law of rotational motion$^{\dagger}$, the applied rotations are going to produce an equal but opposite reaction onto the principle inducing frame. Similarly a gyroscopic cross product from rotational velocities is also present. Such first and second order effects are often neglected given that angular rates are mostly small enough to approximate as zero, $\vec{\omega}_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is, however, going to produce sizable time varying body angular velocities and accelerations. Unlike a traditionally actuated quadrotor, such effects have to be accounted for.
+An undesirable side effect of the rigid body rotations the structure undergoes are the inertial responses produced from such movements. Given Newton's Second Law of Rotational Motion$^{\dagger}$, the applied rotations are going to produce an equal but opposite reaction onto the principle inducing frame. Similarly a gyroscopic cross product from rotational velocities is also present. Such first and second order effects are often neglected given that angular rates are mostly small enough to approximate as zero, $\vec{\omega}_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is, however, going to produce sizable time varying body angular velocities and accelerations. Unlike a traditionally actuated quadrotor, such effects have to be accounted for.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -236,9 +236,9 @@ An undesirable side effect of the rigid body rotations the structure undergoes a
 \caption{Inertial Measurement References}
 \end{figure}
 \par
-The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed asymmetrical and calculated in Solidworks with overridden masses to match physical prototype measurements in App:\ref{app:bom}} about the respective rotational axes. The magnitude of those inertias are obviously a byproduct of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 99g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center its of mass ($C.M=\begin{bmatrix}
+The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed asymmetrical and calculated in Solidworks with overridden masses to match physical prototype, all the measurements are included in Appendix:\ref{app:bom}} about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 99g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center its of mass ($C.M=\begin{bmatrix}
 -1.40 &  -0.04 & -1.94\\
-\end{bmatrix}^T~~[mm]$ relative to its rotational center). The inner ring being rotated by $\lambda_i^{~\circ}$ about the $\vec{X}_{M_i}$ axis then has an inertial matrix (centered as in Fig:\ref{fig:inertia-inner}):
+\end{bmatrix}^T~~[mm]$ relative to its rotational center). The inner ring being rotated by $\lambda_i^{~\circ}$ about the $\vec{X}_{M_i}$ axis then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
 \begin{subequations}\label{eq:inertia.inner}
 \begin{equation} \label{eq:inertia.inner.a}
 \mathbb{I}_{M_i}=\begin{bmatrix}
@@ -252,9 +252,9 @@ The manifestation of the aforementioned torques are explored in thorough detail 
 \approx diag\big(588, ~1966, ~2141\big)\times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-The effect of a rotating propeller on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated by a solid disc and hence the inner ring's inertial products are regarded as negligible. The moment of inertia about that $\vec{X}_{M_i}$ axis, pertinent to $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}=588.84\times10^{-7}~~[kg.m^2]$.
+The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's off-diagonal inertial products are regarded as negligible. The moment of inertia about that $\vec{X}_{M_i}$ axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}=588.84\times10^{-7}~~[kg.m^2]$.
 \par
-The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a 102g structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is $m_{module}=201g$. That middle ring is rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis. The compound body's inertia about the axis of rotation, $\vec{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i^{~\circ}$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{X}$ always exists}, is:
+The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $102g$ structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is $m_{module}=201g$. That middle ring is rotated by $\eta_i^{~\circ}$ about its $\vec{Y}_{M_i}$ axis. The compound body's inertia about that axis of rotation, $\vec{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i^{~\circ}$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{X}$ always exists}, is:
 \begin{subequations}\label{eq:inertia.middle}
 \begin{equation} \label{eq:inertia.middle.a}
 \text{If} ~~\mathbb{I}_{middle}=\begin{bmatrix}
@@ -264,7 +264,6 @@ The first $\lambda_i$ actuating servo and bearing supports are affixed to the in
 \end{bmatrix}~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
-%Off diagonal elements, inertia products, have a different formula?
 \begin{equation}\label{eq:inertia.middle.b}
 \mathbb{I}_{M_i'}=\mathbb{I}_{middle}+\mathbb{R}_{X}(\lambda_i)\big(\mathbb{I}_{inner}\big)\mathbb{R}_{X}^{-1}(\lambda_i)
 \end{equation}
@@ -293,7 +292,7 @@ With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:ine
 \mathbb{I}_\eta(\lambda)\approx[0,~ 10842-88{c}_{2\lambda},~ 2{c^2}_{\lambda}-91s_{2\lambda}]^T\times10^{-7}~~[kg.m^2]
 \end{equation}
 \par
-Variable inertias dependent on state input variables are the first of many non-trivial aspects unique to this aircraft's design. The resultant control solutions are thus decidedly plant dependent in their formulation. Secondly, the center of mass for the motor module's compound assembly isn't coincidental with either rotational axes intersection. As a result the effective center of mass for the entire structure is going to be time varying, dependent on the angular rotation which the motor modules have been effected by.
+Variable inertias dependent on state input variables are the first of many non-trivial aspects unique to this aircraft's design. The resultant control solutions are thus decidedly plant dependent in their formulation. Secondly, the center of mass for the motor module's compound assembly isn't coincidental with either rotational axes intersection. As a result the effective center of mass for the entire structure is going to be time varying, dependent on the angular rotational position of each motor module.
 \par
 \begin{figure}[htbp]
 \centering
@@ -301,11 +300,11 @@ Variable inertias dependent on state input variables are the first of many non-t
 \caption{Body Frame Center of Mass}
 \label{fig:inertia-center}
 \end{figure}
-The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs 84g and suspends the motor modules from the body frame with a set of silicon damping balls. The body assembly's center of mass (Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-14.27~mm$ below the Body Frame's origin of motion, $\vec{O}\in\mathcal{F}^b$.
+The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs $84g$ and suspends the motor modules from the body frame with a set of silicon damping balls. The body assembly's center of mass (Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-14.27~mm$ below the Body Frame's origin of motion, $\vec{O}\in\mathcal{F}^b$.
 \\
 \emph{\color{Gray}Note: the origin which all motion is calculated with respect to is co-planar to the motor module's rotational centers, \underline{not} the net center of mass.}
 \newpage
-The body's weight, including all four damping assemblies, totals to $814.7 g$. The body's net inertia (\emph{sans} motor modules) $\mathbb{I}_{body}$, about its center of mass is:
+The body's weight, including all four damping assemblies, totals to $814.7~g$. The body's net inertia (\emph{sans} motor modules) $\mathbb{I}_{body}$, about its center of mass is:
 \begin{subequations}\label{eq:inertia.body}
 \begin{equation}\label{eq:inertia.body.a}
 \mathbb{I}_{body}=\begin{bmatrix}
@@ -318,7 +317,7 @@ Using the Parallel Axis theorem$^{\dagger}$, that same net body inertia about th
 \begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\mathbb{I}_{body}+m(\vec{d}\cdot\vec{d}+\vec{d}\otimes\vec{d}^T)\approx\mathbb{I}_{body}+md^2
 \end{equation}
-\emph{\color{Gray}Here $\otimes$ represents the Hamilton product of two 3X3 matrices, it's used again later in Chapter:\ref{ch:dynamics} to indicate the quaternion operator.}
+\emph{\color{Gray}Here $\otimes$ represents the Hamilton product of two 3X3 matrices, it's used again later in Chapter:\ref{ch:dynamics} to indicate the quaternion multiplication operator.}
 \begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\begin{bmatrix}
 183677.51 & -0.42 & -4.45\\
@@ -333,7 +332,7 @@ Net inertia for the compound assembly, $\mathbb{I}_b$\footnote{Disambiguation: $
 \begin{equation}\label{eq:module-inertia.a}
 \mathbb{I}_{i^{th} motor}=\mathbb{R}_{Z}(\sigma_i)\mathbb{R}_{Y}(\eta_i)\big(\mathbb{I}_{M_i'}\big)\mathbb{R}^{-1}_{Y}(\eta_i)\mathbb{R}^{-1}_{Z}(\sigma_i)
 \end{equation}
-Expanding to Inner Ring and Middle Ring components:
+Expanding to Inner and Middle Ring components:
 \begin{equation}\label{eq:module-inertia.b}
 =\mathbb{R}_{Z}\mathbb{R}_{Y}(\eta)\big(\mathbb{I}_{middle}\big)\mathbb{R}^{-1}_{Y}(\eta)\mathbb{R}^{-1}_Z+\mathbb{R}_{Z}\mathbb{R}_{Y}(\eta)\mathbb{R}_{X}(\lambda)\big(\mathbb{I}_{inner}\big)\mathbb{R}^{-1}_{X}(\lambda)\mathbb{R}^{-1}_{Y}(\eta)\mathbb{R}^{-1}_Z
 \end{equation}
@@ -368,7 +367,7 @@ Although Eq:\ref{eq:body-inertia} does indeed produce the net body's inertia, th
 \underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4} \mathbb{M}_{inner}+\sum_{i=1}^{4} \mathbb{M}_{middle}
 \end{equation}
 \par
-The relative movement pertinent to Eq:\ref{eq:inertia.inner} and Eq:\ref{eq:inertia.middle} are conceptually separated from that affecting Eq:\ref{eq:body-inertia}. For each inner ring, W.R.T its center of mass measured relative to its center of rotation, different from Eq:\ref{eq:inertia.inner.a};
+The relative movement pertinent to Eq:\ref{eq:inertia.inner} and Eq:\ref{eq:inertia.middle} are conceptually separated from that affecting Eq:\ref{eq:body-inertia}. For each inner ring, W.R.T its center of mass measured relative to its center of rotation, different from Eq:\ref{eq:inertia.inner.a}, the inner ring's inertia is calculated as;
 \begin{subequations}
 \label{eq:body-net-inner}
 \begin{equation}
@@ -442,7 +441,7 @@ C.M_{middle}=\begin{bmatrix}
 \mathbb{M}_{middle}=\underset{\vec{\mathbf{O}}}{\mathbb{I}_{middle}}=\underset{||\vec{\mathbf{O}}}{\mathbb{I}_{middle}}+m_{middle}\big((\Delta L\cdot\Delta L)\mathbb{I}_{3x3}-\Delta L \otimes \Delta L \big)
 \end{equation}
 \end{subequations}
-Unless otherwise stated, any inertia $\mathbb{I}_b$, irrespective of arguments, will refer to an instantaneous calculated solution to Eq:\ref{eq:body-net} given a particular $u\in\mathbb{U}$. The purpose of the derivations Eq:\ref{eq:body-net-inner} \& Eq:\ref{eq:body-net-middle} is twofold; highlighting both the inertial contributions and the variable center of masses for each sub-body. Seeing that the origin of the motion frame $\mathcal{F}^b$ and the net body's center of mass aren't coincidental, it's important to quantify the equation for the varying center of mass. If, for a collection of $n$ bodies, with each body's center $\vec{X}_i$ and a mass $m_i$, the net center of mass is:
+Unless otherwise specified; any inertia $\mathbb{I}_b$, irrespective of arguments, will refer to an instantaneous calculated solution to Eq:\ref{eq:body-net} given a particular $u\in\mathbb{U}$. The purpose of the derivations Eq:\ref{eq:body-net-inner} \& Eq:\ref{eq:body-net-middle} is twofold; highlighting both the inertial contributions and the variable center of masses for each sub-body. Seeing that the origin of the motion frame $\mathcal{F}^b$ and the net body's center of mass aren't coincidental, it's important to quantify the equation for the varying center of mass. If, for a collection of $n$ bodies, with each body's center $\vec{X}_i$ and a mass $m_i$, the net center of mass is:
 \begin{subequations}
 \label{eq:mass-center}
 \begin{equation}\label{eq:mass-center.a}
@@ -479,7 +478,7 @@ An abstracted hardware diagram for the (electronic) system layout is shown in Fi
 \includegraphics[width=0.5\textwidth]{figs/f3-deluxe}
 \caption{SPRacing F3 Deluxe Flight Controller}
 \end{figure}
-The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $\mu$controller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight opensource software is regularly used for the F3 but hardware specifications are not openly avaiable.\\The reverse engineered electrical schematic for the board is included in Appendix:\ref{app:deluxe-diagram}}, which has had its bootloader removed and custom firmware, unique to this project, burnt to it. That software is later described in \ref{ch:flight}; the I/O for all the peripherals are detailed here however. The on-board flight-controller is an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer , an HMC5883\cite{hmc5883} magnetometer compass, a MS5611\cite{ms5611} barometer and 64 Mb of SPI flash memory. The connections of which are listed in App:\ref{app:deluxe-diagram}. 
+The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $\mu$controller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight opensource software is regularly used for the F3 but hardware specifications are not openly avaiable.\\The reverse engineered electrical schematic for the board is included in Appendix:\ref{app:deluxe-diagram}}, which has had its bootloader removed and custom firmware, unique to this project, burnt to it. That software is later described in \ref{ch:flight}; the I/O for all the peripherals are detailed here however. The on-board flight-controller is an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer with a connected HMC5883\cite{hmc5883} magnetometer compass, an SPI MS5611\cite{ms5611} barometer and similarly 64 Mb of SPI flash memory. The connections of which are listed in App:\ref{app:deluxe-diagram}. 
 \\
 \emph{\color{Gray} The combination of above sensors fused for state estimation and their associated algorithms are dealt with in Section:\ref{sec:simulation.state} in Chapter:\ref{ch:simulation}.}
 \par
@@ -489,7 +488,7 @@ The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $
 \caption{S.BUS Data Stream}
 \label{fig:sbus}
 \end{figure}
-Two wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1},  USART connected. Secondaly, an augmented pilot control input system, fail safe and secondary to autopilot, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded to a single line S.BUS data stream. The S.BUS encoder \cite{sbusencoder} implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the following parameters:
+Two wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1}, USART connected. Secondly, an augmented pilot control input system, fail safe and secondary to autopilot, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded to a single line S.BUS data stream. The S.BUS encoder \cite{sbusencoder} implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the following parameters:
 \begin{itemize}
 \item 8-Bit data bytes
 \item 25 Bytes per transmissions
@@ -500,27 +499,37 @@ Two wireless communication peripherals are used. First the system relays full st
 \item 2 stop bits
 \item Even parity bit
 \item Inverted
-\item 100000 baud
+\item 100000 baud (bps)
 \end{itemize}
-\item 14 ms Idle between transmissions
+\item 14 ms idle time between transmissions
 \item Up to 16 channels encoded
 \item Each channel is 11 bits of data
 \item Channel data is little endian prioritized
 \end{itemize}
 {\color{red}
-The received information of the transmitted 6 channels are filtered through an Infinite-Impulse Response filter. The filters response is as follows:
-Any reference to received signals refers to post filtering data. Filtering for state estimates is performed on the Ground Control Station computer.}
+The received information of the transmitted 6 channels are filtered through an Infinite-Impulse Response filter. The filters frequency response is as follows: $
+y_n = y_{n-1}$. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
 \par
-Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer channels, pulses ranging from 1ms - 2ms linearly represent rotatry position. The exact transfer function is empirically determined next in Section:\ref{subsec:proto.design.transfer}. Four 15A brushless DC speed controllers (ESCs) are driven with a 20 Hz PWM signal, no integrated feedback for instantaneous RPM values is included. Using discrete OrangeRX BLDC RPM sensors, measuring the phase of back Emf induced across two of the three BLDC phases, the exact RPM can be ascertained. The signal produced by the RPM sensors is a variable period, 50\% duty cycle square wave. The RPM sesnor output signal is calibrated to a $\underline{rate}$ gain, the relationship is shown in Fig:\ref{fig:rpm-sensor}.
-\begin{figure}[hbtp]
+Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels, pulses ranging from 1ms - 2ms linearly control the rotary position. The exact transfer function is empirically determined next in Section:\ref{subsec:proto.design.transfer}. Four 15A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM timer channel output, similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$controller. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
+\par
+\begin{figure}[htb]
+\begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=0.6\textwidth]{figs/rpm-sensor}
+\includegraphics[width=\textwidth]{figs/rpm-sensor-plot}
 \caption{RPM sensor gain}
-\label{fig:rpm-sensor}
+\label{fig:rpm-sensor-plot}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/st-link}
+\caption{ST-Link V-2 Debugger}
+\label{fig:st-link}
+\end{subfigure}
+\caption{}
 \end{figure}
-
-%====================================================
-\newpage
+There's no integrated feedback for instantaneous RPM values from the Electronic Speed Controllers. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, measuring the phase of back Emf induced across two of the three motor phases, the exact RPM can be ascertained. The signal produced by the RPM sensors varies the period, proportional to the rotational speed of the motor, of a square wave with a constant 50\% duty cycle. The RPM sensor's output signal is calibrated to a $\underline{rate}$ gain, the linear relationship is shown in Fig:\ref{fig:rpm-sensor-plot}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
+\par
+Any STM32 $\mu$controller is programmed through a dedicated debugging device. The ST-Link V2\cite{st-link} is the current proprietary device which, itself, is a specially programmed STM32F10 chip (Fig:\ref{fig:st-link}). The chip connects to the dedicated Serial Wire Debugging ports of the target STM (\emph{SWD-CLK, SWD-IO} \& \emph{SWD-NRST}) and is interfaced via regular USBD+ and USBD- data lines. 
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}

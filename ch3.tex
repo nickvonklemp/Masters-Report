@@ -3,21 +3,77 @@
 %****************************************************
 \chapter{Kinematics \& Dynamics}
 \label{ch:dynamics}
-%****************************************************
+%====================================================
+The body's dynamics are first solved as rigid, with appropriate dynamics derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects unique to multi-body relative rotations are presented and included in the plant's dynamic model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
+%====================================================
 \section{Rigid Body Dynamics}
 \label{sec:dynamics.rigidbody}
-%****************************************************
+%====================================================
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
-%****************************************************
+%====================================================
+Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational, rotational and potential energies are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{} formulation fully defines aerospace 6-DOF motion.
+\par
+Lagrangian formulation is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations produce the same result. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies,$T$ and $U$ respectively, such that;
+\begin{subequations}
+\begin{equation}
+\mathcal{L}=T(q,\dot{q},t)-U(q,\dot{q},t)
+\end{equation}
+\vspace{-15pt}
+\begin{equation}
+q=\begin{bmatrix}
+x & y & z & \phi & \theta & \psi
+\end{bmatrix}=\begin{bmatrix}
+E & \Upsilon
+\end{bmatrix}^T
+\end{equation}
+\end{subequations}
+Solving for the kinetic and potential energies respectively results in;
+\begin{equation}
+\mathcal{L}=\frac{1}{2}V^{T}.m_b.V+\frac{1}{2}\dot{\Upsilon}^T.\mathbb{I}_b.\dot{\Upsilon}-mgz
+\end{equation}
+Noting that $\mathbb{I}_b$ is w.r.t $\mathcal{F}^b$ and so, the correct term translated to the inertial frame would actually be;
+\begin{equation}
+\frac{1}{2}\dot{\Upsilon}^T\big(\mathbb{R}^T(\Upsilon)\mathbb{I}_B\mathbb{R}(\Upsilon)\big)\dot{\Upsilon}
+\end{equation} 
+With $\mathbb{R}^T\mathbb{I}_b\mathbb{R}$ sometimes reffered to as the Jacobian, in the context of Euler Lagrange. The famous Lagrange Equation equates the partial derivatives of the Lagrangian to any generalized forces acting on the system.
+\begin{equation}
+\frac{\delta}{\delta t}\bigg(\frac{\delta L}{\delta \dot{q_i}}\bigg)-\frac{\delta L}{\delta q_i} = \begin{bmatrix}
+F\\
+\tau
+\end{bmatrix}
+\end{equation}
+Taking the partial derivatives then stipulates:
+\begin{subequations}
+\begin{equation}
+\begin{bmatrix}
+F\\
+\tau
+\end{bmatrix}
+=
+\frac{1}{2}m_b\frac{\delta}{\delta t}V^2+\frac{1}{2}\frac{\delta}{\delta t}\big((\mathbb{R}^{T}\mathbb{I}_b\mathbb{R})\dot{\Upsilon}^{2}\big)-\frac{\delta}{\delta q_i}(m_bgz)
+\end{equation}
+\begin{equation}
+=2\frac{1}{2}m_b\dot{V}+\frac{1}{2}\bigg(\frac{\delta}{\delta t}\big(\mathbb{R}^T\mathbb{I}_b\mathbb{R}\big)\dot{\Upsilon}+\mathbb{R}^T\mathbb{I}_b\mathbb{R}\frac{\delta}{\delta t}\big(\dot{\Upsilon}^2\big)\bigg)-m_bg
+\end{equation}
+\begin{equation}
+=m_b\ddot{E}+\frac{1}{2}\bigg(\big(\dot{R}^T\mathbb{I}_b\mathbb{R}+\mathbb{R}^T\mathbb{I}_b\dot{\mathbb{R}}\big)\dot{\Upsilon}+2\mathbb{R}^T\mathbb{I}_b\mathbb{R}\ddot{\Upsilon}\bigg)-m_bg
+\end{equation}
+\begin{equation}
+=m_b\ddot{E}+\frac{1}{2}\bigg(\big(\mathbb{S}\mathbb{R}(\omega)
+\end{equation}
+\end{subequations}
+ method of derivation, derived from conservation of energy theories, is used for presenting the fundamental 6-DOF equations of motion. The 
+
+%====================================================
 \subsection{Rotation Matrix Peculiarities}\label{subsec:dynamics.rigidbody.singularity}
-%****************************************************
+%====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
-%****************************************************
+%====================================================
 \subsection{The Unwinding Problem}
 \label{subsec:dynamics.rigidbody.unwinding}
-%****************************************************
+%====================================================
 
 %****************************************************
 \section{Non-linearities}
