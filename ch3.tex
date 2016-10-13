@@ -4,7 +4,7 @@
 \chapter{Kinematics \& Dynamics}
 \label{ch:dynamics}
 %====================================================
-The body's dynamics are first solved as rigid, with appropriate dynamics derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects unique to multi-body relative rotations are presented and included in the plant's dynamic model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
+The body's dynamics are first solved as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are presented and included in the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
 %====================================================
 \section{Rigid Body Dynamics}
 \label{sec:dynamics.rigidbody}
@@ -12,16 +12,16 @@ The body's dynamics are first solved as rigid, with appropriate dynamics derived
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
 %====================================================
-Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational, rotational and potential energies are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{} formulation fully defines aerospace 6-DOF motion.
+Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{classicaldynamics,rotationrigidbody} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational, rotational and potential energies are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
 \par
-Lagrangian formulation is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations produce the same result. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies,$T$ and $U$ respectively, such that;
+Lagrangian formulation is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations produce the same result. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively, for a path $\mathbf{r}(t)$ such that;
 \begin{subequations}
 \begin{equation}
-\mathcal{L}=T(q,\dot{q},t)-U(q,\dot{q},t)
+\mathcal{L}(\mathbf{r},\dot{\mathbf{r}},t)=T(\mathbf{r},\dot{\mathbf{r}})-U(\mathbf{r},\dot{\mathbf{r}})
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-q=\begin{bmatrix}
+\mathbf{r}(t)=\begin{bmatrix}
 x & y & z & \phi & \theta & \psi
 \end{bmatrix}=\begin{bmatrix}
 E & \Upsilon
