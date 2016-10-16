@@ -73,12 +73,12 @@ Another aspect of limitations produced by design decisions made, mostly to reduc
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/cobra-motor}
-\caption{Cobra CM2208/2000KV BLDC Motor}
+\caption{Cobra CM2208/2000KV BLDC motor}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/corona-servo}
-\caption{Corona DS-339MG Digital Servo}
+\caption{Corona DS-339MG digital servo}
 \end{subfigure}
 \caption{}
 \end{figure}
@@ -97,7 +97,7 @@ The field of transformable aerospace frames is not necessarily a new one, with m
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/dualaxistilt}
-\caption{General Structure for Opposed Tilting Platform}
+\caption{General structure for opposed tilting platform}
 \label{fig:dualaxistilt}
 \end{figure}
 Research into birotor vehicles (Fig:\ref{fig:dualaxistilt})\footnote{Image from G. Gress:\cite{gres2007}} with ancilliary lift propeller actuation is oft termed Opposed Active Tilting or \emph{OAT}. Such a rotorcraft's mechanical design applies either a single \emph{oblique} 45\textdegree ~tilting axis relative to the body; \cite{smalltwotilting,obliquepitch,passiveobliquetilting}, or a \emph{lateral} tilting axis, adjacent to the body; \cite{tiltrotorUAV,adaptivebackstep,tiltrotorcontrol,tpheonix}. Leading research is currently focussed on applying doubly actuated tilting axes to birotor UAVs. Dual axis Opposed Active Tilting or \emph{dOAT} introduces vectored thrust with propeller pitch and roll motions to further expand the actuation suite, \cite{gres2007,opposedlateraldualaxis}. A birotor is sometimes considered preferable to the multirotor platform due to its reduced controller effort. However the controller plant abstraction often detracts from the quality and effectiveness of its stability solution as a result of the birotor's underactuation. 
@@ -171,7 +171,7 @@ Quadrotor plant dynamics, as mentioned previously, are often simplified; especia
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/arducopter-pi}
-\caption{ArduCopter PI Euler Angle Attitude Control loop}
+\caption{ArduCopter PI Euler angle attitude control loop}
 \label{fig:arducopter-pi}
 \end{figure}
 Commercial flight controllers (Arducopter\cite{arducoptersite}, Openpilot\cite{openpilotsite}\footnote{\underline{NOTE:} OpenPilot's firmware stack is now maintained by LibrePilot}, BetaFlight\cite{betaflight}, etc \ldots) for custom fabricated UAV platforms all apply their own flavour of structured attitude controllers and state estimation algorithms, based on onboard hardware sensor fusion. The article \emph{Build Your Own Quadrotor}\cite{buildyourownquad} summarizes the control structures implemented on a range of common flight controllers. The most popular of which, ArduCopter, implements a feed-forward PI compensation controller (Fig:\ref{fig:arducopter-pi})\footnote{Image sourced from \emph{Build your own Quadrotor}\cite{buildyourownquad}}.  PI, PD and PID controllers are all easy and effective plant independent control solutions for general attitude plants. Table:\ref{tab:controllers} collectively lists the common attitude control blocks (not exclusively quadrotors UAVs but MAVs too) and which projects they've been implemented in, after which a critique on the more unique adaptations is given.
@@ -188,7 +188,7 @@ IBC & \cite{tpheonix, backsteppingquadcoptercontrol}\footnote{\cite{tpheonix} ap
 ABC & \multicolumn{2}{l|}{\cite{adaptivebackstep, nonlinearadaptive, 6dofbackstep, intelligentbackstep}} & 4\\ \hline
 LQR & \cite{pidlqr} & LQR & 1\\ \hline
 \end{tabular}
-\caption{A Breakdown of common Attitude Controllers}
+\caption{A breakdown of common attitude controllers}
 \label{tab:controllers}
 \end{table}
 \par
@@ -212,7 +212,7 @@ The extra actuation introduced with single and dual axis articulation provides r
 y=l(x,t)
 \end{equation}
 \end{subequations}
-With a state $x\in \mathbb{R}^n$ and $f(x,t)$ \& $g(x,t)$ being the plant's dynamics and input response respectively. In set point tracking, the output is then \emph{tracking} the state $y = x$, and hence $y \in \mathbb{R}^n$. In an ideal well posed system the number of actuator inputs equals the number of controllable variable outputs; that being $dim(x)=dim(\tau)\in \mathbb{R}^n$. In the case where the control input $\tau \in \mathbb{R}^m$, if $m>n$ the problem is then overactuated and a level of abstraction is needed; a virtual control input $\nu_d$ is designed by a control law $\nu_d=h(x_e,t)$ to affect dynamics. The goal is to then find a function that maps $\mathbb{R}^m \rightarrow \mathbb{R}^n$ for an actuator matrix $u \in \mathbb{U}^m$. An overactuated plant can be described as:
+With a state $x\in \mathbb{R}^n$ and $f(x,t)$ \& $g(x,t)$ being the plant's dynamics and input response respectively. In set point tracking, the output is then \emph{tracking} the state $y = x$, and hence $y \in \mathbb{R}^n$. In an ideal well posed system the number of actuator inputs equals the number of controllable variable outputs; that being $dim(x)=dim(\tau)\in \mathbb{R}^n$. In the case where the control input $\tau \in \mathbb{R}^m$, if $m>n$ the problem is then overactuated and a level of abstraction is needed; an asymptotically stabilizing virtual control input $\nu_d$ is designed by a control law $\nu_d=h(x_e,t)$ to affect dynamics. The goal is to then find a function that maps $\mathbb{R}^m \rightarrow \mathbb{R}^n$ for an actuator matrix $u \in \mathbb{U}^m$. An overactuated plant can be described as:
 \begin{subequations}
 \begin{equation} \label{eq:3.3}
 \dot{x}=f(x,t)+g(x,t)\nu_d,~\nu_d \in \mathbb{R}^n
@@ -234,10 +234,12 @@ Which ensures the commanded input $\nu_c$ tracks the desired control input $\nu_
 \begin{equation} \label{eq:quadraticallocatorcost}
 \underset{u \in \mathbb{R}^m ,s \in \mathbb{R}^n}{min}(\norm{Q_s}+J(x,t,u)) ~\text{subject to} ~\nu_c - h(x_e,t)=s, u \in \mathbb{U}
 \end{equation}
+\newpage
+Those same authors Johansen and Tjønnås [2004,2005,2008] proposed multiple control allocation solutions to a variety of systems. Following \cite{allocation}, in a subsequent paper \cite{efficientallocation}, Johansen and Tjønnås [2005] introduce a secondary cost function, driving the solution away from the norm quadratic programming direct or weighted inversion. Aiming to for optimal efficiency and not just actuator saturation. In a followup paper\cite{adaptiveallocation}, the same authors proposed an online adaptive algorithm, using a Lyupanov energy approach to ensure the minimization adaptive law settles to a feasible solution.
 \par
-Over-actuation is not something often applied to quadrotors and as a result rather than providing a comprehensive literature review of associated papers here (which are all mostly theoretical derivation), the contextual application and solutions to the above posed problems are expanded later in Section: \ref{subsec:control.allocation.allocators}. The only overactuated quadrotor (birotor dual-axis tilting makes the system critically actuated and so requires no allocation) literature which covers allocation of the given actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse (sic Moore Penrose Inverse \cite{moorepenrose}) allocation rule. A prerequisite for pseudo inversion is a multiplicative (\emph{linear}) control effectiveness relationship for Eq:\ref{eq:3.4}. 
+Over-actuation is not something often applied to quadrotors and as a result rather than providing a comprehensive literature review of associated papers here (which are all mostly theoretical derivation), the contextual application and solutions to the above posed problems are expanded later in Section:\ref{subsec:control.allocation.allocators}. The only overactuated quadrotor (birotor dual-axis tilting makes the system critically actuated and so requires no allocation) literature which covers allocation of the given actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse (sic Moore Penrose Inverse \cite{moorepenrose}) allocation rule. A prerequisite for pseudo inversion is a multiplicative \emph{linear} control effectiveness relationship for Eq:\ref{eq:3.4}. 
 \par
-Segui et al. [2012] applied weighted inversion that relies on some very specific assumptions. For the net torque response, the authors assumed the extra actuators pitch and roll angular rates, $\dot{\phi}$~and~$\dot{\theta}$ respectively, were proportionally related as follows:
+Segui et al. [2012] applied weighted inversio, relying on some very specific assumptions to achieve that linearity relationship in Eq:\ref{eq:3.4}. For the net torque response, the authors assumed the extra actuators pitch and roll angular rates, $\dot{\phi}$~and~$\dot{\theta}$ respectively, were proportionally related as follows:
 \begin{equation}
 \dot{\phi}\approx\frac{\phi}{t_{rise}}
 \end{equation}
@@ -245,16 +247,16 @@ In which $t_{rise}$ is the actuators rise time to a set-point. As a result the g
 %====================================================
 \subsubsection*{Satellite Attitude Control}
 %====================================================
-Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion based or otherwise, is a topic well covered in the field of satellite attitude control; \cite{axissymmetricspacecraft, satellitebackstepping,lpvbackstepping}. The \emph{status quo} for recent research is on non-linear adaptive attitude back-stepping control systems, wherein the adaptive update rule is the novel focus. Often plant uncertainty affects the inertia tensor of a satellite. In \cite{lpvbackstepping}, the authors Wang Jia, et al. [2010], proposed applying adaptive back-stepping to compensate for steady state (asymmetric) inertial estimation errors. Alternatively, instead of deliberating on costly non-orbital prelaunch inertial measurements, \cite{inertiaestimation} developed an algorithm for estimating the inertia tensor based on single axis controlled perturbations. However that does assume any initial estimates are sufficiently close to true body values such that they will settle and stability can be ensured.
+Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion represented or otherwise, is a topic well covered in the field of satellite attitude control; \cite{axissymmetricspacecraft, satellitebackstepping,lpvbackstepping}. The \emph{status quo} for recent research is on non-linear adaptive attitude back-stepping control systems, wherein the adaptive update rule is the novel focus. Often plant uncertainty affects the inertia tensor of a satellite. In \cite{lpvbackstepping}, the authors Wang Jia, et al. [2010], proposed applying adaptive back-stepping to compensate for steady state errors of (asymmetric) inertial estimations. Alternatively, instead of deliberating on costly non-orbital prelaunch inertial measurements, \cite{inertiaestimation} developed an algorithm for estimating the inertia tensor based on single axis controlled perturbations. Such an approach does assume any initial estimates are sufficiently close to true body values such that they will settle and stability can be ensured, however unacceptable the transition performance may be.
 \par
-Satellite actuator suites mostly include additional redundant effectors, to ensure fault tollerance and reliability, and hence require control allocation. Often the extra allocators are CMG actuators, driven by DC motors, to produce rotational torques. Fuel burning can only actuate for a certain period of time and so thrusters are scheduled to have a lower priority. Seen in the paper \cite{satellitebackstepping}; the authors, Kristiansen et al. [2005], addresses the over-actuation with direct and well-matched inversion before applying quaternion based back-stepping for attitude control. A quadratic pseudo inverse solution to Eq:\ref{eq:quadraticallocatorcost} is:
+Satellite actuator suites mostly include additional redundant effectors, to ensure fault tollerance, and thus require control allocation. Often the extra allocators are CMG actuators, driven by DC motors, to produce rotational torques. Fuel burning can only actuate for a certain period of time and so thrusters are scheduled to have a lower priority. Seen in the paper \cite{satellitebackstepping}; the authors, Kristiansen et al. [2005], address the over-actuation with direct and well-matched inversion before applying quaternion based back-stepping for attitude control. A direct inversion solves to Eq:\ref{eq:quadraticallocatorcost} such that:
 \begin{subequations}\label{eq:pseudoinv}
 \begin{equation}\label{eq:pseudoinva}
 u=B^{\dagger}({\tau_a}^{b}-D{\omega_{ib}}^b)
 \end{equation}
-\vspace{-20pt}
+\vspace{-15pt}
 \begin{equation}\label{eq:pseudoinvb}
 B^\dagger=B^T(BB^T)^{-1}
 \end{equation}
 \end{subequations}
-Where $B$ is the control effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque ${\tau_a}^b$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of control distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
+Where $B$ is the effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque ${\tau_a}^b$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of control distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
