@@ -7,15 +7,13 @@
 \section{Design}
 \label{sec:proto.design}
 %====================================================
-The final prototype (Fig:\ref{fig:iso-design}) went through a series of different design iterations, all aimed at optimizing engineering time spent on construction and reducing the associated component costs thereof. A significant aspect of consideration for the design process was the net weight whose upper limit, as mentioned before, is inherently limited by the thrust produced from lift motors. Some of the more important design factors, like inertias \& mass centers (Section:\ref{subsec:proto.design.inertia}), are discussed here in order to give context for the dynamics derived in the next chapter. The reference frame orientations which those dynamics are developed with respect to is then detailed as well. The actuator suite's functionality and transfer characteristics are also quantified.  Finally a brief overview of the electrical systems layout is given with the components associated and their electrical characteristics listed. A review of the physical prototype realized and control loop implemented is detailed in Chapter:\ref{ch:flight}~along with actual flight test results.
-\par
-\vspace{25pt}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{figs/iso-design}
+\includegraphics[width=0.93\textwidth]{figs/iso-design}
 \caption{Isometric view of the prototype design}
 \label{fig:iso-design}
 \end{figure}
+The final prototype (Fig:\ref{fig:iso-design}) went through a series of different design iterations, all aimed at optimizing engineering time spent on construction and reducing the associated component costs thereof. A significant aspect of consideration for the design process was the net weight whose upper limit, as mentioned before, is inherently limited by the thrust produced from lift motors. Some of the more important design factors, like inertias \& mass centers (Section:\ref{subsec:proto.design.inertia}), are discussed here in order to give context for the dynamics derived in the next chapter. The reference frame orientations which those dynamics are developed with respect to is then detailed as well. The actuator suite's functionality and transfer characteristics are also quantified.  Finally a brief overview of the electrical systems layout is given with the components associated and their electrical characteristics listed. A review of the physical prototype realized and control loop implemented is detailed in Chapter:\ref{ch:flight}~along with actual flight test results.
 \newpage
 %====================================================
 \subsection{Actuation}
@@ -36,7 +34,7 @@ The novel component of the design is the manner of articulation for each concent
 \caption{Motor frame damping support assemblies}
 \label{fig:motor_support}
 \end{subfigure}
-\caption{Motor Assembly}
+\caption{}
 \end{figure}
 Each motor module is positioned such that its produced thrust vector coincides with the intersection of its two rotational axes. As a result, there's only a perpendicular displacement co-planar to the body frames X-Y-Z origin (See Fig:\ref{fig:motor-frame}), $\vec{L}_{arm}$. That length directly affects the differential thrust torque $\tau_{diff}=\vec{L}_{arm}\times\vec{T}$. An off-center thrust vector line would make that arm displacement a non-orthogonal vector. The center of gravity of each module is time varying and depends on its servo rotational positions. It's more practical to ensure intersection of the thrust vector with the rotational center than to balance the masses undergoing rotation. A thrust varying torque is harder to approximate and compensate for than a gravitational torque, given the complexity with modeling a propeller's aerodynamic thrust (Section:\ref{subsec:dynamics.aero.bem}).
 \par
@@ -44,7 +42,7 @@ The primary body structure, similar to a traditional quadcopter '+' configuratio
 \par
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=\textwidth]{figs/motor-prop}
+\includegraphics[width=0.95\textwidth]{figs/motor-prop}
 \caption{Difference between propeller and motor planes}
 \label{fig:motor_prop}
 \end{figure}
@@ -83,14 +81,14 @@ Digital Servo&1{L} 15{1.5{H} 1.53{L}}\\
 %====================================================
 \section{Conventions Used}
 \label{sec:proto.conventions}
-The attitude conventions used for the system's dynamic derivations in the following Chapter:\ref{ch:dynamics}~are first briefly discussed here. Often these aspects are assumed to be obvious enough that they're omitted. It's important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included but the focus remains on the \emph{contrast} between a rotation and transformation operation. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in depth and thorough explanation of rotation matrices and DCM attitude representation if such concepts are unfamiliar to the reader. Quaternions are introduced in Section:\ref{subsec:dynamics.rigidbody.quaternion}.
+The attitude conventions used for the system's dynamic derivations, in the following Chapter:\ref{ch:dynamics},~are first briefly discussed here. Often these aspects are assumed to be obvious enough that they're omitted. It's important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included but the focus remains on the \emph{contrast} between a rotation and transformation operation. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in depth and thorough explanation of rotation matrices and DCM attitude representation if such concepts are unfamiliar to the reader. Quaternions are introduced in Section:\ref{subsec:dynamics.rigidbody.quaternion}.
 %====================================================
 \subsection{Reference Frames Convention}
 \label{subsec:proto.conventions.frames}
 %====================================================
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{figs/reference_frame}
+\includegraphics[width=0.65\textwidth]{figs/reference-frame}
 \caption{Inertial and Body Reference Frames}
 \label{fig:ref_frame}
 \end{figure}
