@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.5.10)  3 OCT 2016 18:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.5.10)  25 OCT 2016 15:02
 entering extended mode
 **./appendix.tex
 (appendix.tex
@@ -2491,7 +2491,7 @@ and I'll forget about whatever was undefined.
 ]
 ! Undefined control sequence.
 l.58 \newgeometry
-                 {left=1cm,right=1cm,top=2cm,bottom=1cm}
+                 {left=1cm,right=1cm,top=2cm,bottom=2cm}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -2506,7 +2506,7 @@ Type  H <return>  for immediate help.
  ...                                              
                                                   
 l.58 \newgeometry{l
-                   eft=1cm,right=1cm,top=2cm,bottom=1cm}
+                   eft=1cm,right=1cm,top=2cm,bottom=2cm}
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
@@ -2544,7 +2544,7 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no m in font nullfont!
 Missing character: There is no = in font nullfont!
-Missing character: There is no 1 in font nullfont!
+Missing character: There is no 2 in font nullfont!
 Missing character: There is no c in font nullfont!
 Missing character: There is no m in font nullfont!
 
@@ -2554,7 +2554,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.60 \begin{figure}
+l.59 \begin{figure}
                    [hbtp]
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2568,7 +2568,7 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no ] in font nullfont!
 ! Undefined control sequence.
 l.62 \includegraphics
-                     [width=0.95\textwidth]{pdfpages/working.pdf}
+                     [width=\textwidth]{pdfpages/working.pdf}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -2582,15 +2582,11 @@ Missing character: There is no d in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no h in font nullfont!
 Missing character: There is no = in font nullfont!
-Missing character: There is no 0 in font nullfont!
-Missing character: There is no . in font nullfont!
-Missing character: There is no 9 in font nullfont!
-Missing character: There is no 5 in font nullfont!
 ! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.62 \includegraphics[width=0.95\textwidth]
-                                           {pdfpages/working.pdf}
+l.62 \includegraphics[width=\textwidth]
+                                       {pdfpages/working.pdf}
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
@@ -2598,8 +2594,8 @@ look up `weird error' in the index to The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.62 \includegraphics[width=0.95\textwidth]
-                                           {pdfpages/working.pdf}
+l.62 \includegraphics[width=\textwidth]
+                                       {pdfpages/working.pdf}
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
 I'll assume that you meant to say pt, for printer's points.
@@ -5836,28 +5832,11 @@ Missing character: There is no g in font nullfont!
 Missing character: There is no r in font nullfont!
 Missing character: There is no a in font nullfont!
 Missing character: There is no m in font nullfont!
-
-! LaTeX Error: Environment figure undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.227 \begin{figure}
-                    [hbtp]
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-Missing character: There is no [ in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no b in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no ] in font nullfont!
 ! Undefined control sequence.
-l.229 \includegraphics
-                      [width=0.90\textwidth]{pdfpages/deluxe-schematic.pdf}
+<argument> ...width } \centering \includegraphics 
+                                                  [width=0.9\textwidth ]{pdf...
+l.232 }
+       
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -5874,12 +5853,11 @@ Missing character: There is no = in font nullfont!
 Missing character: There is no 0 in font nullfont!
 Missing character: There is no . in font nullfont!
 Missing character: There is no 9 in font nullfont!
-Missing character: There is no 0 in font nullfont!
 ! Missing number, treated as zero.
 <to be read again> 
                    ]
-l.229 \includegraphics[width=0.90\textwidth]
-                                            {pdfpages/deluxe-schematic.pdf}
+l.232 }
+       
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
 look up `weird error' in the index to The TeXbook.)
@@ -5887,8 +5865,8 @@ look up `weird error' in the index to The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    ]
-l.229 \includegraphics[width=0.90\textwidth]
-                                            {pdfpages/deluxe-schematic.pdf}
+l.232 }
+       
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
 I'll assume that you meant to say pt, for printer's points.
@@ -5927,18 +5905,19 @@ Missing character: There is no p in font nullfont!
 Missing character: There is no d in font nullfont!
 Missing character: There is no f in font nullfont!
 ! Undefined control sequence.
-l.230 \captionof
-                {table}{F3 Deluxe Flight Controller Hardware Schematic}
+l.233 \captionof
+                {figure}{F3 Deluxe Flight Controller Hardware Schematic}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-Missing character: There is no t in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no b in font nullfont!
-Missing character: There is no l in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no r in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no F in font nullfont!
 Missing character: There is no 3 in font nullfont!
@@ -5981,21 +5960,8 @@ Missing character: There is no a in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no c in font nullfont!
-
-! LaTeX Error: \begin{document} ended by \end{figure}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.231 \end{figure}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
 ! Undefined control sequence.
-l.232 \restoregeometry
+l.235 \restoregeometry
                       
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -6003,14 +5969,64 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 223--237
+[]
+ []
+
+
+Overfull \hbox (7379.54997pt too wide) in paragraph at lines 223--237
+[]
+ []
+
+
+! LaTeX Error: The font size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.237 \newpage
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[6
 ! Undefined control sequence.
-l.233 \chapter
+<write> \newlabel{app:deluxe-diagram}{{}{\thepage 
+                                                  }}
+l.237 \newpage
+              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+\newlabel{app:deluxe-diagram}{{}{}}
+]
+! Undefined control sequence.
+l.239 \chapter
               {System ID Test Data}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.239 \chapter{S
+                ystem ID Test Data}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
 Missing character: There is no S in font nullfont!
 Missing character: There is no y in font nullfont!
@@ -6029,13 +6045,318 @@ Missing character: There is no a in font nullfont!
 Missing character: There is no t in font nullfont!
 Missing character: There is no a in font nullfont!
 ! Undefined control sequence.
-l.236 \chapter
+l.242 \section
+              {Servo Data}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no S in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no D in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 239--244
+[]
+ []
+
+
+! LaTeX Error: The font size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.244 \newpage
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[7
+! Undefined control sequence.
+<write> \newlabel{app:systemdat}{{}{\thepage 
+                                             }}
+l.244 \newpage
+              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+\newlabel{app:systemdat}{{}{}}
+]
+! Undefined control sequence.
+l.246 \newgeometry
+                  {left=1cm,right=1cm,top=2cm,bottom=1cm}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.246 \newgeometry{l
+                    eft=1cm,right=1cm,top=2cm,bottom=1cm}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no m in font nullfont!
+! Undefined control sequence.
+l.247 \section
+              {Cobra CM2208-200KV}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no C in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no C in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no K in font nullfont!
+Missing character: There is no V in font nullfont!
+! Undefined control sequence.
+<argument> ...width } \centering \includegraphics 
+                                                  [width=\textwidth ]{pdfpag...
+l.255 }
+       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no [ in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no = in font nullfont!
+! Missing number, treated as zero.
+<to be read again> 
+                   ]
+l.255 }
+       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   ]
+l.255 }
+       
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no ] in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no / in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no f in font nullfont!
+! Undefined control sequence.
+l.256 \captionof
+                {figure}{Official Test Results for Cobra Motors}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no O in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no C in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no s in font nullfont!
+! Undefined control sequence.
+l.257 \restoregeometry
+                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 246--259
+ [] 
+ []
+
+
+Overfull \hbox (7379.54997pt too wide) in paragraph at lines 246--259
+ [] 
+ []
+
+
+! LaTeX Error: The font size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.259 \newpage
+              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[8
+! Undefined control sequence.
+<write> \newlabel{app:cobra-test}{{}{\thepage 
+                                              }}
+l.259 \newpage
+              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+\newlabel{app:cobra-test}{{}{}}
+]
+! Undefined control sequence.
+l.261 \chapter
               {Full Equations}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.261 \chapter{F
+                ull Equations}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
 Missing character: There is no F in font nullfont!
 Missing character: There is no u in font nullfont!
@@ -6051,7 +6372,7 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no s in font nullfont!
 ! Undefined control sequence.
-l.238 \section
+l.263 \section
               {Inertias}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -6074,16 +6395,11 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.239 \begin{subequations}
+l.264 \begin{subequations}
                           
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
-
-
-Overfull \hbox (20.0pt too wide) in paragraph at lines 223--240
-[]
- []
 
 
 ! LaTeX Error: Environment bmatrix undefined.
@@ -6092,14 +6408,14 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.241 \approx\begin{bmatrix}
+l.266 \approx\begin{bmatrix}
                             
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 ! Misplaced alignment tab character &.
-l.242 3613.144 &
+l.267 3613.144 &
                  0.025 & 406.81\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6109,7 +6425,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.242 3613.144 & 0.025 &
+l.267 3613.144 & 0.025 &
                          406.81\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6118,8 +6434,71 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.267 3613.144 & 0.025 & 406.81\\
+                                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.267 3613.144 & 0.025 & 406.81\\
+                                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.267 3613.144 & 0.025 & 406.81\\
+                                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.267 3613.144 & 0.025 & 406.81\\
+                                 
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Overfull \hbox (98.88911pt too wide) detected at line 267
+[]\OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 3613\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 1440
+\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 025406\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 81
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.268 0
+       .025 & 9774.160 & 0.4626\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 5 in font nullfont!
 ! Misplaced alignment tab character &.
-l.243 0.025 &
+l.268 0.025 &
               9774.160 & 0.4626\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6128,8 +6507,16 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 0 in font nullfont!
 ! Misplaced alignment tab character &.
-l.243 0.025 & 9774.160 &
+l.268 0.025 & 9774.160 &
                          0.4626\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6138,8 +6525,32 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.269 4
+       06.81 & 0.4626 & 12650.72\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no 1 in font nullfont!
 ! Misplaced alignment tab character &.
-l.244 406.81 &
+l.269 406.81 &
                0.4626 & 12650.72\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6148,8 +6559,14 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 6 in font nullfont!
 ! Misplaced alignment tab character &.
-l.244 406.81 & 0.4626 &
+l.269 406.81 & 0.4626 &
                         12650.72\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6158,28 +6575,80 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 2 in font nullfont!
 
-! LaTeX Error: \begin{equation} on input line 240 ended by \end{bmatrix}.
+! LaTeX Error: \begin{equation} on input line 265 ended by \end{bmatrix}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.245 \end{bmatrix}
+l.270 \end{bmatrix}
                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `\eqno' in vertical mode.
+\endequation ->\eqno 
+                     \hbox {\@eqnnum }$$\@ignoretrue 
+l.271 \end{equation}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-Overfull \hbox (280.55634pt too wide) detected at line 246
-[]\OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 3613\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 1440
-\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 025406\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 81[] 
-0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0259774\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 160
-0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 4626[] 406\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 
-810\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 462612650\OML/cmm/m/it/10 :\OT1/cmr/m/n/10
- 72[] 
- []
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.271 \end{equation}
+                    
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: \begin{document} ended by \end{equation}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.271 \end{equation}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.271 \end{equation}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.271 \end{equation}
+                    
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
 
 
 ! LaTeX Error: Environment bmatrix undefined.
@@ -6188,14 +6657,14 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.249 \begin{bmatrix}
+l.274 \begin{bmatrix}
                      
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 ! Misplaced alignment tab character &.
-l.250 0 &
+l.275 0 &
           -0.249s\lambda-0.276c\lambda & 0.249c\lambda-0.276s\lambda\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6205,7 +6674,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.250 0 & -0.249s\lambda-0.276c\lambda &
+l.275 0 & -0.249s\lambda-0.276c\lambda &
                                          0.249c\lambda-0.276s\lambda\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6214,8 +6683,85 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.275 ...6c\lambda & 0.249c\lambda-0.276s\lambda\\
+                                                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.275 ...6c\lambda & 0.249c\lambda-0.276s\lambda\\
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.275 ...6c\lambda & 0.249c\lambda-0.276s\lambda\\
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.275 ...6c\lambda & 0.249c\lambda-0.276s\lambda\\
+                                                  
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Overfull \hbox (160.80836pt too wide) detected at line 275
+\OT1/cmr/m/n/10 0 \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cm
+r/m/n/10 249\OML/cmm/m/it/10 s \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/
+it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 
+:\OT1/cmr/m/n/10 249\OML/cmm/m/it/10 c \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OM
+L/cmm/m/it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10 s
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.276 -
+       0.249s\lambda-0.276c\lambda & -0.448s2\lambda -2142.67s\lambda+983c\l...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no - in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.276 -0.249s\lambda
+                    -0.276c\lambda & -0.448s2\lambda -2142.67s\lambda+983c\l...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
 ! Misplaced alignment tab character &.
-l.251 -0.249s\lambda-0.276c\lambda &
+l.276 -0.249s\lambda-0.276c\lambda &
                                      -0.448s2\lambda -2142.67s\lambda+983c\l...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6225,7 +6771,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.251 ...48s2\lambda -2142.67s\lambda+983c\lambda&
+l.276 ...48s2\lambda -2142.67s\lambda+983c\lambda&
                                                   983s2\lambda-2142.67s\lamb...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6234,8 +6780,97 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.276 ...2\lambda-2142.67s\lambda+0.448c2\lambda\\
+                                                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.276 ...2\lambda-2142.67s\lambda+0.448c2\lambda\\
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (13.61116pt too wide) in paragraph at lines 276--276
+ []$\OML/cmm/m/it/10  \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (40.71657pt too wide) in paragraph at lines 276--276
+ $\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10 c \OM
+S/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (46.07652pt too wide) in paragraph at lines 276--276
+ $\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448\OML/cmm/m/it/10 s\OT1/
+cmr/m/n/10 2\OML/cmm/m/it/10  \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (51.07654pt too wide) in paragraph at lines 276--276
+ $\OT1/cmr/m/n/10 2142\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 67\OML/cmm/m/it/10 s \
+OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (63.45969pt too wide) in paragraph at lines 276--276
+ $\OT1/cmr/m/n/10 983\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 983\OML/cmm/m/it/10 s\O
+T1/cmr/m/n/10 2\OML/cmm/m/it/10  \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (51.07654pt too wide) in paragraph at lines 276--276
+ $\OT1/cmr/m/n/10 2142\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 67\OML/cmm/m/it/10 s \
+OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (37.93878pt too wide) in paragraph at lines 276--276
+ $\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448\OML/cmm/m/it/10 c\OT1/
+cmr/m/n/10 2\OML/cmm/m/it/10 $ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.277 0
+       .249c\lambda-0.276s\lambda & 983s2\lambda -2142.67s\lambda +0.448c2\l...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.277 0.249c\lambda
+                   -0.276s\lambda & 983s2\lambda -2142.67s\lambda +0.448c2\l...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
 ! Misplaced alignment tab character &.
-l.252 0.249c\lambda-0.276s\lambda &
+l.277 0.249c\lambda-0.276s\lambda &
                                     983s2\lambda -2142.67s\lambda +0.448c2\l...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6245,7 +6880,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.252 ...lambda -2142.67s\lambda +0.448c2\lambda &
+l.277 ...lambda -2142.67s\lambda +0.448c2\lambda &
                                                    1967.497s\lambda + 1070.8...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6255,45 +6890,136 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 
-! LaTeX Error: \begin{equation} on input line 248 ended by \end{bmatrix}.
+! LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.253 \end{bmatrix}
+l.277 ...ambda + 1070.88c2\lambda+0.448s2\lambda\\
+                                                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.277 ...ambda + 1070.88c2\lambda+0.448s2\lambda\\
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (13.61116pt too wide) in paragraph at lines 277--277
+ []$\OML/cmm/m/it/10  \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (71.59743pt too wide) in paragraph at lines 277--277
+ $\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10 s\OT1
+/cmr/m/n/10 983\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 2\OML/cmm/m/it/10  \OMS/cmsy/
+m/n/10  $ 
+ []
+
+
+Overfull \hbox (51.07654pt too wide) in paragraph at lines 277--277
+ $\OT1/cmr/m/n/10 2142\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 67\OML/cmm/m/it/10 s \
+OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (94.01534pt too wide) in paragraph at lines 277--277
+ $\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448\OML/cmm/m/it/10 c\OT1/
+cmr/m/n/10 2\OML/cmm/m/it/10 \OT1/cmr/m/n/10 1967\OML/cmm/m/it/10 :\OT1/cmr/m/
+n/10 497\OML/cmm/m/it/10 s \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (55.71661pt too wide) in paragraph at lines 277--277
+ $\OT1/cmr/m/n/10 1070\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 88\OML/cmm/m/it/10 c\OT
+1/cmr/m/n/10 2\OML/cmm/m/it/10  \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (38.29872pt too wide) in paragraph at lines 277--277
+ $\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448\OML/cmm/m/it/10 s\OT1/
+cmr/m/n/10 2\OML/cmm/m/it/10 $ 
+ []
+
+
+! LaTeX Error: \begin{equation} on input line 273 ended by \end{bmatrix}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.278 \end{bmatrix}
                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! You can't use `\eqno' in vertical mode.
+\endequation ->\eqno 
+                     \hbox {\@eqnnum }$$\@ignoretrue 
+l.279 \end{equation}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
-Overfull \hbox (851.42851pt too wide) detected at line 254
-\OT1/cmr/m/n/10 0 \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cm
-r/m/n/10 249\OML/cmm/m/it/10 s \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/
-it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 
-:\OT1/cmr/m/n/10 249\OML/cmm/m/it/10 c \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OM
-L/cmm/m/it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10 s[]  \OMS/cmsy/m/n/10   \OT
-1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 249\OML/cmm/m/it/10 s \OMS/cms
-y/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/
-10 c \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448
-\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 2\OML/cmm/m/it/10  \OMS/cmsy/m/n/10   \OT1/c
-mr/m/n/10 2142\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 67\OML/cmm/m/it/10 s \OT1/cmr/
-m/n/10 + 983\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 983\OML/cmm/m/it/10 s\OT1/cmr/m/
-n/10 2\OML/cmm/m/it/10  \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 2142\OML/cmm/m/it/1
-0 :\OT1/cmr/m/n/10 67\OML/cmm/m/it/10 s \OT1/cmr/m/n/10 + 0\OML/cmm/m/it/10 :\
-OT1/cmr/m/n/10 448\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 [] \OT1/
-cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 249\OML/cmm/m/it/10 c \OMS/cmsy/
-m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 276\OML/cmm/m/it/10
- s\OT1/cmr/m/n/10 983\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 2\OML/cmm/m/it/10  \OM
-S/cmsy/m/n/10   \OT1/cmr/m/n/10 2142\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 67\OML/cm
-m/m/it/10 s \OT1/cmr/m/n/10 + 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448\OML/cmm/m
-/it/10 c\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 \OT1/cmr/m/n/10 1967\OML/cmm/m/it/10
- :\OT1/cmr/m/n/10 497\OML/cmm/m/it/10 s \OT1/cmr/m/n/10 + 1070\OML/cmm/m/it/10
- :\OT1/cmr/m/n/10 88\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 2\OML/cmm/m/it/10  \OT1/
-cmr/m/n/10 + 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 448\OML/cmm/m/it/10 s\OT1/cmr/m
-/n/10 2\OML/cmm/m/it/10 [] 
- []
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 \end{equation}
+                    
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: \begin{document} ended by \end{equation}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 \end{equation}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.279 \end{equation}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.279 \end{equation}
+                    
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.279 \end{equation}
+                    
+Things are pretty mixed up, but I think the worst is over.
 
 
 ! LaTeX Error: Environment bmatrix undefined.
@@ -6302,51 +7028,713 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.256 =\begin{bmatrix}
+l.281 =\begin{bmatrix}
                       
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-! LaTeX Error: \begin{equation} on input line 255 ended by \end{bmatrix}.
+! LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.274 \end{bmatrix}
+l.283 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.283 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.283 \\
+        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.283 \\
+        
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Overfull \hbox (327.50826pt too wide) detected at line 283
+\OT1/cmr/m/n/10 = 814\OML/cmm/m/it/10 c[]s[] \OT1/cmr/m/n/10 + 3613[][] + 11580
+[][] + 2142[][][][] + 1967[][][][] + 2\OML/cmm/m/it/10 c[][][]s[] \OMS/cmsy/m/n
+/10   \OML/cmm/m/it/10 c[]s[]s[]
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.284 2
+       {c^2}_{\lambda}s_{\lambda} - s_{\lambda} - 175c_{\lambda}s_{\eta}s_{\...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.284 2{c^
+          2}_{\lambda}s_{\lambda} - s_{\lambda} - 175c_{\lambda}s_{\eta}s_{\...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.284 2{c^2}
+            _{\lambda}s_{\lambda} - s_{\lambda} - 175c_{\lambda}s_{\eta}s_{\...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.285 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.285 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (22.95145pt too wide) in paragraph at lines 284--285
+ []$[]\OML/cmm/m/it/10 s[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (17.70837pt too wide) in paragraph at lines 284--285
+ $\OML/cmm/m/it/10 s[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (44.06009pt too wide) in paragraph at lines 284--285
+ $\OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[]s[]s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.286 4
+       967s_{2\eta} + 814{c^2}_{\eta} - {c^2}_{\eta}s_{\lambda} + 175c_{\eta...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.286 4967s_
+            {2\eta} + 814{c^2}_{\eta} - {c^2}_{\eta}s_{\lambda} + 175c_{\eta...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.287 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (16.63527pt too wide) in paragraph at lines 286--287
+ []$[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (36.46288pt too wide) in paragraph at lines 286--287
+ $\OT1/cmr/m/n/10 814[][] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (31.3934pt too wide) in paragraph at lines 286--287
+ $[][]\OML/cmm/m/it/10 s[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (55.59235pt too wide) in paragraph at lines 286--287
+ $\OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[][][]s[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (43.25896pt too wide) in paragraph at lines 286--287
+ $\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 c[]c[]s[]s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.288 2
+       {c^2}_{\lambda}s_{\eta} - s_{\eta} - 175c_{\lambda}s_{\eta}s_{\lambda}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.288 2{c^
+          2}_{\lambda}s_{\eta} - s_{\eta} - 175c_{\lambda}s_{\eta}s_{\lambda}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.288 2{c^2}
+            _{\lambda}s_{\eta} - s_{\eta} - 175c_{\lambda}s_{\eta}s_{\lambda}
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.289 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.289 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (22.57971pt too wide) in paragraph at lines 288--289
+ []$[]\OML/cmm/m/it/10 s[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (17.33664pt too wide) in paragraph at lines 288--289
+ $\OML/cmm/m/it/10 s[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (44.06009pt too wide) in paragraph at lines 288--289
+ $\OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[]s[]s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.290 1
+       0933 - 175{c^2}_{\lambda} - s_{2\lambda}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.290 10933 - 175{c^
+                    2}_{\lambda} - s_{2\lambda}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.290 10933 - 175{c^2}
+                      _{\lambda} - s_{2\lambda}
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.291 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.291 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (13.02087pt too wide) in paragraph at lines 290--291
+ $[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (13.9167pt too wide) in paragraph at lines 290--291
+ $\OML/cmm/m/it/10 s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.292 2
+       c_{\eta}{c^2}_{\lambda} - c_{\eta} - 175c_{\eta}c_{\lambda}s_{\lambda}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.292 2c_
+         {\eta}{c^2}_{\lambda} - c_{\eta} - 175c_{\eta}c_{\lambda}s_{\lambda}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.293 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.293 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (26.7059pt too wide) in paragraph at lines 292--293
+ []$[][][] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (16.9767pt too wide) in paragraph at lines 292--293
+ $\OML/cmm/m/it/10 c[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (43.70015pt too wide) in paragraph at lines 292--293
+ $\OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[]c[]s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.294 4
+       967s_{2\eta} + 814{c^2}_{\eta} - {c^2}_{\eta}s_{\lambda} + 175c_{\eta...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.294 4967s_
+            {2\eta} + 814{c^2}_{\eta} - {c^2}_{\eta}s_{\lambda} + 175c_{\eta...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.295 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.295 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (16.63527pt too wide) in paragraph at lines 294--295
+ []$[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (36.46288pt too wide) in paragraph at lines 294--295
+ $\OT1/cmr/m/n/10 814[][] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (31.3934pt too wide) in paragraph at lines 294--295
+ $[][]\OML/cmm/m/it/10 s[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (55.59235pt too wide) in paragraph at lines 294--295
+ $\OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[][][]s[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (51.03676pt too wide) in paragraph at lines 294--295
+ $\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 c[]c[]s[]s[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (15.00005pt too wide) in paragraph at lines 294--295
+ $\OT1/cmr/m/n/10 407$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.296 2
+       c_{\eta}{c^2}_{\lambda} - c_{\eta} - 175c_{\eta}c_{\lambda}s_{\lambda}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.296 2c_
+         {\eta}{c^2}_{\lambda} - c_{\eta} - 175c_{\eta}c_{\lambda}s_{\lambda}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.297 \\
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.297 \\
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (26.7059pt too wide) in paragraph at lines 296--297
+ []$[][][] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (16.9767pt too wide) in paragraph at lines 296--297
+ $\OML/cmm/m/it/10 c[] \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (43.70015pt too wide) in paragraph at lines 296--297
+ $\OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[]c[]s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.298 9
+       933{c^2}_{\eta} - 814c_{\eta}s_{\eta} + 175{c^2}_{\eta}{c^2}_{\lambda...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no c in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.298 9933{c^
+             2}_{\eta} - 814c_{\eta}s_{\eta} + 175{c^2}_{\eta}{c^2}_{\lambda...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.298 9933{c^2}
+               _{\eta} - 814c_{\eta}s_{\eta} + 175{c^2}_{\eta}{c^2}_{\lambda...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \begin{equation} on input line 280 ended by \end{bmatrix}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.299 \end{bmatrix}
                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.299 \end{bmatrix}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
 
-Overfull \hbox (1447.791pt too wide) detected at line 275
-\OT1/cmr/m/n/10 = 814\OML/cmm/m/it/10 c[]s[] \OT1/cmr/m/n/10 + 3613[][] + 11580
-[][] + 2142[][][][] + 1967[][][][] + 2\OML/cmm/m/it/10 c[][][]s[] \OMS/cmsy/m/n
-/10   \OML/cmm/m/it/10 c[]s[]s[][] \OT1/cmr/m/n/10 2[][]\OML/cmm/m/it/10 s[] \O
-MS/cmsy/m/n/10   \OML/cmm/m/it/10 s[] \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 175\OM
-L/cmm/m/it/10 c[]s[]s[][] \OT1/cmr/m/n/10 4967\OML/cmm/m/it/10 s[] \OT1/cmr/m/n
-/10 + 814[][] \OMS/cmsy/m/n/10   [][]\OML/cmm/m/it/10 s[] \OT1/cmr/m/n/10 + 175
-\OML/cmm/m/it/10 c[][][]s[] \OT1/cmr/m/n/10 + 2\OML/cmm/m/it/10 c[]c[]s[]s[][] 
-\OT1/cmr/m/n/10 2[][]\OML/cmm/m/it/10 s[] \OMS/cmsy/m/n/10   \OML/cmm/m/it/10 s
-[] \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[]s[]s[][] \OT1/cmr/
-m/n/10 10933 \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 175[][] \OMS/cmsy/m/n/10   \OML
-/cmm/m/it/10 s[][] \OT1/cmr/m/n/10 2\OML/cmm/m/it/10 c[][][] \OMS/cmsy/m/n/10  
- \OML/cmm/m/it/10 c[] \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[
-]c[]s[][] \OT1/cmr/m/n/10 4967\OML/cmm/m/it/10 s[] \OT1/cmr/m/n/10 + 814[][] \O
-MS/cmsy/m/n/10   [][]\OML/cmm/m/it/10 s[] \OT1/cmr/m/n/10 + 175\OML/cmm/m/it/10
- c[][][]s[] \OT1/cmr/m/n/10 + 2\OML/cmm/m/it/10 c[]c[]s[]s[] \OMS/cmsy/m/n/10  
- \OT1/cmr/m/n/10 407[] 2\OML/cmm/m/it/10 c[][][] \OMS/cmsy/m/n/10   \OML/cmm/m/
-it/10 c[] \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 175\OML/cmm/m/it/10 c[]c[]s[][] \O
-T1/cmr/m/n/10 9933[][] \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 814\OML/cmm/m/it/10 c
-[]s[] \OT1/cmr/m/n/10 + 175[][][][] + 2[][]\OML/cmm/m/it/10 c[]s[] \OT1/cmr/m/n
-/10 + \OML/cmm/m/it/10 c[]s[]s[]
+! Missing } inserted.
+<inserted text> 
+                }
+l.299 \end{bmatrix}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.299 \end{bmatrix}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.299 \end{bmatrix}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.299 \end{bmatrix}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! You can't use `\eqno' in horizontal mode.
+\endequation ->\eqno 
+                     \hbox {\@eqnnum }$$\@ignoretrue 
+l.300 \end{equation}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+Overfull \hbox (12.64914pt too wide) in paragraph at lines 298--300
+ []$[] \OMS/cmsy/m/n/10  $ 
  []
 
+
+Overfull \hbox (41.53558pt too wide) in paragraph at lines 298--300
+ $\OT1/cmr/m/n/10 814\OML/cmm/m/it/10 c[]s[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (50.51964pt too wide) in paragraph at lines 298--300
+ $\OT1/cmr/m/n/10 175[][][][] +$ 
+ []
+
+
+Overfull \hbox (45.96405pt too wide) in paragraph at lines 298--300
+ $\OT1/cmr/m/n/10 2[][]\OML/cmm/m/it/10 c[]s[] \OT1/cmr/m/n/10 +$ 
+ []
+
+
+Overfull \hbox (28.68831pt too wide) in paragraph at lines 298--300
+ $\OML/cmm/m/it/10 c[]s[]s[]$ 
+ []
+
+
+Overfull \hbox (12.77782pt too wide) in paragraph at lines 298--300
+ [] 
+ []
+
+
+! LaTeX Error: \begin{document} ended by \end{equation}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.300 \end{equation}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.300 \end{equation}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.300 \end{equation}
+                    
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.300 \end{equation}
+                    
+Things are pretty mixed up, but I think the worst is over.
+
 ! Undefined control sequence.
-l.278 =\mathbb
+l.303 =\mathbb
               {R}_Z
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -6361,14 +7749,14 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.279 \begin{bmatrix}
+l.304 \begin{bmatrix}
                      
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 ! Misplaced alignment tab character &.
-l.280 c_{\eta_i} &
+l.305 c_{\eta_i} &
                    0 & s_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6378,7 +7766,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.280 c_{\eta_i} & 0 &
+l.305 c_{\eta_i} & 0 &
                        s_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6387,8 +7775,66 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.305 c_{\eta_i} & 0 & s_{\eta_i}\\
+                                   
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.305 c_{\eta_i} & 0 & s_{\eta_i}\\
+                                   
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.305 c_{\eta_i} & 0 & s_{\eta_i}\\
+                                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.305 c_{\eta_i} & 0 & s_{\eta_i}\\
+                                   
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Overfull \hbox (54.17842pt too wide) detected at line 305
+\OT1/cmr/m/n/10 = \OML/cmm/m/it/10 R[]c[]\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 s[]
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.306 0
+        & 1 & 0\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 0 in font nullfont!
 ! Misplaced alignment tab character &.
-l.281 0 &
+l.306 0 &
           1 & 0\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6397,8 +7843,9 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 1 in font nullfont!
 ! Misplaced alignment tab character &.
-l.281 0 & 1 &
+l.306 0 & 1 &
               0\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6407,8 +7854,31 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 0 in font nullfont!
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.307 -
+       s_{\eta_i} & 0 & c_{\eta_i}\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no - in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.307 -s_
+         {\eta_i} & 0 & c_{\eta_i}\\
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
 ! Misplaced alignment tab character &.
-l.282 -s_{\eta_i} &
+l.307 -s_{\eta_i} &
                     0 & c_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6418,7 +7888,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.282 -s_{\eta_i} & 0 &
+l.307 -s_{\eta_i} & 0 &
                         c_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6428,20 +7898,46 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 
-! LaTeX Error: \begin{equation} on input line 277 ended by \end{bmatrix}.
+! LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.283 \end{bmatrix}
+l.307 -s_{\eta_i} & 0 & c_{\eta_i}\\
+                                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.307 -s_{\eta_i} & 0 & c_{\eta_i}\\
+                                    
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (24.90363pt too wide) in paragraph at lines 307--307
+ []$[]\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 c[]$ 
+ []
+
+
+! LaTeX Error: \begin{equation} on input line 302 ended by \end{bmatrix}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.308 \end{bmatrix}
                    \big(
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 ! Undefined control sequence.
-l.284 \mathbb
+l.309 \mathbb
              {I}_{M_i'}\big)
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -6450,20 +7946,41 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.309 \mathbb{I
+               }_{M_i'}\big)
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no I in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.309 \mathbb{I}_
+                 {M_i'}\big)
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
 ! LaTeX Error: Environment bmatrix undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.285 \begin{bmatrix}
+l.310 \begin{bmatrix}
                      
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 ! Misplaced alignment tab character &.
-l.286 c_{\eta_i} &
+l.311 c_{\eta_i} &
                    0 & -s_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6473,7 +7990,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.286 c_{\eta_i} & 0 &
+l.311 c_{\eta_i} & 0 &
                        -s_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6482,8 +7999,63 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.311 c_{\eta_i} & 0 & -s_{\eta_i}\\
+                                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.311 c_{\eta_i} & 0 & -s_{\eta_i}\\
+                                    
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.311 c_{\eta_i} & 0 & -s_{\eta_i}\\
+                                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (41.05804pt too wide) in paragraph at lines 309--311
+ []$[][]\OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 0 \OMS/cmsy/m/n/10  $ 
+ []
+
+
+Overfull \hbox (12.47552pt too wide) in paragraph at lines 309--311
+ $\OML/cmm/m/it/10 s[]$ 
+ []
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.312 0
+        & 1 & 0\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 0 in font nullfont!
 ! Misplaced alignment tab character &.
-l.287 0 &
+l.312 0 &
           1 & 0\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6492,8 +8064,9 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 1 in font nullfont!
 ! Misplaced alignment tab character &.
-l.287 0 & 1 &
+l.312 0 & 1 &
               0\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6502,8 +8075,30 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+Missing character: There is no 0 in font nullfont!
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.313 s
+       _{\eta_i} & 0 & c_{\eta_i}\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.313 s_
+        {\eta_i} & 0 & c_{\eta_i}\\
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
 ! Misplaced alignment tab character &.
-l.288 s_{\eta_i} &
+l.313 s_{\eta_i} &
                    0 & c_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6513,7 +8108,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.288 s_{\eta_i} & 0 &
+l.313 s_{\eta_i} & 0 &
                        c_{\eta_i}\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6523,20 +8118,53 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 
-! LaTeX Error: \begin{equation} on input line 277 ended by \end{bmatrix}.
+! LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.289 \end{bmatrix}
+l.313 s_{\eta_i} & 0 & c_{\eta_i}\\
+                                   
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.313 s_{\eta_i} & 0 & c_{\eta_i}\\
+                                   
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (24.90363pt too wide) in paragraph at lines 313--313
+ []$[]\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 c[]$ 
+ []
+
+
+! LaTeX Error: \begin{document} ended by \end{bmatrix}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.314 \end{bmatrix}
                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.314 \end{bmatrix}
+                   
+Things are pretty mixed up, but I think the worst is over.
+
 ! Undefined control sequence.
-l.290 \mathbb
+l.315 \mathbb
              {R}_Z^{-1}
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -6545,13 +8173,66 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Overfull \hbox (232.05763pt too wide) detected at line 291
-\OT1/cmr/m/n/10 = \OML/cmm/m/it/10 R[]c[]\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 s[][
-] \OT1/cmr/m/n/10 010[]  \OMS/cmsy/m/n/10   \OML/cmm/m/it/10 s[]\OT1/cmr/m/n/10
- 0\OML/cmm/m/it/10 c[][] []I[][]c[]\OT1/cmr/m/n/10 0 \OMS/cmsy/m/n/10   \OML/cm
-m/m/it/10 s[][] \OT1/cmr/m/n/10 010[] \OML/cmm/m/it/10 s[]\OT1/cmr/m/n/10 0\OML
-/cmm/m/it/10 c[][] R[]
- []
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.315 \mathbb{R
+               }_Z^{-1}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no R in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.315 \mathbb{R}_
+                 Z^{-1}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! You can't use `\eqno' in math mode.
+\endequation ->\eqno 
+                     \hbox {\@eqnnum }$$\@ignoretrue 
+l.316 \end{equation}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+! LaTeX Error: \begin{document} ended by \end{equation}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.316 \end{equation}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.316 \end{equation}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.316 \end{equation}
+                    
+Things are pretty mixed up, but I think the worst is over.
 
 
 ! LaTeX Error: \begin{document} ended by \end{subequations}.
@@ -6560,11 +8241,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.292 \end{subequations}
+l.317 \end{subequations}
                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.317 \end{subequations}
+                        
+Things are pretty mixed up, but I think the worst is over.
 
 )
 ! Emergency stop.
@@ -6574,11 +8262,11 @@ or  <return>  to continue without it.
 
  
 Here is how much of TeX's memory you used:
- 20 strings out of 493634
- 227 string characters out of 3143747
- 55604 words of memory out of 3000000
- 3504 multiletter control sequences out of 15000+200000
+ 21 strings out of 493634
+ 242 string characters out of 3143747
+ 57604 words of memory out of 3000000
+ 3505 multiletter control sequences out of 15000+200000
  3640 words of font info for 14 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 20i,5n,18p,212b,116s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 20i,6n,18p,212b,116s stack positions out of 5000i,500n,10000p,200000b,50000s
 !  ==> Fatal error occurred, no output PDF file produced!

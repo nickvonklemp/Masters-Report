@@ -171,7 +171,7 @@ The body frame's angular velocity is taken relative to the inertial frame, repre
 \emph{\color{Gray}The vehicle frames in Eq:\ref{eq:angular-rates.a} and the subsequent rotations between each frame don't necessarily have to be in that order. The equation could change depending on what rotation sequence was used.}
 \newpage
 Which then simplifies to the formal relationship between two rotating frames, with $\vec{\omega}_b=[p~q~r]^T$ in $rad.s^{-1}$:
-\begin{equation}
+\begin{equation}\label{eq:angular-rates.b}
 \begin{bmatrix}
 p\\
 q\\
@@ -190,11 +190,11 @@ r\\
 \end{bmatrix}
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:angular-rates.c}
 \Rightarrow\vec{\omega}_b=\Psi(\mathcal{E})\dot{\mathcal{E}}
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:angular-rates.d}
 \Psi(\mathcal{E})=
 \begin{bmatrix}
 1 & 0 & -sin(\theta)\\
@@ -203,11 +203,11 @@ r\\
 \end{bmatrix}
 \end{equation}
 \vspace{-5pt}
-\begin{equation}
+\begin{equation}\label{eq:angular-rates.e}
 \Rightarrow\dot{\mathcal{E}}=\Psi^{-1}(\mathcal{E})\vec{\omega}_b=\Phi(\mathcal{E})\vec{\omega}_b
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:angular-rates.f}
 \Phi(\mathcal{E})=\begin{bmatrix}
 1 & sin(\phi)tan(\theta) & cos(\phi)tan(\theta)\\
 0 & cos(\phi) & -sin(\phi)\\
@@ -337,23 +337,21 @@ An undesirable side effect of the relative rigid body rotations within the struc
 \caption{Inertial Measurement References}
 \end{figure}
 \par
-The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed symmetrical and calculated in Solidworks with overridden masses to match physical prototype measurements, all those values are included in Appendix:\ref{app:bom}} about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 99g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.40~-0.04~-1.94]^T~~[mm]$ relative to its rotational center). 
-\newpage
-The inner ring being rotated by $\lambda_i$\textdegree about the $\hat{X}_{M_i}$ axis then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
+The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed symmetrical and calculated in Solidworks with overridden masses to match physical prototype measurements, all those values are included in Appendix:\ref{app:bom}} about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 92g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.44~-0.01~5.81]^T~~[mm]$ relative to its rotational center). The inner ring being rotated by $\lambda_i$\textdegree ~about the $\hat{X}_{M_i}$ axis then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
 \begin{subequations}\label{eq:inertia.inner}
 \begin{equation} \label{eq:inertia.inner.a}
 \mathbb{I}_{M_i}=\begin{bmatrix}
-588.84 & -0.28 & 0.25\\
--0.28 & 1966.60 & 0.90\\
-0.25 & 0.90 & 2141.78\\
+530.88 & -32.29	& 7.46\\
+-32.29 & 1855.74 & 0.00\\
+7.46 & 0.00	& 2088.87\\
 \end{bmatrix}~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
 \begin{equation} \label{eq:inertia.inner.b}
-\approx diag\big(588, ~1966, ~2141\big)\times10^{-7}~~[kg.m^2]
+\approx diag\big(531, ~1856, ~2089\big)\times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's off-diagonal inertial products are regarded as negligible. The moment of inertia about that $\hat{X}_{M_i}$ rotational axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}=588.84\times10^{-7}~~[kg.m^2]$.
+The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's inertial components are regarded as constant. The moment of inertia about that $\hat{X}_{M_i}$ rotational axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}\approx 530.88\times10^{-7}~~[kg.m^2]$.
 \par
 The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $102g$ structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is $m_{module}=201g$. The middle ring is rotated by $\eta_i$\textdegree ~about its $\hat{Y}_{M_i}$ axis. The compound body's inertia about that axis of rotation, $\hat{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i$\textdegree ~which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{X}$ always exists}, is:
 \begin{subequations}\label{eq:inertia.middle}
@@ -397,14 +395,14 @@ Variable inertias dependent on state input variables are the first of many non-t
 \par
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{figs/inertia-center}
+\includegraphics[width=0.8\textwidth]{figs/inertia-center}
 \caption{Body Frame Center of Mass}
 \label{fig:inertia-center}
 \end{figure}
 The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs $84g$ and suspends the motor modules from the body frame with a set of silicon damping balls. The body assembly's center of mass (Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-14.27~mm$ below the Body Frame's origin of motion, $\vec{O}\in\mathcal{F}^b$.
 \\
 \emph{\color{Gray}Note: the origin which all motion is calculated with respect to is co-planar to the motor module's rotational centers, \underline{not} the net center of mass.}
-\newpage
+\\
 The body's weight, including all four damping assemblies, totals to $814.7~g$. The body's net inertia (\emph{sans} motor modules) $\mathbb{I}_{body}$, about its center of mass is (Fig:\ref{fig:inertia-center})
 \begin{subequations}\label{eq:inertia.body}
 \begin{equation}\label{eq:inertia.body.a}
@@ -630,8 +628,7 @@ The received information of the transmitted 6 channels is filtered through an In
 y_n = y_{n-1}$. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
 \par
 Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels, pulses range from 1ms - 2ms to linearly control the rotary position. The exact transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 15A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM timer channel output, similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$controller. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
-\par
-\begin{figure}[htb]
+\begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/rpm-sensor-plot}
@@ -646,6 +643,7 @@ Each of the eight digital servo actuators are driven individually from 330 Hz PW
 \end{subfigure}
 \caption{}
 \end{figure}
+\par
 There's no integrated feedback for instantaneous RPM values from the Electronic Speed Controllers. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, measuring the phase of back Emf induced across two of the three motor phases, the exact RPM can be ascertained. The signal produced by the RPM sensors varies the period, proportional to the rotational speed of the motor, of a square wave with a constant 50\% duty cycle. The RPM sensor's output signal is calibrated to a $\underline{rate}$ gain, the linear relationship is shown in Fig:\ref{fig:rpm-sensor-plot}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
 \par
 Any STM32 $\mu$controller is programmed through a dedicated debugging device. The ST-Link V2\cite{st-link} is the current proprietary device which, itself, is a specially programmed STM32F10 chip (Fig:\ref{fig:st-link}). The chip connects to the dedicated Serial Wire Debugging ports of the target STM (\emph{SWD-CLK, SWD-IO} \& \emph{SWD-NRST}) and is interfaced via regular USBD+ and USBD- data lines. 
