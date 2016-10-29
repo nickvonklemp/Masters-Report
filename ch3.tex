@@ -4,7 +4,7 @@
 \chapter{Kinematics \& Dynamics}
 \label{ch:dynamics}
 %====================================================
-The body's dynamics are first solved as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are presented and included in the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
+The body's dynamics are first solved as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are presented and introduced into the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
 %====================================================
 \section{Rigid Body Dynamics}
 \label{sec:dynamics.rigidbody}
@@ -12,9 +12,9 @@ The body's dynamics are first solved as rigid, with appropriate equations derive
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
 %====================================================
-Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{classicaldynamics,rotationrigidbody} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational, rotational and potential energies are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
+Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{classicaldynamics,rotationrigidbody} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational and rotational kinematic energies and potential energy are conserved all throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
 \par
-Lagrangian formulation is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations produce the same result. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\mathbf{r}(t)$, for both linear $\mathcal{E}$ and angular $\eta$ relative positions;
+Lagrangian formalism is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations stipulate the same resultant equations. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\mathbf{r}(t)$, for both linear $\mathcal{E}$ and angular $\eta$ relative positions;
 \begin{equation}\label{eq:generalpath}
 \mathbf{r}(t)=\begin{bmatrix}
 \mathcal{E} & \eta
@@ -103,7 +103,7 @@ F=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b g ~~~~\in\mathcal{F}^b
 \tau=\mathbb{I}_b\omega_b+\omega_b\times\mathbb{I}_b\omega~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-The set of state equations Eq:\ref{eq:states} could be reduced to a set of two equations, only in their respective reference frames of the state variables which they describe. The non-linear form of those equations substitutes $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
+The set of state equations Eq:\ref{eq:states} could be reduced to a set of two equations, only in their respective reference frames of the state variables which they describe. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\Phi(\eta)\omega_b\bigg]
 \end{equation}
@@ -111,7 +111,7 @@ This only changes the angular component, and so applying the chain rule:
 \begin{equation}
 \mathbb{I}\frac{d}{dt}\Phi(\eta)\dot{\omega}_b=\mathbb{I}\big(\Phi\dot{(\eta)}\omega_b+\Phi(\eta)\dot{\omega}_b \big)
 \end{equation}
-Drawing from \cite{autonomousrobotseuler} and recognizing that $\mathbb{I}$ must be transformed to common axes, $J=\Psi(\eta)^T\mathbb{I}\Psi(\eta)$. The controllable differential equations in Eq:\ref{eq:newton}, then in the inertial frame for force and intermediate Euler frames for each angle becomes:
+Drawing from \cite{autonomousrobotseuler} and recognizing that $\mathbb{I}$ must be transformed to common axes, $J=\Psi(\eta)^T\mathbb{I}\Psi(\eta)$. The controllable differential equations in Eq:\ref{eq:newton}, then in the inertial frame for force and intermediate Euler frames for each angle becomes\footnote{The relationship $\dot{\Phi}=\Phi\dot{\Psi}\Phi$ was used to simplify Eq:\ref{eq:nonlinear}}:
 \begin{subequations}\label{eq:nonlinear}
 \begin{equation}
 M(\eta)\ddot{\eta}+C(\eta,\dot{\eta})\dot{\eta}=\Psi(\eta)\tau
@@ -125,7 +125,7 @@ M(\eta)=\Psi(\eta)^T\mathbb{I}\Psi(\eta)
 C(\eta,\dot{\eta})=-\Psi(\eta)\mathbb{I}\Psi\dot{(\eta)}+\Psi(\eta)^T sk(\Psi(\eta)\dot{\eta})\mathbb{I}\Psi(\eta)
 \end{equation}
 \end{subequations}
-Equation \ref{eq:nonlinear} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which dictate the entire bodies motion are:
+Equation \ref{eq:nonlinear} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which dictate the entire bodies motion are then:
 \begin{subequations}
 \begin{equation}
 F=m\dot{\mathcal{E}}+\mathbb{R}_b^I\omega_b \times m \dot{\mathcal{E}}-mg~~~~\in\mathcal{F}^I
@@ -136,18 +136,38 @@ F=m\dot{\mathcal{E}}+\mathbb{R}_b^I\omega_b \times m \dot{\mathcal{E}}-mg~~~~\in
 \end{equation}
 \end{subequations}
 \par
-
 The generalized forces effecting the system, $F$ and $\tau$, are the system's controllable inputs and are going to be directly related to the actuator effectiveness terms. In the general case, which is expanded upon in Section:\ref{sec:dynamics.aero}, the control inputs are effected as follows:
 \begin{subequations}
 \begin{equation}
 \mu F = \sum \vec{T}_i
 \end{equation}
+\vspace{-10pt}
 \begin{equation}
 \mu \tau = \sum \vec{l}_i \times \vec{T}_i
 \end{equation}
 \end{subequations}
+Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, although aspects unique to the quadrotor and tilting quadrotor platforms will now be introduced\ldots
 %====================================================
 \subsection{Rotation Matrix Peculiarities}\label{subsec:dynamics.rigidbody.singularity}
+%====================================================
+It's well known and understood that a singularity occurs in the Euler attitude representation convention. Recalling the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}, which relates angular velocity in the body or inertial frame to the angular rates of the Euler Angles.
+\begin{equation}
+\begin{bmatrix}
+\dot{\phi}\\
+\dot{\theta}\\
+\dot{\psi}
+\end{bmatrix}
+=\begin{bmatrix}
+a\\
+\end{bmatrix}
+\begin{bmatrix}
+p\\
+q\\
+r
+\end{bmatrix}
+=\Phi(\eta)\omega_b
+\end{equation}
+
 %====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
