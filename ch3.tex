@@ -31,7 +31,7 @@ Introducing generic kinetic (angular \& linear) and potential energies, the latt
 \end{equation}
 \end{subequations}
 \newpage
-Noting that $\mathbb{I}$ is the inertial tensor aligned w.r.t to whichever generalized coordinates are being used. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\mathbf{V}$, acting on the system.
+Noting that $\mathbb{I}$ is the inertial tensor aligned w.r.t to whichever generalized coordinates are being used. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\mathbf{V}$, acting on the system. In this case the generalized forces or a net force, $F~~[N]$, and a net torque, $\tau~~[N.m]$.
 \begin{equation}\label{eq:euler-lagrange}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)-\frac{\delta L}{\delta \mathbf{r}} = \mathbf{V} = \begin{bmatrix}
 F\\
@@ -42,7 +42,7 @@ Taking the partial derivatives of Eq:\ref{eq:lagrangian.b} with respect to its p
 \begin{subequations}
 \begin{equation}\label{eq:partial.a}
 \frac{\delta L}{\delta \mathbf{r}}=\begin{bmatrix}
-mg\\
+mG\\
 0
 \end{bmatrix}
 \end{equation}
@@ -52,14 +52,14 @@ mg\\
 m\frac{d}{dt}\dot{\mathcal{E}} ~~~ \mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]^T
 \end{equation}
 \end{subequations}
-In any generalized coordinate system a rotating vector's time derivative \cite{reynolds,conservationequations} is given by:
+In any generalized coordinate system a rotating vector's time derivative, according to the Reynolds Transportation Theorem\cite{reynolds,conservationequations}, is given by:
 \begin{equation}\label{eq:reynolds}
 \frac{d\vec{f}}{dt_a}=\frac{d\vec{f}}{dt_b}+\vec{\omega}_{a/b}\times\vec{f}
 \end{equation}
-So applying the Reynolds Transportation Theorem (Eq:\ref{eq:reynolds}) to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates as cartesian body coordinates with respect to inertial origin. Noting that in Eq:\ref{eq:partial.b} the place holders used for linear and angular positions are in a specific frame, $[ \dot{\mathcal{E}}~~\dot{\eta} ]^T \in \mathcal{F}^b$, and hence $\equiv [ \nu ~~ \omega]^T$. It then follows that Lagrangian will change:
+So applying that theorem (Eq:\ref{eq:reynolds}) to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates as cartesian body coordinates with respect to an inertial origin. Noting that in Eq:\ref{eq:partial.b} the place holders used for linear and angular positions are in a common shared frame\footnote{In this case $\eta\not=\phi~\theta~\psi]^T$ seeing that it's defined in a common frame}, and hence $[ \dot{\mathcal{E}}~~\dot{\eta} ]^T\equiv [ \nu ~~ \omega]^T\in \mathcal{F}^b$. It then follows that Lagrangian will change:
 \begin{subequations}
 \begin{equation}
-\mathcal{L}=\frac{1}{2}\nu^{T}(m)\nu+\frac{1}{2}\omega^T(\mathbb{I})\omega -mg_b z
+\mathcal{L}=\frac{1}{2}\nu^{T}(m)\nu+\frac{1}{2}\omega^T(\mathbb{I})\omega -mG_b z
 \end{equation}
 \vspace{-5pt}
 \begin{equation}
@@ -75,10 +75,10 @@ m\frac{d}{dt}\nu ~~~ \mathbb{I}\frac{d}{dt}\omega\bigg]^T
 \rightarrow \mathbb{I}_b \frac{d}{dt}\omega_b=\mathbb{I}_b\dot{\omega}+\omega_{I/b}\times\mathbb{I}_b\omega
 \end{equation}
 \end{subequations}
-Which, when reintroduced to the Euler-Langrage formulation Eq:\ref{eq:euler-lagrange}, results in the familiar Newton-Euler equations for linear and angular movements, in the body frame;
+Which, when reintroduced to the Euler-Langrage formulation Eq:\ref{eq:euler-lagrange}, results in the familiar Newton-Euler equations for linear and angular movements, both in the body frame;
 \begin{subequations}\label{eq:newton}
 \begin{equation}\label{eq:newton.a}
-F=m\dot{\nu}+\omega_b\times m \nu - m\mathbb{R}_I^b g
+F=m\dot{\nu}+\omega_b\times m \nu - m\mathbb{R}_I^b(-\eta) G
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:newton.b}
@@ -88,30 +88,30 @@ F=m\dot{\nu}+\omega_b\times m \nu - m\mathbb{R}_I^b g
 It's important to recall that $\omega_b\not= \dot{\eta}$ where $\eta=[\phi~\theta~\psi]^T$, seeing that Euler Angles are defined in sequentially rotated reference frames. So the four differential equations often used to completely describe the entire state derivatives are:
 \begin{subequations}\label{eq:states}
 \begin{equation}
-\dot{\mathcal{E}}=\mathbb{R}_b^I\nu~~~~\in\mathcal{F}^I
+\dot{\mathcal{E}}=\mathbb{R}_b^I(-\eta)\nu~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-F=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b g ~~~~\in\mathcal{F}^b
+F=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b(-\eta) G ~~~~\in\mathcal{F}^b
 \end{equation}
-\vspace{-15pt}
+\vspace{-10pt}
 \begin{equation}
 \dot{\eta}=\Psi(\eta)\omega_b~~~~\in\mathcal{F}^{v2},\mathcal{F}^{v1},\mathcal{F}^I
 \end{equation}
-\vspace{-15pt}
+\vspace{-10pt}
 \begin{equation}
 \tau=\mathbb{I}_b\omega_b+\omega_b\times\mathbb{I}_b\omega~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-The set of state equations Eq:\ref{eq:states} could be reduced to a set of two equations, only in their respective reference frames of the state variables which they describe. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
+The set of state differentials in Eq:\ref{eq:states} could be reduced to a set of two equations, defined only in their respective reference frames of the state variables which they describe. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\Phi(\eta)\omega_b\bigg]
 \end{equation}
-This only changes the angular component, and so applying the chain rule:
+This only changes the angular component, and so applying the differential chain rule:
 \begin{equation}
 \mathbb{I}\frac{d}{dt}\Phi(\eta)\dot{\omega}_b=\mathbb{I}\big(\Phi\dot{(\eta)}\omega_b+\Phi(\eta)\dot{\omega}_b \big)
 \end{equation}
-Drawing from \cite{autonomousrobotseuler} and recognizing that $\mathbb{I}$ must be transformed to common axes, $J=\Psi(\eta)^T\mathbb{I}\Psi(\eta)$. The controllable differential equations in Eq:\ref{eq:newton}, then in the inertial frame for force and intermediate Euler frames for each angle becomes\footnote{The relationship $\dot{\Phi}=\Phi\dot{\Psi}\Phi$ was used to simplify Eq:\ref{eq:nonlinear}}:
+Drawing from \cite{autonomousrobotseuler} and recognizing that $\mathbb{I}$ must be transformed to common axes, $\mathbb{J}=\Psi(\eta)^T\mathbb{I}\Psi(\eta)$. The controllable differential equations in Eq:\ref{eq:newton}, then in the inertial frame for force and intermediate Euler frames for each angle becomes\footnote{The relationship $\dot{\Phi}=\Phi\dot{\Psi}\Phi$ was used to simplify Eq:\ref{eq:nonlinear}, the singularity in $\Phi$ still remains\ldots}:
 \begin{subequations}\label{eq:nonlinear}
 \begin{equation}
 M(\eta)\ddot{\eta}+C(\eta,\dot{\eta})\dot{\eta}=\Psi(\eta)\tau
@@ -128,7 +128,7 @@ C(\eta,\dot{\eta})=-\Psi(\eta)\mathbb{I}\Psi\dot{(\eta)}+\Psi(\eta)^T sk(\Psi(\e
 Equation \ref{eq:nonlinear} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which dictate the entire bodies motion are then:
 \begin{subequations}
 \begin{equation}
-F=m\dot{\mathcal{E}}+\mathbb{R}_b^I\omega_b \times m \dot{\mathcal{E}}-mg~~~~\in\mathcal{F}^I
+F=m\dot{\mathcal{E}}+\mathbb{R}_b^I(-\eta)\omega_b \times m \dot{\mathcal{E}}-mG~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -151,14 +151,16 @@ Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 di
 \subsection{Rotation Matrix Peculiarities}\label{subsec:dynamics.rigidbody.singularity}
 %====================================================
 It's well known and understood that a singularity occurs in the Euler attitude representation convention. Recalling the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}, which relates angular velocity in the body or inertial frame to the angular rates of the Euler Angles.
-\begin{equation}
+\begin{equation}\label{eq:euler-derivative}
 \begin{bmatrix}
 \dot{\phi}\\
 \dot{\theta}\\
 \dot{\psi}
 \end{bmatrix}
 =\begin{bmatrix}
-a\\
+1 & sin(\phi)tan(\theta) & cos(\phi)tan(\theta)\\
+0 & cos(\phi) & -sin(\phi)\\
+0 & sin(\phi)sec(\theta) & cos(\phi)sec(\theta)\\
 \end{bmatrix}
 \begin{bmatrix}
 p\\
@@ -167,7 +169,11 @@ r
 \end{bmatrix}
 =\Phi(\eta)\omega_b
 \end{equation}
-
+\newpage
+It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity\footnote{Disambiguation: note that the singularity occurence is not reffered to as gimbal lock, as is often the case, the two or related but separate phenomena} as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the rotation matrices are formulated:
+\begin{equation}
+R
+\end{equation}
 %====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
