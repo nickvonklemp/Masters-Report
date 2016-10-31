@@ -36,7 +36,7 @@ The novel component of the design is the manner of articulation for each concent
 \end{subfigure}
 \caption{}
 \end{figure}
-Each motor module is positioned such that its produced thrust vector coincides with the intersection of its two rotational axes. As a result, there's only a perpendicular displacement co-planar to the body frames X-Y-Z origin (See Fig:\ref{fig:motor-frame}), $\vec{L}_{arm}$. That length directly affects the differential thrust torque $\tau_{diff}=\vec{L}_{arm}\times\vec{T}$. An off-center thrust vector line would make that arm displacement a non-orthogonal vector. The center of gravity of each module is time varying and depends on its servo rotational positions. It's more practical to ensure intersection of the thrust vector with the rotational center than to balance the masses undergoing rotation. A thrust varying torque is harder to approximate and compensate for than a gravitational torque, given the complexity with modeling a propeller's aerodynamic thrust (Section:\ref{subsec:dynamics.aero.bem}).
+Each motor module is positioned such that its produced thrust vector coincides with the intersection of its two rotational axes. As a result, there's only a perpendicular displacement co-planar to the body frames X-Y-Z origin (See Fig:\ref{fig:motor-frame}), $\vec{L}_{arm}$. That length directly affects the differential thrust torque $\tau_{diff}=\vec{L}_{arm}\times\vec{T}$. An off-center thrust vector line would make that arm displacement a non-orthogonal vector. The center of gravity of each module is time varying and depends on its two servo rotational positions. It's more practical to ensure intersection of the thrust vector with the rotational center than to balance the masses undergoing rotation. A thrust varying torque is harder to approximate and compensate for than a gravitational torque, given the complexity with modeling a propeller's aerodynamic thrust (Section:\ref{subsec:dynamics.aero.bem}).
 \par
 The primary body structure, similar to a traditional quadcopter '+' configuration, suspends each motor rotational assembly with silicon damping balls (Fig:\ref{fig:motor_support}). For damping to be effective there has to be roughly equatable relative masses between the two damped bodies. A smaller damping assembly in the center of the frame houses all the electronics and power distribution circuitry. All the mounting brackets which affix the motor module rings are 3D printed from CAD models using an Ultimaker V2+\cite{ultimaker}. There is a complete bill of materials for all parts used, including working drawings for each 3D printed bracket and the laser cut frame(s), in Appendix:\ref{app:bom}.
 \par
@@ -46,9 +46,9 @@ The primary body structure, similar to a traditional quadcopter '+' configuratio
 \caption{Difference between propeller and motor planes}
 \label{fig:motor_prop}
 \end{figure}
-The propellers rotational plane is not exactly the aligned with the plane made by the $\vec{X}_{M_i}$ and $\vec{Y}_{M_i}$ rotational servo axes (Fig:\ref{fig:motor_prop}). The offset is approximately 28.2 mm and must be considered when evaluating pitch/roll gyroscopic torque responses later in Section:\ref{subsec:dynamics.nonlinearities.gyrotorques}. The propellers are 6 inch ($6 \times 4$) 3-Blade plastic Gemfam propellers, powered by Cobra CM2208-2000KV Brushless DC motors. The thrust produced as a function of angular velocity (in RPS) for the propellers is derived in Section:\ref{subsec:dynamics.aero.bem}. 
+The propellers rotational plane is not aligned exactly with the plane made by the $\vec{X}_{M_i}$ and $\vec{Y}_{M_i}$ rotational servo axes (Fig:\ref{fig:motor_prop}). The offset is approximately 23.39 mm and must be considered when evaluating pitch/roll gyroscopic torque responses later in Section:\ref{subsec:dynamics.nonlinearities.gyrotorques}. The propellers are 6 inch ($6 \times 4.5$) 3-Blade plastic Gemfam propellers, powered by Cobra CM2208-2000KV Brushless DC motors. The thrust produced as a function of angular velocity (in RPS) for the propellers is derived in Section:\ref{subsec:dynamics.aero.bem}. 
 \newpage
-The BLDC motors are controlled with Hobbywing XRotor 15A ESC modules with an inline Orange RPM Sensor. The transfer function for the combined unit is presented subsequently in Section:\ref{subsec:proto.design.transfer}. Power for the quadrotor is supplied not from a battery bank but from a power tether. Tethered power will ensure consistent flight time and reduce the concern of payload restriction on the available lift actuation. Power lines to both the BLDC motors and servos are both supplied conventionally, however an ideal construction would see slip-rings for each module's supply. 
+The BLDC motors are controlled with Hobbywing XRotor 20A ESC modules with an inline Orange RPM Sensor. The transfer function for the combined unit is presented subsequently in Section:\ref{subsec:proto.design.transfer}. Power for the quadrotor is supplied not from a battery bank but from a power tether. Tethered power will ensure consistent flight time and reduce the concern of payload restriction on the available lift actuation. Power lines to both the BLDC motors and servos are both supplied conventionally, however an ideal construction would see slip-rings for each module's supply. 
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -92,15 +92,15 @@ The attitude conventions used for the system's dynamic derivations, in the follo
 \caption{Inertial and Body Reference Frames}
 \label{fig:ref_frame}
 \end{figure}
-Euler (aerospace) frames are used for principle inertial and body coordinates (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^I$, is aligned such that the $\hat{X}_I$ axis is in the $\hat{N}$orth direction, $\hat{Y}_I$ is in the $\hat{E}$ast direction and $\hat{Z}_I$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earth's center. Sometimes referred to as the N\^{E}D convention}. The body frame, $\mathcal{F}^b$, then has both $\hat{X}_b$ and $\hat{Y}_b$ aligned obliquely between two perpendicular arms of the quadrotor's body and the $\hat{Z}_b$ axis in the body's normal direction (Fig:\ref{fig:body-frame}). The body frame's axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $I$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vector's coordinates exists or taken relative to.
+Euler (aerospace) frames are used for principle inertial and body coordinate representation (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^I$, is aligned such that the $\hat{X}_I$ axis is in the $\hat{N}$orth direction, $\hat{Y}_I$ is in the $\hat{E}$ast direction and $\hat{Z}_I$ is  in the $\hat{D}$ownward direction\footnote{In orbital sequences this would be toward the Earth's center. Sometimes referred to as the N\^{E}D convention}. The body frame, $\mathcal{F}^b$, then has both $\hat{X}_b$ and $\hat{Y}_b$ aligned obliquely between two perpendicular arms of the quadrotor's body and the $\hat{Z}_b$ axis in the body's normal direction (Fig:\ref{fig:body-frame}). The body frame's axes and their relation to the prototype design are highlighted next in Section:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $I$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vector's coordinates exists or taken relative to.
 \par
-Relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler angles $\vec{\mathcal{E}}=[\phi ~\theta ~\psi]^T$ represents rotations about the $\hat{X}$,$\hat{Y}$ and $\hat{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to rotate a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived and proven in \emph{Quadrotor Dynamics and Control}\cite{quaddynamics}}:
+Relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler angles $\vec{\eta}=[\phi ~\theta ~\psi]^T$ represents rotations about the $\hat{X}$,$\hat{Y}$ and $\hat{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. The generic equation to \emph{rotate} a vector $\vec{v}$ about a (normalized) axis $\hat{n}$ by some angle $\mu$ is given by\footnote{Derived and proven in \emph{Quadrotor Dynamics and Control}\cite{quaddynamics}}:
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\mu)\big)\big(\vec{v}\cdot \hat{n}\big)\hat{n}+cos(\mu)\vec{v}+sin(\mu)\big(\hat{n}\times\vec{v}\big)
 \end{equation}
 Which, when $\hat{n}$ is either $\hat{X}$,$\hat{Y}$ or $\hat{Z}$ axes, can be simplified to produce the fundamental rotation matrices $\mathbb{R}_x(\phi)$,$\mathbb{R}_y(\theta)$ and $\mathbb{R}_z(\psi)$.
 \newpage
-Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a left-handed \emph{rotation} operator, the resultant vector still exists in the same reference frame;
+Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a left-handed \emph{rotation} operator, the resultant vector still exists in the same reference frame. An $\hat{X}$ axis rotation by $\phi$ is;
 \begin{subequations} \label{eq:rotationoperator}
 \begin{equation}\label{eq:rotationoperator.a}
 \vec{v}~'=\mathbb{R}_{x}(\phi)\vec{v}
@@ -112,7 +112,7 @@ Multiplication by a rotation matrix $\mathbb{R}(\cdot)$ applies a left-handed \e
 \end{subequations}
 \emph{\color{Gray} No subscripts are used in Eq: \ref{eq:rotationoperator} to indicate reference frame ownership because all vectors are in the same frame}
 \par
-A \emph{transformation} changes the resultant vector's reference frame. Transformation is then a rotation by an angle of the difference between the resulting and principle reference frames. A transformation from frame $\mathcal{F}^1$ to $\mathcal{F}^2$, differing by an angle of $\phi$ about the $\hat{X}$ axis is then:
+A vector \emph{transformation} changes the resultant vector's reference frame. Transformation is then a rotation by an angle of the difference between the resulting and principle reference frames. A transformation from frame $\mathcal{F}^1$ to $\mathcal{F}^2$, differing by an angle of $\phi$ about the $\hat{X}$ axis is then:
 \begin{subequations}\label{eq:transformationoperator}
 \begin{equation}\label{eq:transformationoperator.a}
 \vec{v}_2=\mathbb{R}_x(-\phi)\vec{v}_1
@@ -122,7 +122,7 @@ A \emph{transformation} changes the resultant vector's reference frame. Transfor
 \vec{v}_2\in\mathcal{F}^2~\text{and}~\vec{v}_1\in\mathcal{F}^1
 \end{equation}
 \end{subequations}
-The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformationoperator} is the directional sense of the angular operand $\phi$, and hence the effect it has on the argument vector. The transformation or rotation of a vector from $\mathcal{F}^I$ to $\mathcal{F}^b$ is the product of three sequential operations about each axis. Each subsequent rotation is applied relative to a new intermediate frame and hence each Euler angle is taken relative to a specific intermediate frame. The sequence of axial rotation operations does indeed effect the Euler set. Any consequences of that chosen order is something discussed indepth in \emph{Quaternions and Rotation Sequence}, \cite{rotationsequences}. In this dissertation the Z-Y-X sequence is used. Hence a transformation of a vector $\vec{v}$ from the inertial to the body frame is applied by:
+The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformationoperator} is the directional sense of the angular operand $\phi$, and hence the effect it has on the argument vector. The transformation or rotation of a vector from $\mathcal{F}^I$ to $\mathcal{F}^b$ is the product of three sequential operations about each axis. Each subsequent rotation is applied relative to a new intermediate frame; hence each Euler angle is taken relative to a specific intermediate frame. The sequence of axial rotation operations does indeed effect the Euler set. Any consequences of that chosen order is something discussed indepth in \emph{Quaternions and Rotation Sequence}, \cite{rotationsequences}. In this dissertation the Z-Y-X sequence is used. A transformation of the vector $\vec{v}$ from the inertial to the body frame is then applied by:
 \\
 \begin{subequations}
 \begin{equation}\label{eq:inertialbodytransformation.a}
@@ -145,24 +145,24 @@ The distinction between Eq:\ref{eq:rotationoperator} and Eq:\ref{eq:transformati
 \mathbb{R}_I^b=\big(\mathbb{R}_b^I\big)^{-1}=\big(\mathbb{R}_b^I\big)^T
 \end{equation}
 \end{subequations}
-The relationship in Eq:\ref{eq:inertialbodytransformation.d} is an inversion (\emph{transpose}) of the rotation matrix. A rotation matrix's inverse can be used interchangeably with its negative counterpart to maintain a positive sense of the rotational angle. To ensure clarity throughout this paper's mathematics, a negative angular sense implies a \emph{transformation} to a different reference frame. Where applicable, the order of rotation will indicate the sequence direction and an angular sign differentiates the rotation and transformation operations.
+The relationship in Eq:\ref{eq:inertialbodytransformation.d} is an inversion (\emph{transpose}) of the rotation matrix. A rotation matrix's inverse can be used interchangeably with its negative counterpart to maintain a positive sense of the rotational angle. To ensure clarity throughout this dissertation's mathematics, a negative angular sense implies a \emph{transformation} to a different reference frame. Where applicable, the order of rotation will indicate the sequence direction and an angular sign differentiates the rotation and transformation operators.
 \par
-The body frame's angular velocity is taken relative to the inertial frame, represented by $\vec{\omega}_{b/I}$. Seeing that each Euler angle is measured with respect to an intermediary frame, a distinction must then be made between $\dot{\mathcal{E}}$ and $\vec{\omega}_b$. All three Euler angles need to be transformed to one common frame. Exploiting vehicle frames 1 \& 2, $\mathcal{F}^{v1}$ \& $\mathcal{F}^{v2}$, as intermediate frames to respectively describe post $\mathbb{R}_x(\phi)$ and $\mathbb{R}_y(\theta)$ operations.
+The body frame's angular velocity is taken relative to the inertial frame, represented by $\vec{\omega}_{b/I}$. Seeing that each Euler angle is measured with respect to an intermediary frame, a distinction must then be made between $\dot{\eta}$ and $\vec{\omega}_b$. All three Euler angles need to be transformed to one common frame. Exploiting vehicle frames 1 \& 2, $\mathcal{F}^{v1}$ \& $\mathcal{F}^{v2}$, as intermediate frames to respectively describe post $\mathbb{R}_x(\phi)$ and $\mathbb{R}_y(\theta)$ operations.
 \begin{subequations}
 \begin{equation}\label{eq:angular-rates.a}
-\vec{\omega}_b=\frac{\delta}{\delta t_b}\mathcal{E}=\frac{\delta \phi}{\delta t}\mathbb{R}_{v2}^b(\phi)\begin{bmatrix}
+\vec{\omega}_b=\frac{d}{dt_b}\eta=\frac{d\phi}{dt}\mathbb{R}_{v2}^b(\phi)\begin{bmatrix}
 \phi\\
 0\\
 0\\
 \end{bmatrix}
 +
-\frac{\delta \theta}{\delta t}\mathbb{R}_{v2}^{b}(\phi)\mathbb{R}_{v1}^{v2}(\theta)\begin{bmatrix}
+\frac{d\theta}{dt}\mathbb{R}_{v2}^{b}(\phi)\mathbb{R}_{v1}^{v2}(\theta)\begin{bmatrix}
 0\\
 \theta\\
 0
 \end{bmatrix}
 +
-\frac{\delta \psi}{\delta t}\mathbb{R}_{v2}^{b}(\phi)\mathbb{R}_{v1}^{v2}(\theta)\mathbb{R}_{I}^{v1}(\psi)\begin{bmatrix}
+\frac{d\psi}{dt}\mathbb{R}_{v2}^{b}(\phi)\mathbb{R}_{v1}^{v2}(\theta)\mathbb{R}_{I}^{v1}(\psi)\begin{bmatrix}
 0\\
 0\\
 \psi
@@ -191,11 +191,11 @@ r\\
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:angular-rates.c}
-\Rightarrow\vec{\omega}_b=\Psi(\mathcal{E})\dot{\mathcal{E}}
+\Rightarrow\vec{\omega}_b=\Psi(\eta)\dot{\eta}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:angular-rates.d}
-\Psi(\mathcal{E})=
+\Psi(\eta)=
 \begin{bmatrix}
 1 & 0 & -sin(\theta)\\
 0 & cos(\phi) & sin(\phi)cos(\theta)\\
@@ -204,7 +204,7 @@ r\\
 \end{equation}
 \vspace{-5pt}
 \begin{equation}\label{eq:angular-rates.e}
-\Rightarrow\dot{\mathcal{E}}=\Psi^{-1}(\mathcal{E})\vec{\omega}_b=\Phi(\mathcal{E})\vec{\omega}_b
+\Rightarrow\dot{\eta}=\Psi^{-1}(\eta)\vec{\omega}_b=\Phi(\eta)\vec{\omega}_b
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:angular-rates.f}
@@ -216,7 +216,7 @@ r\\
 \end{equation}
 \end{subequations}
 \par
-The termed Euler matrix, $\Phi(\mathcal{E})$, contains a well known and problematic singularity at $\theta=\pm\pi$; because $sec(\theta)\rightarrow\infty$ as $\theta\rightarrow\pi$. The effect of the rotation matrix singularity is further explored later in Section:\ref{subsec:dynamics.rigidbody.singularity}. It's manifestation in the $\theta$ angle here is a direct consequence of the Z-Y-X sequence used. Each Euler angle can potentially suffer a singularity depending on how the rotations are sequenced. Indeed quaternions are used for kinematics later in lieu of Euler angles. Euler angular attitude representation is, however, easily understood and well suited to the conventional distinctions made in this Chapter.
+The termed \emph{Euler} matrix, $\Phi(\eta)$, contains a well known and problematic singularity at $\theta=\pm\pi$; because $sec(\theta)\rightarrow\infty$ as $\theta\rightarrow\pi$. The effect of the rotation matrix singularity is further explored later in Section:\ref{subsec:dynamics.rigidbody.singularity}. It's manifestation in the $\theta$ angle here is a direct consequence of the Z-Y-X sequence used. Each Euler angle can potentially suffer a singularity depending on how the rotations are sequenced. Indeed quaternions are used for kinematics later in lieu of Euler angles. Euler angular attitude representation is, however, easily understood and well suited to the conventional distinctions made in this Chapter.
 \par
 Quaternion operations are similarly sequenced in the Z-Y-X order:
 \begin{subequations}
@@ -262,7 +262,7 @@ Fundamentally the whole structure, although treated as fixed and rigid in the ki
 \label{fig:motor-axes}
 \end{figure}
 \par
-Every propeller/motor pair is actuated by two servos. The $i^{th}$ propeller, directly driven by the motor's rotor, has a rotational speed $\omega_i~[rpm]$ about the $\hat{Z}$ stator axis. Two servos are aligned \emph{at rest} with $\hat{Y}$ and $\hat{X}$ axes to pitch and roll the propeller away from its principle rotational axis. Each motors has its own reference frame, $\mathcal{F}^{M_i}$, aligned in Fig:\ref{fig:motor-axes} and highlighted with the rotational rings in Fig:\ref{fig:motor-frame}.
+Every propeller/motor pair is actuated by two servos. The $i^{th}$ propeller, directly driven by the motor's rotor, has a rotational speed $\Omega_i~[rpm]$ about the $\hat{Z}$ stator axis. Two servos are aligned \emph{at rest} with $\hat{Y}$ and $\hat{X}$ axes to pitch and roll the propeller away from its principle rotational axis. Each motors has its own reference frame, $\mathcal{F}^{M_i}$, aligned in Fig:\ref{fig:motor-axes} and highlighted with the rotational rings in Fig:\ref{fig:motor-frame}.
 \par
 \begin{minipage}{\textwidth}
 \begin{wrapfigure}{r}{0.55\textwidth}
@@ -281,9 +281,9 @@ Motor frames, numbered $1-4$, transform to the body frame first by an angle of $
 \label{fig:body-frame}
 \end{figure}
 \par
-\emph{\color{Gray}Not shown in Fig:\ref{fig:body-frame} is the relative $\hat{Z}$ axis position with respect to the structure. The $\hat{Z}$ height of the body's motion centroid is such that its origin is co-planar with the four motor modules rotational centres. The centre of motion is \underline{not} the center of mass, an aspect which is quantified next in Section:\ref{subsec:proto.design.inertia}.}
+\emph{\color{Gray}Not shown in Fig:\ref{fig:body-frame} is the relative $\hat{Z}$ axis position with respect to the structure. The $\hat{Z}$ height of the body's motion centroid is such that its origin is co-planar with the four motor modules rotational centers. The center of motion is \underline{not} the center of mass, an aspect which is quantified next in Section:\ref{subsec:proto.design.inertia}.}
 \\
-Transformation relationships from each of the motor frames to the body frame is characterized as:
+Vector transformations from each of the motor frames to the body frame are characterized as:
 \begin{subequations}
 \begin{equation}\label{eq:motor-module-rotation.a}
 \vec{v}_b=\mathbb{R}_z(-\sigma_i)\mathbb{R}_y(-\alpha_i)\mathbb{R}_x(-\lambda_i)\vec{v}_{M_i},~\sigma_i\in[0, 90^{\circ}, 180^{\circ}, 270^{\circ}]
@@ -337,29 +337,29 @@ An undesirable side effect of the relative rigid body rotations within the struc
 \caption{Inertial Measurement References}
 \end{figure}
 \par
-The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed symmetrical and calculated in Solidworks with overridden masses to match physical prototype measurements, all those values are included in Appendix:\ref{app:bom}} about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 92g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.44~-0.01~5.81]^T~~[mm]$ relative to its rotational center). The inner ring being rotated by $\lambda_i$\textdegree ~about the $\hat{X}_{M_i}$ axis then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
+The manifestation of the aforementioned torques are explored in thorough detail in Section:\ref{sec:dynamics.nonlinearities}. Those effects are both dependent on the rotational body's inertial tensor\footnote{All inertias are assumed symmetrical and calculated in Solidworks with overridden masses to match physical prototype measurements, all those values are included in Appendix:\ref{app:bom}} about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. Starting with the innermost assembly, in each Motor Frame $\mathcal{F}^{M_i}$, the inside ring structure is a 92g assembly (all components incorporated). The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.44~0 ~5.81]^T~~[mm]$ relative to its rotational center). The inner ring being rotated by $\lambda_i$\textdegree ~about the $\hat{X}_{M_i}$ axis then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
 \begin{subequations}\label{eq:inertia.inner}
 \begin{equation} \label{eq:inertia.inner.a}
 \mathbb{I}_{M_i}=\begin{bmatrix}
-530.88 & -32.29	& 7.46\\
--32.29 & 1855.74 & 0.00\\
-7.46 & 0.00	& 2088.87\\
+561.96 & -32.29	& -0.26\\
+-32.29 & 1888.74 & 0.00\\
+-0.26 & 0.00	& 2090.97\\
 \end{bmatrix}~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
 \begin{equation} \label{eq:inertia.inner.b}
-\approx diag\big(531, ~1856, ~2089\big)\times10^{-7}~~[kg.m^2]
+\approx diag\big(562, ~1889, ~2091\big)\times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's inertial components are regarded as constant. The moment of inertia about that $\hat{X}_{M_i}$ rotational axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}\approx 530.88\times10^{-7}~~[kg.m^2]$.
+The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's inertial components are regarded as constant. The moment of inertia about that $\hat{X}_{M_i}$ rotational axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}\approx 531\times10^{-7}~~[kg.m^2]$.
 \par
-The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $102g$ structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is $m_{module}=201g$. The middle ring is rotated by $\eta_i$\textdegree ~about its $\hat{Y}_{M_i}$ axis. The compound body's inertia about that axis of rotation, $\hat{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i$\textdegree ~which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{X}$ always exists}, is:
+The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $98g$ structure, excluding the inner most ring. Collectively the mass for both the inner and middle rings structures is $m_{module}=190g$. The middle ring is rotated by $\eta_i$\textdegree ~about its $\hat{Y}_{M_i}$ axis. The compound body's inertia about that axis of rotation, $\hat{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i$\textdegree ~which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{X}$ always exists}, is:
 \begin{subequations}\label{eq:inertia.middle}
 \begin{equation} \label{eq:inertia.middle.a}
 \text{If} ~~\mathbb{I}_{middle}=\begin{bmatrix}
-3024.30 & 0.03 & 406.84\\
-0.03 & 8791.16 & 0.01\\
-406.87 & 0.01 & 11579.85\\
+2905.70 & 0.02 & 390.89\\
+0.02 & 8446.41 & 0.01\\
+390.89 & 0.01 & 11125.74\\
 \end{bmatrix}~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
@@ -373,22 +373,22 @@ The first $\lambda_i$ actuating servo and bearing supports are affixed to the in
 \vspace{-10pt}
 \begin{equation} \label{eq:inertia.middle.d}
 \approx\begin{bmatrix}
-3609 & 0 & 407\\
-0 & 10842 & 0\\
-407 & 0 & 13630\\
+3468 & 0 & 391\\
+0 & 10436 & 0\\
+391 & 0 & 13155\\
 \end{bmatrix}
 +
 \begin{bmatrix}
-0 & 0 & 0\\
-0 & -88{c}_{2\lambda} & 2{c^2}_{\lambda}-91s_{2\lambda}\\
-0 & 2{c^2}_{\lambda}-91s_{2\lambda} & 88{c}_{2\lambda}\\
+0 & -32{c}_{\lambda} & -32{s}_{\lambda}\\
+-32{c}_{\lambda} & -101{c}_{2\lambda} & 101s_{2\lambda}\\
+-32{s}_{\lambda} & 101s_{2\lambda} & 101{c}_{2\lambda}\\
 \end{bmatrix}
 \times10^{-7}~~[kg.m^2]
 \end{equation}
 \end{subequations}
-With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a}, transformed by a rotation $\mathbb{R}_x(\lambda_i)$. The net inertia is then a function of the rotation angle $\lambda_i$ and a constant inertia (Eq:\ref{eq:inertia.middle.c}) which is then simplified\footnote{Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places, seeing that its units are already $\times10^{-7}$} to Eq:\ref{eq:inertia.middle.d}. It's important to note the non-zero product of inertia, $\mathbb{I}_{yz}$, which is going to result in a $\tau_z$ response. The inertia then encountered by an $\eta_i$ rotation is:
+With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a},re-orientated with a rotation $\mathbb{R}_x(\lambda_i)$. The net inertia is then a function of the rotation angle $\lambda_i$ and a constant inertia (Eq:\ref{eq:inertia.middle.c}) which is then simplified\footnote{Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places, seeing that its units are already $\times10^{-7}$} to Eq:\ref{eq:inertia.middle.d}. It's important to note the two non-zero products of inertia, $\mathbb{I}_{yx}$ and $\mathbb{I}_{yz}$, which are going to result in a vector $\vec{\tau}_\eta$ response. The inertia then encountered by an $\eta_i$ rotation is:
 \begin{equation}\label{eq:inertia.middle.vpa}
-\mathbb{I}_\eta(\lambda)\approx[0,~ 10842-88{c}_{2\lambda},~ 2{c^2}_{\lambda}-91s_{2\lambda}]^T\times10^{-7}~~[kg.m^2]
+\mathbb{I}_\eta(\lambda)\approx[-32{c}_{\lambda},~ 10436-101{c}_{2\lambda},~ 101{s}_{2\lambda}]^T\times10^{-7}~~[kg.m^2]
 \end{equation}
 \par
 Variable inertias dependent on state input variables are the first of many non-trivial aspects unique to this aircraft's design. The resultant control solutions are thus decidedly plant dependent in their formulation. Secondly, the center of mass for the motor module's compound assembly isn't coincidental with either rotational axes intersection. As a result the effective center of mass for the entire structure is going to be a function of the angular rotational position of each motor module and time varying.
@@ -399,7 +399,7 @@ Variable inertias dependent on state input variables are the first of many non-t
 \caption{Body Frame Center of Mass}
 \label{fig:inertia-center}
 \end{figure}
-The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs $84g$ and suspends the motor modules from the body frame with a set of silicon damping balls. The body assembly's center of mass (Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-14.27~mm$ below the Body Frame's origin of motion, $\vec{O}\in\mathcal{F}^b$.
+The second $\eta_i$ rotating servo joins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, the "damping" assembly collectively weighs $84g$ and suspends the motor modules from the body frame with a set of silicon damping balls. The body assembly's center of mass (Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-4.49~mm$ below the Body Frame's origin of motion, $\vec{O}\in\mathcal{F}^b$.
 \\
 \emph{\color{Gray}Note: the origin which all motion is calculated with respect to is co-planar to the motor module's rotational centers, \underline{not} the net center of mass.}
 \\

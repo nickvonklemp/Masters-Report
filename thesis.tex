@@ -330,24 +330,59 @@ I, \auth,  hereby:
 			\vskip 1cm
 \end{center}
 %---------------------------------------------------------------------
-The aim of this project is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring the propeller's directional thrust. To achieve this the structure of the air-frame must redirect those thrust vectors to any desired orientation. This means it has to transform its configuration during flight, redirecting lift actuators whilst still maintaining stable attitude \& position control, despite of such relative motion. In view of this required articulation the proposal is to add 2 axes (degrees) of extra actuation to each propeller. As a result each lift propeller can then be pitched or rolled relative to the body frame. This adaptation, to what is an otherwise well covered and highly researched platform, produces an over-actuated control problem. Actuator allocation is the primary contribution of this paper with novel elements of non-linear (\emph{state-space}) attitude control and plant uncertainty compensation.
+The aim of this project is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring the propeller's directional thrust. To achieve this the structure of the air-frame must redirect those thrust vectors to any desired orientation. This means it has to transform its configuration during flight, redirecting lift actuators whilst still maintaining stable attitude \& position control, despite of such relative motion. In view of this required articulation the proposal is to add 2 axes (degrees) of extra actuation to each propeller. As a result each lift propeller can then be pitched or rolled relative to the body frame. This adaptation, to what is an otherwise well covered and highly researched platform, produces an over-actuated control problem. Actuator control allocation in the context of aerospace platforms is the primary contribution of this paper, with novel elements of non-linear (\emph{state-space}) attitude control and plant uncertainty compensation.
 \par
-The structure of the dissertation first presents the design which the subsequent dynamics and control are derived with respect to. Following that, the kinematics associated with rigid bodies are derived. Any unique effects that could apply to the design like gyroscopic, inertial and aerodynamic responses are investigated and then incorporated into the dynamics. Position and control algorithms are first derived, then simulated and compared based on the plant's dynamics (\emph{which include discretionary effects on the system}). The relative performance of the controllers are evaluated but regular performance metrics for attitude and position control are ill-suited for such a system. Some time is spent discussing the consequence of this and how the controllers are actually evaluated. Finally the design is built and tested using readily available RC components and conclusions drawn on the success or failure of the design.
+The structure of the dissertation first presents the design which the subsequent dynamics and control are derived with respect to. Following that, the kinematics associated with rigid bodies are derived. Any unique effects that could apply to the design like gyroscopic, inertial and aerodynamic responses are investigated and then incorporated into the dynamics. Position and attitude control algorithms are first derived, then simulated and compared based on the plant's dynamics (\emph{which include discretionary effects on the system}). The relative performance of the controllers are evaluated but regular performance metrics for attitude and position control are ill-suited for such a system. Some time is spent discussing the consequence of this and how the controllers are actually evaluated. Finally the design is built and tested using readily available RC components and conclusions drawn on the success or failure of the design.
 \par
 The purpose of the investigation is the practicality and feasibility of such a design, most importantly whether the complexity of the mechanical design is a decent compromise for the added degrees of control actuation. The outcome of the build is to ascertain if it's both economically (cost and control effort) feasible to use such a prototype to expand the range of a quadrotor's motion. The design and control treatment presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the system as a whole and not just one aspect of it.
 \par
-\emph{This dissertation report is presented in a logical progression of concepts and information. In some cases the research and results were compiled differently from how they're listed.}
+\emph{This dissertation report is presented in a logical progression of concepts and information. In some cases the research and results were completed in a different order from how they're listed.}
 %---------------------------------------------------------------------
 %	Acknowledgements
 %---------------------------------------------------------------------
 \chapter{Acknowledgements}		
 \label{ch:ack}
 %---------------------------------------------------------------------
-% Acknowledge all people who have helped you complete this work including.
-% Comment out /nrf macro if unneeded.
+
+
+
+%---------------------------------------------------------------------
+%	Nomenclature
 %---------------------------------------------------------------------
 \chapter{Nomenclature}
 \label{ch:nom}
+%---------------------------------------------------------------------
+DOF - Degree of Freedom(s)\\
+UAV - Unmanned Aerial Vehicle\\
+MAV - Manned Aerial Vehicle\\
+SISO - Single Input Single Output\\
+MEMS - Microelectromechanical Systems\\
+DIY - Do It Yourself\\
+BLDC - Brushless Direct Current\\
+VTOL - Vetical Takeoff/Landing\\
+OAT - Opposed Active Tilting\\
+dOAT - Dual axist Opposed Active Tilting\\
+PI - Proportional Integral, control strucutre\\
+PD - Proportional Derivative, control structure\\
+PID - Proportional Integral Derivative, control structure\\
+IBC - Ideal Backstepping Control\\
+ABC - Adaptive Backstepping Control\\
+LQR - Linear Quadratic Regulator\\
+LCD - Lyupanov Candidate Function\\
+PSO - Particle Swarm Optimization\\
+ITAE - Integral Time Addative Error\\
+BEM - Blade-Element Momentum\\
+ESC - Electronic Speed Controller\\
+RC - Radio Control\\
+MPC - Model Predictive Control\\
+TSK - Takagi-Sugeno-kang
+
+%---------------------------------------------------------------------
+%	Symbols
+%---------------------------------------------------------------------
+\chapter{Symbols}
+\label{ch:symbol}
+%---------------------------------------------------------------------
 Propeller Rotational Speed: $\Omega_i~~[rpm]$
 \\
 \emph{\color{Gray} Rotational speed in RPS is used for Blade Element Theory Calculations in Chapter:\ref{ch:dynamics}}
