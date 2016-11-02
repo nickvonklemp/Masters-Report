@@ -221,17 +221,17 @@ The termed \emph{Euler} matrix, $\Phi(\eta)$, contains a well known and problema
 Quaternion operations are similarly sequenced in the Z-Y-X order:
 \begin{subequations}
 \begin{equation}\label{eq:quaternion-rotation-equivalence}
-\mathbb{R}_I^b\iff Q_b^* \otimes (.) \otimes Q_b
+\mathbb{R}_I^b\iff Q_b \otimes (.) \otimes Q_b^*
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-Q_b^* \triangleq Q_z^* Q_y^* Q_x^*~\text{and}~Q_b \triangleq Q_x Q_y Q_z
+Q_b \triangleq Q_z Q_y Q_x~\text{and}~Q_b \triangleq Q_x^* Q_y^* Q_z^*
 \end{equation}
 \end{subequations}
 With $\otimes$ being the Hamilton product (or quaternion multiplication). Each quaternion, $Q_i$, is a unit quaternion about that $\hat{i}^{th}$ axis. It is important to note that a quaternion rotation operates on an argument vector with a zero quaternion scalar component. So then for some vector $\vec{v}$, the quaternion rotation operation in Eq:\ref{eq:quaternion-rotation-equivalence} is equivalent to;
 \begin{subequations}
 \begin{equation}\label{eq:quaternion-operator.a}
-Q_{\vec{v}}~'=Q^{*} \otimes (Q_{\vec{v}}) \otimes Q
+Q_{\vec{v}}~'=Q \otimes (Q_{\vec{v}}) \otimes Q^*
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:quaternion-operator.b}
@@ -246,7 +246,7 @@ Q_{\vec{v}}~'=Q^{*} \otimes (Q_{\vec{v}}) \otimes Q
 \end{subequations}
 The quaternion representation in Eq:\ref{eq:quaternion-operator.b} ensures that the operation is entirely in $\mathbb{R}^4$ space. However it is usually omitted and as such, Eq:\ref{eq:quaternion-operator.a} is then simply:
 \begin{equation}
-\vec{v}~'=Q^* \otimes (\vec{v}) \otimes Q
+\vec{v}~'=Q \otimes (\vec{v}) \otimes Q^*
 \end{equation}
 Quaternion dynamics, and the quaternion operator, are later expanded upon to replace the use of Euler angles and Rotation matrices as a convention for attitude representation later in Chapter:\ref{ch:dynamics}
 \newpage

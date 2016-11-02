@@ -149,9 +149,9 @@ Secondly the net torque is the sum of all torque arms produced from those propel
 \end{subequations}
 Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, although aspects unique to the quadrotor and tilting quadrotor platforms will now be introduced\ldots
 %====================================================
-\subsection{Rotation Matrix Peculiarities}\label{subsec:dynamics.rigidbody.singularity}
+\subsection{Rotation Matrix Singularity}\label{subsec:dynamics.rigidbody.singularity}
 %====================================================
-It's well known and understood that a singularity occurs in the Euler attitude representation convention. Recalling the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}, which relates angular velocity in the body or inertial frame to the angular rates of the Euler Angles.
+It's well known that a singularity occurs in the Euler attitude representations. Specifically a singularity occurs when differentiability becomes ill-defined. A clear aspect of this is manifested in the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}. The relation between angular velocity, in the inertial frame or inversely in the body frame, and the angular rates of the Euler Angles.
 \begin{equation}\label{eq:euler-derivative}
 \begin{bmatrix}
 \dot{\phi}\\
@@ -171,10 +171,49 @@ r
 =\Phi(\eta)\omega_b
 \end{equation}
 \newpage
-It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity\footnote{Disambiguation: note that the singularity occurence is not reffered to as gimbal lock, as is often the case, the two or related but separate phenomena} as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the rotation matrices are formulated:
+Less Obvious.
+It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the rotation (or transformation) matrices are formulated:
+\begin{subequations}
 \begin{equation}
-R
+\mathbb{R}_I^b = \mathbb{R}_z\mathbb{R}_y\mathbb{R}_x=\begin{bmatrix}
+c_\psi & -s_\psi & 0\\
+s_\psi & c_\psi & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+c_\theta & 0 & s_\theta\\
+0 & 1 & 0\\
+-s_\theta & 0 & c_\theta
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0\\
+c_\phi & -s_\phi & 0\\
+s_\phi & c_\phi & 0
+\end{bmatrix}
 \end{equation}
+\begin{equation}
+\mathbb{R}_I^b=\begin{bmatrix}
+c_\psi c_\theta & c_\psi s_\theta s_\phi - s_\psi c_\phi & c_\psi s_\theta c_\phi + s_\psi s_\phi\\
+s_\psi c_\theta & s_\psi s_\theta s_\phi + c_\psi c_\phi & s_\psi s_\theta  c_\phi - c_\psi s_\phi\\
+-s_\theta & c_\theta s_\phi & c_\phi c_\theta\\
+\end{bmatrix}
+\end{equation}
+In the case where $\theta=\pi/2$;
+\begin{equation}
+=\begin{bmatrix}
+0 & c_\psi s_\phi - s_\psi c_\phi & c_\psi c_\phi + s_\psi s_\phi\\
+0 & s_\psi s_\phi + c_\psi c_\phi & s_\psi c_\phi - c_\psi s_\phi\\
+-1 & 0 & 0\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & s(\phi - \psi) & c(\phi - \psi)\\
+0 & c(\phi - \psi) & s(\phi - \psi)\\
+-1 & 0 & 0
+\end{bmatrix}
+\end{equation}
+\end{subequations}
+Where the second term in Eq: represents an x-axis rotation in a new intermeiate frame 
 %====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
