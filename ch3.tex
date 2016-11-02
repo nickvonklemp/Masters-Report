@@ -151,7 +151,21 @@ Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 di
 %====================================================
 \subsection{Rotation Matrix Singularity}\label{subsec:dynamics.rigidbody.singularity}
 %====================================================
-It's well known that a singularity occurs in the Euler attitude representations. Specifically a singularity occurs when differentiability becomes ill-defined. A clear aspect of this is manifested in the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}. The relation between angular velocity, in the inertial frame or inversely in the body frame, and the angular rates of the Euler Angles.
+The Euler Angle singularity is often noted but infrequently proven mathematically, far less common is the demonstration of exactly how that singularity \emph{mathematically} manifests itself. By definition, a singularity occurs when a loss of differentiability is encountered. In the case of an affixed 3-axis gimbal, when the an intermediate axis, for example the rolling angle $\theta$, is at $\pi$ then the remaining two axes become co-linear. That being a pitch $\phi$ or yaw $\psi$ rotations will subsequently have the same effect. Such a situation results in the deterioration of a degree of freedom.
+\begin{figure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/gimbal-lock-a}
+\caption{3-Axis gimbal}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/gimbal-lock-b}
+\caption{Locked gimbal with loss of DOF}
+\end{subfigure}
+\end{figure} 
+\par
+What is obvious in a physical system is not necessarily as clear mathematically. A clear loss of differentiability is manifested in the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}. The relation between angular velocity, in the inertial frame or inversely in the body frame, and the angular rates of the Euler Angles.
 \begin{equation}\label{eq:euler-derivative}
 \begin{bmatrix}
 \dot{\phi}\\
@@ -170,8 +184,10 @@ r
 \end{bmatrix}
 =\Phi(\eta)\omega_b
 \end{equation}
-\newpage
-Less Obvious.
+\begin{equation}
+\text{As}~\underset{{\theta \rightarrow \pi /2}}{lim}~sec(\theta)\rightarrow \infty
+\end{equation}
+Or that $\Phi(\eta)$ is undefined at $\theta=\pi/2$. 
 It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the rotation (or transformation) matrices are formulated:
 \begin{subequations}
 \begin{equation}
