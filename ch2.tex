@@ -592,17 +592,17 @@ An abstracted hardware diagram for the (electronic) system layout is shown in Fi
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figs/f3-deluxe}
+\includegraphics[width=0.9\textwidth]{figs/f3-deluxe}
 \caption{SPRacing F3 Deluxe Flight Controller}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figs/ppm-sbus}
+\includegraphics[width=0.9\textwidth]{figs/ppm-sbus}
 \caption{SBUS Converter \& 6CH Receiver Modules}
 \end{subfigure}
 \caption{}
 \end{figure}
-The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $\mu$controller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight opensource software is regularly used for the F3 but hardware specifications are not openly avaiable.\\The reverse engineered electrical schematic for the board is included in Appendix:\ref{app:deluxe-diagram}}, which has had its bootloader removed and custom firmware, unique to this project, burnt to it. That software is later described in Chapter:\ref{ch:flight}; the I/O for all the peripherals are detailed here however. The flight-controller has onboard peripherls: an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer with a connected HMC5883\cite{hmc5883} magnetometer compass, an SPI MS5611\cite{ms5611} barometer and similarly 64 Mb of SPI flash memory. The connections of which are listed in App:\ref{app:deluxe-diagram}. 
+The entire system is centered around an ARM STM32F303\cite{stm32f303} based $\mu$controller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight opensource software is regularly used for the F3 but hardware specifications are not openly avaiable.\\The reverse engineered electrical schematic for the board is included in Appendix:\ref{app:deluxe-diagram}}, which has had its bootloader removed and custom firmware, unique to this project, burnt to it. That software is later described in Chapter:\ref{ch:flight}; the I/O for all the peripherals are detailed here however. The flight-controller has onboard peripherls: an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer with a connected HMC5883\cite{hmc5883} magnetometer compass, an SPI MS5611\cite{ms5611} barometer and similarly 64 Mb of SPI flash memory. The electrical schematic of those peripherals and the core STM32F303 is detailed in Appendix:\ref{app:deluxe-diagram}. 
 \\
 \emph{\color{Gray} The combination of above sensors fused for state estimation and their associated algorithms are dealt with in Section:\ref{sec:simulation.state} in Chapter:\ref{ch:simulation}.}
 \begin{figure}[hbtp]
@@ -612,13 +612,15 @@ The entire system is constructed around an ARM STM32F303\cite{stm32f303} based $
 \label{fig:sbus}
 \end{figure}
 \\
-Two wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1}, USART connected. Secondly, an augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded into a single line S.BUS data stream. 
+Two wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1}, USART connected. Secondly, an augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded into a single proprietary S.BUS data stream. 
 \newpage
-The S.BUS encoder \cite{sbusencoder} implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the following parameters:
+The need for an S.BUS encoder \cite{sbusencoder} comes about as a consequence of the introduction of the 8 additional servos. As a result, there aren't 6 free additional timer I/O channels which can be dedicated to input capture. Encoding the received data to a serial communication protocol means the 6CH data can be received on a single communication RX line. The S.Bus encoder implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the standard's following parameters:
+\vspace{-15pt}
 \begin{itemize}[itemsep=0em]
-\item 8-Bit data bytes
-\item 25 Bytes per transmissions
+\item 8-Bit byte length
+\item 25 Bytes per packet
 \item Bytes are:
+\vspace{-5pt}
 \begin{itemize}[itemsep=0em]
 \item MSB First
 \item 1 start bit
@@ -627,33 +629,38 @@ The S.BUS encoder \cite{sbusencoder} implements a USART derivative communication
 \item Inverted
 \item 100000 baud (bps)
 \end{itemize}
-\item 14 ms idle time between transmissions
-\item Up to 16 channels encoded
-\item Each channel is 11 bits of data
+\vspace{-5pt}
+\item 14 ms idle time between packets
+\item Up to 16CH encoded
+\item Each channel's data is 11 bits long
 \item Channel data is little endian prioritized
 \end{itemize}
 {\color{red}
 The received information of the transmitted 6 channels is filtered through an Infinite-Impulse Response filter. The filters frequency response is as follows: $
 y_n = y_{n-1}$. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
 \par
-Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels, pulses range from 1ms - 2ms to linearly control the rotary position. The exact transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 15A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM timer channel output, similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$controller. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
+Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses range from 1ms - 2ms to linearly control the rotary position. The exact range and transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 20A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$controller. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figs/rpm-sensor-plot}
+\includegraphics[width=0.9\textwidth]{graphs/rpm-sensor-plot}
 \caption{RPM sensor gain}
 \label{fig:rpm-sensor-plot}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figs/motor-esc}
+\includegraphics[width=0.9\textwidth]{figs/motor-esc}
 \caption{ESC \& Inline RPM Sensor}
 \label{fig:rpm-sensor}
 \end{subfigure}
 \caption{}
 \end{figure}
-\par
-There's no integrated feedback for instantaneous RPM values from the Electronic Speed Controllers. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, measuring the phase of back Emf induced across two of the three motor phases, the exact RPM can be ascertained. The signal produced by the RPM sensors varies the period, proportional to the rotational speed of the motor, of a square wave with a constant 50\% duty cycle. The RPM sensor's output signal is calibrated to a $\underline{rate}$ gain, the linear relationship is shown in Fig:\ref{fig:rpm-sensor-plot}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
+\newpage
+There's no integrated feedback for instantaneous RPM values from the ESCs. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, that measure switching phases across two of the three motor phases, the exact RPM can be ascertained. The switching signal of a 3-Phase \footnote{Although called BLDC motors, the motors are actually 3-Phase IM motors which, when combined with an ESC, behave in closed loop like BLDC motors.} is:
+\begin{equation}
+F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[Hz]
+\end{equation}
+The signal produced by the RPM sensors varies a 50\% duty cycle square wave's period, directly proportional to that pole switching frequency. The RPM sensor's output signal is then calibrated to a gain of 7 for the 14 pole BLDC Cobra motors used. That gain is verified with the linear relationship is shown in Fig:\ref{fig:rpm-sensor-plot}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
 \par
 Any STM32 $\mu$controller is programmed through a dedicated debugging device. The ST-Link V2\cite{st-link} is the current proprietary device which, itself, is a specially programmed STM32F10 chip (Fig:\ref{fig:st-link}). The chip connects to the dedicated Serial Wire Debugging ports of the target STM (\emph{SWD-CLK, SWD-IO} \& \emph{SWD-NRST}) and is interfaced via regular USBD+ and USBD- data lines. 
 %====================================================
