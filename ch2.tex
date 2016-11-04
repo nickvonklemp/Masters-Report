@@ -571,7 +571,7 @@ The net mass for the whole assembly is is 1574 g. For reference the center of gr
 %====================================================
 \newpage
 %====================================================
-\section{System Layout}
+\section{Electronics}
 \label{sec:proto.layout}
 %====================================================
 {\centering
@@ -640,27 +640,31 @@ The received information of the transmitted 6 channels is filtered through an In
 y_n = y_{n-1}$. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
 \par
 Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses range from 1ms - 2ms to linearly control the rotary position. The exact range and transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 20A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$controller. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
-\begin{figure}[htbp]
-\begin{subfigure}{0.5\textwidth}
-\centering
-\includegraphics[width=0.9\textwidth]{graphs/rpm-sensor-plot}
-\caption{RPM sensor gain}
-\label{fig:rpm-sensor-plot}
-\end{subfigure}
-\begin{subfigure}{0.5\textwidth}
-\centering
-\includegraphics[width=0.9\textwidth]{figs/motor-esc}
-\caption{ESC \& Inline RPM Sensor}
-\label{fig:rpm-sensor}
-\end{subfigure}
-\caption{}
-\end{figure}
-\newpage
+\par
 There's no integrated feedback for instantaneous RPM values from the ESCs. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, that measure switching phases across two of the three motor phases, the exact RPM can be ascertained. The switching signal of a 3-Phase \footnote{Although called BLDC motors, the motors are actually 3-Phase IM motors which, when combined with an ESC, behave in closed loop like BLDC motors.} is:
 \begin{equation}
 F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[Hz]
 \end{equation}
-The signal produced by the RPM sensors varies a 50\% duty cycle square wave's period, directly proportional to that pole switching frequency. The RPM sensor's output signal is then calibrated to a gain of 7 for the 14 pole BLDC Cobra motors used. That gain is verified with the linear relationship is shown in Fig:\ref{fig:rpm-sensor-plot}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
+The signal produced by the RPM sensors varies a 50\% duty cycle square wave's period, directly proportional to that pole switching frequency. The RPM sensor's output signal is then calibrated to a gain of 7 for the 14 pole BLDC Cobra motors used. That gain is verified with the linear relationship(s) is shown in Figs:\ref{fig:rpm-sensor}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
+\newpage
+\begin{figure}[htbp]
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/rpm-sensor-noload}
+\caption{RPM sensor plot - no load}
+\label{fig:rpm-sensor-noload}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/rpm-sensor-prop}
+\caption{RPM sensor plot - 6" prop}
+\label{fig:rpm-sensor-prop}
+\end{subfigure}
+\caption{}
+\label{fig:rpm-sensor}
+\end{figure}
+\par
+The speed controllers, although LDPower 20A devices, were re-flashed with BLHeli\footnote{LDPower 20A ESCs match Hobbywing Xrotor 20A speed controllers}\cite{BLHeli} firmware. The custom software on the ESC's $\mu$controller provides greater refinement over parameter configuration, however, default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the linear RPM speed line for an unloaded motor, similarly in Fig:\ref{fig:rpm-sensor-prop} shows the plot for a 6-inch prop. It's interesting to note that the speed curve is more parabolic, this is from the quadratic propeller aerodynamic drag term, Section:\ref{subsec:dynamics.aero.bem}. Moreover, when propeller loaded, the ESC current limits rotational speeds at just over 13 000 RPM. Using the sensor feedback closed loop RPM control can be implemented.
 \par
 Any STM32 $\mu$controller is programmed through a dedicated debugging device. The ST-Link V2\cite{st-link} is the current proprietary device which, itself, is a specially programmed STM32F10 chip (Fig:\ref{fig:st-link}). The chip connects to the dedicated Serial Wire Debugging ports of the target STM (\emph{SWD-CLK, SWD-IO} \& \emph{SWD-NRST}) and is interfaced via regular USBD+ and USBD- data lines. 
 %====================================================
