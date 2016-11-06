@@ -147,7 +147,7 @@ Secondly the net torque is the sum of all torque arms produced from those propel
 \mu \tau = \sum \vec{l}_i \times \vec{T}_i
 \end{equation}
 \end{subequations}
-Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, although aspects unique to the quadrotor and tilting quadrotor platforms will now be introduced\ldots
+Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, common simplifications applied to the system(s) for quadrotor control are explored in Appendix:\ref{app:stddynamics}. Aspects unique to the quadrotor and tilting quadrotor platforms are now introduced\ldots
 %====================================================
 \subsection{Rotation Matrix Singularity}\label{subsec:dynamics.rigidbody.singularity}
 %====================================================
@@ -155,14 +155,15 @@ The Euler Angle singularity is often noted but infrequently proven mathematicall
 \begin{figure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figs/gimbal-lock-a}
+\includegraphics[width=\textwidth]{figs/gimbal}
 \caption{3-Axis gimbal}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figs/gimbal-lock-b}
+\includegraphics[width=\textwidth]{figs/gimbal-lock}
 \caption{Locked gimbal with loss of DOF}
 \end{subfigure}
+\caption{Gimbal lock}
 \end{figure} 
 \par
 What is obvious in a physical system is not necessarily as clear mathematically. A clear loss of differentiability is manifested in the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}. The relation between angular velocity, in the inertial frame or inversely in the body frame, and the angular rates of the Euler Angles.
@@ -203,8 +204,8 @@ c_\theta & 0 & s_\theta\\
 \end{bmatrix}
 \begin{bmatrix}
 1 & 0 & 0\\
-c_\phi & -s_\phi & 0\\
-s_\phi & c_\phi & 0
+0 & c_\phi & -s_\phi\\
+0 & s_\phi & c_\phi
 \end{bmatrix}
 \end{equation}
 \begin{equation}
@@ -215,7 +216,7 @@ s_\psi c_\theta & s_\psi s_\theta s_\phi + c_\psi c_\phi & s_\psi s_\theta  c_\p
 \end{bmatrix}
 \end{equation}
 In the case where $\theta=\pi/2$;
-\begin{equation}
+\begin{equation}\label{eq:gimbal}
 =\begin{bmatrix}
 0 & c_\psi s_\phi - s_\psi c_\phi & c_\psi c_\phi + s_\psi s_\phi\\
 0 & s_\psi s_\phi + c_\psi c_\phi & s_\psi c_\phi - c_\psi s_\phi\\
@@ -226,13 +227,73 @@ In the case where $\theta=\pi/2$;
 0 & s(\phi - \psi) & c(\phi - \psi)\\
 0 & c(\phi - \psi) & s(\phi - \psi)\\
 -1 & 0 & 0
-\end{bmatrix}
+\end{bmatrix}=\mathbb{R}_{x'}(\phi-\psi)
 \end{equation}
 \end{subequations}
-Where the second term in Eq: represents an x-axis rotation in a new intermeiate frame 
+Where the second term in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new intermediate frame, post a 90\textdegree ~rotation in the y-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi$, when $\phi$ \& $\psi$ represent the same angle.
 %====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
+%====================================================
+An algorithm was been proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} which solves the problem of the Euler Angle singularity. The methodology is to switch between sequencing conventions (ZYX,ZYZ etc\ldots 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inelegant. Far more effficient is the use of \emph{quaternion}, $\mathbb{R}^4$, attitude representations (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
+\par
+A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. Without deliberating too much on their proof or details, a quaternion consists or a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
+\begin{equation}
+Q\triangleq 
+\begin{bmatrix}
+q_0 & \vec{q}
+\end{bmatrix}
+~~\in\mathbb{R}^4
+\end{equation}
+Any and all quaternions, unless otherwise stated, in this dissertation are all unit quaternions\footnote{Unit quaternions are a subset of the quaternion space}, $Q\in\mathbb{Q}_u$. The need for quaternions with unity magnitude is such to ensure rotational operators don't affect the magnitude of the vector operand. A unit quaternion is defined as:
+\begin{equation}
+||Q||=\sqrt{{q_0}^2+{\vec{q}}^2}=1
+\end{equation}
+Quaternion multiplication is distributive and associative, but not commutative. Specifically a quaternion multiplciation operation is equivalent to the Hamilton product. For two quaternions, $Q$ \& $P$:
+\begin{subequations}
+\begin{equation}
+Q\otimes P = \begin{bmatrix}
+q_0 & \vec{q}
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+p_0 & \vec{p}
+\end{bmatrix}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=q_0 p_0 - \vec{q}\cdot \vec{p}+p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}
+\end{equation}
+\end{subequations}
+Seeing that the vector component of a quaternion is a complex values, there then exists a quaternion conjugate property. Namely:
+\begin{equation}
+Q^*=\begin{bmatrix}
+q_0 & -\vec{q}
+\end{bmatrix}
+\end{equation}
+It then follows that\footnote{Disambigation:$\mathbb{I}$ in this context is a $4\times 4$ identity matrix, not an inertial matrix}:
+\begin{equation}
+Q\otimes Q^* = \mathbb{I}_{4\times 4}
+\end{equation}
+To apply quaternion rotations to a vector ($\vec{v} \in\mathbb{R}^3$) involves multiplication by two unit quaternions. 
+\begin{equation}
+\begin{bmatrix}
+0 & \vec{v}~'
+\end{bmatrix}
+=Q\otimes
+\begin{bmatrix}
+0 & \vec{v}
+\end{bmatrix}
+\otimes Q^*
+\end{equation}
+Mostly, the zero scalar components are omitted in a rotation (\emph{or transformation}) operation, such that it is recognized the vector operands are substituted with quaternions.
+\begin{equation}
+\vec{v}~'=Q \otimes (\vec{v}) \otimes Q^*
+\end{equation} 
+In the case of rigid body attitude representation, $Q_b$ is the quaternion which represents the difference between $\mathcal{F}^I$ and $\mathcal{F}^b$. A quaternion operator is equivalent to a rotation matrix operation:
+\begin{equation}
+\mathbb{R}_I^b\iff Q_b \otimes (.) \otimes Q_b^*
+\end{equation}
 %====================================================
 \subsection{The Unwinding Problem}
 \label{subsec:dynamics.rigidbody.unwinding}
