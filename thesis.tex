@@ -268,12 +268,19 @@
 		\key			
 	\end{normalsize}	
 \end{titlepage}
-
+\afterpage{\null\newpage}
 %=====================================================================
 %	FRONT MATTER
 %=====================================================================
 \frontmatter
-\afterpage{\null\newpage}
+\begin{center}
+\begin{minipage}{0.7\textwidth}
+\centering
+"\emph{We're gonna have a superconductor turned up full blast and pointed at you for the duration of this next test. I'll be honest, we're throwing science at the wall here to see what sticks. No idea what it'll do. Probably nothing. Best-case scenario, you might get some superpowers\ldots}"
+\\
+Cave Johnson -Founder \& CEO of Aperture Science
+\end{minipage}
+\end{center}
 %---------------------------------------------------------------------
 %	Declaration
 %---------------------------------------------------------------------
@@ -330,11 +337,11 @@ I, \auth,  hereby:
 			\vskip 1cm
 \end{center}
 %---------------------------------------------------------------------
-The aim of this project is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring the propeller's directional thrust. To achieve this the structure of the air-frame must redirect those thrust vectors to any desired orientation. This means it has to transform its configuration during flight, redirecting lift actuators whilst still maintaining stable attitude \& position control, despite of such relative motion. In view of this required articulation the proposal is to add 2 axes (degrees) of extra actuation to each propeller. As a result each lift propeller can then be pitched or rolled relative to the body frame. This adaptation, to what is an otherwise well covered and highly researched platform, produces an over-actuated control problem. Actuator control allocation in the context of aerospace platforms is the primary contribution of this paper, with novel elements of non-linear (\emph{state-space}) attitude control and plant uncertainty compensation.
+The aim of this project is to design, simulate and control a novel quadrotor platform which can articulate all 6 Degrees of Freedom by vectoring each propeller's directional thrust. To achieve this the structure of the air-frame must redirect those thrust vectors to any desired orientation. This means it has to transform its configuration during flight, redirecting lift actuators whilst still maintaining stable attitude \& position control, despite of such relative motion. In view of this required articulation the proposal is to add 2 axes (degrees) of extra actuation to each propeller. As a result each lift propeller can then be pitched or rolled relative to the body frame. This adaptation, to what is an otherwise well covered and highly researched platform, produces an over-actuated control problem. Actuator control allocation in the context of aerospace platforms is the primary contribution of this paper, with novel elements of non-linear (\emph{state-space}) attitude control and plant uncertainty compensation.
 \par
 The structure of the dissertation first presents the design which the subsequent dynamics and control are derived with respect to. Following that, the kinematics associated with rigid bodies are derived. Any unique effects that could apply to the design like gyroscopic, inertial and aerodynamic responses are investigated and then incorporated into the dynamics. Position and attitude control algorithms are first derived, then simulated and compared based on the plant's dynamics (\emph{which include discretionary effects on the system}). The relative performance of the controllers are evaluated but regular performance metrics for attitude and position control are ill-suited for such a system. Some time is spent discussing the consequence of this and how the controllers are actually evaluated. Finally the design is built and tested using readily available RC components and conclusions drawn on the success or failure of the design.
 \par
-The purpose of the investigation is the practicality and feasibility of such a design, most importantly whether the complexity of the mechanical design is a decent compromise for the added degrees of control actuation. The outcome of the build is to ascertain if it's both economically (cost and control effort) feasible to use such a prototype to expand the range of a quadrotor's motion. The design and control treatment presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the system as a whole and not just one aspect of it.
+The purpose of the investigation is the practicality and feasibility of such a design, most importantly whether the complexity of the mechanical design is a decent compromise for the added degrees of control actuation. The outcome of the build is to ascertain if it's economically feasible (cost and controller effort) to use such a prototype to expand the range of a quadrotor's motion. The design and control treatment presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the system as a whole and not just one aspect of it.
 \par
 \emph{This dissertation report is presented in a logical progression of concepts and information. In some cases the research and results were completed in a different order from how they're listed.}
 %---------------------------------------------------------------------
@@ -353,6 +360,7 @@ The purpose of the investigation is the practicality and feasibility of such a d
 \label{ch:nom}
 %---------------------------------------------------------------------
 DOF - Degree of Freedom(s)\\
+$\mu$C - micro-controller\\
 UAV - Unmanned Aerial Vehicle\\
 MAV - Manned Aerial Vehicle\\
 SISO - Single Input Single Output\\
@@ -378,7 +386,9 @@ CH - Channel\\
 MPC - Model Predictive Control\\
 TSK - Takagi-Sugeno-kang\\
 I/O - Input/Output\\
-
+RPM - Revolution Per Minute\\
+RPS - Revolution Per Second\\
+W.R.T - With respect to\\
 %---------------------------------------------------------------------
 %	Symbols
 %---------------------------------------------------------------------
@@ -388,6 +398,10 @@ I/O - Input/Output\\
 Propeller Rotational Speed: $\Omega_i~~[rpm]$
 \\
 \emph{\color{Gray} Rotational speed in RPS is used for Blade Element Theory Calculations in Chapter:\ref{ch:dynamics}}
+\\
+Servo 1: $\lambda_i$
+\\
+Servo 2: $\alpha_i$
 \\
 Inertial Position: $\vec{P}=\begin{bmatrix}
 X_I & Y_I & Z_I
@@ -400,7 +414,16 @@ x & y & z
 Euler Angles: $\vec{\mathcal{E}}=\begin{bmatrix}
 \phi & \theta & \psi
 \end{bmatrix}^T$
-
+\\
+Euler Rates: $\frac{d}{dt}\vec{\eta}=\dot{\vec{\eta}}=\Phi(\eta)\dot{\omega}_b$
+\\
+Angular Velocity: $\omega=\begin{bmatrix}
+p & q & r\\
+\end{bmatrix}^T~\in\mathcal{F}^b$
+\\
+Linear Velocity: $\nu=\begin{bmatrix}
+u & v & w
+\end{bmatrix}^T~\in\mathcal{F}^b$
 %---------------------------------------------------------------------
 %	Dedication (optional)
 %---------------------------------------------------------------------
