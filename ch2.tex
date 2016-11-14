@@ -619,7 +619,7 @@ Two wireless communication peripherals are used. First the system relays full st
 \newpage
 The need for an S.BUS encoder \cite{sbusencoder} comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer I/O channels which can be allocated for input capture. Encoding the received data to a serial communication protocol means the 6CH data can be processed on a single serial RX line. The S.Bus encoder implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the standard's following parameters:
 \\
-\begin{tabularx}{\textwidth}{|X|c|}
+\begin{tabularx}{\textwidth}{|X|X|}
 \hline
 \begin{minipage}{\textwidth}
 \begin{itemize}[itemsep=0em]
@@ -644,18 +644,28 @@ The need for an S.BUS encoder \cite{sbusencoder} comes about as a consequence of
 \end{minipage}
 &
 \begin{minipage}{\textwidth}
-Data packet structure
+\begin{tabular}{ccccc}
+Start Byte & CH1\\
+$\begin{bmatrix}
+0xFFFF0000
+\end{bmatrix}
+$
+&
+$\begin{bmatrix}
+8-Bit Data
+\end{bmatrix}$
+\end{tabular}
 \end{minipage}
 \\
 \hline
 \end{tabularx}
 {\color{red}
 The received information of the transmitted 6 channels is filtered through an Infinite-Impulse Response filter. The filters frequency response is as follows: $
-y_n = y_{n-1}$. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
+y_n = y_{n-1}$. Similarly all the measured RPM signals are filtered as well. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
 \par
-Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses range from 1ms - 2ms to linearly control the rotary position. The exact range and transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 20A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$controller. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
+Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses typically range from 1ms - 2ms to linearly control the rotary position. The exact range and transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 20A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$C. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
 \par
-There's no integrated feedback for instantaneous RPM values from the ESCs. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, that measure switching phases across two of the three motor phases, the exact RPM can be ascertained. The switching signal of a 3-Phase \footnote{Although called BLDC motors, the motors are actually 3-Phase IM motors which, when combined with an ESC, behave in closed loop like BLDC motors.} is:
+There's no integrated feedback for instantaneous RPM values from the ESCs. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, that measure switching phases across two of the three motor phases, the exact RPM can be ascertained. The switching signal of a 3-Phase \footnote{Although called BLDC motors, the motors are actually 3-Phase IM motors which, when combined with an ESC, behave in closed loop like BLDC motors.} is\cite{.}:
 \begin{equation}
 F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[Hz]
 \end{equation}
@@ -678,7 +688,7 @@ The signal produced by the RPM sensors varies a 50\% duty cycle square wave's pe
 \label{fig:rpm-sensor}
 \end{figure}
 \par
-The speed controllers, although LDPower 20A devices, were re-flashed with BLHeli\footnote{LDPower 20A ESCs(Fig:\ref{fig:ldpower-20A}) match Hobbywing Xrotor 20A speed controllers (Fig:\ref{fig:xrotor-20A}), they both use SiLabs F396 MCUs. Physical rotational values in the plots Fig:\ref{fig:rpm-sensor} were measured with optical encoders.}\cite{BLHeli} firmware. The custom software on the ESC's $\mu$controller provides greater refinement over parameter configuration like the deflection range of inputs, however, default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the linear RPM speed line for an unloaded motor, similarly in Fig:\ref{fig:rpm-sensor-prop} shows the plot for a 6-inch prop. It's interesting to note that the loaded speed curve is slightly parabolic, this is from the aerodynamic drag term which is quadratic with respect to rotational velocity, Section:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over 13 000 RPM. The sensor feedback is used for closed loop RPM control.
+The speed controllers, although LDPower 20A devices, are all re-flashed with BLHeli\footnote{LDPower 20A ESCs(Fig:\ref{fig:ldpower-20A}) match Hobbywing Xrotor 20A speed controllers (Fig:\ref{fig:xrotor-20A}), they both use SiLabs F396 MCUs. Physical rotational values in the plots Fig:\ref{fig:rpm-sensor} were measured with optical encoders.}\cite{BLHeli} firmware. The custom software on the ESC's $\mu$controller can provide greater refinement over parameter configuration like the deflection range of inputs, however, default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the linear RPS (in Hz) speed line for an unloaded motor, similarly in Fig:\ref{fig:rpm-sensor-prop} shows the speed curve when loaded for a 6-inch prop. It's interesting to note that the loaded speed curve is slightly parabolic, this is from the aerodynamic drag term which is quadratic with respect to rotational velocity, Section:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over 13 000 RPM. The sensor feedback is used for minor loop RPM control.
 \begin{figure}[hbtp]
 \begin{subfigure}{0.5\textwidth}
 \centering
@@ -695,9 +705,9 @@ The speed controllers, although LDPower 20A devices, were re-flashed with BLHeli
 \caption{}
 \end{figure}
 \\
-Timers channels are for measuring the varying frequency of the RPM sensors. General purpose Timers 15 (TIM15:CH1$\rightarrow$CH2), 16 (TIM16:CH1) and 17 (TIM17:CH1) are configured to capture the input PWM signal generated by the speed sensors. Included on the I2C communciation line is an I2C O-LED display for debugging and status update purposes.
+Timers channels are used to measure the varying frequency of the RPM sensors. General purpose Timers 15 (TIM15:CH1$\rightarrow$CH2), 16 (TIM16:CH1) and 17 (TIM17:CH1) are configured to capture the input PWM signal generated by the speed sensors. Included on the I2C communciation line is an I2C O-LED display for debugging and status update purposes.
 \par
-Any STM32 $\mu$controller is programmed through a dedicated debugging device. The ST-Link V2\cite{st-link} is the current proprietary device which, itself, is a specially programmed STM32F10 chip. The chip connects to the dedicated Serial Wire Debugging ports of the target STM (\emph{SWD-CLK, SWD-IO} \& \emph{SWD-NRST}) and is interfaced via regular USBD+ and USBD- data lines. 
+Any STM32 $\mu$controller is programmed through a dedicated debugging device. The ST-Link V2\cite{st-link} is the current proprietary device which, itself, is a specially programmed STM32F10 chip. The chip connects to the dedicated \textbf{S}erial \textbf{W}ire \textbf{D}ebugging ports of the target STM (\emph{SWD-CLK, SWD-IO} \& \emph{SWD-NRST}) and is interfaced via regular USBD+ and USBD- data lines. 
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}
@@ -721,7 +731,7 @@ The full scale deflection of each digital servo is in fact greater than its list
 \caption{}
 \end{figure}
 \par
-For the servo whose data is plotted in Fig:\ref{fig:servo-range}, the relationship between the pulse-width input $x~~[m.s]$ and rotational output position $y~~degrees$ is given by:
+For the servo whose data is plotted in Fig:\ref{fig:servo-range}, the relationship between the pulse-width input $x~~[m.s]$ and rotational output position $y~degrees$ is given by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -731,7 +741,7 @@ y(x)=
 \end{array}
 \end{cases}
 \end{equation}
-Although the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~is taken at around a 50\% input and the operational range is $\pm 90$\textdegree . The servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400 RPS$ with a dead time of $0.142~m.s$.
+Although the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~is taken at around a 50\% input and the operational range is $\pm 90$\textdegree . The servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400 RPS$ with a dead time of $0.142~m.s$ and a mechanical deadband of $\leq\mu 4s$.
 A servo has a (\emph{critically damped}) second order transfer function$^{\dagger}$:
 \begin{equation}
 G(s)=\frac{7.144}{s^2+3.744s+7.189}e^{-0.142\times 10^{-3}s}

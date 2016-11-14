@@ -4,7 +4,7 @@
 \chapter{Kinematics \& Dynamics}
 \label{ch:dynamics}
 %====================================================
-The body's dynamics are first solved as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are presented and introduced into the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
+The body's dynamics are first solved as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are investigated and incorporated into the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
 %====================================================
 \section{Rigid Body Dynamics}
 \label{sec:dynamics.rigidbody}
@@ -14,7 +14,7 @@ The body's dynamics are first solved as rigid, with appropriate equations derive
 %====================================================
 Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{classicaldynamics,rotationrigidbody} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational and rotational kinematic energies and potential energy are conserved all throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
 \par
-Lagrangian formalism is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations stipulate the same resultant equations. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\mathbf{r}(t)$, for both linear $\mathcal{E}$ and angular $\eta$ relative positions;
+Lagrangian formalism is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations both stipulate the same resultant differential equations of motion. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\mathbf{r}(t)$, for both linear $\mathcal{E}$ and angular $\eta$ relative positions;
 \begin{equation}\label{eq:generalpath}
 \mathbf{r}(t)=\begin{bmatrix}
 \mathcal{E} & \eta
@@ -31,7 +31,7 @@ Introducing generic kinetic (angular \& linear) and potential energies, the latt
 \end{equation}
 \end{subequations}
 \newpage
-Noting that $\mathbb{I}$ is the inertial tensor aligned w.r.t to whichever generalized coordinates are being used. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\mathbf{V}$, acting on the system. In this case the generalized forces or a net force, $F~~[N]$, and a net torque, $\tau~~[N.m]$.
+Noting that $\mathbb{I}$ is the inertial tensor aligned w.r.t to whichever generalized coordinates are used. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\mathbf{V}$, acting on the system. In this case the generalized forces or a net force, $F~[N]$, and a net torque, $\tau~[N.m]$.
 \begin{equation}\label{eq:euler-lagrange}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)-\frac{\delta L}{\delta \mathbf{r}} = \mathbf{V} = \begin{bmatrix}
 F\\
@@ -56,7 +56,7 @@ In any generalized coordinate system a rotating vector's time derivative, accord
 \begin{equation}\label{eq:reynolds}
 \frac{d\vec{f}}{dt_a}=\frac{d\vec{f}}{dt_b}+\vec{\omega}_{a/b}\times\vec{f}
 \end{equation}
-So applying that theorem (Eq:\ref{eq:reynolds}) to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates as cartesian body coordinates with respect to an inertial origin. Noting that in Eq:\ref{eq:partial.b} the place holders used for linear and angular positions are in a common shared frame\footnote{In this case $\eta\not=\phi~\theta~\psi]^T$ seeing that it's defined in a common frame}, and hence $[ \dot{\mathcal{E}}~~\dot{\eta} ]^T\equiv [ \nu ~~ \omega]^T\in \mathcal{F}^b$. It then follows that Lagrangian will change:
+So applying that theorem (Eq:\ref{eq:reynolds}) to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates as cartesian body coordinates with respect to an inertial origin. Noting that in Eq:\ref{eq:partial.b} the place holders used for linear and angular positions are in a common shared frame\footnote{In this case $\eta\not=[\phi~\theta~\psi]^T$ seeing that it's defined in a common frame}, and hence $[ \dot{\mathcal{E}}~~\dot{\eta} ]^T\equiv [ \nu ~~ \omega]^T\in \mathcal{F}^b$. It then follows that Lagrangian will change:
 \begin{subequations}
 \begin{equation}
 \mathcal{L}=\frac{1}{2}\nu^{T}(m)\nu+\frac{1}{2}\omega^T(\mathbb{I})\omega -mG_b z
@@ -72,7 +72,7 @@ m\frac{d}{dt}\nu ~~~ \mathbb{I}\frac{d}{dt}\omega\bigg]^T
 \end{equation}
 \vspace{-5pt}
 \begin{equation}
-\rightarrow \mathbb{I}_b \frac{d}{dt}\omega_b=\mathbb{I}_b\dot{\omega}+\omega_{I/b}\times\mathbb{I}_b\omega
+\rightarrow \mathbb{I}_b \frac{d}{dt}\omega_b=\mathbb{I}_b\dot{\omega}+\vec{\omega}_{I/b}\times\mathbb{I}_b\omega
 \end{equation}
 \end{subequations}
 Which, when reintroduced to the Euler-Langrage formulation Eq:\ref{eq:euler-lagrange}, results in the familiar Newton-Euler equations for linear and angular movements, both in the body frame;
@@ -125,18 +125,18 @@ M(\eta)=\Psi(\eta)^T\mathbb{I}\Psi(\eta)
 C(\eta,\dot{\eta})=-\Psi(\eta)\mathbb{I}\Psi\dot{(\eta)}+\Psi(\eta)^T sk(\Psi(\eta)\dot{\eta})\mathbb{I}\Psi(\eta)
 \end{equation}
 \end{subequations}
-Equation \ref{eq:nonlinear} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which describe the entire bodies motion are:
+Equation \ref{eq:nonlinear} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which describe the entire bodies motion are then:
 \begin{subequations}
 \begin{equation}
 F=m\dot{\mathcal{E}}+\mathbb{R}_b^I(-\eta)\omega_b \times m \dot{\mathcal{E}}-mG~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\Psi(\eta)\tau=M(\eta)\ddot{\eta}+C(\eta,\dot{\eta})~~~~\in\mathcal{F}^{v2},\mathcal{F}^{v1},\mathcal{F}^I
+\Psi(\eta)\tau=M(\eta)\ddot{\eta}+C(\eta,\dot{\eta})~~~~\in\mathcal{F}^{v2,v1,I}
 \end{equation}
 \end{subequations}
 \par
-The generalized forces effecting the system, $F$ and $\tau$, are the system's controllable inputs and are going to be affected directly the systems actuators and their associated effectiveness function. In the general case, which is expanded upon in Section:\ref{sec:dynamics.aero}, the control inputs are typically as follows:
+The generalized forces effecting the system, $F(u)$ and $\tau (u)$, are the system's controllable inputs and are going to be affected directly the systems actuators and their associated effectiveness function. In the general case, which is expanded upon in Section:\ref{sec:dynamics.aero}, the control inputs are typically as follows:
 \begin{subequations}
 The net force acting on the system is just the sum of all thrust vectors produced by rotating propellers, $T(\Omega_i)$.
 \begin{equation}
@@ -147,11 +147,11 @@ Secondly the net torque is the sum of all torque arms produced from those propel
 \mu \tau = \sum \vec{l}_i \times \vec{T}_i
 \end{equation}
 \end{subequations}
-Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, common simplifications applied to the system(s) for quadrotor control are explored in Appendix:\ref{app:stddynamics}. Aspects unique to the quadrotor and tilting quadrotor platforms are now introduced\ldots
+Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and typically bound to the $\hat{Z}_b$ axis, $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, common simplifications applied to the system(s) for quadrotor control are explored in Appendix:\ref{app:stddynamics}. Aspects unique to the quadrotor and tilting quadrotor platforms are now introduced\ldots
 %====================================================
 \subsection{Rotation Matrix Singularity}\label{subsec:dynamics.rigidbody.singularity}
 %====================================================
-The Euler Angle singularity is often noted but infrequently proven mathematically, far less common is the demonstration of exactly how that singularity \emph{mathematically} manifests itself. By definition, a singularity occurs when a loss of differentiability is encountered. In the case of an affixed 3-axis gimbal, when the an intermediate axis, for example the rolling angle $\theta$, is at $\pi$ then the remaining two axes become co-linear. That being a pitch $\phi$ or yaw $\psi$ rotations will subsequently have the same effect. Such a situation results in the deterioration of a degree of freedom.
+The Euler Angle singularity is often noted but infrequently proven mathematically, far less common is the demonstration of exactly how that singularity \emph{mathematically} manifests itself. By definition, a singularity occurs when a loss of differentiability exists. In the case of an affixed 3-axis gimbal, when an intermediate axis, for example the rolling angle $\theta$, is at $\pi/2$ then the remaining two axes become co-linear. That being a pitch $\phi$ or yaw $\psi$ rotations will subsequently have the same effect. Such a situation results in the loss of a degree of freedom.
 \begin{figure}
 \begin{subfigure}{0.5\textwidth}
 \centering
@@ -230,7 +230,7 @@ In the case where $\theta=\pi/2$;
 \end{bmatrix}=\mathbb{R}_{x'}(\phi-\psi)
 \end{equation}
 \end{subequations}
-Where the second term in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new intermediate frame, post a 90\textdegree ~rotation in the y-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi$, when $\phi$ \& $\psi$ represent the same angle.
+Where the outcome in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new intermediate frame, post a 90\textdegree ~rotation in the y-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi/2$, when $\phi$ \& $\psi$ effect the same angle.
 %====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
@@ -265,7 +265,7 @@ p_0 & \vec{p}
 =q_0 p_0 - \vec{q}\cdot \vec{p}+p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}
 \end{equation}
 \end{subequations}
-Seeing that the vector component of a quaternion is a complex values, there then exists a quaternion conjugate property. Namely:
+Seeing that the vector component of a quaternion is complex valued, it is natural that there exists a quaternion conjugate property. Namely:
 \begin{equation}
 Q^*=\begin{bmatrix}
 q_0 & -\vec{q}
