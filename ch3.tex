@@ -87,19 +87,19 @@ F=m\dot{\nu}+\omega_b\times m \nu - m\mathbb{R}_I^b(-\eta) G
 \end{subequations}
 It's important to recall that $\omega_b\not= \dot{\eta}$ where $\eta=[\phi~\theta~\psi]^T$, seeing that Euler Angles are defined in sequentially rotated reference frames. So the four differential equations often used to completely describe the entire state derivatives are:
 \begin{subequations}\label{eq:states}
-\begin{equation}
+\begin{equation}\label{eq:states.a}
 \dot{\mathcal{E}}=\mathbb{R}_b^I(-\eta)\nu~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-15pt}
-\begin{equation}
+\begin{equation}\label{eq:states.b}
 F=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b(-\eta) G ~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:states.c}
 \dot{\eta}=\Psi(\eta)\omega_b~~~~\in\mathcal{F}^{v2},\mathcal{F}^{v1},\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:states.d}
 \tau=\mathbb{I}_b\omega_b+\omega_b\times\mathbb{I}_b\omega~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
@@ -292,13 +292,35 @@ Mostly, the zero scalar components are omitted in a rotation (\emph{or transform
 \end{equation} 
 In the case of rigid body attitude representation, $Q_b$ is the quaternion which represents the difference between $\mathcal{F}^I$ and $\mathcal{F}^b$. A quaternion operator is equivalent to a rotation matrix operation:
 \begin{equation}
-\mathbb{R}_I^b\iff Q_b \otimes (.) \otimes Q_b^*
+\mathbb{R}_I^b \underset{Q}{\iff} Q_b \otimes (.) \otimes Q_b^*
+\end{equation}
+A quaternion time derivative, with $Q_\omega$ being a quaternion with a vector component equal to angular velocity $\omega\in\mathcal{F}^b$ and a zero scalar component, is given by:
+\begin{equation}
+\frac{d}{dt}Q_b=\frac{1}{2}Q_b\otimes Q_{\omega}=\begin{bmatrix}
+-\frac{1}{2}\vec{q}^{~T} \vec{\omega}_b\\
+\frac{1}{2}\big([\vec{q}~]_\times+q_0\mathbb{I}\big)\vec{\omega}_b
+\end{bmatrix}
+\end{equation}
+\newpage
+Using quaternion attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, to represent attitudes and their rates. A body quaternion is fully defined in the body frame. The first quaternion time derivative replaces Eq:\ref{eq:states.a}\& Eq:\ref{eq:states.c};
+\begin{subequations}
+\begin{equation}
+\dot{\mathcal{E}}=\mathbb{R}_b^I(-\eta)\vec{\nu}\underset{Q}{\iff}Q_b\otimes\vec{\nu}\otimes Q_b^*
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\dot{\eta}=\Phi(\eta)\vec{\omega}_b\underset{Q}{\iff}\dot{Q}=\frac{1}{2}Q_b\otimes Q_\omega
+\end{equation}
+\end{subequations}
+Second order quaternion derivatives, quaternion accelerations are far less elegant than their velocity terms. It's important to mention them however they are only relevant to quaternion backstepping in the control section. 
+\begin{equation}
+\ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[\mathbb{I}_b^-1(\tau-4(Q^*\otimes \dot{Q})\times(\mathbb{I}_b(Q^*\otimes \dot{Q}))\big]
 \end{equation}
 %====================================================
 \subsection{The Unwinding Problem}
 \label{subsec:dynamics.rigidbody.unwinding}
 %====================================================
-
+Although quaternions are better than Euler angles and lack the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}]^T$ represents a rotation 
 %****************************************************
 \section{Non-linearities}
 \label{sec:dynamics.nonlinearities}
