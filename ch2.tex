@@ -644,21 +644,13 @@ The need for an S.BUS encoder \cite{sbusencoder} comes about as a consequence of
 \end{minipage}
 &
 \begin{minipage}{\textwidth}
-\begin{tabular}{ccccc}
-Start Byte & CH1\\
-$\begin{bmatrix}
-0xFFFF0000
-\end{bmatrix}
-$
-&
-$\begin{bmatrix}
-8-Bit Data
-\end{bmatrix}$
-\end{tabular}
+$\overbrace{[0x240]}^{Start byte}~\overbrace{[B_7~B_6~B_5~B_4~B_3~B_2~B_1~B_0][B_7~B_6~B_5}^{CH1}$\\
+$\overbrace{B_4~B_3~B_2~B_1~B_0][B_7~B_6~B_5~B_4~B_3~B_2}^{CH2}~\ldots$
 \end{minipage}
 \\
 \hline
 \end{tabularx}
+\par
 {\color{red}
 The received information of the transmitted 6 channels is filtered through an Infinite-Impulse Response filter. The filters frequency response is as follows: $
 y_n = y_{n-1}$. Similarly all the measured RPM signals are filtered as well. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
@@ -718,20 +710,20 @@ The full scale deflection of each digital servo is in fact greater than its list
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=\textwidth]{graphs/servo-range}
+\includegraphics[width=0.9\textwidth]{graphs/servo-range}
 \caption{DS339-MG Full Range}
 \label{fig:servo-range}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=\textwidth]{graphs/servo-step}
+\includegraphics[width=0.9\textwidth]{graphs/servo-step}
 \caption{DS339-MG Step Response}
 \label{fig:servo-step}
 \end{subfigure}
 \caption{}
 \end{figure}
-\par
-For the servo whose data is plotted in Fig:\ref{fig:servo-range}, the relationship between the pulse-width input $x~~[m.s]$ and rotational output position $y~degrees$ is given by:
+\\
+For the servo whose data is plotted in Fig:\ref{fig:servo-range}, the relationship between its pulse-width input $x~[m.s]$ and the rotational output position $y~degrees$ is given by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -741,13 +733,33 @@ y(x)=
 \end{array}
 \end{cases}
 \end{equation}
-Although the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~is taken at around a 50\% input and the operational range is $\pm 90$\textdegree . The servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400 RPS$ with a dead time of $0.142~m.s$ and a mechanical deadband of $\leq\mu 4s$.
-A servo has a (\emph{critically damped}) second order transfer function$^{\dagger}$:
-\begin{equation}
+Although, in practice, the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~is taken at around a 50\% input and the operational range is $\pm 90$\textdegree . The servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400 RPS$ with a dead time of $0.142~m.s$ and a mechanical deadband of $\leq4\mu s$.
+Each servo approximately has a (\emph{critically damped}) second order transfer function$^{\dagger}$:
+\begin{equation}\label{eq:servo-transfer}
 G(s)=\frac{7.144}{s^2+3.744s+7.189}e^{-0.142\times 10^{-3}s}
 \end{equation}
-Whose transfer block has the following structure, including non-linearities:
-
+The net transfer block for the servo then has the following structure, including non-linearities;
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.4\textwidth]{figs/servo-block}
+\caption{Servo block diagram}
+\end{figure}
+\par
+The plots in Fig:\ref{fig:servo-step} correspond to an unloaded servo response. Despite rotating a greater mass, and hence requiring a larger torque, the servo plant response $y(t)$ is consistent for actuating inner (Fig:\ref{fig:servo-step-inner}) and middle ring (Fig:\ref{fig:servo-step-middle}) assemblies. Even when a load is introduced in the form of the rotating propeller (\emph{at 5000 RPM}), the response $y'(t)$ is consistent with that of Eq:\ref{eq:servo-transfer}.
+\begin{figure}[hbtp]
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{graphs/servo-step-inner}
+\caption{Inner Ring Servo Response}
+\label{fig:servo-step-inner}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{graphs/servo-step-middle}
+\caption{Middle Ring Servo Response}
+\label{fig:servo-step-middle}
+\end{subfigure}
+\end{figure}
 \subsubsection*{Motor RPM Transfer Functions}
 
 

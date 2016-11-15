@@ -235,7 +235,7 @@ Where the outcome in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new i
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
 %====================================================
-An algorithm was been proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} which solves the problem of the Euler Angle singularity. The methodology is to switch between sequencing conventions (ZYX,ZYZ etc\ldots 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inelegant. Far more effficient is the use of \emph{quaternion}, $\mathbb{R}^4$, attitude representations (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
+An algorithm was proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} which solves the problem of the Euler Angle singularity. The suggested heuristic is to switch between sequencing conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion}, $\mathbb{R}^4$, attitude representations (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
 \par
 A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. Without deliberating too much on their proof or details, a quaternion consists or a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
 \begin{equation}
@@ -312,15 +312,35 @@ Using quaternion attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, t
 \dot{\eta}=\Phi(\eta)\vec{\omega}_b\underset{Q}{\iff}\dot{Q}=\frac{1}{2}Q_b\otimes Q_\omega
 \end{equation}
 \end{subequations}
-Second order quaternion derivatives, quaternion accelerations are far less elegant than their velocity terms. It's important to mention them however they are only relevant to quaternion backstepping in the control section. 
+Second order quaternion derivatives, quaternion accelerations aren't as useful as their velocity counterparts. The second order derivative is mentioned here however it's only relevant to quaternion backstepping in the control section. If possible, quaternion accelerations are avoided due to their complexity;
 \begin{equation}
 \ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[\mathbb{I}_b^-1(\tau-4(Q^*\otimes \dot{Q})\times(\mathbb{I}_b(Q^*\otimes \dot{Q}))\big]
 \end{equation}
 %====================================================
-\subsection{The Unwinding Problem}
+\subsection{Quaternion Unwinding}
 \label{subsec:dynamics.rigidbody.unwinding}
 %====================================================
-Although quaternions are better than Euler angles and lack the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}]^T$ represents a rotation 
+Although quaternions are better than Euler angles and lack the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}]^T$ represents a rotation in $\mathbb{R}^3$ using $\mathbb{R}^4$ variables there is whats called dual coverage\cite{unwinding}.
+Each unit quaternion, stemming from Euler-Rodriguez theorem, is parameterised such that the quaternion operation represents a single rotation of $\theta$ about an axis $\hat{u}$ such that:
+\begin{equation}
+Q=\begin{bmatrix}
+q_0 & \vec{q}
+\end{bmatrix}=\pm
+\begin{bmatrix}
+cos(\theta/2) & sin(\theta/2)\hat{u}
+\end{bmatrix}
+\end{equation}
+With a unit vector $\hat{u}$. Quaternions relate to an euler angle rotation matrix through the Rodriguez formula:
+\begin{equation}
+\mathbb{R}(Q)=\mathbb{I}+2q_0[\vec{q}]_\times+2[\vec{q}]^2_\times
+\end{equation}
+As a result its clear to see that for each unique attitude in 3-Dimensions there exist two quaternions which correlate to the same position. Namely:
+\begin{equation}
+Q = \begin{bmatrix}
+cos(\theta/2) & sin(\theta/2)
+\end{bmatrix}
+.
+\end{equation}
 %****************************************************
 \section{Non-linearities}
 \label{sec:dynamics.nonlinearities}
