@@ -235,19 +235,20 @@ Where the outcome in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new i
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
 %====================================================
-An algorithm was proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} which solves the problem of the Euler Angle singularity. The suggested heuristic is to switch between sequencing conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion}, $\mathbb{R}^4$, attitude representations (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
+An algorithm proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} suggested a solution the problem of the Euler Angle singularity. The proposed heuristic was to switch between sequencing conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion}, $\mathbb{R}^4$, attitude representations (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
 \par
 A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. Without deliberating too much on their proof or details, a quaternion consists or a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
 \begin{equation}
 Q\triangleq 
 \begin{bmatrix}
-q_0 & \vec{q}
+q_0 \\
+\vec{q}
 \end{bmatrix}
 ~~\in\mathbb{R}^4
 \end{equation}
 Any and all quaternions, unless otherwise stated, in this dissertation are all unit quaternions\footnote{Unit quaternions are a subset of the quaternion space}, $Q\in\mathbb{Q}_u$. The need for quaternions with unity magnitude is such to ensure rotational operators don't affect the magnitude of the vector operand. A unit quaternion is defined as:
 \begin{equation}
-||Q||=\sqrt{{q_0}^2+{\vec{q}}^2}=1
+||Q||=\sqrt{{q_0}^2+\vec{q}~^2}=1
 \end{equation}
 Quaternion multiplication is distributive and associative, but not commutative. Specifically a quaternion multiplciation operation is equivalent to the Hamilton product. For two quaternions, $Q$ \& $P$:
 \begin{subequations}
@@ -302,7 +303,7 @@ A quaternion time derivative, with $Q_\omega$ being a quaternion with a vector c
 \end{bmatrix}
 \end{equation}
 \newpage
-Using quaternion attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, to represent attitudes and their rates. A body quaternion is fully defined in the body frame. The first quaternion time derivative replaces Eq:\ref{eq:states.a}\& Eq:\ref{eq:states.c};
+Using quaternions to represent attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, to represent attitudes and their rates. A body quaternion is fully defined in the body frame. The first quaternion time derivative replaces Eq:\ref{eq:states.a}\& Eq:\ref{eq:states.c};
 \begin{subequations}
 \begin{equation}
 \dot{\mathcal{E}}=\mathbb{R}_b^I(-\eta)\vec{\nu}\underset{Q}{\iff}Q_b\otimes\vec{\nu}\otimes Q_b^*
