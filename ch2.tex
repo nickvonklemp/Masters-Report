@@ -618,42 +618,52 @@ The entire system is centered around an ARM STM32F303\cite{stm32f303} based $\mu
 Two wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1}, USART connected. Secondly, an augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded into a single proprietary S.BUS data stream. 
 \newpage
 The need for an S.BUS encoder \cite{sbusencoder} comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer I/O channels which can be allocated for input capture. Encoding the received data to a serial communication protocol means the 6CH data can be processed on a single serial RX line. The S.Bus encoder implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the standard's following parameters:
-\\
-\begin{tabularx}{\textwidth}{|X|X|}
-\hline
+\par
+\begin{tabularx}{\textwidth}{X X}
 \begin{minipage}{\textwidth}
 \begin{itemize}[itemsep=0em]
-\item 8-Bit byte length
 \item 25 Bytes per packet
+\item 8-Bit byte length
+\item 1 Start byte 0x240
+\item 1 Byte of flags
+\item 1 Stop byte 0x0
 \item Bytes are:
 \vspace{-5pt}
 \begin{itemize}[itemsep=0em]
 \item MSB First
-\item 1 start bit
-\item 2 stop bits
+\item 1 start \& 2 stop bits
 \item Even parity bit
 \item Inverted
 \item 100000 baud (bps)
 \end{itemize}
 \vspace{-5pt}
-\item 14 ms idle time between packets
-\item Up to 16CH encoded
-\item Each channel's data is 11 bits long
-\item Channel data is little endian prioritized
 \end{itemize}
 \end{minipage}
 &
 \begin{minipage}{\textwidth}
-$\overbrace{[0x240]}^{Start byte}~\overbrace{[B_7~B_6~B_5~B_4~B_3~B_2~B_1~B_0][B_7~B_6~B_5}^{CH1}$\\
-$\overbrace{B_4~B_3~B_2~B_1~B_0][B_7~B_6~B_5~B_4~B_3~B_2}^{CH2}~\ldots$
+\begin{itemize}[itemsep=0em]
+\item 22 bytes of CH data 
+\item Each channel's data is 11 bits long
+\item 16CH encoded
+\item Channel data is little endian prioritized
+\item 14 ms idle time between packets
+\item Packets are arranged:
+\end{itemize}
+{
+$\overbrace{[0x240]}^{Start~byte}\overbrace{[8B_1][3B_2}^{CH1}|\overbrace{5B_2][6B_3}^{CH2}|\overbrace{2B_3][8B_4][1B_5}^{CH3}|\ldots$
+\\
+$\overbrace{7B_5][4B_6|}^{CH4}~\longrightarrow~\overbrace{3B_22][8B_23]}^{CH16}\overbrace{[8B_24]}^{Flags}\overbrace{[0x00]}^{Stop~byte}$
+}
 \end{minipage}
 \\
-\hline
 \end{tabularx}
 \par
 {\color{red}
-The received information of the transmitted 6 channels is filtered through an Infinite-Impulse Response filter. The filters frequency response is as follows: $
-y_n = y_{n-1}$. Similarly all the measured RPM signals are filtered as well. Any referenced signals received are all post filtered data. Filtering for state estimates is separately performed on the Ground Control Station computer.}
+The received information from the transmitted 6 channels is filtered through a moving average IIR$^\dagger$ filter. The filters difference equation is as follows: 
+\begin{equation}
+y_n = \big(1-\frac{1}{N}\big)y_{n-1}+\frac{1}{N}x_n
+\end{equation}
+Moving over an average of $N=5$ samples. The signal's sample rate is sufficiently fast enough such that the digital filter's frequency response isn't of consequence. Similarly all the measured RPM signals are filtered as well. Any received signals referred to are all post filtration. Filtering for state estimates is separately performed on the Ground Control Station computer.}
 \par
 Each of the eight digital servo actuators are driven individually from 330 Hz PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses typically range from 1ms - 2ms to linearly control the rotary position. The exact range and transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 20A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with 1ms - 2ms pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$C. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 15.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
 \par
