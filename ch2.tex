@@ -715,7 +715,7 @@ Any STM32 $\mu$controller is programmed through a dedicated debugging device. Th
 \label{subsec:proto.design.transfer}
 %====================================================
 \subsubsection*{Servo Transfer Functions}
-The full scale deflection of each digital servo is in fact greater than its listed 180\textdegree ~range. Each servo has a rotational range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The exact characteristics for every servo will differ slightly and so individual transfer functions for each of the 8 servos are used. In the prototype control loop the servos are left in open loop; the major loop controller coefficients are expected to account for minor loop actuator dynamics. With that being said, for such an expectation the simulation would need to accurately represent the servo's response. Seeing that the 180\textdegree ~limitation was a design decision imposed, one of the first points of comparison is the effect such a constraint would have on the feasible operational regions. The control algorithms developed in Chapter:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics.
+The full scale deflection of each digital servo is in fact greater than its quoted 180\textdegree ~range. Each servo has a rotational range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The exact characteristics for every servo differ slightly and so individual transfer functions for each of the 8 servos are used. In the prototype control loop the servos are left in open loop; the major loop controller coefficients are expected to account for minor loop actuator dynamics. With that being said, for such an expectation the simulation would need to accurately represent the servo's response. Seeing that the 180\textdegree ~limitation was a design decision imposed, one of the first points of comparison is the effect such a constraint would have on the feasible operational regions. The control algorithms developed in Chapter:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -731,47 +731,86 @@ The full scale deflection of each digital servo is in fact greater than its list
 \label{fig:servo-step}
 \end{subfigure}
 \caption{}
+\label{fig:servo-no-load}
 \end{figure}
-\\
-For the servo whose data is plotted in Fig:\ref{fig:servo-range}, the relationship between its pulse-width input $x~[m.s]$ and the rotational output position $y~degrees$ is given by:
+For the servo \footnote{Servo $\lambda_1$} whose data range and response are shown in Fig:\ref{fig:servo-no-load}, the relationship the input pulse-width $x~[m.s]$ and the rotational output position $y~degrees$ is given by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
-0\text{\textdegree} & ~~x<0.64~m.s\\
-127.78x-81.78 & ~~0.64~m.s \leq x \leq 2.44~m.s\\
-230\text{\textdegree} & ~~x>2.44~m.s\\
+0\text{\textdegree} & ~~x<0.65~m.s\\
+129.12x-82.64 & ~~0.64~m.s \leq x \leq 2.46~m.s\\
+230\text{\textdegree} & ~~x>2.46~m.s\\
 \end{array}
 \end{cases}
 \end{equation}
-Although, in practice, the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~is taken at around a 50\% input and the operational range is $\pm 90$\textdegree . The servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400 RPS$ with a dead time of $0.142~m.s$ and a mechanical deadband of $\leq4\mu s$.
-Each servo approximately has a (\emph{critically damped}) second order transfer function$^{\dagger}$:
-\begin{equation}\label{eq:servo-transfer}
-G(s)=\frac{7.144}{s^2+3.744s+7.189}e^{-0.142\times 10^{-3}s}
-\end{equation}
-The net transfer block for the servo then has the following structure, including non-linearities;
+Although, in practice, the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~is taken at around a 50\% input and the operational range is $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400 RPS$ with a dead time of $1.2~m.s$ and a mechanical deadband of $\leq4\mu s$. The net transfer block for the servo then has the following structure, including non-linearities but neglecting the deadband;
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.4\textwidth]{figs/servo-block}
+\includegraphics[width=0.8\textwidth]{figs/servo-block}
 \caption{Servo block diagram}
 \end{figure}
 \par
-The plots in Fig:\ref{fig:servo-step} correspond to an unloaded servo response. Despite rotating a greater mass, and hence requiring a larger torque, the servo plant response $y(t)$ is consistent for actuating inner (Fig:\ref{fig:servo-step-inner}) and middle ring (Fig:\ref{fig:servo-step-middle}) assemblies. Even when a load is introduced in the form of the rotating propeller (\emph{at 5000 RPM}), the response $y'(t)$ is consistent with that of Eq:\ref{eq:servo-transfer}.
+Each servo has an approximate (\emph{critically damped}) second order transfer function$^{\dagger}$:
+\begin{subequations}\label{eq:servo-transfer}
+\begin{equation}
+G(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
+=e^{-0.012s}\frac{(15.717)^2}{s^2+2(1)(15.717)+(15.717)^2}
+\end{equation}
+\begin{equation}
+Y(s)=
+\begin{cases}\begin{array}{ll}
+0\text{\textdegree} & ~~|U(s)|<0.65\\
+G(s) & 0.65 \leq |U(s)| \leq 2.46\\
+230\text{\textdegree} & ~~|U(s)|>2.46\\
+\end{array}
+\end{cases}
+\end{equation}
+\end{subequations}
+\par
+The plots in Fig:\ref{fig:servo-step} are of an unloaded servo's response.
+When loaded by an inner ring assembly (Fig:\ref{fig:servo-step-inner}) the plant response $y(t)$ is consistent with Eq:\ref{eq:servo-transfer}. Despite rotating a load mass and hence requiring a larger torque, the servo
+remains unchanged, even when the BLDC motor (with a 6$\times$4.5" prop) is spun an average rate of 5000 RPM, $y'(t)$, further loading the servo.
 \begin{figure}[hbtp]
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{graphs/servo-step-inner}
+\includegraphics[width=0.98\textwidth]{graphs/servo-step-inner}
 \caption{Inner Ring Servo Response}
 \label{fig:servo-step-inner}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{graphs/servo-step-middle}
+\includegraphics[width=0.98\textwidth]{graphs/servo-step-middle}
 \caption{Middle Ring Servo Response}
 \label{fig:servo-step-middle}
 \end{subfigure}
 \end{figure}
-In Fig:\ref{fig:servo-step-middle} the mechanical response is the same as, despite driving a larger mass, however there are harmonics at at the settling point. These are product of the structure flex within the middle ring assembly\footnote{rotational position was measured with respect to the bear supported shaft coaxial to the servos, not the servo output shaft}, \emph{not from the servo plant}. The oscillations still exist when under load, $y'(t)$, and can be reduced with a more rigid subframe.
+\par
+However, in Fig:\ref{fig:servo-step-middle} the mechanical response remains the some but harmonics are introduced from the larger mass being driven. These are product of the structure flex within the middle ring assembly\footnote{rotational position was measured with respect to the bearing supported output shaft that is coaxial to the servos, not the servo output shaft}, \emph{not from the servo plant}. The oscillations still exist when under load, $y'(t)$, but can be reduced by either introducing a more rigid sub-frame, limiting the maximum angular rate or applying a damping minor loop controller. The latter would be in \emph{virtual} closed loop with an approximated error rate as the prototype doesn't support position feedback for each motor module.
 \subsubsection*{Motor RPM Transfer Functions}
-
-
+Each Cobra 2208 BLDC motor, when loaded with a 6$\times$4.5 propeller has a quadratic speed curve, Fig:\ref{fig:bldc-range}. This is as a result of the propeller's aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (Section:\ref{subsec:dynamics.aero.bem}). The relationship\footnote{The input range can be altered in BLHeli ESC software} between input pulse-width to the ESCs and output RPM sensor signal is:
+\begin{equation}
+y(x)=
+\begin{cases}\begin{array}{ll}
+0\text{\textdegree} & ~~x<1.065~m.s\\
+-20593x^2 + 80187x - 60004 & ~~1.065~m.s \leq x \leq 1.655~m.s\\
+230\text{\textdegree} & ~~x>1.655~m.s\\
+\end{array}
+\end{cases}
+\label{eq:bldc-range}
+\end{equation}
+The upper limit in Eq:\ref{eq:bldc-range} is goverened by the maximum ESC current limit, which is 20A. The step response has a negligible dead time 
+\begin{figure}[hbtp]
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{graphs/bldc-range}
+\caption{BLDC RPM range}
+\label{fig:bldc-range}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{graphs/BLDC-step}
+\caption{Cobra BLDC step response}
+\label{fig:bldc-step}
+\end{subfigure}
+\end{figure}
 %====================================================
