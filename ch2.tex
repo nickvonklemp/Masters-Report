@@ -713,9 +713,10 @@ Any STM32 $\mu$controller is programmed through a dedicated debugging device. Th
 %====================================================
 \subsection{Actuator Transfer Functions}
 \label{subsec:proto.design.transfer}
-The full scale deflection of each digital servo is in fact greater than its quoted 180\textdegree ~range. Each servo has a rotational range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The exact characteristics for every servo differ slightly and thus individual transfer functions for each of the 8 servos are used in simulation. In the prototype control loop the servos are left in open loop; the major loop controller coefficients are expected to account for minor loop actuator dynamics. With that being said, for such an expectation the simulation would need to accurately represent the servo's response. Seeing that the 180\textdegree ~limitation was imposed as a design decision; one of the first points of contention is the effect such a constraint would have on the feasible operating trajectories. The control algorithms developed in Chapter:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics, later the servo limitations are introduced.
 %====================================================
 \subsubsection*{Servo Transfer Functions}
+%====================================================
+The full scale deflection of each digital servo is in fact greater than its quoted 180\textdegree ~range. Each servo has a rotational range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The exact characteristics for every servo differ slightly and thus individual transfer functions for each of the 8 servos are used in simulation. In the prototype control loop the servos are left in open loop; the major loop controller coefficients are expected to account for minor loop actuator dynamics. With that being said, for such an expectation the simulation would need to accurately represent the servo's response. Seeing that the 180\textdegree ~limitation was imposed as a design decision; one of the first points of contention is the effect such a constraint would have on the feasible operating trajectories. The control algorithms developed in Chapter:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics, later the servo limitations are introduced.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -733,6 +734,7 @@ The full scale deflection of each digital servo is in fact greater than its quot
 \caption{}
 \label{fig:servo-no-load}
 \end{figure}
+\par
 For the servo \footnote{Servo $\lambda_1$} whose data range and response are shown in Fig:\ref{fig:servo-no-load}, the relationship the input pulse-width $x~[m.s]$ and the rotational output position $y~degrees$ is given by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
@@ -753,11 +755,11 @@ Although, in practice, the equation Eq:\ref{eq:servo-range} is changed such that
 Each servo has an approximate (\emph{critically damped}) second order transfer function$^{\dagger}$:
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
-G(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
+G_{servo}(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
 =e^{-0.012s}\frac{(15.717)^2}{s^2+2(1)(15.717)+(15.717)^2}
 \end{equation}
 \begin{equation}
-Y(s)=
+Y_{servo}(s)=
 \begin{cases}\begin{array}{ll}
 0\text{\textdegree} & ~~|U(s)|<0.65\\
 G(s) & 0.65 \leq |U(s)| \leq 2.46\\
@@ -767,7 +769,7 @@ G(s) & 0.65 \leq |U(s)| \leq 2.46\\
 \end{equation}
 \end{subequations}
 \par
-The plot in Fig:\ref{fig:servo-step} is that of an unloaded servo's response. When loaded by an inner ring assembly (Fig:\ref{fig:servo-step-inner}) the plant response $y(t)$ is consistent with Eq:\ref{eq:servo-transfer}. Despite rotating a load mass and hence requiring a greater torque, the servo remains unchanged, even when the BLDC motor (with a 6$\times$4.5" prop) is spun an average rate of 6500 RPM, $y'(t)$, further loading the assembly.
+The plot in Fig:\ref{fig:servo-step} is that of an unloaded servo's response. When loaded by an inner ring assembly (Fig:\ref{fig:servo-step-inner}) the plant response {\color{Blue}$\mathbf{y(t)}$} is consistent with Eq:\ref{eq:servo-transfer}. Despite rotating a load mass and hence requiring a greater torque, the servo remains unchanged, even when the BLDC motor (with a 6$\times$4.5" prop) is spun an average rate of 6500 RPM, {\color{Red}$\mathbf{y'(t)}$}, further loading the assembly.
 \begin{figure}[hbtp]
 \begin{subfigure}{0.5\textwidth}
 \centering
@@ -784,8 +786,9 @@ The plot in Fig:\ref{fig:servo-step} is that of an unloaded servo's response. Wh
 \caption{}
 \end{figure}
 \par
-However, in Fig:\ref{fig:servo-step-middle} the mechanical response remains the same but oscillations are introduced by the larger mass being driven. These are product of the structure's flex within the middle ring assembly\footnote{The rotational position was measured with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft}, \emph{not from the servo plant}. The oscillations are still present under load, $y'(t)$, despite the frame being tensioned by a thrust vector. The harmonics can be reduced by either introducing a more rigid sub-frame, limiting the maximum angular rate or applying a damping minor loop controller. The latter would be a \emph{virtual} closed loop with an approximated error rate as the prototype doesn't support position feedback for each motor module.
-\subsubsection*{Motor RPM Transfer Functions}
+However, in Fig:\ref{fig:servo-step-middle} the mechanical response remains the same but oscillations are introduced by the larger mass being driven. These are product of the structure's flex within the middle ring assembly\footnote{The rotational position was measured with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft}, \emph{not from the servo plant}. The oscillations are still present under load, {\color{Red}$\mathbf{y'(t)}$}, despite the frame being tensioned by a thrust vector. The harmonics can be reduced by either introducing a more rigid sub-frame, limiting the maximum angular rate or applying a damping minor loop controller. The latter would be a \emph{virtual} closed loop with an approximated error rate as the prototype doesn't support position feedback for each motor module.
+\newpage
+\subsubsection*{BLDC Transfer Functions}
 Each Cobra 2208 BLDC motor, when loaded with a 6$\times$4.5 propeller has a quadratic speed curve, Fig:\ref{fig:bldc-range}. This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (Section:\ref{subsec:dynamics.aero.bem}). The relationship\footnote{The input range can be adjusted in BLHeli ESC software to improve input resolution.} between input pulse-width to the ESCs and output RPM sensor signal (Fig:\ref{fig:bldc-range}) is:
 \begin{equation}
 y(x)=
@@ -813,7 +816,19 @@ y(x)=
 \end{subfigure}
 \caption{}
 \end{figure}
-The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case 20A. The effect of a 10A current limit on transient and steady state performance is shown in the plot:
-
- The step response has a negligible dead time and 2$^{nd}$ order dynamics\footnote{It can't be stressed enough how much the BLHeli ESC firmware improved dynamic response of the motors}, far faster than the servo's plant.
+The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case 20A. Imposing 10A current limiting (a consequence of using lower power ESCs), the plot for {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}, significantly restricts the motor's transient and steady-state performance. The motor's step response, {\color{Purple}$\mathbf{y(t)}$} has a negligible dead time and 2$^{nd}$ order dynamics\footnote{It can't be stressed enough how much the BLHeli ESC firmware improved dynamic response of the motors}, far faster than the servo's plant. The motors transfer function for speed in RPM is:
+\begin{subequations}\label{eq:bldc-transfer}
+\begin{equation}
+G_{BLDC}(s)=\frac{1}{\big(1+1.7583s\times 10^{-3}\big)\big(1+1.7494s\times 10^{-3}\big)}
+\end{equation}
+\begin{equation}
+Y_{BLDC}(s)=
+\begin{cases}\begin{array}{ll}
+0\text{\textdegree} & ~~|U(s)|<1.065\\
+G(s) & 1.065 \leq |U(s)| \leq 1.655\\
+16300\text{\textdegree} & ~~|U(s)|>1.655\\
+\end{array}
+\end{cases}
+\end{equation}
+\end{subequations}
 %====================================================

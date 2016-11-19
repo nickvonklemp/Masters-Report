@@ -4,7 +4,7 @@
 \chapter{Kinematics \& Dynamics}
 \label{ch:dynamics}
 %====================================================
-The body's dynamics are first solved as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are investigated and incorporated into the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
+The body's dynamics are first treated as rigid, with appropriate equations derived for generic 6-DOF motion. There after, non-linear aerodynamic and inertial effects, unique to multi-body relative rotations, are investigated and incorporated into the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development next in Chapter:\ref{ch:control}.
 %====================================================
 \section{Rigid Body Dynamics}
 \label{sec:dynamics.rigidbody}
@@ -12,37 +12,39 @@ The body's dynamics are first solved as rigid, with appropriate equations derive
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
 %====================================================
-Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{classicaldynamics,rotationrigidbody} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational and rotational kinematic energies and potential energy are conserved all throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
+Fundamentally any body, rigid or otherwise, can undergo two kinds of movements, namely rotational and translation motions. Often a Lagrangian\cite{classicaldynamics,rotationrigidbody} approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom. The Lagrangian principle ensures that translational and rotational kinematic energies and potential energy are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
 \par
-Lagrangian formalism is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames and multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}, rigid body dynamics in a cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newtonain-Euler or Euler-Lagrange formulations both stipulate the same resultant differential equations of motion. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\mathbf{r}(t)$, for both linear $\mathcal{E}$ and angular $\eta$ relative positions;
+Lagrangian formalism is regarded as especially useful in non-cartesian (\emph{spherical etc\ldots}) co-ordinate frames or multi-body systems. With that being said, a cartesian co-ordinate system was already defined in Section:\ref{subsec:proto.conventions.motoraxis}. Rigid body dynamics in a Cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newton-Euler or Euler-Lagrange formulations both stipulate the same resultant differential equations of motion. The Lagrangian operator, $\mathcal{L}$, is a term made up of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\mathbf{r}(t)$, for both linear $\mathcal{E}$ and angular $\eta$ relative positions;
 \begin{equation}\label{eq:generalpath}
 \mathbf{r}(t)=\begin{bmatrix}
 \mathcal{E} & \eta
 \end{bmatrix}^T
 \end{equation}
-The co-ordinates in Eq:\ref{eq:generalpath} are generalized here, despite being symbols commonly used to represent linear and angular positions. The generalized co-ordinates are later be refined as Cartesian body co-ordinates with respect to the inertial frame. The Lagrangian, by definition, is then:
+The co-ordinates in Eq:\ref{eq:generalpath} are generalized here, despite being symbols commonly used to represent linear and angular positions. The generalized co-ordinates are later be refined as Cartesian body co-ordinates with respect to the inertial frame. The Lagrangian is, by definition:
 \begin{subequations}
 \begin{equation}\label{eq:lagrangian.a}
 \mathcal{L}(\mathbf{r},\dot{\mathbf{r}},t)=T(\mathbf{r},\dot{\mathbf{r}})-U(\mathbf{r},\dot{\mathbf{r}})
 \end{equation}
-Introducing generic kinetic (angular \& linear) and potential energies, the latter being only gravitational potential energy in this case;
+Introducing a rigid body's general kinetic (angular \& linear) and potential energies, the latter being only gravitational\footnote{Here $G=\begin{bmatrix}
+0&0&-9.81
+\end{bmatrix}^T~m.s^{-2}$~in the Inertial frame,$\in\mathcal{F}^I$} potential energy in this case:
 \begin{equation}\label{eq:lagrangian.b}
-\mathcal{L}=\frac{1}{2}\dot{\mathcal{E}}^{T}(m)\dot{\mathcal{E}}+\frac{1}{2}\dot{\eta}^T(\mathbb{I})\dot{\eta}-mgz
+\mathcal{L}=\frac{1}{2}\dot{\mathcal{E}}^{T}(m)\dot{\mathcal{E}}+\frac{1}{2}\dot{\eta}^T(\mathbb{I})\dot{\eta}-mGz
 \end{equation}
 \end{subequations}
 \newpage
-Noting that $\mathbb{I}$ is the inertial tensor aligned w.r.t to whichever generalized coordinates are used. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\mathbf{V}$, acting on the system. In this case the generalized forces or a net force, $F~[N]$, and a net torque, $\tau~[N.m]$.
+Noting that $\mathbb{I}$ is the inertial tensor of the body aligned w.r.t to whichever generalized reference frame is used. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\mathbf{V}$, acting on the system. In this case the generalized forces or, more specifically a net force $F_{net}$ and a net torque $\tau_{net}$.
 \begin{equation}\label{eq:euler-lagrange}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)-\frac{\delta L}{\delta \mathbf{r}} = \mathbf{V} = \begin{bmatrix}
-F\\
-\tau
+F_{net}\\
+\tau_{net}
 \end{bmatrix}
 \end{equation}
-Taking the partial derivatives of Eq:\ref{eq:lagrangian.b} with respect to its path co-ordinates $\mathbf{r}$:
+And taking the partial derivatives of Eq:\ref{eq:lagrangian.b} with respect to the path co-ordinates $\mathbf{r}$:
 \begin{subequations}
 \begin{equation}\label{eq:partial.a}
 \frac{\delta L}{\delta \mathbf{r}}=\begin{bmatrix}
-mG\\
+mG_x\\
 0
 \end{bmatrix}
 \end{equation}
@@ -52,11 +54,11 @@ mG\\
 m\frac{d}{dt}\dot{\mathcal{E}} ~~~ \mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]^T
 \end{equation}
 \end{subequations}
-In any generalized coordinate system a rotating vector's time derivative, according to the Reynolds Transportation Theorem\cite{reynolds,conservationequations}, is given by:
+Where $G_x$ is the gravitation force in whichever reference frame ($\mathcal{F}^x$) the lagrangian is with respect to. In any generalized coordinate system a rotating vector's time derivative which, according to the Reynolds Transportation Theorem\cite{reynolds,conservationequations}, is given by:
 \begin{equation}\label{eq:reynolds}
 \frac{d\vec{f}}{dt_a}=\frac{d\vec{f}}{dt_b}+\vec{\omega}_{a/b}\times\vec{f}
 \end{equation}
-So applying that theorem (Eq:\ref{eq:reynolds}) to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates as cartesian body coordinates with respect to an inertial origin. Noting that in Eq:\ref{eq:partial.b} the place holders used for linear and angular positions are in a common shared frame\footnote{In this case $\eta\not=[\phi~\theta~\psi]^T$ seeing that it's defined in a common frame}, and hence $[ \dot{\mathcal{E}}~~\dot{\eta} ]^T\equiv [ \nu ~~ \omega]^T\in \mathcal{F}^b$. It then follows that Lagrangian will change:
+So applying that theorem (Eq:\ref{eq:reynolds}) to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates as cartesian body coordinates with respect to an inertial origin (the body frame $\mathcal{F}^b$). Noting that in Eq:\ref{eq:partial.b} the place holders used for linear ($\mathcal{E}$) and angular positions ($\eta$) are in a common shared frame\footnote{In this case $\eta\not=[\phi~\theta~\psi]^T$ seeing that angular position $\eta$ is defined in a common frame. $\eta$ is \underline{NOT} an Euler angle set.}, and hence $[ \dot{\mathcal{E}}~~\dot{\eta} ]^T\equiv [ \nu ~~ \omega]^T\in \mathcal{F}^b$. It then follows that Lagrangian will change:
 \begin{subequations}
 \begin{equation}
 \mathcal{L}=\frac{1}{2}\nu^{T}(m)\nu+\frac{1}{2}\omega^T(\mathbb{I})\omega -mG_b z
@@ -75,24 +77,24 @@ m\frac{d}{dt}\nu ~~~ \mathbb{I}\frac{d}{dt}\omega\bigg]^T
 \rightarrow \mathbb{I}_b \frac{d}{dt}\omega_b=\mathbb{I}_b\dot{\omega}+\vec{\omega}_{I/b}\times\mathbb{I}_b\omega
 \end{equation}
 \end{subequations}
-Which, when reintroduced to the Euler-Langrage formulation Eq:\ref{eq:euler-lagrange}, results in the familiar Newton-Euler equations for linear and angular movements, both in the body frame;
+Which, when substituted back into the Euler-Lagrange formulation Eq:\ref{eq:euler-lagrange}, results in the familiar Newton-Euler equations for linear and angular differentials, both in the body frame;
 \begin{subequations}\label{eq:newton}
 \begin{equation}\label{eq:newton.a}
-F=m\dot{\nu}+\omega_b\times m \nu - m\mathbb{R}_I^b(-\eta) G
+F_{net}=m\dot{\nu}+\omega_b\times m \nu - m\mathbb{R}_I^b(-\eta) G
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:newton.b}
-\tau=\mathbb{I}_b\dot{\omega}_b+\omega_b\times\mathbb{I}_b\omega
+\tau_{net}=\mathbb{I}_b\dot{\omega}_b+\omega_b\times\mathbb{I}_b\omega
 \end{equation}
 \end{subequations}
-It's important to recall that $\omega_b\not= \dot{\eta}$ where $\eta=[\phi~\theta~\psi]^T$, seeing that Euler Angles are defined in sequentially rotated reference frames. So the four differential equations often used to completely describe the entire state derivatives are:
+It's important to recall that $\omega_b\not= \dot{\eta}$ where $\eta=[\phi~\theta~\psi]^T$, seeing that Euler Angles are defined in sequentially rotated reference frames. So then four differential equations are often used to completely describe the entire set of state derivatives, namely:
 \begin{subequations}\label{eq:states}
 \begin{equation}\label{eq:states.a}
 \dot{\mathcal{E}}=\mathbb{R}_b^I(-\eta)\nu~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:states.b}
-F=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b(-\eta) G ~~~~\in\mathcal{F}^b
+F_{net}=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b(-\eta) G ~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:states.c}
@@ -100,12 +102,12 @@ F=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b(-\eta) G ~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:states.d}
-\tau=\mathbb{I}_b\omega_b+\omega_b\times\mathbb{I}_b\omega~~~~\in\mathcal{F}^b
+\tau_{net}=\mathbb{I}_b\omega_b+\omega_b\times\mathbb{I}_b\omega~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-The set of state differentials in Eq:\ref{eq:states} can be reduced to a set of two equations, defined only in their respective reference frames of the state variables which they describe. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
+The state differentials in Eq:\ref{eq:states} can be reduced to a set of two equations. Those differentials are defined only with respect to the reference frames of the state variables which they represent. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
 \begin{equation}
-\frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\Phi(\eta)\omega_b\bigg]
+\frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]^T=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\Phi(\eta)\omega_b\bigg]^T
 \end{equation}
 This only changes the angular component, and so applying the differential chain rule:
 \begin{equation}
