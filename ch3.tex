@@ -105,29 +105,29 @@ F_{net}=m\dot{\nu}+\omega_b\times m\nu -m \mathbb{R}_I^b(-\eta) G ~~~~\in\mathca
 \tau_{net}=\mathbb{I}_b\omega_b+\omega_b\times\mathbb{I}_b\omega~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-The state differentials in Eq:\ref{eq:states} can be reduced to a set of two equations. Those differentials are defined only with respect to the reference frames of the state variables which they represent. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
+The state differentials in Eq:\ref{eq:states} can be reduced to a set of two equations. Those differentials are defined in reference frames of the state variables which they represent. The non-linear form of those equations substitutes\footnote{Originally introduced in Eq:\ref{eq:angular-rates.e}} $\dot{\eta}=\Phi(\eta)\omega_b$ in the Lagrangian derivative, Eq:\ref{eq:partial.b}.
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{r}}}\bigg)=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\dot{\eta}\bigg]^T=\bigg[m\frac{d}{dt}\nu~~~\mathbb{I}\frac{d}{dt}\Phi(\eta)\omega_b\bigg]^T
 \end{equation}
-This only changes the angular component, and so applying the differential chain rule:
+This only affects the angular component, and so applying the differential chain rule:
 \begin{equation}
 \mathbb{I}\frac{d}{dt}\Phi(\eta)\dot{\omega}_b=\mathbb{I}\big(\Phi\dot{(\eta)}\omega_b+\Phi(\eta)\dot{\omega}_b \big)
 \end{equation}
-Drawing from \cite{autonomousrobotseuler} and recognizing that $\mathbb{I}$ must be transformed to common axes, $\mathbb{J}=\Psi(\eta)^T\mathbb{I}\Psi(\eta)$. The controllable differential equations in Eq:\ref{eq:newton}, then in the inertial frame for force and intermediate Euler frames for each angle becomes\footnote{The relationship $\dot{\Phi}=\Phi\dot{\Psi}\Phi$ was used to simplify Eq:\ref{eq:nonlinear}, the singularity in $\Phi$ still remains\ldots}:
+Drawing from \cite{autonomousrobotseuler} and recognizing that $\mathbb{I}$ must be transformed to the common intermediate euler axes, $\mathbb{J}=\Psi(\eta)^T\mathbb{I}\Psi(\eta)$. The controllable differential equations in Eq:\ref{eq:newton}, then in the inertial frame for force and intermediate Euler frames for each angle become\footnote{The relationship $\dot{\Phi}=\Phi\dot{\Psi}\Phi$ was used to simplify Eq:\ref{eq:nonlinear}, the singularity in $\Phi$ still remains\ldots}:
 \begin{subequations}\label{eq:nonlinear}
-\begin{equation}
+\begin{equation}\label{eq:nonlinear.a}
 M(\eta)\ddot{\eta}+C(\eta,\dot{\eta})\dot{\eta}=\Psi(\eta)\tau
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:nonlinear.b}
 M(\eta)=\Psi(\eta)^T\mathbb{I}\Psi(\eta)
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:nonlinear.c}
 C(\eta,\dot{\eta})=-\Psi(\eta)\mathbb{I}\Psi\dot{(\eta)}+\Psi(\eta)^T sk(\Psi(\eta)\dot{\eta})\mathbb{I}\Psi(\eta)
 \end{equation}
 \end{subequations}
-Equation \ref{eq:nonlinear} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which describe the entire bodies motion are then:
+Equation \ref{eq:nonlinear.a} fully describes the state derivative $\ddot{\eta}$ in its own frame(s). The two differential equations which describe the entire bodies motion are then:
 \begin{subequations}
 \begin{equation}
 F=m\dot{\mathcal{E}}+\mathbb{R}_b^I(-\eta)\omega_b \times m \dot{\mathcal{E}}-mG~~~~\in\mathcal{F}^I
@@ -142,33 +142,35 @@ The generalized forces effecting the system, $F(u)$ and $\tau (u)$, are the syst
 \begin{subequations}
 The net force acting on the system is just the sum of all thrust vectors produced by rotating propellers, $T(\Omega_i)$.
 \begin{equation}
-\mu F = \sum \vec{T}_i
+\mu F = \sum \vec{T}(\Omega_i)
 \end{equation}
 Secondly the net torque is the sum of all torque arms produced from those propeller thrust vectors.
 \begin{equation}
-\mu \tau = \sum \vec{l}_i \times \vec{T}_i
+\mu \tau = \sum \vec{l}_i \times \vec{T}(\Omega_i)
 \end{equation}
 \end{subequations}
-Where $\vec{T}_i$ is the $i^{th}$ motor's thrust vector, not necessarily in 3 dimensions and typically bound to the $\hat{Z}_b$ axis, $\vec{l}_i$ is that motor's torque arm. The above equations are still applicable to any 6 DOF body, common simplifications applied to the system(s) for quadrotor control are explored in Appendix:\ref{app:stddynamics}. Aspects unique to the quadrotor and tilting quadrotor platforms are now introduced\ldots
+Where $\vec{T}(\Omega_i)$ is the $i^{th}$ motor's thrust vector, not necessarily in $\mathbb{R}^3$, and typically bound to the $\hat{Z}_b$ axis, $\vec{l}_i$ is that motor's perpendicular displacement from the origin $\mathbf{O}_b$. The above equations are still applicable to any 6 DOF body, common simplifications applied to the system(s) for quadrotor control are explored in Appendix:\ref{app:stddynamics}. Aspects unique to aerospace frames are now introduced. Obviously the focus is on quadrotor and tilting quadrotor platforms\ldots
 %====================================================
 \subsection{Rotation Matrix Singularity}\label{subsec:dynamics.rigidbody.singularity}
 %====================================================
-The Euler Angle singularity is often noted but infrequently proven mathematically, far less common is the demonstration of exactly how that singularity \emph{mathematically} manifests itself. By definition, a singularity occurs when a loss of differentiability exists. In the case of an affixed 3-axis gimbal, when an intermediate axis, for example the rolling angle $\theta$, is at $\pi/2$ then the remaining two axes become co-linear. That being a pitch $\phi$ or yaw $\psi$ rotations will subsequently have the same effect. Such a situation results in the loss of a degree of freedom.
+The Euler Angle singularity is often noted but far less common is the demonstration of exactly how that singularity \emph{mathematically} manifests itself. By definition, a singularity occurs when a loss of differentiability is encountered. In the case of an affixed 3-axis gimbal (Fig:\ref{fig:gimbal}), when an intermediary rotational angle, for example the rolling angle $\theta$, is at $\pi/2$ then the remaining two axes become co-linear (Fig:\ref{fig:gimbal-lock}). That being both pitch $\phi$ or yaw $\psi$ rotations will subsequently have the same effect. Such a situation results in what is termed a loss of a degree of freedom.
 \begin{figure}
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/gimbal}
 \caption{3-Axis gimbal}
+\label{fig:gimbal}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/gimbal-lock}
 \caption{Locked gimbal with loss of DOF}
+\label{fig:gimbal-lock}
 \end{subfigure}
 \caption{Gimbal lock}
 \end{figure} 
 \par
-What is obvious in a physical system is not necessarily as clear mathematically. A clear loss of differentiability is manifested in the Euler Matrix $\Psi(\eta)$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}. The relation between angular velocity, in the inertial frame or inversely in the body frame, and the angular rates of the Euler Angles.
+What is clear in a physical system is not necessarily as clear mathematically. A clear loss of differentiability is manifested in the Euler Matrix as $\Psi(\eta)\rightarrow \pi/2$, Eq:\ref{eq:angular-rates.e} from Section:\ref{subsec:proto.conventions.frames}. The relation between angular velocity, in the inertial frame or inversely in the body frame, and the angular rates of the Euler Angles.
 \begin{equation}\label{eq:euler-derivative}
 \begin{bmatrix}
 \dot{\phi}\\
@@ -188,10 +190,10 @@ r
 =\Phi(\eta)\omega_b
 \end{equation}
 \begin{equation}
-\text{As}~\underset{{\theta \rightarrow \pi /2}}{lim}~sec(\theta)\rightarrow \infty
+\text{As}~\underset{{\theta \rightarrow \pi /2}}{lim}~sec(\theta),tan(\theta)\rightarrow \infty
 \end{equation}
 Or that $\Phi(\eta)$ is undefined at $\theta=\pi/2$. 
-It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the rotation (or transformation) matrices are formulated:
+It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the Z-Y-X rotation (or transformation) matrices are formulated:
 \begin{subequations}
 \begin{equation}
 \mathbb{R}_I^b = \mathbb{R}_z\mathbb{R}_y\mathbb{R}_x=\begin{bmatrix}
@@ -217,7 +219,7 @@ s_\psi c_\theta & s_\psi s_\theta s_\phi + c_\psi c_\phi & s_\psi s_\theta  c_\p
 -s_\theta & c_\theta s_\phi & c_\phi c_\theta\\
 \end{bmatrix}
 \end{equation}
-In the case where $\theta=\pi/2$;
+In the case where $\theta=\pi/2$, using trigonometric double angles;
 \begin{equation}\label{eq:gimbal}
 =\begin{bmatrix}
 0 & c_\psi s_\phi - s_\psi c_\phi & c_\psi c_\phi + s_\psi s_\phi\\
@@ -232,14 +234,14 @@ In the case where $\theta=\pi/2$;
 \end{bmatrix}=\mathbb{R}_{x'}(\phi-\psi)
 \end{equation}
 \end{subequations}
-Where the outcome in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new intermediate frame, post a 90\textdegree ~rotation in the y-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi/2$, when $\phi$ \& $\psi$ effect the same angle.
+Where the resultant in Eq:\ref{eq:gimbal} represents an x-axis rotation in a new intermediate frame, post a 90\textdegree ~rotation in the y-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi/2$, when $\phi$ \& $\psi$ effect the same angle.
 %====================================================
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
 %====================================================
-An algorithm proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} suggested a solution the problem of the Euler Angle singularity. The proposed heuristic was to switch between sequencing conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion}, $\mathbb{R}^4$, attitude representations (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
+An algorithm proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} suggested a solution the problem of Euler Angle singularities. The proposed heuristic was to switch between sequencing conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion} attitude representations in $\mathbb{R}^4$ (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots).
 \par
-A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. Without deliberating too much on their proof or details, a quaternion consists or a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
+A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. An $\mathbb{R}^3$ position is paramterized as a single rotation $\theta$ about a unit axis $\hat{u}$ (Sic Rodriguez Formula\cite{unwinding}). Without deliberating too much on their proof or details, a quaternion consists or a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
 \begin{equation}
 Q\triangleq 
 \begin{bmatrix}
@@ -247,6 +249,10 @@ q_0 \\
 \vec{q}
 \end{bmatrix}
 ~~\in\mathbb{R}^4
+\end{equation}
+The relationship between an Euler Angles rotation matrix $\mathbb{R}_I^b(\eta)$ and a quaternion attitude $Q_b$ is given by the Rodriguez formula:
+\begin{equation}
+\mathbb{R}_I^b(\eta)=\mathbb{R}(Q_b)=\mathbb{I}+2q_0[\vec{q}]_\times+2[\vec{q}]^2_\times
 \end{equation}
 Any and all quaternions, unless otherwise stated, in this dissertation are all unit quaternions\footnote{Unit quaternions are a subset of the quaternion space}, $Q\in\mathbb{Q}_u$. The need for quaternions with unity magnitude is such to ensure rotational operators don't affect the magnitude of the vector operand. A unit quaternion is defined as:
 \begin{equation}
@@ -256,14 +262,16 @@ Quaternion multiplication is distributive and associative, but not commutative. 
 \begin{subequations}
 \begin{equation}
 Q\otimes P = \begin{bmatrix}
-q_0 & \vec{q}
+q_0 \\
+\vec{q}
 \end{bmatrix}
 \otimes
 \begin{bmatrix}
-p_0 & \vec{p}
+p_0 \\
+\vec{p}
 \end{bmatrix}
 \end{equation}
-\vspace{-10pt}
+\vspace{-5pt}
 \begin{equation}
 =q_0 p_0 - \vec{q}\cdot \vec{p}+p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}
 \end{equation}
@@ -271,29 +279,32 @@ p_0 & \vec{p}
 Seeing that the vector component of a quaternion is complex valued, it is natural that there exists a quaternion conjugate property. Namely:
 \begin{equation}
 Q^*=\begin{bmatrix}
-q_0 & -\vec{q}
+q_0 \\
+-\vec{q}
 \end{bmatrix}
 \end{equation}
 It then follows that\footnote{Disambigation:$\mathbb{I}$ in this context is a $4\times 4$ identity matrix, not an inertial matrix}:
 \begin{equation}
 Q\otimes Q^* = \mathbb{I}_{4\times 4}
 \end{equation}
-To apply quaternion rotations to a vector ($\vec{v} \in\mathbb{R}^3$) involves multiplication by two unit quaternions. 
+To apply quaternion rotations to a vector $\vec{v} \in\mathbb{R}^3$ involves multiplication by two unit quaternions. 
 \begin{equation}
 \begin{bmatrix}
-0 & \vec{v}~'
+0 \\
+\vec{v}~'
 \end{bmatrix}
 =Q\otimes
 \begin{bmatrix}
-0 & \vec{v}
+0 \\
+\vec{v}
 \end{bmatrix}
 \otimes Q^*
 \end{equation}
 Mostly, the zero scalar components are omitted in a rotation (\emph{or transformation}) operation, such that it is recognized the vector operands are substituted with quaternions.
-\begin{equation}
+\begin{equation}\label{eq:quaternion-rotation}
 \vec{v}~'=Q \otimes (\vec{v}) \otimes Q^*
 \end{equation} 
-In the case of rigid body attitude representation, $Q_b$ is the quaternion which represents the difference between $\mathcal{F}^I$ and $\mathcal{F}^b$. A quaternion operator is equivalent to a rotation matrix operation:
+In the case of rigid body attitude representation, $Q_b$ is the quaternion which represents the difference between $\mathcal{F}^b$ and $\mathcal{F}^I$. A quaternion operator is equivalent to a rotation matrix operation:
 \begin{equation}
 \mathbb{R}_I^b \underset{Q}{\iff} Q_b \otimes (.) \otimes Q_b^*
 \end{equation}
@@ -304,7 +315,6 @@ A quaternion time derivative, with $Q_\omega$ being a quaternion with a vector c
 \frac{1}{2}\big([\vec{q}~]_\times+q_0\mathbb{I}\big)\vec{\omega}_b
 \end{bmatrix}
 \end{equation}
-\newpage
 Using quaternions to represent attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, to represent attitudes and their rates. A body quaternion is fully defined in the body frame. The first quaternion time derivative replaces Eq:\ref{eq:states.a}\& Eq:\ref{eq:states.c};
 \begin{subequations}
 \begin{equation}
@@ -315,7 +325,7 @@ Using quaternions to represent attitudes negates the need for an Euler Matrix, $
 \dot{\eta}=\Phi(\eta)\vec{\omega}_b\underset{Q}{\iff}\dot{Q}=\frac{1}{2}Q_b\otimes Q_\omega
 \end{equation}
 \end{subequations}
-Second order quaternion derivatives, quaternion accelerations aren't as useful as their velocity counterparts. The second order derivative is mentioned here however it's only relevant to quaternion backstepping in the control section. If possible, quaternion accelerations are avoided due to their complexity;
+Second order derivatives for quaternion acceleration aren't as useful as their velocity counterparts. The second order derivative is mentioned here however it's only relevant to quaternion backstepping in the control chapter. If possible, quaternion accelerations are avoided due to their complexity;
 \begin{equation}
 \ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[\mathbb{I}_b^-1(\tau-4(Q^*\otimes \dot{Q})\times(\mathbb{I}_b(Q^*\otimes \dot{Q}))\big]
 \end{equation}
@@ -323,27 +333,49 @@ Second order quaternion derivatives, quaternion accelerations aren't as useful a
 \subsection{Quaternion Unwinding}
 \label{subsec:dynamics.rigidbody.unwinding}
 %====================================================
-Although quaternions are better than Euler angles and lack the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}]^T$ represents a rotation in $\mathbb{R}^3$ using $\mathbb{R}^4$ variables there is whats called dual coverage\cite{unwinding}.
-Each unit quaternion, stemming from Euler-Rodriguez theorem, is parameterised such that the quaternion operation represents a single rotation of $\theta$ about an axis $\hat{u}$ such that:
+Although quaternions are better than Euler angles and lack the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}]^T$ represents an attitude orientation of a body in $\mathbb{R}^3$ using $\mathbb{R}^4$ variables there exists what is called dual coverage\cite{unwinding}.
+Each unit quaternion, stemming from Euler-Rodriguez theorem, is parameterized such that the quaternion operation represents a single rotation of $\theta$ about an axis $\hat{u}$ such that:
 \begin{equation}
 Q=\begin{bmatrix}
-q_0 & \vec{q}
-\end{bmatrix}=\pm
+q_0\\
+\vec{q}
+\end{bmatrix}=
 \begin{bmatrix}
-cos(\theta/2) & sin(\theta/2)\hat{u}
+cos(\theta/2)\\
+sin(\theta/2)\hat{u}
 \end{bmatrix}
 \end{equation}
-With a unit vector $\hat{u}$. Quaternions relate to an euler angle rotation matrix through the Rodriguez formula:
+With a unit vector $\hat{u}$. That rotation is executed via the quaternion operator Eq:\ref{eq:quaternion-rotation}. As a result its clear to see that for each unique attitude in 3-Dimensions there exist two quaternions which correlate to the same position. Namely:
+\begin{subequations}
 \begin{equation}
-\mathbb{R}(Q)=\mathbb{I}+2q_0[\vec{q}]_\times+2[\vec{q}]^2_\times
-\end{equation}
-As a result its clear to see that for each unique attitude in 3-Dimensions there exist two quaternions which correlate to the same position. Namely:
-\begin{equation}
-Q = \begin{bmatrix}
-cos(\theta/2) & sin(\theta/2)
+Q =
+\begin{bmatrix}
+q_0 \\
+\vec{q}
+\end{bmatrix}
+=
+\begin{bmatrix}
+cos(\theta/2)\\
+sin(\theta/2)\hat{u}
 \end{bmatrix}
 .
 \end{equation}
+And seeing that $\theta=2\pi-\theta$, then;
+\begin{equation}
+Q=\begin{bmatrix}
+cos(\pi - \theta/2)\\
+sin(\pi - \theta/2)\hat{u}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-cos(\theta/2)\\
+sin(\theta/2)\hat{u}
+\end{bmatrix}
+\end{equation}
+\end{subequations}
+Every physical attitude in $\mathbb{R}^3$ has two corresponding quaternions in $\mathbb{R}^4$; $[q_0~\pm\vec{q}]^T$. Unless this dual coverage is incorporated into the control plant, the error state 
+
+could  two possible attitude differences. One through a clock-wise $\theta$ rotation and another through an anti-clockwise $2\pi-\theta$ rotation. The control plant may erroneously command an anti-clockwise rotation through $2\pi-\theta$ even if $\theta$ may be a better trajectory.
 %****************************************************
 \section{Non-linearities}
 \label{sec:dynamics.nonlinearities}
