@@ -401,11 +401,24 @@ The resultant \emph{hybrid} controller provides global asymptotic stability, but
 \section{Non-linearities}
 \label{sec:dynamics.nonlinearities}
 %====================================================
-\subsection{Gyroscopic Torques}
+\subsection{Inertial \& Gyroscopic Torques}
 \label{subsec:dynamics.nonlinearities.gyrotorques}
 %====================================================
-One of the biggest sources of non-linear disturbance for this multi-body system is the internal response to its relative movements between each body. The transferred responses are induced as a result of Newtons second law of motion. For each motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both the bodies inertial and gyroscopic response. The latter being a consequence of a vector 
-
+One of the biggest sources of non-linear disturbance for this multi-body system is the internal response. In particular the induced torque responses to the relative movements between each connected rigid body. The transferred responses are induced as a result of Newtons second law of motion. For each motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both the bodies inertial and gyroscopic response. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
+\par
+Each of the four motor modules are symmetrical and as such the response characteristics for one module can be extrapolated through a reference frame rotation. The torque responses manifest themselves around each center of gravity. Evaluating each module individually and starting with the innermost ring $M_i$ effected by $\lambda_i$, the torque response is deconstructed:\\
+The responses are considered separately and decomposed to the effects induced by each principle movement. The propeller's response is:
+\begin{equation}
+\tau_{prop}=\mathbb{I}_{p}\dot{\Omega}_i+\omega_{M_i/I}\times\mathbb{I}_{p}\Omega_i~\in\mathcal{F}^{M_i}
+\end{equation}
+The response from $\lambda$ rotation due to the inner ring structure is
+\begin{equation}
+\tau_{inner}=\mathbb{I}_{I}(\lambda)\ddot{\lambda}+\omega_{M_i'/I}\times\mathbb{I}_{I}(\lambda)\dot{\lambda}~\in\mathcal{F}^{M_i'}
+\end{equation}
+The response from $\alpha$ rotation of the middle ring structure is:
+\begin{equation}
+\tau_{middle}
+\end{equation}
 An equivalent opposite torque 
 %====================================================
 \subsection{Coriolis Acceleration}
