@@ -334,7 +334,7 @@ Second order derivatives for quaternion acceleration aren't as useful as their v
 \label{subsec:dynamics.rigidbody.unwinding}
 %====================================================
 Although quaternions are better than Euler angles and lack the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}]^T$ represents an attitude orientation of a body in $\mathbb{R}^3$ using $\mathbb{R}^4$ variables there exists what is called dual coverage\cite{unwinding}.
-Each unit quaternion, stemming from Euler-Rodriguez theorem, is parameterized such that the quaternion operation represents a single rotation of $\theta$ about an axis $\hat{u}$ such that:
+Each unit quaternion, stemming from Euler-Rodriguez theorem, is parametrized such that the quaternion operation represents an eigenaxis rotation of $\theta$ about an axis $\hat{u}$ such that:
 \begin{equation}
 Q=\begin{bmatrix}
 q_0\\
@@ -373,16 +373,41 @@ sin(\theta/2)\hat{u}
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Every physical attitude in $\mathbb{R}^3$ has two corresponding quaternions in $\mathbb{R}^4$; $[q_0~\pm\vec{q}]^T$. Unless this dual coverage is incorporated into the control plant, the error state 
-
-could  two possible attitude differences. One through a clock-wise $\theta$ rotation and another through an anti-clockwise $2\pi-\theta$ rotation. The control plant may erroneously command an anti-clockwise rotation through $2\pi-\theta$ even if $\theta$ may be a better trajectory.
-%****************************************************
+Every physical attitude in $\mathbb{R}^3$ has two corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}]^T$. A consequence of this is two possible error state trajectories for every attitude difference. A clockwise $\theta$ rotation and an anticlockwise $2\pi-\theta$ negative rotation. This could lead to an erroneous and unnecessary "unwinding" of a complete counter revolution as a result of a dual covered error state. 
+\par
+Often the sign scalar component of the attitude quaternion error (Section:\ref{subsec:control.attitude.quaternion}) is simply neglected or assumed positive. As such for attitude controllers the requirement is that for positive and negative scalars the control input is consistent:
+\begin{equation}
+\nu_d=h([q_0~\vec{q}]^T,t)=h([-q_0~\vec{q}]^T,t)
+\end{equation}
+Or more simply that $Q_e=[|q_0|~\vec{q}]^T$. The most simple solution which adheres to that constraint is to simply neglect the scalar component and use $h(\vec{q}_e,t)$. A positive quaternion scalar will always ensure that an error state represents a right-handed clockwise rotation. If the resolution of trajectory co-ordinates generated is sufficiently high enough, the control plant will encounter a problem.
+\par
+One proposal in \emph{Nonlinear Quadcopter Attitude Control}\cite{.} suggested using a \emph{signum} operator to design the signs of the controller coefficients for the virtual control plant input. 
+\begin{subequations}
+\begin{equation}
+\omega_d=\frac{2}{\tau}sgn(q_0)\vec{q}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+sgn(\vec{q})=
+\begin{cases}\begin{array}{ll}
+1 & ~~\vec{q}\geq 0\\
+-1 & ~~\vec{q}< 0\\
+\end{array}
+\end{cases}
+\end{equation}
+\end{subequations}
+The resultant \emph{hybrid} controller provides global asymptotic stability, but only in the case that the eigenaxis angle $\theta\leq 180$\textdegree~. An alternative proposal \cite{.} was to recreate an euler angle error state from the error quaternions in $\mathbb{R}^3$ and then re-transform the attitudes back into quaternion space. This in effect ensures that $\theta$ is minimized, or that the error state imposes the shortest possible rotation between the reference and desired body frames.
+%====================================================
 \section{Non-linearities}
 \label{sec:dynamics.nonlinearities}
-%****************************************************
+%====================================================
 \subsection{Gyroscopic Torques}
 \label{subsec:dynamics.nonlinearities.gyrotorques}
-%****************************************************
+%====================================================
+One of the biggest sources of non-linear disturbance for this multi-body system is the internal response to its relative movements between each body. The transferred responses are induced as a result of Newtons second law of motion. For each motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both the bodies inertial and gyroscopic response. The latter being a consequence of a vector 
+
+An equivalent opposite torque 
+%====================================================
 \subsection{Coriolis Acceleration}
 \label{subsec:dynamics.nonlinearities.coriolis}
 %****************************************************
