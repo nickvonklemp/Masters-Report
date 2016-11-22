@@ -67,7 +67,7 @@ The biggest constraint faced by the design is the net weight of the assembled fr
 \newpage
 To forego the deliberation detailed above, reducing the possibility of unbounded scope creep, a limitation is self-imposed on the prototype design. Restricting the propeller diameter, and hence maximum thrust/frame size, will provide a constraint upon which all other design considerations must adhere to. Smaller propellers require far greater rotational speeds to produce similar levels of thrust that their larger diameter counterparts could provide. Electing to use 3 blade $6X4.5$ inch small diameter propellers is going to reduce the overall dimensions of the prototype, but as a consequence will require very high RPM motor. Specifically a set of four Cobra-2208/2000KV\cite{cobramotor} Brushless DC motors are to be used for lift actuation (Fig:\ref{fig:cobra})\footnote{Image cited from: \url{http://www.getfpv.com/cobra-cm-2208-2000kv-motor.html}}. A direct consequence of this decision is that, provisionally based upon test data\footnote{Official test data from\cite{cobramotor} included in Appendix:\ref{app:cobra-test} and verified independently in Section:\ref{subsec:dynamics.aero.bem}}, the net thrust disposable for actuation is limited to around 950g, $\approx$ 9.5 N, per motor (see Section:\ref{subsec:dynamics.aero.bem}). It's critical to ensure the control block doesn't induce over-saturation of the motor actuation, so the frame weight needs to be around 50\% of the maximum available thrust, or roughly 2 Kg. Saturation conditions are detailed later in Section: \ref{sec:control.allocation}.
 \par
-Another aspect of limitations produced by design decisions made, mostly to reduce prototype costs and weight, is to use of 180\textdegree ~rotation servo motors. Here Corona DS-339MG metal gear digital servos (Fig:\ref{fig:corona})\footnote{From the DS-339MG product page, HobbyKing\cite{hobbyking}} are used. The servos are for each individual motor's $\hat{X}_{M_i}$ and $\hat{Y}_{M_i}$ axial pitch and  roll actuations respectively. The servos act in lieu of either continuous BLDC or stepper motors. Any non-servo rotations beyond 360\textdegree ~will require closed loop position control and, unlike servos, would need slip rings to transmit power throughout rotational movement. However the logistics of implementing such a design whilst maintaining an acceptable weight is almost impossible. Such an implementation is going to dramatically increase the size of the prototype to accommodate for weight increases. Commercial camera stabilizing gimbals already make use of similar configurations but the I/O requirements from the flight controller $\mu$C already constricts the amount of expansion available.
+Another aspect of limitations produced by design decisions made, mostly to reduce prototype costs and weight, is to use of 180\textdegree ~rotation servo motors. Here Corona DS-339MG metal gear digital servos (Fig:\ref{fig:corona})\footnote{From the DS-339MG product page, HobbyKing\cite{hobbyking}} are used. The servos are for each individual motor's $\hat{X}_{M_i}$ and $\hat{Y}_{M_i}$ axial pitch and  roll actuations respectively. The servos act in lieu of either continuous BLDC or stepper motors. Any non-servo rotations beyond 2$\pi$ ~will require closed loop position control and, unlike servos, would need slip rings to transmit power throughout rotational movement. However the logistics of implementing such a design whilst maintaining an acceptable weight is almost impossible. Such an implementation is going to dramatically increase the size of the prototype to accommodate for weight increases. Commercial camera stabilizing gimbals already make use of similar configurations but the I/O requirements from the flight controller $\mu$C already constricts the amount of expansion available.
 \par
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
@@ -82,7 +82,7 @@ Another aspect of limitations produced by design decisions made, mostly to reduc
 \caption{Corona DS-339MG digital servo}
 \label{fig:corona}
 \end{subfigure}
-\caption{}
+\caption{Mechanical actuators}
 \end{figure}
 Discrete elements for the whole system can potentially limit performance but are going to be mitigated if possible. For example analogue servos have an associated $1 ms$ deadband from their $50 Hz$ refresh rate. That can be addressed by using faster, albeit more expensive, digital servos which samples at $330 Hz$. The prototype's flight controller needs to provide 12 PWM output compare channels for the 8 servos and 4 BLDC speed controllers. State updates from a ground control station and a fail safe 6CH RC receiver module also needs to be processed by the $\mu$C system. Particular attention is paid to the embedded system design and layout in Section:\ref{sec:proto.layout}.%====================================================
 \section{Literature Review}
@@ -140,7 +140,7 @@ One approach to improving quadrotor flight response is to alter the manner in wh
 \caption{Cyclic-pitch \& swashplate mechanism}
 \label{fig:tiltrotor-napsholm}
 \end{subfigure}
-\caption{}
+\caption{Tilt-rotor mechanisms}
 \label{fig:tiltprop}
 \end{figure}
 \par
