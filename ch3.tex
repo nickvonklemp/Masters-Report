@@ -668,24 +668,14 @@ The net mass for the whole assembly is 1574 g. For reference the center of gravi
 \subsection{Relative Rotational Inertia \& Gyroscopic Torques}
 \label{subsec:dynamics.nonlinearities.gyrotorques}
 %====================================================
-One of the biggest sources of non-linear disturbance for a multi-body system is its internal inertial response. In particular the induced torque responses to the relative movements between each connected rigid body. The transferred responses are induced as a result of Newtons second law of rotational motion. For each motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both the bodies inertial and gyroscopic response. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
+One of the biggest sources of non-linear disturbance for a multi-body system is its inertial response from relative interactions within the assemblage. The induced torque responses to the relative rotations, the only permissible relative motion, between each connected rigid body are transferred from interacting bodies as a result of Newtons second law of rotational motion. For each of the motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both inertial and gyroscopic response(s) of that body being acted upon. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
 \par
+Each of the four motor modules are symmetrical and as such the induced torque response characteristics for one module can be extrapolated through a reference frame rotation. Seeing that each relative rotation from the actuator set $u\in\mathbb{C}$ is induced independently and upon a different body, their responses are calculated separately too. Drawing again from Lagrangian theory\footnote{Generalized linear kinetic energy is considered on the whole body separately} the rotational kinetic energy for the inner ring assembly $\mathcal{F}^{M_i}$ is:
+\begin{equation}
+\mathcal{L}_{M_i}=\frac{1}{2}\vec{\Omega}_i^{~T}\big(\mathbb{I}_{prop}\big)\vec{\Omega}_i+\frac{1}{2}\vec{\lambda}_i^{~T}\big(\mathbb{I}_{Inner}\big)\vec{\lambda}_i
+\end{equation}
+And noting that $\vec{\Omega}_i=[0~~0~~\Omega_i]^T\in\mathcal{F}^{M_i}$ and 
 
-
-Each of the four motor modules are symmetrical and as such the response characteristics for one module can be extrapolated through a reference frame rotation. The torque responses manifest themselves around each center of gravity. Evaluating each module individually and starting with the innermost ring $M_i$ effected by $\lambda_i$, the torque response is deconstructed:\\
-The responses are considered separately and decomposed to the effects induced by each principle movement. The propeller's response is:
-\begin{equation}
-\tau_{prop}=\mathbb{I}_{p}\dot{\Omega}_i+\omega_{M_i/I}\times\mathbb{I}_{p}\Omega_i~\in\mathcal{F}^{M_i}
-\end{equation}
-The response from $\lambda$ rotation due to the inner ring structure is
-\begin{equation}
-\tau_{inner}=\mathbb{I}_{I}(\lambda)\ddot{\lambda}+\omega_{M_i'/I}\times\mathbb{I}_{I}(\lambda)\dot{\lambda}~\in\mathcal{F}^{M_i'}
-\end{equation}
-The response from $\alpha$ rotation of the middle ring structure is:
-\begin{equation}
-\tau_{middle}
-\end{equation}
-An equivalent opposite torque 
 %====================================================
 \subsection{Coriolis Acceleration}
 \label{subsec:dynamics.nonlinearities.coriolis}
