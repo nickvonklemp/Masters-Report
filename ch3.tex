@@ -449,7 +449,7 @@ The manifestation of those responses are explored next in Section:\ref{subsec:dy
 \end{subequations}
 The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's inertial components are regarded as constant. The moment of inertia about that $\hat{X}_{M_i}$ rotational axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}\approx 531\times10^{-7}~~[kg.m^2]$.
 \par
-The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $98g$ body, excluding the inner most ring. Collectively the mass for both the inner and middle rings assemblies is $m_{module}=190g$. The middle ring is rotated by $\alpha_i$ about its $\hat{Y}_{M_i'}$ axis. The compound body's inertia about that axis of rotation, $\hat{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{x}$ always exists}, is:
+The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $98g$ body, excluding the inner most ring. Collectively the mass for both the inner and middle rings assemblies is $m_{module}=190g$. The middle ring is rotated by $\alpha_i$ about its $\hat{Y}_{M_i'}$ axis. The compound body's inertia about that axis of rotation, $\hat{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter contribution being a function of the \emph{rotation} (not transformation) angle $\lambda_i$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{x}$ always exists.}, is:
 \begin{subequations}\label{eq:inertia.middle}
 \begin{equation} \label{eq:inertia.middle.a}
 \text{If} ~~\mathbb{I}_{middle}=\begin{bmatrix}
@@ -512,7 +512,7 @@ Using the Parallel Axis theorem$^{\dagger}$, that same net body inertia about th
 \begin{equation}\label{eq:inertia.body.b}
 {\mathbb{I}_{body}}'=\mathbb{I}_{body}+m(\vec{d}\cdot\vec{d}+\vec{d}\otimes\vec{d})\approx\mathbb{I}_{body}+md^2
 \end{equation}
-\emph{\color{Gray}Here $\otimes$ represents the Hamilton product of two 3X3 matrices, it's elsewhere to indicate the quaternion multiplication operator.}
+\emph{\color{Gray}Here $\otimes$ represents the Hamilton product of two 3X3 matrices, it's used elsewhere to indicate the quaternion multiplication operator.}
 \begin{equation}\label{eq:inertia.body.c}
 \underset{\vec{\mathbf{O}}}{{\mathbb{I}_{body}}'}=\begin{bmatrix}
 182435.66 & -0.42 & -6.46\\
@@ -668,8 +668,10 @@ The net mass for the whole assembly is 1574 g. For reference the center of gravi
 \subsection{Relative Rotational Inertia \& Gyroscopic Torques}
 \label{subsec:dynamics.nonlinearities.gyrotorques}
 %====================================================
-One of the biggest sources of non-linear disturbance for this multi-body system is the internal response. In particular the induced torque responses to the relative movements between each connected rigid body. The transferred responses are induced as a result of Newtons second law of motion. For each motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both the bodies inertial and gyroscopic response. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
+One of the biggest sources of non-linear disturbance for a multi-body system is its internal inertial response. In particular the induced torque responses to the relative movements between each connected rigid body. The transferred responses are induced as a result of Newtons second law of rotational motion. For each motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both the bodies inertial and gyroscopic response. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
 \par
+
+
 Each of the four motor modules are symmetrical and as such the response characteristics for one module can be extrapolated through a reference frame rotation. The torque responses manifest themselves around each center of gravity. Evaluating each module individually and starting with the innermost ring $M_i$ effected by $\lambda_i$, the torque response is deconstructed:\\
 The responses are considered separately and decomposed to the effects induced by each principle movement. The propeller's response is:
 \begin{equation}
