@@ -443,13 +443,13 @@ The entire structure is a system of multiple (thirteen) interconnected bodies wh
 %====================================================
 One of the biggest contributors of non-linear disturbance for a multi-body system is its inertial response from relative interactions within the assemblage. The induced torque responses to the relative rotations, the only permissible relative motion, between each connected rigid body are transferred from interacting bodies as a result of Newtons second law of rotational motion. For each of the motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both inertial and gyroscopic response(s) of that body being acted upon. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
 \newpage
-Each of the four motor modules are symmetrical and as such the induced torque response characteristics for one module can be extrapolated through a reference frame rotation. Seeing that each relative rotation from the actuator set $u\in\mathbb{U}$ is induced independently and upon a different body, their responses are calculated separately too.
+Each of the four motor modules are symmetrical and as such the induced torque response characteristics for one module can be extrapolated through a reference frame rotation. Seeing that each relative rotation from the actuator set $u\in\mathbb{U}$ is actuated independently and upon a different body, their responses are calculated separately too.
 \par
-Drawing again from Lagrangian theory\footnote{The generalized linear kinetic energy for each module is an extension of that in Eq:\ref{eq:rigid-frame.a} and is independent of any of the actuator positions.} and considering only the rotational kinetic energy for the inner ring assembly $\mathcal{F}^{M_i}$, there is no permissible transnational motions between each body and as such there is no linear kinetic energy contribution. The Lagrangian for the inner ring is formed, with concern on the effect $\lambda_i$ has on the system:
+Drawing again from Lagrangian theory\footnote{The generalized linear kinetic energy for each module is an extension of that in Eq:\ref{eq:rigid-frame.a} and is independent of any of the actuator positions.} and considering only the rotational kinetic energy for the inner ring assembly $\mathcal{F}^{M_i}$, there are no permissible transnational motions between each body and as such there is no linear kinetic energy contribution. The Lagrangian for the inner ring is formed, with concern on the effect $\lambda_i$ has on the system:
 \begin{equation}
 \mathcal{L}_{M_i}=\frac{1}{2}\vec{\Omega}_i^{~T}\big(\mathbb{I}_{p}\big)\vec{\Omega}_i+\frac{1}{2}\dot{\vec{\lambda}}_i^{~T}\big(\mathbb{I}_{\lambda}\big)\dot{\vec{\lambda}}_i
 \end{equation}
-Where $\mathbb{I}_p$ is the propellers rotational inertia about it's $\hat{Z}$ axis and $\mathbb{I}_\lambda$ being the inner ring's defined in Eq:\ref{eq:inertia.inner.a}. Noting that $\vec{\Omega}_i=[0~~0~~\Omega_i]^T\in\mathcal{F}^{M_i}$ and $\dot{\vec{\lambda}}_i=[\dot{\lambda}_i~~0~~0]^T\in\mathcal{F}^{M_i'}$, the two contributors are not in a common frame. As such the equation \footnote{$\dot{\vec{\lambda}}_i$ is superfluous but included for completeness} changes to:
+Where $\mathbb{I}_p$ is the propeller's rotational inertia about its $\hat{Z}$ axis and $\mathbb{I}_\lambda$ being the inner ring's inertia defined in Eq:\ref{eq:inertia.inner.a}. Noting that $\vec{\Omega}_i=[0~~0~~\Omega_i]^T\in\mathcal{F}^{M_i}$ and $\dot{\vec{\lambda}}_i=[\dot{\lambda}_i~~0~~0]^T\in\mathcal{F}^{M_i'}$, the two contributors are not in a common frame. As such the equation \footnote{$\dot{\vec{\lambda}}_i'$ is superfluous but included for completeness} changes to:
 \begin{subequations}
 \begin{equation}
 \mathcal{L}_{M_i}=\frac{1}{2}\vec{\Omega}_i^{~T}\big(\mathbb{I}_{p}\big)\vec{\Omega}_i+\frac{1}{2}\dot{\vec{\lambda}}_i'^{~T}\big(\mathbb{I}_{\lambda}\big)\dot{\vec{\lambda}}_i'
@@ -459,7 +459,7 @@ Where $\mathbb{I}_p$ is the propellers rotational inertia about it's $\hat{Z}$ a
 \dot{\vec{\lambda}}_i'=Q_x^*(-\lambda_i)\otimes\big(\dot{\vec{\lambda}}_i\big)\otimes Q_x(-\lambda_i)\Rightarrow \dot{\vec{\lambda}}_i'=\dot{\vec{\lambda}}_i
 \end{equation}
 \end{subequations}
-And both $\mathbb{I}_{p}$ and $\mathbb{I}_{\lambda}$ being taken W.R.T to their centre(s) of rotation. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} with generalized co-ordinates $\mathbf{u}(t)$ of $\mathcal{F}^{M_i}$ relative to $\mathcal{F}^b$\footnote{Relative to the body frame and not the inertial frame because Eq:\ref{eq:states.d} accounts for the inertial response of the entire body frame. Here the induced relative responses are of concern}.
+Where both $\mathbb{I}_{p}$ and $\mathbb{I}_{\lambda}$ are taken W.R.T to their rotational centre(s). Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} with generalized co-ordinates\footnote{Relative to the body frame and not the inertial frame because Eq:\ref{eq:states.d} accounts for the inertial response of the entire body frame. Here the induced relative responses are of concern} $\mathbf{u}(t)$ of $\mathcal{F}^{M_i}$ relative to $\mathcal{F}^b$.
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{u}}}\bigg)-\frac{\delta L}{\delta \mathbf{u}} = \mathbf{V} = \vec{\tau}_{net}
 \end{equation}
@@ -468,16 +468,16 @@ Then:
 \begin{equation}
 \frac{d}{dt_b}\bigg(\frac{\delta\mathcal{L}}{\delta\dot{\mathbf{u}}}\bigg)=\frac{d}{dt_{M_i}}\mathbb{I}_p\vec{\Omega}_i+\vec{\omega}_{M_i/b}\times\mathbb{I}_p\vec{\Omega}_i+\frac{d}{dt_{M_i}}\mathbb{I}_{\lambda}\dot{\vec{\lambda}}_i+\vec{\omega}_{M_i/b}\times\mathbb{I}_{\lambda}\dot{\vec{\lambda}}_i
 \end{equation}
-Where $\vec{\omega}_{M_i/b}$ is the net angular velocity of the inner ring frame with respect to the body frame:
+With $\vec{\omega}_{M_i/b}$ being the net angular velocity of the inner ring frame relative to the body frame:
 \begin{equation}
 \vec{\omega}_{M_i/b}= Q_x^*(-\lambda_i)Q_y^*(-\alpha_i)\otimes\dot{\vec{\alpha}}_i\otimes Q_y(-\alpha_i)Q_x(-\lambda_i)+Q_x^*(-\lambda_i)\otimes\dot{\vec{\lambda}}_i\otimes Q_x(-\lambda_i)
 \end{equation}
-The net torque from a $\lambda_i$ rotation, induced in the motor module frame $\mathcal{F}^{M_i}$, is:
+The net torque from a $\lambda_i$ rotation, induced in the motor module frame $\mathcal{F}^{M_i}$, can be grouped into second order \emph{Inertial} and first order \emph{Gyroscopic} components. Depending on the fidelity of the model or aggressiveness of control actions taken, higher order induced terms could be ignored.
 \begin{equation}\label{eq:torque-induced-inner}
 \vec{\tau}_\lambda=\underbrace{\mathbb{I}_p\dot{\vec{\Omega}}_i+\mathbb{I}_{\lambda}\ddot{\vec{\lambda}}_i}_{Inertial}+\underbrace{\vec{\omega}_{M_i/b}\times\mathbb{I}_p\vec{\Omega}_i+\vec{\omega}_{M_i/b}\times\mathbb{I}_{\lambda}\dot{\vec{\lambda}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \end{subequations}
-Similarly for the middle ring response with inertia a function of the $\lambda$ angle, $\mathbb{I}_{\alpha}(\lambda_i)$ from Eq:\ref{eq:inertia.middle.c} with generalized co-ordinates $\mathbf{v}(t)$ of $\mathcal{F}^{M_i'}$ relative to $\mathcal{F}^b$:
+Similarly for the middle ring , with inertia a function of the $\lambda$ angle $\mathbb{I}_{\alpha}(\lambda_i)$ from Eq:\ref{eq:inertia.middle.c}, with generalized co-ordinates $\mathbf{v}(t)$ of $\mathcal{F}^{M_i'}$ relative to $\mathcal{F}^b$:
 \begin{subequations}
 \begin{equation}
 \mathcal{L}_{M_i'}=\frac{1}{2}\dot{\vec{\alpha}}_i^{~T}\big(\mathbb{I}_{\alpha}(\lambda_i)\big)\dot{\vec{\alpha}}_i
@@ -486,36 +486,30 @@ Similarly for the middle ring response with inertia a function of the $\lambda$ 
 \begin{equation}
 \frac{d}{dt_b}\bigg(\frac{\delta L}{\delta \dot{\mathbf{v}}}\bigg) = \frac{d}{dt_{M_i'}}\mathbb{I}_\alpha(\lambda_i)\dot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/b}\times\mathbb{I}_\alpha(\lambda_i)\dot{\vec{\alpha}}_i
 \end{equation}
-\vspace{-10pt}
+\vspace{-5pt}
 \begin{equation}
 \vec{\omega}_{M_i'/b}=Q_y^*(-\alpha_i)\otimes\dot{\vec{\alpha}}_i\otimes Q_y(\alpha_i)
 \end{equation}
-\vspace{-10pt}
+Which are also grouped into first and second order components.
 \begin{equation}
 \vec{\tau}_\alpha(\lambda_i)=\underbrace{\mathbb{I}_{\alpha}(\lambda_i)\ddot{\vec{\alpha}}_i}_{Inertial}+\underbrace{\vec{\omega}_{M_i'/I}\times\mathbb{I}_{\alpha}(\lambda_i)\dot{\vec{\alpha}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 \end{subequations}
-Each of the torques, $\vec{\tau_}\lambda$ \& $\vec{\tau}(\lambda_i)_\alpha$, occur in intermediary frames associated with the inner and middle ring assemblies. As such, their negative responses affect Eq:\ref{eq:states.d} or Eq:\ref{eq:rigid-frame.b}, 
-
-they need to be transformed to the body frame.
+Each of the induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha(\lambda_i)$, occur in intermediary frames associated with the inner and middle ring assemblies. As such, their negative responses effect\footnote{Depending on dynamic equations used it could  effect Eq:\ref{eq:rigid-frame.b}. However the equations Eq:\ref{eq:rigid-frame} are inconsequential when using quaternion dynamics.} Eq:\ref{eq:states.d}, and need to be transformed to the body frame.
 \begin{equation}
-
+\tau(u)=\sum_{i=1}^4 -Q_{M_i}\otimes \tau_{\lambda_i}(u)\otimes Q_{M_i}^*-Q_{M_i'}\otimes \tau_{\alpha_i}(u) \otimes Q_{M_i'}^*~~~\in\mathcal{F}^b
 \end{equation}
-The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) to exploit an implicit Euler\cite{.} coordinate system in substitution for the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation}.
-%====================================================
-\subsection{Coriolis Acceleration}
-\label{subsec:dynamics.nonlinearities.coriolis}
-%====================================================
-
+The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) to exploit an implicit Euler\cite{physicallybased,.} coordinate system in substitution for the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation}.
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-\subsection{Thrust Forces}
+Although approximated as roughly quadratic, the relationship between a propellers rotational speed, $\Omega_i$ and its produced thrust $\vec{T}(\Omega_i)$ is actually more complicated. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid dynamic Momentum\cite{.} theories produce an integral taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in Reference:\cite{.}.
+%====================================================
+\subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-\subsection{Propeller Torques}
-\label{subsec:dynamics.aero.torque}
+Each rotating propeller induces a certain amount of fluid flow across its surface. Thus slicing its way through a fluid generating a forward force. From classical momentum theory, there is an induced air velocity directly on the propellers rotational plane:
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
@@ -526,7 +520,7 @@ The above responses are pertinent to simulation and plant dependent compensation
 \subsection{Vortex Ring State}
 \label{subsec:dynamics.aero.vrs}
 %====================================================
-
+\section{Control Inputs}
 %====================================================
 \section{Consolidated Model}
 \label{sec:dynamics.model}%====================================================
