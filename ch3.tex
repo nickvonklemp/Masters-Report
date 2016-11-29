@@ -436,15 +436,15 @@ An alternative proposal \cite{unwinding} was to lift the quaternion error-state 
 \section{Multibody Nonlinearities}
 \label{sec:dynamics.nonlinearities}
 %====================================================
-- Torque responses here separated from Eq:\ref{.} earlier in derivation because that is to be compensated for whereas these are to be exploited later in the control allocation algorithm
-\\
-The entire structure is a system of multiple (thirteen) interconnected bodies which are rigidly joined. Only relative rotational motion between each body is permitted, each body is considered separately as free and rigid whose constraint torques are imposed on sequential rotational joints. Opposition to those torques are Newtonian responses of importance which manifest in what is termed as inertial and gyroscopic torque responses here. The multibody analysis presented here is a very Newtonian approach in that each body involved is resolved independently and relative responses are transferred onto the inducing body.
+Typically multibody dynamics are solved (and simulated) as a series of interactions and responses. There are different schools of thought which have proposed various methodologies for stepping through the systems dynamics [Sic Implicit Euler\cite{physicallybased,multibodydynamics}]. For the prototype design here, only relative rotational motion is permissible between the interconnected rigid bodies. Each body is considered independently, as free and rigid, whose constraint torques induced from excitation are imposed on sequential rotational joints. Opposed to those torques are Newtonian responses of importance which manifest as what is termed \emph{gyroscopic} and \emph{inertial} torques. 
+\par
+A distinction must be made between torque responses here and those of Eq:\ref{eq:states.d}. The latter being a response to be compensated for and the formed being something which can be exploited by the control allocation algorithm in Section:\ref{sec:control.allocation}. The multibody analysis which follows is a very Newtonian approach in that each body involved is resolved independently and relative responses are transferred onto the inducing body.
 %====================================================
 \subsection{Relative Rotational Gyroscopic \& Inertial Torques}
 \label{subsec:dynamics.nonlinearities.gyrotorques}
 %====================================================
-One of the biggest contributors of non-linear disturbance for a multi-body system is its inertial response from relative interactions within the assemblage. The induced torque responses to the relative rotations, the only permissible relative motion, between each connected rigid body are transferred from interacting bodies as a result of Newtons second law of rotational motion. For each of the motor modules pitching or rolling motion, the servo motors generate a torque to induce that rotation. Opposed to that rotation are both inertial and gyroscopic response(s) of that body being acted upon. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
-\newpage
+The torque response induced from relative rotations, the only permissible relative motion, between each connected rigid body are transferred from interacting bodies as a result of Newtons second law of rotational motion. For each of the motor modules' pitching or rolling motion, the servo motors apply some torque for that rotation. Opposed to the rotational motion are both inertial and gyroscopic response(s) of that body being acted upon. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
+\par
 Each of the four motor modules are symmetrical and as such the induced torque response characteristics for one module can be extrapolated through a reference frame rotation. Seeing that each relative rotation from the actuator set $u\in\mathbb{U}$ is actuated independently and upon a different body, their responses are calculated separately too.
 \par
 Drawing again from Lagrangian theory\footnote{The generalized linear kinetic energy for each module is an extension of that in Eq:\ref{eq:rigid-frame.a} and is independent of any of the actuator positions.} and considering only the rotational kinetic energy for the inner ring assembly $\mathcal{F}^{M_i}$, there are no permissible transnational motions between each body and as such there is no linear kinetic energy contribution. The Lagrangian for the inner ring is formed, with concern on the effect $\lambda_i$ has on the system:
@@ -501,39 +501,66 @@ Each of the induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha(\lambda
 \begin{equation}
 \tau(u)=\sum_{i=1}^4 -Q_{M_i}\otimes \tau_{\lambda_i}(u)\otimes Q_{M_i}^*-Q_{M_i'}\otimes \tau_{\alpha_i}(u) \otimes Q_{M_i'}^*~~~\in\mathcal{F}^b
 \end{equation}
-The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) to exploit an implicit Euler\cite{physicallybased,.} coordinate system in substitution for the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation}.
+The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in substitution for the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation}.
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
 - Common in helicopter literature\\
 - Short derivation\\
-- Explanantion why usually approximated by quadratic\\
-Although approximated as roughly quadratic, the relationship between a propellers rotational speed, $\Omega_i$ and its produced thrust $\vec{T}(\Omega_i)$ is actually more complicated. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid dynamic Momentum\cite{.} theories produce an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in References:\cite{.,.,.}.
+- Explanation why usually approximated by quadratic\\
+
+
+
+The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is slightly more nuanced than the quadratic simplification most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid-dynamics Momentum\cite{.} theories produce an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in References:\cite{.,.,.}.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-The rotation of a propeller induces an airflow through the propeller plane, with an incident head velocity, $\vec{v}_\infty$, and slip stream velocity from the rotational plane, $\vec{v}_s$, is then given by:
+The rotation of a propeller applies a force, $\vec{T}$, on the fluid stream in which it acts. That fluid stream has an incident head velocity, $\vec{v}_\infty$, and slip stream velocity from the rotational plane, $\vec{v}_s$. There is then some relationship about the change of fluid flow, is then given by:
 \begin{equation}
-\vec{v}_s=\Delta v + \vec{v}_\infty
+\vec{v}_s=\Delta \vec{v} + \vec{v}_\infty
 \end{equation}
-Where $\Delta v$ is the change in airspeed velocity added to the fluid by the propeller's rotation. There is an induced velocity directly on the propeller's rotational plane. That induced velocity, $\vec{v}_i$, contributes to the net fluid inflow entering the propellers plane:
+Where $\Delta \vec{v}$ is the change in velocity added to the fluid by the propeller's rotation. There is an induced fluid velocity directly in front of and behind the propeller's rotational plane. From Bernoillis principle, that induced velocity, $\vec{v}_i$, contributes to the net fluid inflow, $\vec{v}$, entering and leaving the propellers plane such that:
+\begin{subequations}
 \begin{equation}
 \vec{v}=\vec{v}_\infty+\vec{v}_i
 \end{equation}
+\begin{equation}
+\vec{v}_s=(1+2a)\vec{v}_\infty
+\end{equation}
+\end{subequations}
+\par
+
+
+
+That velocity (\emph{vector}) has axial and perpendicular components which are related to incident free stream velocity by some induction factor $a$.
+
+That force, as per classical Disc Actuator Theory\cite{.}, is dependent on the mass flow rate and the velocity change.
+\begin{equation}
+\vec{T}=\dot{m}\Delta v=\frac{1}{2} \rho \pi R_b^2 (v_b+\frac{\Delta v}{2})\Delta v
+\end{equation}
+The change in thrust is as a result of fluid acceleration per time unit. It's then defined that the induced velocity by the propellers rotation is a factor of the incident velocity:
+\begin{equation}
+\vec{v}=(1+a)v_\infty
+\end{equation}
+
+
+
+
+
+
+
 Considering the laminar flow of fluid through the propeller and recalling conservation of mass, the fluid flow is conserved such that:
 \begin{equation}
 A_\infty \vec{v}_\infty=A_R\vec{v}=A_s\vec{v}_s
 \end{equation}
-Classical fluid dynamics\cite{.} has it that the change in pressure force is directly related to the change is in mass flow rate:
+Bernoillis principle has it that theres an instantaneous pressure differential across the propeller plane:
 \begin{equation}
-\Delta\vec{T}=(A_r \vec{v}_i)\Delta v=\rho\pi R_s^2\vec{v}\Delta v
+\Delta p = p^+ - p^- = \frac{1}{2}\rho(v_s^2-v_\infty^2)
 \end{equation}
-According to Bernoulli's theorem, there's a pressure differential over the propellers plane
-\begin{equation}
-1
-\end{equation}
+It then follows that the net fluid inflow is $\vec{v}=\frac{1}{2}(v_s-v_\infty)=\frac{1}{2}\Delta v$.
+
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
