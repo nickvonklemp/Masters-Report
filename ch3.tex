@@ -436,6 +436,8 @@ An alternative proposal \cite{unwinding} was to lift the quaternion error-state 
 \section{Multibody Nonlinearities}
 \label{sec:dynamics.nonlinearities}
 %====================================================
+- Torque responses here separated from Eq:\ref{.} earlier in derivation because that is to be compensated for whereas these are to be exploited later in the control allocation algorithm
+\\
 The entire structure is a system of multiple (thirteen) interconnected bodies which are rigidly joined. Only relative rotational motion between each body is permitted, each body is considered separately as free and rigid whose constraint torques are imposed on sequential rotational joints. Opposition to those torques are Newtonian responses of importance which manifest in what is termed as inertial and gyroscopic torque responses here. The multibody analysis presented here is a very Newtonian approach in that each body involved is resolved independently and relative responses are transferred onto the inducing body.
 %====================================================
 \subsection{Relative Rotational Gyroscopic \& Inertial Torques}
@@ -504,12 +506,34 @@ The above responses are pertinent to simulation and plant dependent compensation
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-Although approximated as roughly quadratic, the relationship between a propellers rotational speed, $\Omega_i$ and its produced thrust $\vec{T}(\Omega_i)$ is actually more complicated. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid dynamic Momentum\cite{.} theories produce an integral taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in Reference:\cite{.}.
+- Common in helicopter literature\\
+- Short derivation\\
+- Explanantion why usually approximated by quadratic\\
+Although approximated as roughly quadratic, the relationship between a propellers rotational speed, $\Omega_i$ and its produced thrust $\vec{T}(\Omega_i)$ is actually more complicated. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid dynamic Momentum\cite{.} theories produce an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in References:\cite{.,.,.}.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-Each rotating propeller induces a certain amount of fluid flow across its surface. Thus slicing its way through a fluid generating a forward force. From classical momentum theory, there is an induced air velocity directly on the propellers rotational plane:
+The rotation of a propeller induces an airflow through the propeller plane, with an incident head velocity, $\vec{v}_\infty$, and slip stream velocity from the rotational plane, $\vec{v}_s$, is then given by:
+\begin{equation}
+\vec{v}_s=\Delta v + \vec{v}_\infty
+\end{equation}
+Where $\Delta v$ is the change in airspeed velocity added to the fluid by the propeller's rotation. There is an induced velocity directly on the propeller's rotational plane. That induced velocity, $\vec{v}_i$, contributes to the net fluid inflow entering the propellers plane:
+\begin{equation}
+\vec{v}=\vec{v}_\infty+\vec{v}_i
+\end{equation}
+Considering the laminar flow of fluid through the propeller and recalling conservation of mass, the fluid flow is conserved such that:
+\begin{equation}
+A_\infty \vec{v}_\infty=A_R\vec{v}=A_s\vec{v}_s
+\end{equation}
+Classical fluid dynamics\cite{.} has it that the change in pressure force is directly related to the change is in mass flow rate:
+\begin{equation}
+\Delta\vec{T}=(A_r \vec{v}_i)\Delta v=\rho\pi R_s^2\vec{v}\Delta v
+\end{equation}
+According to Bernoulli's theorem, there's a pressure differential over the propellers plane
+\begin{equation}
+1
+\end{equation}
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
