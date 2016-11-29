@@ -506,22 +506,20 @@ The above responses are pertinent to simulation and plant dependent compensation
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-- Common in helicopter literature\\
-- Short derivation\\
-- Explanation why usually approximated by quadratic\\
-
-
-
 The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is slightly more nuanced than the quadratic simplification most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid-dynamics Momentum\cite{.} theories produce an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in References:\cite{.,.,.}.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-The rotation of a propeller applies a force, $\vec{T}$, on the fluid stream in which it acts. That fluid stream has an incident head velocity, $\vec{v}_\infty$, and slip stream velocity from the rotational plane, $\vec{v}_s$. There is then some relationship about the change of fluid flow, is then given by:
+The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream in which it acts. That fluid stream has an incident head velocity, $\vec{v}_\infty$, and slip stream velocity from the rotational plane, $\vec{v}_s$. There is then some relationship about the change of fluid flow, is then given by:
 \begin{equation}
 \vec{v}_s=\Delta \vec{v} + \vec{v}_\infty
 \end{equation}
-Where $\Delta \vec{v}$ is the change in velocity added to the fluid by the propeller's rotation. There is an induced fluid velocity directly in front of and behind the propeller's rotational plane. From Bernoillis principle, that induced velocity, $\vec{v}_i$, contributes to the net fluid inflow, $\vec{v}$, entering and leaving the propellers plane such that:
+Where $\Delta \vec{v}$ is the change in velocity added to the fluid by the propeller's rotation. 
+\par
+\par
+
+There is an induced fluid velocity directly in front of and behind the propeller's rotational plane. From Bernoillis principle, that induced velocity, $\vec{v}_i$, contributes to the net fluid inflow, $\vec{v}$, entering and leaving the propellers plane such that:
 \begin{subequations}
 \begin{equation}
 \vec{v}=\vec{v}_\infty+\vec{v}_i
