@@ -506,20 +506,40 @@ The above responses are pertinent to simulation and plant dependent compensation
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is slightly more nuanced than the quadratic simplification most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid-dynamics Momentum\cite{.} theories produce an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. Most of the following affects are thoroughly detailed in References:\cite{.,.,.}.
+The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is slightly more nuanced than the quadratic simplification most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. The combination of aerodynamic Blade-Element\cite{.} and fluid-dynamics Momentum\cite{.} theories produce an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotors propeller are detailed in \cite{.} 
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
+\emph{\color{Gray} A simplified case where no tangential incident fluid velocity across the propeller is considered. It's assumed that only perpendicular flow is encountered. A reasonable case for small body transnational velocities which the prototype many undergo.}
+\par
 The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream in which it acts. That fluid stream has an incident head velocity, $\vec{v}_\infty$, and slip stream velocity from the rotational plane, $\vec{v}_s$. There is then some relationship about the change of fluid flow, is then given by:
 \begin{equation}
 \vec{v}_s=\Delta \vec{v} + \vec{v}_\infty
 \end{equation}
-Where $\Delta \vec{v}$ is the change in velocity added to the fluid by the propeller's rotation. 
+Where $\Delta \vec{v}$ is the change in velocity added to the fluid by the propeller's rotation. The propeller induces a velocity directly in front of it's rotational plane, $\vec{v}_i$, such that the net fluid flow into the plane is $\vec{v}_b=\vec{v}_i+\vec{v}_\infty$. Bernoulli's theorem\cite{.} has it that net fluid flow is
+\begin{equation}\label{eq:bernoulli}
+\vec{v}_b=\frac{1}{2}(\vec{v}_s-\vec{v}_\infty)=\frac{1}{2}\Delta v
+\end{equation}
+And as such, per classical Disc Actuator\cite{.} (\emph{momentum}) theory, the thrust acting on the fluid is a function of mass flow rate and change in velocity.
+\begin{equation}\label{eq:prop-mass}
+\vec{T}=(A_b \vec{v}_b)\Delta v = \rho \pi R_b^2\vec{v}_b \Delta v = \rho \pi R_b^2(\vec{v}_i+\vec{v}_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
+\end{equation}
+Indeed Eq:\ref{eq:prop-mass} can be solved as a function of aerodynamic power, $P=\vec{T}\dot \vec{v}$, however the relationship between rotational kinetic power transferred is tenuous at best. In practice, the fluid velocity change over the propeller has an axial and tangential component. There are then axial and tangential induction factors which are:
+\begin{subequations}
+\begin{equation}
+\vec{v}_b=(1+a)\vec{v}_\infty
+\end{equation}
+\begin{equation}
+\vec{v}_s=(1+2a)\vec{v}_\infty
+\end{equation}
+And a tangential induction factor dependent on rot
+\end{subequations}
 \par
+.
 \par
 
-There is an induced fluid velocity directly in front of and behind the propeller's rotational plane. From Bernoillis principle, that induced velocity, $\vec{v}_i$, contributes to the net fluid inflow, $\vec{v}$, entering and leaving the propellers plane such that:
+There is an induced fluid velocity directly in front of and behind the propeller's rotational plane. From conservation of mass principle, that induced velocity, $\vec{v}_i$, contributes to the net fluid inflow, $\vec{v}$, entering and leaving the propellers plane such that:
 \begin{subequations}
 \begin{equation}
 \vec{v}=\vec{v}_\infty+\vec{v}_i
