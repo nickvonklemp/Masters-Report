@@ -506,14 +506,14 @@ The above responses are pertinent to simulation and plant dependent compensation
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is slightly more nuanced than the quadratic simplification taken at static conditions which most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. Parallel fluid velocity to the propeller contributes to aerodynamic drag. The combination of aerodynamic Blade-Element\cite{bem,} and fluid-dynamics Momentum (\emph{disc actuator}) theories produces an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is detailed in \cite{.}.
+The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. Parallel fluid velocity to the propeller contributes to aerodynamic drag. The combination of aerodynamic Blade-element\cite{bem,forwarddescent} and fluid-dynamics Momentum (\emph{disc actuator}) theories produces an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is thoroughly detailed in \cite{bladesforquadrotors}.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-\emph{\color{Gray} A feasible situation which the prototype could encounter is where the down-wash of one propeller provides to the incident fluid flow for another propeller. Such a situation presents a complex fluid dynamics problem and remains open to further research. To expedite the design process some simplifications are applied to the aerodynamics to construct an approximate model.}
+\emph{\color{Gray} A feasible situation which the prototype could encounter is where an upstream propeller provides to the incident fluid flow to another downstream propeller. Such a situation presents a complex fluid dynamics \& wake effects problem\footnote{Propeller overlapping effects are investigated in \cite{configurationpropulsion}} and remains open to further research. To expedite the design process some simplifications are applied to the aerodynamics to construct an approximate model.}
 \par
-The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream\footnote{Only perpendicular mass flow across the propeller's plane is considered.} in which it acts. That fluid stream (fig:\ref{Fig:bem-flow}) has an incident head velocity, $v_\infty$, and slip stream velocity from the rotational plane, $v_s$. There is then some relationship about the change of fluid flow, is then given by:
+The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream\footnote{Only perpendicular mass flow across the propeller's plane is considered.} in which it acts. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident head velocity, $v_\infty$, and slip stream velocity from the rotational plane, $v_s$. There is then some relationship about the change of fluid flow, is then given by:
 \begin{equation}
 v_ s = \Delta v + v_\infty
 \end{equation}
@@ -528,7 +528,7 @@ v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s 
 \label{fig:bem-flow}
 \end{figure}
 \par
-And as such, per classical Disc Actuator\cite{.} (\emph{momentum}) theory, the thrust acting on the fluid is a function of mass flow rate and change in velocity.
+And as such, from classical Disc Actuator\cite{.} (\emph{momentum}) theory, the thrust acting on the fluid is a function of mass flow rate and change in velocity.
 \begin{equation}\label{eq:prop-mass}
 \vec{T}=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
