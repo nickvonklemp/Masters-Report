@@ -511,13 +511,13 @@ The relationship between a propeller's rotational speed, $\Omega_i$, and its pro
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-\emph{\color{Gray} A feasible situation which the prototype could encounter is where an upstream propeller provides to the incident fluid flow to another downstream propeller. Such a situation presents a complex fluid dynamics \& wake effects problem\footnote{Propeller overlapping effects are investigated in \cite{configurationpropulsion}} and remains open to further research. To expedite the design process some simplifications are applied to the aerodynamics to construct an approximate model.}
+\emph{\color{Gray} A feasible situation which the prototype could encounter is where an upstream propeller provides to the incident fluid flow to another downstream propeller. Such a situation presents a complex fluid dynamics \& wake effects problem\footnote{Propeller overlapping effects are investigated in \cite{configurationpropulsion}} but remains open to further research. To expedite the design process some simplifications are applied to the aerodynamics to construct an approximate model.}
 \par
 The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream\footnote{Only perpendicular mass flow across the propeller's plane is considered.} in which it acts. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident head velocity, $v_\infty$, and slip stream velocity from the rotational plane, $v_s$. There is then some relationship about the change of fluid flow, is then given by:
 \begin{equation}
 v_ s = \Delta v + v_\infty
 \end{equation}
-Where $\Delta v$ is the change in velocity added to the fluid by the propeller's rotation. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. Bernoulli's theorem\cite{.} has it that net fluid flow is
+Where $\Delta v$ is the change in velocity added to the fluid by the propeller's rotation. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. Bernoulli's principle$^{\dagger}$ has it that net fluid flow is
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
@@ -528,7 +528,7 @@ v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s 
 \label{fig:bem-flow}
 \end{figure}
 \par
-And as such, from classical Disc Actuator\cite{.} (\emph{momentum}) theory, the thrust acting on the fluid is a function of mass flow rate and change in velocity.
+And as such, from classical Disc Actuator$^{\dagger}$ (\emph{momentum}) theory, the thrust acting on the fluid is a function of mass flow rate and change in velocity.
 \begin{equation}\label{eq:prop-mass}
 \vec{T}=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
@@ -546,7 +546,61 @@ And a tangential induction factor dependent on rotational velocity:
 v_\theta=a'\Omega R
 \end{equation}
 \end{subequations}
-Blade-element theory analyses incremental aerofoil sections of a propeller profile at some radius $r$.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/bem-profile}
+\caption{Blade Element Profile}
+\label{fig:bem-profile}
+\end{figure}
+From the tangential fluid flow there is then an angular moment rate across the propeller plane too. This produces a torque response to the rotational motion.
+\begin{equation}
+\ve{Q}=\rho\pi R_b^2 v_b (v_\theta-
+\end{equation}
+
+
+Blade-element theory analyses incremental aerofoil sections $dr$ of a propeller profile (Fig:\ref{fig:bem-profile}) at some radius $r$. Local velocity across a single elemental aerofoil profile $\vec{v}_b$:
+\begin{equation}
+\vec{v}_b=\sqrt{(v_\infty+v_i)^2+(v_\Omega+v_\theta)^2}
+\end{equation}
+Each element has a local pitch, $\theta$, of its aerofoil profile relative to the horizontal. The local fluid velocities make an angle of attack $\phi$ at which the propeller encounters the fluid flow:
+\begin{equation}
+\phi=\theta-\alpha_{effective}
+\end{equation}
+That local angle of attack changes with the inflow magnitude $v_\infty$ and the induced axial velocity $v_i$. That ratio is given as:
+\begin{equation}
+\phi=tan^{-1}\bigg(\frac{v_\infty+v_i}{v_\Omega+v_\theta}\bigg)=tan^{-1}\bigg(\frac{v_\infty(1+a)}{\Omega r(1+a')}\bigg)
+\end{equation}
+\newpage
+The in-plane velocity $\vec{U}$ has perpendicular and tangential components, $U_\perp$ and $U_\top$ respectively.
+\begin{subequations}
+\begin{equation}
+U_\perp=\vec{U}sin(\alpha_{eff})
+\end{equation}
+\vspace{-15pt}
+\begin{equation}
+U_\top=\vec{U}cos(\alpha_{eff})
+\end{equation}
+\end{subequations}
+That inplane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of dimensionless lift, $C_L$, and drag, $C_D$, coefficients.
+\begin{subequations}
+\begin{equation}
+\Delta L=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_L
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\Delta D=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_D
+\end{equation}
+\end{subequations}
+With air density $\rho$ and local chord length $c$. Those lift and drag forces as components parallel and perpendicular to the plane of rotation are thrust $T$ and torque $F_x$ forces.
+\begin{subequations}
+\begin{equation}
+dT=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L cos(\phi)+C_d sin(\phi)\big)dr
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+dF_x=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\phi)+C_D cos(\phi)\big)dr
+\end{equation}
+\end{subequations}
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
