@@ -532,7 +532,7 @@ And as such, from classical Disc Actuator$^{\dagger}$ (\emph{momentum}) theory, 
 \begin{equation}\label{eq:prop-mass}
 \vec{T}=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
-Indeed Eq:\ref{eq:prop-mass} can be solved as a function of aerodynamic power, $P=\vec{T}v$, however the relationship between rotational kinetic power transferred is tenuous at best. In practice, the local fluid velocity over the propeller isn't purely normal to its plane. There are then axial and tangential velocity components. Follow this induction factor can be defined, which are:
+Indeed Eq:\ref{eq:prop-mass} can be solved as a function of aerodynamic power, $P=\vec{T}v$, however the relationship between rotational kinetic power transferred is tenuous at best. In practice, the local fluid velocity over the propeller isn't purely normal to its plane. There are axial and tangential velocity components. Following this, induction factors can be defined which are:
 \begin{subequations}
 \begin{equation}
 v_b=(1+a)v_\infty
@@ -546,12 +546,6 @@ And a tangential induction factor dependent on rotational velocity:
 v_\theta=a'\Omega R
 \end{equation}
 \end{subequations}
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.6\textwidth]{figs/bem-profile}
-\caption{Blade Element Profile}
-\label{fig:bem-profile}
-\end{figure}
 From the tangential fluid flow there is then an angular moment rate across the propeller plane too. This produces a torque response to the rotational motion.
 \begin{equation}
 \vec{Q}=\rho\pi R_b^3 (v_\theta-v_\infty) v_b 
@@ -560,7 +554,7 @@ Blade-element theory analyses incremental aerofoil sections $dr$ of a propeller 
 \begin{equation}
 \vec{U}=\sqrt{(v_\infty+v_i)^2+(v_\Omega+v_\theta)^2}
 \end{equation}
-Each element has a local pitch, $\theta$, of its aerofoil profile relative to the horizontal. The local fluid velocities make an angle of attack $\phi$ at which the propeller encounters the fluid flow:
+Each element has a local pitch, $\theta$, of its aerofoil profile relative to the horizontal. The local fluid velocities make an angle of attack $\phi$ at which the local propeller section encounters the fluid flow:
 \begin{equation}
 \phi=\theta-\alpha_{effective}
 \end{equation}
@@ -569,7 +563,13 @@ That local angle of attack changes with the inflow magnitude $v_\infty$ and the 
 \phi=tan^{-1}\bigg(\frac{v_\infty+v_i}{v_\Omega+v_\theta}\bigg)=tan^{-1}\bigg(\frac{v_\infty(1+a)}{\Omega r(1+a')}\bigg)
 \end{equation}
 \newpage
-That in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of dimensionless lift, $C_L$, and drag, $C_D$, coefficients.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/bem-profile}
+\caption{Blade Element Profile}
+\label{fig:bem-profile}
+\end{figure}
+The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of dimensionless lift, $C_L$, and drag, $C_D$, coefficients.
 \begin{subequations}
 \begin{equation}
 \Delta L=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_L
@@ -581,38 +581,43 @@ That in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a 
 \end{subequations}
 With air density $\rho$ and local chord length $c$. Those lift and drag forces as components parallel and perpendicular to the plane of rotation are thrust $T$ and torque $F_x$ forces.
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:element-thrust}
 dT=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L cos(\phi)+C_D sin(\phi)\big).dr
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:element-drag}
 dF_x=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\phi)+C_D cos(\phi)\big).dr
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:element-torque}
 \rightarrow dQ = \frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\phi)+C_D cos(\phi)\big)r.dr
 \end{equation}
+\vspace{-10pt}
+\begin{equation}\label{eq:element-power}
+\rightarrow dP = \Omega r dF_x .dr
+\end{equation}
 \end{subequations}
-Then calculating forces and torques as per momentum theory for each element, in terms of tangential and axial induction factors:
+Typically a power term, Eq:\ref{eq:element-power}, is given in lieu of a torque or drag term, Eq:\ref{eq:element-torque} or Eq:\ref{eq:element-drag}. Then calculating forces and torques as per momentum theory for each element, in terms of tangential and axial induction factors:
 \begin{subequations}
 \begin{equation}
 dT=\rho 4 \pi r^2 v_\infty(1+a)a.dr
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-dQ=\rho 4 \pi r^3 v_\infty(1+a)a'.dr
+dP=\rho 4 \pi r^2 v_\infty(1+a)\Omega r (1+a').dr
 \end{equation}
 \end{subequations}
-Then equating momentum and element terms together produces the blade-element momentum equation(s) for thrust and torque produced by a propeller. There are a few assumptions made:
-\begin{itemize}
-\item The tangential induction factor, $a'$, is small compared to the propellers rotational velocity $\Omega r(1+a')\approx \Omega r$.
-\item $\phi <<1$, or that the net fluid inflow $v_b$ is small when compared to the rotational velocity $\Omega r$. As such the following small angle approximations are made with regards to the local angle of attack:
-\begin{itemize}
-\item 
-\end{itemize}
-\end{itemize}
-
-, namely that
+Then equating momentum and element terms together produces the blade-element momentum equation(s) for thrust and power produced by a propeller. Following a few assumptions, most importantly that the lift coefficient is a linear function of the effective angle of attack $\alpha_{eff}$. The lift curve gradient $a_L$, for an ideally twisted blade like the fixed pitch propellers under consideration here, is typically $2\pi$ such that $C_L=2\pi(\theta-\phi)$. 
+\begin{subequations}
+\begin{equation}
+T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \big(\theta-\frac{v_\infty+v_i}{\Omega r}\big).dr
+\end{equation}
+\begin{equation}
+P=\int_{r=0}^R \frac{1}{2}a_L b c \rho (\Omega r)^3\bigg[\big(\theta-\frac{v_\infty+v_i}{\Omega r
+\end{equation}
+\end{subequations}
+In practice, knowing the exact pitch and chord values as a function $r/R$ is difficult. Often thrust, torque and power coefficients are defined:
+\begin{subequations}
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
