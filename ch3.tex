@@ -641,7 +641,16 @@ J = \frac{v_\infty}{\Omega R}
 \end{equation}
 In most cases, the net head stream velocity $v_\infty$ is the perpendicular component (projected onto the plane's normal vector $\hat{n}$) of the vehicles transnational velocity in the body frame, $\vec{v}_b\cdot\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values. 
 \par
-Propeller databases like \cite{.}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller, the  
+Propeller databases like \cite{.}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{linearly interpolated from similar database results to fit physically tested values}, the static thrust and power coefficients respectively are:
+\begin{subequations}
+\begin{equation}
+C_{T0}=0.19
+\end{equation}
+\vspace{-20pt}
+\begin{equation}
+C_{P0}=0.12
+\end{equation}
+\end{subequations}
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
