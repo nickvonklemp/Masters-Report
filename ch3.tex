@@ -560,6 +560,12 @@ Blade-element theory analyses incremental aerofoil sections $dr$ of a propeller 
 \begin{equation}
 \vec{U}=\sqrt{(v_\infty+v_i)^2+(v_\Omega+v_\theta)^2}
 \end{equation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{figs/bem-profile}
+\caption{Blade element profile at radius r}
+\label{fig:bem-profile}
+\end{figure}
 Each elemental profile, of chord length $c$, has a local pitch, $\theta$, of its aerofoil profile relative to the horizontal. Local fluid velocities make their own an angle of attack $\phi$ at which the local propeller section encounters the fluid flow:
 \begin{equation}
 \phi=\theta-\alpha_{effective}
@@ -568,12 +574,6 @@ That local angle of attack changes with the inflow magnitude $v_\infty$ and the 
 \begin{equation}
 \phi=tan^{-1}\bigg(\frac{v_\infty+v_i}{v_\Omega+v_\theta}\bigg)=tan^{-1}\bigg(\frac{v_\infty(1+a)}{\Omega r(1+a')}\bigg)
 \end{equation}
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.9\textwidth]{figs/bem-profile}
-\caption{Blade element profile at radius r}
-\label{fig:bem-profile}
-\end{figure}
 \par
 The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of dimensionless lift, $C_L$, and drag, $C_D$, coefficients\footnote{The lift and drag coefficients are determined by the aerofoil's characteristics, but would be constant across the length of a variable pitch hinged propeller\ldots}.
 \begin{subequations}
@@ -615,7 +615,7 @@ dP=\rho 4 \pi r^2 v_\infty(1+a)\Omega r (1+a').dr
 \end{subequations}
 Then equating momentum and element terms together produces the blade-element momentum equation(s) for thrust and power produced by a propeller. Following a few assumptions, most importantly that the lift coefficient $C_L$ is a linear function of the effective angle of attack $\alpha_{eff}$.
 \par
-The lift curve gradient ,$a_L$, for an ideally twisted blade, like the fixed pitch propellers under consideration here, is typically $2\pi$ such that $C_L=2\pi(\theta-\phi)$. And assuming that tangential induced velocities $v_\theta$ are small\footnote{Or that the tangential induction factor $a'<<1$} when compared to the propeller's speed $\Omega r$. Similarly the net inflow and axial induced velocities $v_\infty + v_i<<\Omega r$.\footnote{Small angle approximations then apply to $cos(\phi+\alpha_{eff})\approx 1$ and $sin(\phi+\alpha_{eff})\approx \phi+\alpha_{eff}$}
+The lift curve gradient ,$a_L$, for an ideally twisted blade, like the fixed pitch propellers under consideration here, is typically $2\pi$ such that $C_L=2\pi(\theta-\phi)$. And assuming that tangential induced velocities $v_\theta$ are small (or that the tangential induction factor $a'<<1$) when compared to the propeller's speed $\Omega r$. Similarly the net inflow and axial induced velocities $v_\infty + v_i<<\Omega r$.\footnote{Small angle approximations then apply to $cos(\phi+\alpha_{eff})\approx 1$ and $sin(\phi+\alpha_{eff})\approx \phi+\alpha_{eff}$}
 \begin{subequations}
 \begin{equation}\label{eq:bem-thrust}
 T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \big(\theta-\frac{v_\infty+v_i}{\Omega r}\big).dr
@@ -625,7 +625,7 @@ T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \big(\theta-\frac{v_\infty+
 P=\int_{r=0}^R \frac{1}{2}a_L b c \rho (\Omega r)^3\bigg[\big(\theta-\frac{v_\infty+v_i}{\Omega r}\big)\big(\frac{v_\infty+v_i}{\Omega r}\big) + C_d\bigg].dr
 \end{equation}
 \end{subequations}
-Generally knowing the exact pitch and chord values as a function $r/R$ is difficult and calculating integrals at each process step is cumbersome\footnote{Eq:\ref{eq:bem-thrust} \& Eq:\ref{eq:bem-power} can be solved by equating element and momentum terms}. Often dimensionless thrust, torque and power coefficients are defined:
+Generally knowing the exact pitch and chord values as a function $r/R$ is difficult and calculating integrals at each process step is cumbersome. Both Eq:\ref{eq:bem-thrust} \& Eq:\ref{eq:bem-power} can be solved by equating element and momentum terms (Appendix:\ref{}). Often dimensionless thrust, torque and power coefficients are defined:
 \begin{subequations}\label{eq:coefficients}
 \begin{equation}\label{eq:thrust-coefficient}
 C_T(J)=\frac{T}{\rho \Omega^2 D^4}
@@ -635,31 +635,65 @@ C_T(J)=\frac{T}{\rho \Omega^2 D^4}
 C_P(J)=\frac{P}{\rho \Omega^3 D^5}
 \end{equation}
 \end{subequations}
+\begin{minipage}{\textwidth}
+\begin{wrapfigure}{r}{0.5\textwidth}
+\vspace{-17pt}
+\centering
+\includegraphics[width=0.5\textwidth]{graphs/coeffs-plot}
+\vspace{-15pt}
+\caption{Power \& thrust coefficients}
+\label{fig:coeffs-plot}
+\end{wrapfigure}
 Where $\Omega$ is the propellers rotational speed in RPS and $D$ is the propellers diameter. For fixed pitch propellers the thrust and power coefficients are easily determined. Eq:\ref{eq:thrust-coefficient} and Eq:\ref{eq:power-coefficient} both vary due to the \emph{advance ratio} $J$.
-\begin{equation}
+\begin{equation}\label{eq:advance}
 J = \frac{v_\infty}{\Omega R}
 \end{equation}
 In most cases, the net head stream velocity $v_\infty$ is the perpendicular component (projected onto the plane's normal vector $\hat{n}$) of the vehicles transnational velocity in the body frame, $\vec{v}_b\cdot\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values. 
+\end{minipage}
 \par
-Propeller databases like \cite{.}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{linearly interpolated from similar database results to fit physically tested values}, the static thrust and power coefficients respectively are:
+\vspace{20pt}
+\par
+Propeller databases like \cite{.}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{linearly interpolated from similar pitched database results to match physical test values}, the static thrust and power coefficients respectively are:
 \begin{subequations}
 \begin{equation}
-C_{T0}=0.19
+{\color{blue}C_{T0}}=0.19
 \end{equation}
 \vspace{-20pt}
 \begin{equation}
-C_{P0}=0.12
+{\color{red}C_{P0}}=0.12
 \end{equation}
 \end{subequations}
-%====================================================
-\subsection{Drag}
-\label{subsec:dynamics.aero.drag}
+Fig:\ref{fig:coeffs-plot} shows the thrust, {\color{Blue}$C_{T}$}, and power, {\color{Red}$C_{P}$}, coefficients as a function of the advance ratio J. As the incident head fluid velocity, $v_\infty$, increases, the thrust coefficient decreases. So too does the power coefficient and hence the aerodynamic torque. 
+\begin{figure}[htbp]
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/thrust-plot}
+\caption{Thrust plot}
+\label{fig:thrust-plot}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/torque-plot}
+\caption{Torque plot}
+\label{fig:torque-plot}
+\end{subfigure}
+\caption{}
+\label{fig:propeller-plots}
+\end{figure}
+In Fig:\ref{fig:propeller-plots}, the results both of static thrust and torque tests are plotted. In each test the measured values are shown (with quadratic trend-lines) and an estimated value dependent on static coefficients. Using the results from the plot in Fig:\ref{fig:coeffs-plot} as a lookup table and calculating the values from Eq:\ref{eq:coefficients}, induced propeller thrust and torques can be accurately modeled (\emph{quadratically}). Instanteous advance ratios, or rather the propeller incident fluid flow(s), are dependent on the vehicle's net transnational and angular velocity. Such that the fluid velocity's normal component to the propeller plane is given by:
+\begin{equation}
+v_\infty = (\vec{v}_b + \vec{L}_{arm}\times \vec{\omega}_b)\cdot \hat{n}
+\end{equation}
+Where $\vec{v}_b$ is the body's transnational velocity and $\vec{\omega}_b$ is the body's angular velocity, both transformed to the propeller's frame, $\in\mathcal{F}^{M_i}$. Additionally $\hat{n}$ is a unit vector normal to the propeller's rotational plane. Then $J$ is calculated as in Eq:\ref{eq:advance}.
 %====================================================
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
 %====================================================
 \subsection{Vortex Ring State}
 \label{subsec:dynamics.aero.vrs}
+%====================================================
+\subsection{Drag}
+\label{subsec:dynamics.aero.drag}
 %====================================================
 \section{Control Inputs}
 %====================================================
