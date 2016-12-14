@@ -506,18 +506,18 @@ The above responses are pertinent to simulation and plant dependent compensation
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, namely the component of the body velocity normal to the propeller's plane. Parallel fluid velocity to the propeller contributes to aerodynamic drag. The combination of aerodynamic Blade-element\cite{bem,forwarddescent} and fluid-dynamics Momentum (\emph{disc actuator}) theories produces an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is thoroughly detailed in \cite{bladesforquadrotors}.
+The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, typically being the component of the body velocity normal to the propeller's plane. Fluid flow parallel to the propeller contributes to aerodynamic drag. The combination of aerodynamic Blade-element\cite{bem,forwarddescent} and fluid-dynamics Momentum (\emph{disc actuator}) theories stipulates an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is thoroughly detailed in \cite{bladesforquadrotors} or \cite{nonlineardynamics}.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-\emph{\color{Gray} A feasible situation which the prototype could encounter is where an upstream propeller provides to the incident fluid flow to another downstream propeller. Such a situation presents a complex fluid dynamics \& wake effects problem\footnote{Propeller overlapping effects are investigated in \cite{configurationpropulsion}} but remains open to further research. To expedite the system I.D process some simplifications are applied to the aerodynamics to construct an approximate model.}
+\emph{\color{Gray} A feasible situation which the prototype could encounter is where an upstream propeller provides to the incident fluid flow to another downstream propeller. Such a situation presents a complicated fluid dynamics \& wake effects problem\footnote{Propeller overlapping effects are investigated in \cite{configurationpropulsion}} but remains open to further research. To expedite the system I.D process some simplifications are applied to the aerodynamics to construct an approximate model. Other responses are regarded as inconsequential and are compensated for in a lumped disturbance term.}
 \par
-The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream\footnote{Only perpendicular mass flow across the propeller's plane is considered.} in which it acts. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident head velocity, $v_\infty$, and slip stream velocity from the rotational plane, $v_s$. There is then some relationship about the change of fluid flow applied by the propeller's rotation. That relationship is then given by:
+The rotation of a propeller applies a thrust force, $\vec{T}$, on the fluid stream\footnote{Only perpendicular mass flow across the propeller's plane is considered here\ldots} in which it acts. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident head velocity, $v_\infty$, and slip stream velocity relative to the rotational plane, $v_s$. There exists some relationship about the change of fluid flow applied by the propeller's rotation. That relationship can then be given by:
 \begin{equation}
 v_ s = \Delta v + v_\infty
 \end{equation}
-Where $\Delta v$ is the change in velocity added to the fluid by the propeller blade's profile. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. Bernoulli's principle$^{\dagger}$ has it that net fluid flow through that plane is
+Where $\Delta v$ is the change in velocity added to the fluid by the propeller blade's aerofoil profile. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. Bernoulli's principle$^{\dagger}$ has it that net fluid flow through that plane is
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
@@ -528,11 +528,11 @@ v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s 
 \label{fig:bem-flow}
 \end{figure}
 \par
-And as such, stemming from classical Disc Actuator$^{\dagger}$ (\emph{momentum}) theory, the thrust acting on the fluid is a function of mass flow rate and change in velocity (pressure differential).
+And as such, stemming from classical Disc Actuator$^{\dagger}$ (\emph{momentum}) theory, the force, $T(\Omega)$, acting on the fluid is a function of mass flow rate and change in velocity (pressure differential).
 \begin{equation}\label{eq:prop-mass}
 \vec{T}=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
-Indeed Eq:\ref{eq:prop-mass} can be solved as a function of aerodynamic propulsive power expended, $P=\vec{T}v$. However that relationship between rotational kinetic power transferred is tenuous at best due to many compounded parasitic losses. In practice, the local fluid velocity over the propeller isn't purely normal to its plane. There are axial and tangential induced velocity components. Following this, induction factors can be defined which are:
+Indeed Eq:\ref{eq:prop-mass} can be solved as a function of aerodynamic propulsive power expended, $P=\vec{T}v$. However that relationship between rotational kinetic power transferred is tenuous at best, compounded parasitic losses deteriorate the power transferred. Furthermore, the local fluid velocity over the propeller isn't purely normal to its plane. There are axial and tangential induced velocity components, $a$ and $a'$ respectively. Fluid velocity induction factors can then be defined as a dependents of incident velocity:
 \begin{subequations}\label{eq:induction-factors}
 \begin{equation}\label{eq:induction-axial}
 v_i=a v_\infty
@@ -556,7 +556,7 @@ And from the tangential fluid flow there is then an angular moment rate across t
 \begin{equation}
 \vec{Q}=\rho\pi R_b^3 (v_\theta-v_\infty) v_b 
 \end{equation}
-Blade-element theory analyses incremental aerofoil sections $dr$ of a propeller profile (Fig:\ref{fig:bem-profile}) at some radius $r$. Net local velocity across a single elemental aerofoil profile $\vec{U}$ is calculated as:
+Blade-element theory analyses incremental aerofoil sections $dr$ of a propeller profile (Fig:\ref{fig:bem-profile}) at some radius $r$. Net local fluid velocity across a single elemental aerofoil profile $\vec{U}$ is calculated as:
 \begin{equation}
 \vec{U}=\sqrt{(v_\infty+v_i)^2+(v_\Omega+v_\theta)^2}
 \end{equation}
@@ -566,16 +566,16 @@ Blade-element theory analyses incremental aerofoil sections $dr$ of a propeller 
 \caption{Blade element profile at radius r}
 \label{fig:bem-profile}
 \end{figure}
-Each elemental profile, of chord length $c$, has a local pitch, $\theta$, of its aerofoil profile relative to the horizontal. Local fluid velocities make their own an angle of attack $\phi$ at which the local propeller section encounters the fluid flow:
+Each elemental profile, of chord length $c$, has a local pitch, $\theta$, of its aerofoil profile relative to the horizontal. Local fluid velocities (again in Fig:\ref{fig:bem-profile}) encountered by the propeller make their own an angle of attack $\phi$ such that:
 \begin{equation}
 \phi=\theta-\alpha_{effective}
 \end{equation}
-That local angle of attack changes with the inflow magnitude $v_\infty$ and the induced axial velocity $v_i$. That ratio is given as:
+That local angle of attack changes with the inflow magnitude $v_\infty$ and the induced axial velocity $v_i$. That trigonometric ratio is given as:
 \begin{equation}
 \phi=tan^{-1}\bigg(\frac{v_\infty+v_i}{v_\Omega+v_\theta}\bigg)=tan^{-1}\bigg(\frac{v_\infty(1+a)}{\Omega r(1+a')}\bigg)
 \end{equation}
 \par
-The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of dimensionless lift, $C_L$, and drag, $C_D$, coefficients\footnote{The lift and drag coefficients are determined by the aerofoil's characteristics, but would be constant across the length of a variable pitch hinged propeller\ldots}.
+The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of aerofoil's dimensionless lift, $C_L$, and drag, $C_D$, coefficients\footnote{The lift and drag coefficients are determined by the aerofoil's characteristics, but would be constant across the length of a variable pitch, non-twisted hinged propeller\ldots}.
 \begin{subequations}
 \begin{equation}
 \Delta L=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_L
@@ -585,7 +585,7 @@ The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a l
 \Delta D=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_D
 \end{equation}
 \end{subequations}
-With air density $\rho$ and local chord length $c$. Those lift and drag forces as components parallel and perpendicular to the plane of rotation are thrust $T$ and torque $F_x$ forces (Fig:\ref{fig:bem-profile}).
+With air density $\rho$\footnote{Typically $\rho = 1.225 kg/m^3$} and local chord length $c$. Those lift and drag forces are taken as components parallel and perpendicular to the plane of rotation. Those components are then thrust $T$ and torque $F_x$ forces (Fig:\ref{fig:bem-profile}).
 \begin{subequations}
 \begin{equation}\label{eq:element-thrust}
 dT=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L cos(\phi)+C_D sin(\phi)\big).dr
@@ -613,9 +613,7 @@ dT=\rho 4 \pi r^2 v_\infty(1+a)a.dr
 dP=\rho 4 \pi r^2 v_\infty(1+a)\Omega r (1+a').dr
 \end{equation}
 \end{subequations}
-Then equating momentum and element terms together produces the blade-element momentum equation(s) for thrust and power produced by a propeller. Following a few assumptions, most importantly that the lift coefficient $C_L$ is a linear function of the effective angle of attack $\alpha_{eff}$.
-\par
-The lift curve gradient ,$a_L$, for an ideally twisted blade, like the fixed pitch propellers under consideration here, is typically $2\pi$ such that $C_L=2\pi(\theta-\phi)$. And assuming that tangential induced velocities $v_\theta$ are small (or that the tangential induction factor $a'<<1$) when compared to the propeller's speed $\Omega r$. Similarly the net inflow and axial induced velocities $v_\infty + v_i<<\Omega r$.\footnote{Small angle approximations then apply to $cos(\phi+\alpha_{eff})\approx 1$ and $sin(\phi+\alpha_{eff})\approx \phi+\alpha_{eff}$}
+Then equating momentum and element terms together produces the blade-element momentum equation(s) for thrust and power produced by a propeller. Following a few assumptions, most importantly that the lift coefficient $C_L$ is a linear function of the effective angle of attack $\alpha_{eff}$. The lift curve gradient ,$a_L$, for an ideally twisted blade, like the fixed pitch propellers under consideration here, is typically $2\pi$ such that $C_L=2\pi(\theta-\phi)$. And assuming that tangential induced velocities $v_\theta$ are small (or that the tangential induction factor $a'<<1$) when compared to the propeller's speed $\Omega r$. Similarly the net inflow and axial induced velocities $v_\infty + v_i<<\Omega r$.\footnote{Small angle approximations then apply to $cos(\phi+\alpha_{eff})\approx 1$ and $sin(\phi+\alpha_{eff})\approx \phi+\alpha_{eff}$}
 \begin{subequations}
 \begin{equation}\label{eq:bem-thrust}
 T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \big(\theta-\frac{v_\infty+v_i}{\Omega r}\big).dr
@@ -653,14 +651,14 @@ In most cases, the net head stream velocity $v_\infty$ is the perpendicular comp
 \par
 \vspace{20pt}
 \par
-Propeller databases like \cite{.}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{linearly interpolated from similar pitched database results to match physical test values}, the static thrust and power coefficients respectively are:
+Propeller databases like \cite{UIUC}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths. The database is the outcome of \cite{lowreynolds}.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{linearly interpolated from similar pitched database results to match physical test values}, the static thrust and power coefficients respectively are:
 \begin{subequations}
 \begin{equation}
-{\color{blue}C_{T0}}=0.19
+{\color{blue}C_{T0}}=0.191
 \end{equation}
 \vspace{-20pt}
 \begin{equation}
-{\color{red}C_{P0}}=0.12
+{\color{red}C_{P0}}=0.0877
 \end{equation}
 \end{subequations}
 Fig:\ref{fig:coeffs-plot} shows the thrust, {\color{Blue}$C_{T}$}, and power, {\color{Red}$C_{P}$}, coefficients as a function of the advance ratio J. As the incident head fluid velocity, $v_\infty$, increases, the thrust coefficient decreases. So too does the power coefficient and hence the aerodynamic torque. 
@@ -677,14 +675,17 @@ Fig:\ref{fig:coeffs-plot} shows the thrust, {\color{Blue}$C_{T}$}, and power, {\
 \caption{Torque plot}
 \label{fig:torque-plot}
 \end{subfigure}
-\caption{}
+\caption{Static propeller tests}
 \label{fig:propeller-plots}
 \end{figure}
-In Fig:\ref{fig:propeller-plots}, the results both of static thrust and torque tests are plotted. In each test the measured values are shown (with quadratic trend-lines) and an estimated value dependent on static coefficients. Using the results from the plot in Fig:\ref{fig:coeffs-plot} as a lookup table and calculating the values from Eq:\ref{eq:coefficients}, induced propeller thrust and torques can be accurately modeled (\emph{quadratically}). Instanteous advance ratios, or rather the propeller incident fluid flow(s), are dependent on the vehicle's net transnational and angular velocity. Such that the fluid velocity's normal component to the propeller plane is given by:
+\par
+In Fig:\ref{fig:propeller-plots}, the results both of static thrust and torque tests are plotted. In each test the measured values are shown (with quadratic trend-lines) and an estimated value dependent on static coefficients. Using the results from the plot in Fig:\ref{fig:coeffs-plot} as a lookup table and calculating the values from Eq:\ref{eq:coefficients}, induced propeller thrust and torques can be accurately modeled (\emph{quadratically}\footnote{The power term is cubic W.R.T its coefficient}). Instantaneous advance ratios, or rather the propeller incident fluid flow(s), are dependent on the vehicle's net transnational and angular velocity. Such that the fluid velocity's normal component to the propeller plane is given by:
 \begin{equation}
 v_\infty = (\vec{v}_b + \vec{L}_{arm}\times \vec{\omega}_b)\cdot \hat{n}
 \end{equation}
 Where $\vec{v}_b$ is the body's transnational velocity and $\vec{\omega}_b$ is the body's angular velocity, both transformed to the propeller's frame, $\in\mathcal{F}^{M_i}$. Additionally $\hat{n}$ is a unit vector normal to the propeller's rotational plane. Then $J$ is calculated as in Eq:\ref{eq:advance}.
+\par
+{\color{Gray}\emph{It's worth noting that the above static coefficients are indeed calculated from physical static tests. However advance ratio coefficient dependencies are linearly interpolated from the closest available matching data (APC Thin-Electric 8X6 propellers). Discrepancies between the model or coefficient values derived can be accounted for with lumped uncertainty and disturbance term(s). Model uncertainty compensation is elegantly incorporated in adaptive backstepping or $H_\infty$ control algorithms. The deviation of the modeled thrust or torques from their true values would be easy to incorporate into a plant dependent Lyupanov candidate function; Section:\ref{.}.}}
 %====================================================
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
