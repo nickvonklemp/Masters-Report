@@ -506,7 +506,7 @@ The above responses are pertinent to simulation and plant dependent compensation
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, typically being the component of the body velocity normal to the propeller's plane. Fluid flow parallel to the propeller contributes to aerodynamic drag. The combination of aerodynamic Blade-element\cite{bem,forwarddescent} and fluid-dynamics Momentum (\emph{disc actuator}) theories stipulates an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is thoroughly detailed in \cite{bladesforquadrotors} or \cite{nonlineardynamics}.
+The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers puport. The thrust is mostly dependent on the incident air velocity entering the propellers rotational plane, typically being the component of the body velocity normal to the propeller's plane. Fluid flow parallel to the propeller contributes to aerodynamic drag. The combination of aerodynamic Blade-element\cite{bem,forwarddescent} and fluid-dynamics Momentum (\emph{disc actuator}) theories stipulates an integral term taken across the propellers length which accurately models the aerodynamic thrust and torque functions. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is thoroughly detailed in \cite{bladesforquadrotors} or \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories. Some phenomena aren't included, like Vortex Ring States or parasitic drag like effects, which were deemed to not be pertinent.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
@@ -690,18 +690,41 @@ Where $\vec{v}_b$ is the body's transnational velocity and $\vec{\omega}_b$ is t
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
 %====================================================
-Other common non-linear aerodynamic effects which deteriorate a propellers performance are that of conning and flapping. Both effects are significantly more pronounced in the context of hinged, variable pitch propellers. The prototype under consideration here has fixed pitch, rigid propellers and as such neither conning nor propeller flapping are significant to adversely act on the system. With that being said, they are worth mentioning briefly.
+Non-linear effects which deteriorate a propeller's performance are well documented in the field of helicopter propeller and aerodynamic theory. Typically such affects are more pronounced when observing hinged variable pitch \footnote{Twisted fixed pitched propellers are used on the prototype here and as such effects detailed in Section:\ref{subsec:dynamics.aero.flap} are diminished. Moreover, low translational velocities suppress such responses but are worth mentioning.} propellers. Conning and flapping are the two most significant aerodynamic responses produced by a propeller.
 \par
-
-%====================================================
-\subsection{Vortex Ring State}
-\label{subsec:dynamics.aero.vrs}
+In translational flight, the blades of each propeller encounter varying incident fluid flow. The advancing blade, relative to the body's translational direction, encounters a greater fluid flow. The resultant is that the effective local angle of attack for advancing and retreating blades aren't symmetrical. There then exists a dissymmetry of lift across the propeller's surface. As such each propeller is forced up and down throughout one rotational cycle, the extent of that deflection being dependent on translational velocities. The flapping then pitches the effective propeller plane, and hence the thrust vector, away from its principle angle of rotation, Fig:\ref{fig:prop-flap}\footnote{Diagram cited from Hoffman et al.(2007)\cite{starmac}}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{figs/prop-flap}
+\caption{Propeller blade flapping}
+\label{fig:prop-flap}
+\end{figure}
+\par
+The net effect is that the propeller's thrust vector is pitched marginally away from an exact perpendicular vector by some deflection angle. The phenomenon is diminished at low translational velocities and as such, isn't applicable to the range of flight envelopes the prototype for the project will experience.
+\par
+Coning (Fig:\ref{fig:prop-coning})\footnote{Misc Image \cite{.}} is another form of propeller deflection which, dependent on the blades stiffness properties, causes the propeller blades (advancing and retreating) to both deflect upward. The conning reduces the effective propeller's disc area adversely affecting thrust produced. Increased loading accentuates the coning angle experienced by the propellers and as such alters the tip-path-plane.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.8\textwidth]{figs/prop-coning}
+\caption{Propeller coning}
+\label{fig:prop-coning}
+\end{figure}
+\par
+Both effects can be quantified mathematically but their derivation and resultant equations are cumbersome. In due course their effect on the produced prototype which this project investigates aren't of consequence\ldots
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
 %====================================================
-
+For any solid body with some translational velocity motion within a fluid, there is 
+Net drag, excluding the aerodynamic propeller drag, is a second order response opposing translational velocity. The drag coeffecieint matrix, some what analogous to the inertial matrix, is:
+\begin{equation}
+\vec{D}_{net}(\vec{v})=\begin{bmatrix}
+A_{xx} & A_{xy} & A_{xz}\\
+B_{yx} & B_{yy} & A_{yz}\\
+C_{zx} & C_{zy} & C_{zz}
+\end{bmatrix}
+\end{equation}
 %====================================================
 \section{Consolidated Model}
 \label{sec:dynamics.model}%====================================================
-Consolidating
+After reviewing Consolidating all components derived previously into a set of differential equations to be used for control plant development\ldots
