@@ -283,7 +283,7 @@ Motor frames, numbered $1-4$, transform to the body frame first by an angle of $
 \label{fig:body-frame}
 \end{figure}
 \par
-\emph{\color{Gray}Not shown in Fig:\ref{fig:body-frame} is the relative $\hat{Z}$ axis position with respect to the structure. The $\hat{Z}$ height of the body's motion centroid is such that its origin is co-planar with the four motor modules rotational centers. The center of motion is \underline{not} the center of mass, an aspect which is discussed later in Section:\ref{subsec:dynamics.nonlinearities.inertia}.}
+\emph{\color{Gray}Not shown in Fig:\ref{fig:body-frame} is the relative $\hat{Z}$ axis position with respect to the structure. The $\hat{Z}$ height of the body's motion centroid is such that its origin is co-planar with the four motor modules rotational centers. The center of motion is \underline{not} the center of mass, an aspect which is discussed later in Section:\ref{subsec:dynamics.nonlinearities.gyrotorques}.}
 \\
 Vector transformations from each of the four motor frames to the body frame are characterized as:
 \begin{subequations}
@@ -557,7 +557,7 @@ Making the resultant gravitational torque\footnote{With $\vec{G}_b=\mathbb{R}_I^
 \Delta C.G = \vec{\mathbf{O}}_b-C.M
 \end{equation}
 \vspace{-20pt}
-\begin{equation}
+\begin{equation}\label{eq:grav-torque}
 \tau_g=\Delta C.G\times\vec{G}_b ~~~[N.m],\tau_g\in\mathcal{F}^b
 \end{equation}
 \end{subequations}

@@ -3,8 +3,10 @@
 %*****************************************************
 \appendix
 %-----------------------------------------------------
-\chapter{Standard Quadrotor Dynamics}
-\label{app:stddynamics}
+\chapter{Expanded Equations}
+\label{app:equations}
+\section{Standard Quadrotor Dynamics}
+\label{app:equations.standard}
 %-----------------------------------------------------
 Following 6-DOF derivations in Section:\ref{subsec:dynamics.rigidbody.lagrange}, the common reductions typically applied those equations for a generic "+" configuration quadrotor are now presented. Reiterating those four differential equations, Eq:\ref{eq:states}, which describe a rigid body's motion (using rotation matrices and not quaternions):
 \begin{subequations}
@@ -147,7 +149,9 @@ As such, the differential equations Eq:\ref{.} are then simplied to the followin
 \begin{equation}
 \ddot{\psi}=\frac{1}{\mathbb{I}_z}\tau_\psi
 \end{equation}
-\end{subequations} %-----------------------------------------------------
+\end{subequations}
+\section{Blade-Element Momentum Expansion}
+\label{app:equations.bem} %-----------------------------------------------------
 \chapter{Design Bill of Materials}
 \label{app:bom}
 %-----------------------------------------------------

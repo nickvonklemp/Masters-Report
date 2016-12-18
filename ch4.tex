@@ -8,7 +8,8 @@
 %====================================================
 Previously, in the Design Chapter:\ref{.}, it was shown that the uniqueness of the prototype considered here stems from its over-actuation. There are 12 actuator positions which are required to effect 6 degrees of freedom. Owing to the complexities which arise as a result of control plant allocation, the control algorithm is first abstracted to virtual control inputs $\tau_net$ and $F_net$. Those victual inputs are then distributed via the allocation algorithm. The control block is completely independent from the allocation block and as such the two can be altered independently.
 %====================================================
-\subsection*{Control Plant Inputs}
+\section{Control Plant Inputs}
+\label{sec:control.inputs}
 %====================================================
 Until now, the control plant inputs for state equations Eq:\ref{.} have been described with net forces and torques. Previously in Section:\ref{.} the relationship between servo positions and thrust vector directions were quantified. In Section:\ref{.} that thrust vector magnitude was found to be \emph{approximately} quadratically dependent on the propellers rotational speed. 
 \par
@@ -40,6 +41,7 @@ For the control plant development, the plant inputs are abstracted to a virtual 
 \subsubsection{Ideal Back-stepping Controller}
 %****************************************************
 \subsubsection{Adaptive Back-stepping Controller}
+\label{subsubsec:control.attitude.nonlinear.backstep}
 \subsubsection*{Disturbance Update Law}
 %****************************************************
 \subsubsection{Lyupanov Derived Ideal Controller}
