@@ -1,11 +1,50 @@
 %====================================================
 %	CHAPTER 4 - Control
 %====================================================
-\chapter{Control Treatment}
+\chapter{Controller Development}
 \label{ch:control}
 %====================================================
-\section*{Control Plant \& Discussion}
+\section{Control Loop}
 %====================================================
+The control problem for this dissertation is, as outlined in Chater:\ref{ch:intro}; to achieve dynamic (\emph{attitude}) set point tracking on a quadrotor by solving the problem of its inherent underactuation. For the purposes of the subsequent controller development, the plant is described in non-linear state space form:
+\begin{subequations}
+\begin{equation}
+\dot{\mathbf{x}}=f(\mathbf{x},t)+g(\mathbf{x},t)\vec{\nu}
+\end{equation}
+\vspace{-15pt}
+\begin{equation}
+y = c(\mathbf{x},t)+d(\mathbf{x},t)\vec{\nu}
+\end{equation}
+\end{subequations}
+Where the plant dynamics are governed by $f(\mathbf{x},t)$ and its input response by $g(\mathbf{x},t)\vec{\nu}$, for a given input $\vec{\nu}$. The latter is not necessarily a multiplicative relationship and could take the form $g(\mathbf{x},\vec{\nu},t)$. The objective for setpoint tracking is for the output to track the state $y = \mathbf{x}$. As such, the control problem is to design a control law for an error state $\mathbf{x}_e$:
+\\
+\vspace{-5pt}
+\begin{equation}
+\vec{\nu}_d=h(\mathbf{x}_e,t)
+\end{equation}
+Such that the control plant is globally asymptotically stabilizing or that $\lim_{t\rightarrow\infty}\mathbf{x}_e=0$. It is possible to combine attitude and position states\footnote{Ignoring how error states are formulated for the time being\ldots} into a common trajectory state such that:
+\\
+\vspace{-5pt}
+\begin{equation}
+\mathbf{x}=\begin{bmatrix}
+\vec{\mathcal{E}}\\
+Q_b
+\end{bmatrix}
+\end{equation}
+The body's trajectory is then fully described by $\mathbf{x}(t)$. Independent controllers are developed for attitude and position control and hence attitude and position states aren't combined. However for the purposes of detailing the control plant, a single major loop is considered. The designed control input, $\vec{\nu}_d$, is then implemented by actuator suite $u\in\mathbb{U}$ through its effectiveness function:
+\\
+\vspace{-5pt}
+\begin{equation}
+\nu_c=B(\mathbf{x},u,t)
+\end{equation}
+The exact relationship of the virtual control input and commanded input, $\nu_c\rightarrow\nu_d$, is governed by the allocation algorithm. That allocation function, $B^\dagger$, can be \emph{approximately} referred to as the effectiveness inverse. The actuator positions are then solved as:
+\begin{equation}
+u=B^{\dagger}(\mathbf{x},\nu_d,t)
+\end{equation}
+More on the control allocation is discussed subsequently in Section:\ref{sec:control.inputs}. Multiple attitude controllers are developed and compared in the context of an over actuated quadrotor plant. Similarly a series of allocation schemes are compared too. Those comparisons and their details are presented next in Chapter:\ref{ch:simulation}. 
+\par
+The control loop is then broken into 
+
 Previously, in the Design Chapter:\ref{.}, it was shown that the uniqueness of the prototype considered here stems from its over-actuation. There are 12 actuator positions which are required to effect 6 degrees of freedom. Owing to the complexities which arise as a result of control plant allocation, the control algorithm is first abstracted to virtual control inputs $\tau_net$ and $F_net$. Those victual inputs are then distributed via the allocation algorithm. The control block is completely independent from the allocation block and as such the two can be altered independently.
 %====================================================
 \section{Control Plant Inputs}
