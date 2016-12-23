@@ -521,7 +521,7 @@ Each of the induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha(\lambda
 \par
 The plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased values of $\Omega_i$\footnote{Motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-').}, illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
 \par
-\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in substitution for the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation}.}
+\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in substitution for the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation}.}
 \newpage
 %====================================================
 \section{Aerodynamics}
@@ -772,7 +772,7 @@ Without access to wind tunnel testing, the drag coefficients are difficult to as
 \label{sec:dynamics.model}%====================================================
 Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial \& gyroscopic responses to induced perturbations, $\tau_\lambda$ and $\tau_\alpha$ from Eq:\ref{eq:torque-induced-inner} \& Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $\mathbb{I}_b(u)$ from Section:\ref{sec:proto.inertia}. Finally replacing net \emph{virtual} plant inputs\footnote{Exact actuator relationships are explored in Section:\ref{sec:control.inputs}}, $\mu \vec{\tau}$ and $\mu \vec{F}$, with higher fidelity thrust models; produces the following set of state differentials used for control plant development \ldots
 \\
-\begin{subequations}
+\begin{subequations}\label{eq:quaternion-states}
 \begin{equation}
 \dot{\mathcal{E}}=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~\in\mathcal{F}^I
 \end{equation}
@@ -794,7 +794,7 @@ u=\big[\Omega_1^+,~\lambda_1,~\alpha_1,~\ldots~\Omega_4^-,~\lambda_4,~\alpha_4 \
 \end{equation}
 \end{subequations}
 With net thrust and torque plant inputs, $\mu\vec{F}$ \& $\mu\vec{\tau}$ respectively. Both are later abstracted to virtual control inputs next in Chapter:\ref{ch:control}, (\emph{individual motor number subscripts, $i\in[1:4]$, are implied}).
-\begin{subequations}
+\begin{subequations}\label{eq:quaternion-inputs}
 \begin{equation}
 \mu\vec{F}(u)=\sum \vec{T}(\Omega,\lambda,\alpha)=\sum Q_{M_i}^*\otimes T(\Omega)\otimes Q_{M_i}~~~~\in\mathcal{F}^b
 \end{equation}
