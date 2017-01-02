@@ -410,7 +410,7 @@ sin(\theta/2)\hat{u}
 \end{subequations}
 Every physical attitude in $\mathbb{R}^3$ has two corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is two possible error state trajectories for every attitude difference. A clockwise $\theta$ rotation and an anticlockwise $2\pi-\theta$ negative rotation. This could lead to an erroneous and unnecessary "unwinding" of a complete counter revolution as a result of a dual covered error state. 
 \par
-Often the signed scalar component of the attitude quaternion error (Section:\ref{subsec:control.attitude.quaternion}) is simply neglected or assumed positive. As such for attitude controllers the requirement is that for positive and negative scalars the control input is consistent:
+Often the signed scalar component of the attitude quaternion error (Section:\ref{subsec:control.attitude.problem}) is simply neglected or assumed positive. As such for attitude controllers the requirement is that for positive and negative scalars the control input is consistent:
 \begin{equation}
 \nu_d=h([q_0~\vec{q}~]^T,t)=h([-q_0~\vec{q}~]^T,t)
 \end{equation}
@@ -717,7 +717,7 @@ Where $\vec{v}_b$ is the body's transnational velocity and $\vec{\omega}_b$ is t
 \par
 {\color{Gray}\emph{It's worth noting that the above static coefficients are indeed calculated from physical static tests. However advance ratio coefficient dependencies are linearly interpolated from the closest available matching data (APC Thin-Electric 8X6 propellers) cited from \cite{UIUC}}.
 \par
-\emph{Discrepancies which emerge between the model or coefficient values derived can be accounted for with lumped uncertainty disturbance term(s). Model uncertainty compensation can easily be incorporated into adaptive backstepping or $H_\infty$ control algorithms. The deviation of the modelled thrust or torques from their true values would be simple to incorporate into a plant dependent Lyupanov candidate function; Section:\ref{subsubsec:control.attitude.nonlinear.backstep}.}}
+\emph{Discrepancies which emerge between the model or coefficient values derived can be accounted for with lumped uncertainty disturbance term(s). Model uncertainty compensation can easily be incorporated into adaptive backstepping or $H_\infty$ control algorithms. The deviation of the modelled thrust or torques from their true values would be simple to incorporate into a plant dependent Lyapunov candidate function; Section:\ref{subsubsec:control.attitude.nonlinear.backstep}.}}
 %====================================================
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
@@ -773,19 +773,19 @@ Without access to wind tunnel testing, the drag coefficients are difficult to as
 Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial \& gyroscopic responses to induced perturbations, $\tau_\lambda$ and $\tau_\alpha$ from Eq:\ref{eq:torque-induced-inner} \& Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $\mathbb{I}_b(u)$ from Section:\ref{sec:proto.inertia}. Finally replacing net \emph{virtual} plant inputs\footnote{Exact actuator relationships are explored in Section:\ref{sec:control.inputs}}, $\mu \vec{\tau}$ and $\mu \vec{F}$, with higher fidelity thrust models; produces the following set of state differentials used for control plant development \ldots
 \\
 \begin{subequations}\label{eq:quaternion-states}
-\begin{equation}
+\begin{equation}\label{eq:quaternion-states-velocity}
 \dot{\mathcal{E}}=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:quaternion-states-acceleration}
 \dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b^*\otimes m\vec{G}\otimes Q_b-\vec{D}_{net}(\vec{v}_b)+\mu\vec{F}(u)\big)~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:quaternion-states-quaternion}
 \dot{Q}_b=\frac{1}{2}Q_b\otimes \vec{\omega}_b ~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:quaternion-states-angular}
 \dot{\vec{\omega}}_b=\mathbb{I}_b(u)^{-1}\big(-\vec{\omega}_b \times \mathbb{I}_b(u)\vec{\omega}_b+\vec{\tau}_Q(u)+\vec{\tau}_g(u)+\sum \vec{Q}(\Omega,\lambda,\alpha)+\mu\vec{\tau}(u)\big)~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-10pt}
@@ -807,11 +807,11 @@ The scalar thrust $T(\Omega)$ is a function of the propellers rotational velocit
 \par
 $\vec{Q}(\Omega,\lambda,\alpha)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic propeller torque\footnote{Torque dependent on the power term calculated from Eq:\ref{eq:element-power}} terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:aerodynamic-thrust}
 T(\Omega)= C_T(J)\rho\Omega^2D^4
 \end{equation}
 \vspace{-15pt}
-\begin{equation}
+\begin{equation}\label{eq:aerodynamic-torque}
 Q(\Omega)= C_P(J)\rho\Omega^3D^5 \frac{1}{2\Omega}
 \end{equation}
 \end{subequations}
