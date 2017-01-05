@@ -22,8 +22,9 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}The Attitude Control Problem}{54}{subsection.4.4.1}}
 \newlabel{subsec:control.attitude.problem}{{4.4.1}{54}{The Attitude Control Problem}{subsection.4.4.1}{}}
 \newlabel{eq:quaternion-error}{{4.17}{54}{The Attitude Control Problem}{equation.4.4.17}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Controllers}{54}{subsection.4.4.2}}
-\newlabel{subsec:control.attitude.controllers}{{4.4.2}{54}{Controllers}{subsection.4.4.2}{}}
+\newlabel{eq:angular-error}{{4.18a}{54}{The Attitude Control Problem}{equation.4.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Linear Controllers}{54}{subsection.4.4.2}}
+\newlabel{subsec:control.attitude.controllers}{{4.4.2}{54}{Linear Controllers}{subsection.4.4.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{PD Controller}{54}{subsection.4.4.2}}
 \newlabel{subsubsec:control.attitude.controllers.pd}{{4.4.2}{54}{PD Controller}{subsection.4.4.2}{}}
 \newlabel{eq:independent-pd}{{4.20}{54}{PD Controller}{equation.4.4.20}{}}
@@ -41,6 +42,7 @@
 \newlabel{eq:aux-pd-2}{{4.32}{56}{Auxiliary Plant Controller}{equation.4.4.32}{}}
 \newlabel{eq:lyapunov-xpd}{{4.33}{56}{Auxiliary Plant Controller}{equation.4.4.33}{}}
 \newlabel{eq:4.34}{{4.40}{57}{Auxiliary Plant Controller}{equation.4.4.40}{}}
+\newlabel{eq:xpd-ibc}{{4.41}{57}{Auxiliary Plant Controller}{equation.4.4.41}{}}
 \citation{attitudestabilization}
 \citation{robustattitude}
 \citation{attitudestabilization}
@@ -49,29 +51,40 @@
 \citation{backstepping}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4.3}Non-linear Controllers}{59}{subsection.4.4.3}}
 \newlabel{subsec:control.attitude.nonlinear}{{4.4.3}{59}{Non-linear Controllers}{subsection.4.4.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Ideal Back-stepping Controller}{59}{subsection.4.4.3}}
-\@writefile{toc}{\contentsline {subsubsection}{Adaptive Back-stepping Controller}{59}{equation.4.4.48}}
-\newlabel{subsubsec:control.attitude.nonlinear.backstep}{{4.4.3}{59}{Adaptive Back-stepping Controller}{equation.4.4.48}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Position Control}{59}{section.4.5}}
-\newlabel{sec:control.position}{{4.5}{59}{Position Control}{section.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Backstepping Position Controller}{59}{subsection.4.5.1}}
-\newlabel{subsec:control.position.bacstepping}{{4.5.1}{59}{Backstepping Position Controller}{subsection.4.5.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Controller Allocation}{59}{section.4.6}}
-\newlabel{sec:control.allocation}{{4.6}{59}{Controller Allocation}{section.4.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1}Pseudo Inverse Allocator}{59}{subsection.4.6.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.2}Weighted Pseudo Inverse Allocator}{59}{subsection.4.6.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.3}Priority Norm Inverse Allocator}{59}{subsection.4.6.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.4}Online Optimized Secondary Goal Allocator}{59}{subsection.4.6.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.5}Non-linear Plant Control Allocation}{59}{subsection.4.6.5}}
-\newlabel{subsec:control.allocation.allocators}{{4.6.5}{59}{Non-linear Plant Control Allocation}{subsection.4.6.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Ideal Backstepping Controller}{59}{subsection.4.4.3}}
+\newlabel{subsubsec:control.attitude.nonlinear.idealbackstep}{{4.4.3}{59}{Ideal Backstepping Controller}{subsection.4.4.3}{}}
+\newlabel{eq:z-deriv}{{4.53c}{60}{Ideal Backstepping Controller}{equation.4.4.3}{}}
+\newlabel{eq:ibc-deriv}{{4.54}{60}{Ideal Backstepping Controller}{equation.4.4.54}{}}
+\newlabel{eq:control-ibc}{{4.55}{60}{Ideal Backstepping Controller}{equation.4.4.55}{}}
+\citation{}
+\@writefile{toc}{\contentsline {subsubsection}{Adaptive Backstepping Controller}{61}{equation.4.4.2}}
+\newlabel{subsubsec:control.attitude.nonlinear.adaptivebackstep}{{4.4.3}{61}{Adaptive Backstepping Controller}{equation.4.4.2}{}}
+\newlabel{eq:estimate-error}{{4.62}{61}{Adaptive Backstepping Controller}{equation.4.4.62}{}}
+\newlabel{eq:estimator-assumption}{{4.71}{62}{Adaptive Backstepping Controller}{equation.4.4.71}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Position Control}{62}{section.4.5}}
+\newlabel{sec:control.position}{{4.5}{62}{Position Control}{section.4.5}{}}
+\newlabel{eq:position-deriv}{{4.73}{62}{Position Control}{equation.4.5.73}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}PD Controller}{63}{subsection.4.5.1}}
+\newlabel{subsec:control.position.pd}{{4.5.1}{63}{PD Controller}{subsection.4.5.1}{}}
+\newlabel{eq:position-pd}{{4.78}{63}{PD Controller}{equation.4.5.78}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Adaptive Backstepping Controller}{64}{subsection.4.5.2}}
+\newlabel{subsec:control.position.bacstepping}{{4.5.2}{64}{Adaptive Backstepping Controller}{subsection.4.5.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Controller Allocation}{64}{section.4.6}}
+\newlabel{sec:control.allocation}{{4.6}{64}{Controller Allocation}{section.4.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1}Pseudo Inverse Allocator}{64}{subsection.4.6.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.2}Weighted Pseudo Inverse Allocator}{64}{subsection.4.6.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.3}Priority Norm Inverse Allocator}{64}{subsection.4.6.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.4}Online Optimized Secondary Goal Allocator}{64}{subsection.4.6.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.5}Non-linear Plant Control Allocation}{64}{subsection.4.6.5}}
+\newlabel{subsec:control.allocation.allocators}{{4.6.5}{64}{Non-linear Plant Control Allocation}{subsection.4.6.5}{}}
 \@setckpt{ch4}{
-\setcounter{page}{60}
-\setcounter{equation}{48}
+\setcounter{page}{65}
+\setcounter{equation}{84}
 \setcounter{enumi}{3}
 \setcounter{enumii}{4}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
-\setcounter{footnote}{8}
+\setcounter{footnote}{9}
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{4}
@@ -84,8 +97,8 @@
 \setcounter{table}{0}
 \setcounter{r@tfl@t}{0}
 \setcounter{Item}{9}
-\setcounter{Hfootnote}{65}
-\setcounter{bookmark@seq@number}{52}
+\setcounter{Hfootnote}{66}
+\setcounter{bookmark@seq@number}{53}
 \setcounter{vrcnt}{0}
 \setcounter{FancyVerbLine}{0}
 \setcounter{float@type}{4}
@@ -101,6 +114,6 @@
 \setcounter{tikztimingrows}{0}
 \setcounter{tikztimingtrans}{-1}
 \setcounter{tikztimingtranspos}{0}
-\setcounter{parentequation}{41}
+\setcounter{parentequation}{84}
 \setcounter{section@level}{0}
 }
