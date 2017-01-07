@@ -715,9 +715,11 @@ Where $\vec{v}_b$ is the body's transnational velocity and $\vec{\omega}_b$ is t
 \label{fig:propeller-plots}
 \end{figure}
 \par
-{\color{Gray}\emph{It's worth noting that the above static coefficients are indeed calculated from physical static tests. However advance ratio coefficient dependencies are linearly interpolated from the closest available matching data (APC Thin-Electric 8X6 propellers) cited from \cite{UIUC}}.
+{\color{Gray}\emph{It's worth noting that the above static coefficients are indeed calculated from physical static tests. However advance ratio coefficient dependencies are linearly interpolated from the closest available matching data (APC Thin-Electric 8X6 propellers) cited from \cite{UIUC}}.}
 \par
-\emph{Discrepancies which emerge between the model or coefficient values derived can be accounted for with lumped uncertainty disturbance term(s). Model uncertainty compensation can easily be incorporated into adaptive backstepping or $H_\infty$ control algorithms. The deviation of the modelled thrust or torques from their true values would be simple to incorporate into a plant dependent Lyapunov candidate function; Section:\ref{subsubsec:control.attitude.nonlinear.backstep}.}}
+Counterclockwise and clockwise propellers and rotations were used for both thrust and torque tests. Despite the thrust and test rigs having been designed to isolate each respective response, the use of both directs allowed for opposing effects to cancel one another out. In the case of thrust tests plotted in Fig:\ref{fig:thrust-plot}; the opposing results were constructively averaged such that cross-directional torque effects on the strain gauge were canceled out. Conversely the recorded torque results, in Fig:\ref{fig:torque-plot}, were subtractively averaged so that the perpendicular thrust deflection was removed from the torque measurement. Both positive and negative rotational results for thrust and torque measurements are included in Appendix:\ref{app:thrust-torque}.
+\par
+{\color{Gray}\emph{Discrepancies which emerge between the model or coefficient values derived can be accounted for with lumped uncertainty disturbance term(s). Model uncertainty compensation can easily be incorporated into adaptive backstepping or $H_\infty$ control algorithms. The deviation of the modelled thrust or torques from their true values would be simple to incorporate into a plant dependent Lyapunov candidate function; Section:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}.}}
 %====================================================
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
@@ -726,7 +728,7 @@ Other non-linear effects which deteriorate a propeller's performance have been w
 \par
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\textwidth]{figs/prop-flap}
+\includegraphics[width=0.95\textwidth]{figs/prop-flap}
 \caption{Propeller blade flapping}
 \label{fig:prop-flap}
 \end{figure}
@@ -734,13 +736,13 @@ In translational flight for an unducted propeller each blade encounters varying 
 \par
 The resulting effect is that the propeller's thrust vector is pitched marginally away from an ideal perpendicular vector by some deflection angle. The phenomenon is diminished at low translational velocities and as such, isn't applicable to the range of flight envelopes which the prototype for this project will experience.
 \par
-Coning (Fig:\ref{fig:prop-coning}) is another form of propeller deflection which, dependent on the blades stiffness properties, causes the propeller blades (advancing and retreating) to both deflect upward. Loading on the propeller surface and supporting a body's weight causes the upward deflection. Coning reduces the effective propeller's disc area, adversely affecting thrust produced. Increased loading accentuates the coning angle experienced by the propellers and as such alters the tip-path-plane.
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.9\textwidth]{figs/prop-coning}
+\includegraphics[width=0.95\textwidth]{figs/prop-coning}
 \caption{Propeller coning}
 \label{fig:prop-coning}
 \end{figure}
+Coning (Fig:\ref{fig:prop-coning}) is another form of propeller deflection which, dependent on the blades stiffness properties, causes the propeller blades (advancing and retreating) to both deflect upward. Loading on the propeller surface and supporting a body's weight causes the upward deflection. Coning reduces the effective propeller's disc area, adversely affecting thrust produced. Increased loading accentuates the coning angle experienced by the propellers and as such alters the tip-path-plane.
 \par
 Both aerodynamic effects can be quantified numerically. Their derivation and resultant equations are cumbersome however. In due course their effect on the produced prototype which this project investigates isn't significant enough to produce instability if neglected. The frame could potentially be affected in more adverse ways given certain flight conditions with high transient velocities\ldots
 %====================================================

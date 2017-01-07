@@ -68,7 +68,7 @@ Thus far control plant inputs for the set of differential state equations, from 
 To accommodate comparison of each controller and allocation scheme, the error state control law(s) design net plant inputs $\mu\vec{F}$ and $\mu\vec{\tau}$. The allocation rule then takes both net inputs as an argument to find actuator positions to effect those net inputs. As such each control law can be tested against various allocation rules and \emph{vise versa}. However typical allocation algorithms, like pseudo-inversion, require a multiplicative relationship between plant and control inputs\ldots 
 \par
 The actuator effectiveness functions in Eq:\ref{eq:control-input} aren't readily reducible to a single multiplicative relationship. Thusly the effectiveness function needs an extra layer of abstraction to incorporate a multiplicative relationship. Rather than calculating actuator positions directly from $\vec{\nu}_d$, a set of four 3-dimensional thrust vectors, $\vec{T}_{1\rightarrow 4}$, for each motor module are calculated first.
-\begin{equation}
+\begin{equation}\label{eq:4.7}
 \vec{\nu}_d=\begin{bmatrix}
 \mu\vec{F}\\
 \mu\vec{\tau}
@@ -86,7 +86,7 @@ The actuator effectiveness functions in Eq:\ref{eq:control-input} aren't readily
 \end{bmatrix}
 \end{equation}
 Where $\vec{l}_\times$ is the cross product vector of the torque arm. Individual actuator positions for each module, $[\Omega,~\lambda,~\alpha]^T$, can be calculated from those thrust vectors $\vec{T}_i$ for $i\in[1:4]$ with some trigonometry, ensuring that they only adhere to Eq:\ref{eq:control-input}. That trigonometric inversion\footnote{Inverting either rotation matrix operations or quaternions to solve for angular servo positions.} can be described as the function $R^\dagger$:
-\begin{equation}
+\begin{equation}\label{eq:4.8}
 [\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\mathbf{x},\vec{F}_i,t)~~~~i\in[1:4]
 \end{equation}
 \par
@@ -760,86 +760,178 @@ z_1=\mathcal{E}_d-\mathcal{E}_b
 \end{equation}
 Which then has a derivative:
 \begin{equation}
-\dot{z}_1=\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b=Q_b^*\otimes \vec{0} \otimes Q_b - Q_b^*\otimes\vec{v}_b\otimes Q_b= - Q_b^*\otimes \vec{v}_b\otimes Q_b
+\dot{z}_1=\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b=Q_b\otimes \big(\vec{0}-\vec{v}_b\big)\otimes Q_b^*= - Q_b\otimes \vec{v}_b\otimes Q_b^*
 \end{equation}
 Transforming that error, $z_1$, to the body frame $\mathcal{F}^b$, in the same way as Eq:\ref{eq:4.80a}, makes the stability proof more concise. The transformation doesn't affect the lie derivative as the energy function's gradient depends on its partial derivative w.r.t it's trajectory, namely $\mathcal{E}_E(t)$.
 \begin{subequations}
 \begin{equation}
-z_1\text{}'=X_E=Q_b^*\otimes z_1 \otimes Q_b 
+\hat{z}_1=X_E=Q_b^*\otimes z_1 \otimes Q_b =Q_b^*\otimes\big(\mathcal{E}_d-\mathcal{E}_b\big)\otimes Q_b
 \end{equation}
-\vspace{-10pt}
+\vspace{-12pt}
 \begin{equation}
-\therefore \dot{z}_1\text{}'=Q_b^*\otimes\dot{z}_1\otimes Q_b = -\vec{v}_b
-\end{equation}
-\vspace{-10pt}
-\end{subequations}
-Then proposing the following LCF:
-\begin{subequations}
-\begin{equation}
-V_1(z_1\text{}')=\frac{1}{2}z_1\text{}'\text{}^{T}z_1\text{}'
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
-\Rightarrow\dot{V}_1=z_1\text{}'\text{}^T\dot{z}_1\text{}'=-z_1\text{}'^T\vec{v}_b
+\therefore \dot{\hat{z}}_1=Q_b^*\otimes\dot{z}_1\otimes Q_b = Q_b^*\otimes\big(\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b\big)\otimes Q_b = -\vec{v}_b
 \end{equation}
 \end{subequations}
-Then, a stabilizing velocity function is\footnote{Using $\Omega_d$ to differentiate from $\vec{v}_d$ which would otherwise be the translational velocity produced from the desired trajectory\ldots}:
+Then proposing the following positive definite LCF $V_1$:
+\par
+\vspace{-12pt}
 \begin{subequations}
 \begin{equation}
-\Omega_d = \Gamma_1 z_1\text{}'
+V_1(\hat{z}_1)=\frac{1}{2}\hat{z}_1\text{}^{T}\hat{z}_1
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\Rightarrow\dot{V}_1=\hat{z}_1\text{}^T\dot{\hat{z}}_1=-\hat{z}_1\text{}^T\vec{v}_b
+\end{equation}
+\end{subequations}
+Then, a stabilizing velocity function\footnote{Using $\Omega_d$ to differentiate from $\vec{v}_d$ which would otherwise be the translational velocity produced from the desired trajectory\ldots}, $\Omega_d$, and its associated error, $\hat{z}_2$, are:
+\begin{subequations}
+\begin{equation}
+\Omega_d = \Gamma_1 \hat{z}_1~~\text{for a desired}~\vec{v}_d
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-z_2\text{}' = \Omega_d - \vec{v}_b = \Gamma_1z_1\text{}'-\vec{v}_b
+\hat{z}_2 = \Omega_d - \vec{v}_b = \Gamma_1\hat{z}_1-\vec{v}_b
+\end{equation}
+\vspace{-15pt}
+\begin{equation}\label{eq:4.90c}
+\therefore \vec{v}_b=\Gamma_1\hat{z}_1-\hat{z}_2
+\end{equation}
+\end{subequations}
+So that error state $\hat{z}_2$ has a derivative:
+\begin{subequations}
+\begin{equation}
+\dot{\hat{z}}_2=\dot{\Omega}_d-\dot{\vec{v}}_b=\Gamma_1\dot{\hat{z}}_1-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-\therefore \vec{v}_b=\Gamma_1z_1\text{}'-z_2\text{}'
+=-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)
+\end{equation}
+\end{subequations}
+So introducing that second error to a new LCF $V_2$:
+\begin{equation}
+V_2=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
 \end{equation}
 Which has a derivative:
+\begin{subequations}
 \begin{equation}
-\dot{z}_2\text{}'=\dot{\Omega}_d-\dot{\vec{b}}_b=\Gamma_1\dot{z}_1\text{}'-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)
-\end{equation}
-So introducing that second error to a new LCF:
-\begin{equation}
-V_2=\frac{1}{2}z_1\text{}'\text{}^Tz_1\text{}'+\frac{1}{2}z_2\text{}'\text{}^Tz_2\text{}'
-\end{equation}
-Which has a gradient of:
-\begin{equation}
-\dot{V}_2=z_1\text{}'\text{}^T\dot{z}_1\text{}'+z_2\text{}'\text{}^T\dot{z}_2\text{}'
+\dot{V}_2=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2=-\hat{z}_1\text{}^T\vec{v}_b+\hat{z}_2\text{}^T\dot{\hat{z}}_2
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-z_1\text{}'\text{}^T\vec{v}_b+z_2\text{}'\text{}^T\bigg(\Gamma_1\dot{z}_1\text{}'-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
+=-\hat{z}_1\text{}^T\vec{v}_b+\hat{z}_2\text{}^T\bigg(-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
+\end{equation}
+And substituting Eq:\ref{eq:4.90c} into only the first energy term of the LCF derivative:
+\begin{equation}
+=-\hat{z}_1\text{}^T\big(\Gamma_1\hat{z}_1-\hat{z}_2\big)+\hat{z}_2\text{}^T\bigg(-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
 \end{equation}
 \vspace{-5pt}
 \begin{equation}
-=-z_1\text{}'\text{}^T\big(\Gamma_1z_1\text{}'-z_2\text{}'\big)+z_2\text{}'\text{}^T\bigg(\Gamma_1\dot{z}_1\text{}'-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
-\end{equation}
-\vspace{-5pt}
-\begin{equation}
-=-z_1\text{}'\text{}^T\Gamma_1z_1\text{}'+z_2\text{}'\text{}^T\bigg(-z_1\text{}'-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\hat{z
+}_1-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
 \end{equation}
 \end{subequations}
 An ideal backstepping control law, with the assumption that $\vec{D}_b$ is known, is then:
 \begin{subequations}
 \begin{equation}
-\mu\vec{F}_{_{IBC}}=\vec{\omega}_b\times m\vec{v}_b-\vec{G}_b-\vec{D}_b-mz_1\text{}'-m\Gamma_1\vec{v}_b-\Gamma_2z_2\text{}'
+\mu\vec{F}_{_{IBC}}=\vec{\omega}_b\times m\vec{v}_b-\vec{G}_b-\vec{D}_b-m\hat{z}_1-m\Gamma_1\vec{v}_b+\Gamma_2\hat{z}_2
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+\Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2\leq\vec{0}~~\forall(\hat{z}_1,~\hat{z}_2)~\text{\&}~\forall(z_1,~\hat{z_2})
+\end{equation}
+\end{subequations}
+Which obviously leads to asymptotic (\emph{extended to exponential}) stability under the assumption that the disturbance term $\vec{D}_b$ is known and can be compensated for well. In the controller both $\Gamma_1$ \& $\Gamma_2$ are P.D symmetric control coefficients to be determined later\ldots
+\par
+Adjusting the backstepping rule and proposed LCF to include a disturbance approximation $\hat{D}$, similar to the ABC attitude controller in Section:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. That approximation leads to an error state and adjusted control law respectively, once again assuming the true disturbance derivative $\dot{\vec{D}}_b$ is far slower than the control dynamics, $\dot{\vec{D}}_b\approx\vec{0}$.
+\begin{subequations}
+\begin{equation}
+\widetilde{D}=\vec{D}_b-\hat{D}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-z_1\text{}'\text{}^T\Gamma_1z_1\text{}'-z_2\text{}'\text{}^T\Gamma_2z_2\text{}'\leq\vec{0}~~\forall(z_1,~z_2)
+\dot{\widetilde{D}}=\dot{\vec{D}}_b-\dot{\hat{D}}=\vec{0}-\dot{\hat{D}}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\mu\vec{F}_{_{ABC}}=\vec{\omega}_b\times m\vec{v}_b-\vec{G}_b-\hat{D}-m\hat{z}_1-m\Gamma_1\vec{v}_b+\Gamma_2\hat{z}_2
 \end{equation}
 \end{subequations}
-Which obviously leads to asymptotic stability under the assumption that the disturbance is known and can be compensated for well. In the controller both $\Gamma_1$ \& $\Gamma_2$ are P.D symmetric control coefficients to be determined later. Adjusting the backstepping rule and LCF to include a distrubance approximation, similar to the ABC attitude controller in Section:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}:
+Then suggesting an LCF which incorporates that disturbance estimation error $\widetilde{D}$.
 \begin{subequations}
 \begin{equation}
-1
+V_{_{ABC}}=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2+\frac{1}{2}\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\widetilde{D}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\Rightarrow\dot{V}_{_{ABC}}=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2+\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\dot{\widetilde{D}}
+\end{equation}
+\vspace{-20pt}
+\begin{equation}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\hat{z}_1-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}_{_{ABC}}\big)\bigg)-\widetilde{D}\Gamma_D\text{}^{-1}\dot{\hat{D}}
+\end{equation}
+\vspace{-5pt}
+\begin{equation}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\Gamma_2\hat{z}_2-m^{-1}\big(\vec{D}_b-\hat{D}\big)\bigg)-\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\dot{\hat{D}}
+\end{equation}
+\vspace{-5pt}
+\begin{equation}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\hat{z}_2\text{}^Tm^{-1}\widetilde{D}-\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\dot{\hat{D}}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\widetilde{D}^T\Gamma_D\text{}^{-1}\big(m^{-1}\Gamma_D\hat{z}_2+\dot{\hat{D}}\big)
 \end{equation}
 \end{subequations}
+Then, an obvious choice for the disturbance update law would be; $\dot{\hat{D}}=-m^{-1}\Gamma_D\hat{z}_2$, which would ensure asymptotic stability. Exapanding on that, an interesting option which could potentially enfore exponential stability would be to use $\hat{D}_{n-1}$ as a disturbance estimate:
+\begin{subequations}
+\begin{equation}
+\dot{\hat{D}}=-m^{-1}\Gamma_D\hat{z}_2+(\hat{D}_{n-1}-\hat{D})
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\therefore\dot{V}_{_{ABC}}=-\hat{z}_1\text{}^T\Gamma_1\hat{z}-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\big(\hat{D}_{n-1}-\hat{D}_n\big)
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\approx-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\widetilde{D}
+\end{equation}
+\end{subequations}
+Similarly to the suggested exponentially stable adaptive backstepping controller for the attitude plant, using $\hat{D}_{n-1}$ for an existing disturbance estimate will need to be simulated in order to ascertain if it's a suitable conjecture. Note here that adaptive control laws refer to adaptability to unknown disturbances and not plant model uncertainty which would take a different approach to the backstepping algorithm.
+\newpage
 %====================================================
 \section{Controller Allocation}
 \label{sec:control.allocation}
+%====================================================
+Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u\in\mathbb{U}$. The allocator block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For a regular unconstrained control allocation problem the cost function to be minimized\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} is typically some function $J(\mathbf{x},~u,~t)$ representing the magnitude of actuator deflection. The allocation problem is then posed as:
+\begin{equation}\label{eq:allocation}
+\underset{u\in\mathbb{U}}{min}~J(\mathbf{x},u,t)~~\text{such that}~~\vec{\nu}_c=B(\mathbf{x},u,t)
+\end{equation}
+In the over actuated case, there exists an entire set of suitable solutions of $u$ to Eq:\ref{eq:allocation}. The allocation rule is then structured as an optimization problem which aims to minimize some slack variable $s$.
+\begin{equation}
+\underset{u\in\mathbb{U}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
+\end{equation}
+Where $||Q_s||$ is a secondary control objective introduced for the slack variable. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control. Often satellites are over actuated for the sake of fault tolerance and redundancy.
+\par
+A lot of allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function and the allocator matrix:
+\begin{equation}
+\vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c
+\end{equation}
+Which makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$ to solve for actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived. Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$ designs four 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$, then each of those four vectors relate to their associated actuator positions:
+\begin{equation}
+\vec{T}_i=Q_{z}^*(\sigma_i)Q_{y}^*(\alpha_i)Q_{x}^*(\lambda_i)\otimes T(\Omega_i) Q_{x}(\lambda_i)Q_{y}(\alpha_i)Q_z(\sigma_i)
+\end{equation}
+Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ and the thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}. Because it's a quaternion rotation is a reference frame change which maintains vector magnitude, $T(\Omega_i)$ can be solved such that:
+\begin{subequations}
+\begin{equation}
+|\vec{T}_i|=\sqrt{||[T_x~T_y~T_z]^T||}=\sqrt{T_x^2+T_y^2+T_z^2}=|T(\Omega_i)|=|C_T(J)\rho\Omega_i^2D^4|
+\end{equation}
+\vspace{-6pt}
+\begin{equation}
+\Rightarrow \Omega_i=\sqrt{\frac{|\vec{T}_i|}{C_T(J)\rho D^4}}=\sqrt{\frac{\sqrt{T_x^2+T_y^2+T_z^2}}{C_T(J)\rho D^4}}
+\end{equation}
+\end{subequations}
+Then
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}
