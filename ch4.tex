@@ -917,11 +917,11 @@ A lot of allocation paradigms all assume a linear, multiplicative relationship w
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c
 \end{equation}
-Which makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$ to solve for actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived. Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$ designs four 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$, then each of those four vectors relate to their associated actuator positions:
-\begin{equation}
-\vec{T}_i=Q_{z}^*(\sigma_i)Q_{y}^*(\alpha_i)Q_{x}^*(\lambda_i)\otimes T(\Omega_i) Q_{x}(\lambda_i)Q_{y}(\alpha_i)Q_z(\sigma_i)
+Which makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$ to solve for actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived. Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$ designs four 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$, then each of those four vectors relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their associated actuator positions:
+\begin{equation}\label{eq:4.101}
+\vec{T}_i=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes T(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)~~~~\in\mathcal{F}^b
 \end{equation}
-Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ and the thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}. Because it's a quaternion rotation is a reference frame change which maintains vector magnitude, $T(\Omega_i)$ can be solved such that:
+Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ and the thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}. Because it's a quaternion rotation is a reference frame change which maintains vector magnitude, so $T(\Omega_i)$, and by extension $\Omega_i$, can be solved as:
 \begin{subequations}
 \begin{equation}
 |\vec{T}_i|=\sqrt{||[T_x~T_y~T_z]^T||}=\sqrt{T_x^2+T_y^2+T_z^2}=|T(\Omega_i)|=|C_T(J)\rho\Omega_i^2D^4|
@@ -931,7 +931,10 @@ Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\
 \Rightarrow \Omega_i=\sqrt{\frac{|\vec{T}_i|}{C_T(J)\rho D^4}}=\sqrt{\frac{\sqrt{T_x^2+T_y^2+T_z^2}}{C_T(J)\rho D^4}}
 \end{equation}
 \end{subequations}
-Then
+Then undoing and reversing the transformation of Eq:\ref{eq:4.101}:
+\begin{equation}
+T(\Omega)_i=Q_{z}^*(-\sigma_i)Q_{y}^*(-\alpha_i)Q_{x}^*(-\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(-\lambda_i)Q_{y}(-\alpha_i)Q_z(-\sigma_i)~~~~\in\mathcal{F}^{M_i}
+\end{equation}
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}
