@@ -668,19 +668,24 @@ C_T(J)=\frac{T}{\rho \Omega^2 D^4}
 C_P(J)=\frac{P}{\rho \Omega^3 D^5}
 \end{equation}
 \end{subequations}
+\par
+\begin{minipage}{\textwidth}
+\vspace{-20pt}
+\begin{wrapfigure}{r}{0.5\textwidth}
+\centering
+\includegraphics[width=0.5\textwidth]{graphs/coeffs-plot}
+\vspace{-15pt}
+\caption{Power \& thrust coefficients}
+\label{fig:coeffs-plot}
+\end{wrapfigure}
+\par
 Where $\Omega$ is the propellers rotational speed in RPS and $D$ is the propellers diameter. For fixed pitch propellers the thrust and power coefficients are easily determined. Eq:\ref{eq:thrust-coefficient} and Eq:\ref{eq:power-coefficient} both vary due to the \emph{advance ratio} $J$.
 \begin{equation}\label{eq:advance}
 J = \frac{v_\infty}{\Omega R}
 \end{equation}
 In most cases, the net head stream velocity $v_\infty$ is the perpendicular component (projected onto the plane's normal vector $\hat{n}$, Eq:\ref{eq:normal-fluid}) of the vehicles transnational velocity in the body frame, $\vec{v}_b\cdot\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values. 
+\end{minipage}
 \par
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.9\textwidth]{graphs/coeffs-plot}
-\vspace{-15pt}
-\caption{Power \& thrust coefficients}
-\label{fig:coeffs-plot}
-\end{figure}
 Propeller databases like \cite{UIUC}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths. The database is the outcome of \cite{lowreynolds}.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{Coefficients are linearly interpolated from similar pitched database results to match physical test values}, the static thrust and power coefficients respectively are:
 \begin{subequations}
 \begin{equation}

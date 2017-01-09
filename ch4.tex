@@ -903,16 +903,19 @@ Similarly to the suggested exponentially stable adaptive backstepping controller
 \section{Controller Allocation}
 \label{sec:control.allocation}
 %====================================================
-Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u\in\mathbb{U}$. The allocator block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For a regular unconstrained control allocation problem the cost function to be minimized\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} is typically some function $J(\mathbf{x},~u,~t)$ representing the magnitude of actuator deflection. The allocation problem is then posed as:
-\begin{equation}\label{eq:allocation}
-\underset{u\in\mathbb{U}}{min}~J(\mathbf{x},u,t)~~\text{such that}~~\vec{\nu}_c=B(\mathbf{x},u,t)
+Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u_c\in\mathbb{U}$. The allocator block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For regular, unconstrained control allocation the solution is posed as an optimization\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} problem; aiming to minimize deviation from the virtual and commanded control inputs, $\vec{\nu}_d$ \& $\vec{\nu}_c$ respectively.
+\begin{equation}\label{eq:allocation-slack}
+\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
 \end{equation}
-In the over actuated case, there exists an entire set of suitable solutions of $u$ to Eq:\ref{eq:allocation}. The allocation rule is then structured as an optimization problem which aims to minimize some slack variable $s$.
-\begin{equation}
-\underset{u\in\mathbb{U}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
+Where $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. In the over-actuated case, there exists an entire set of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The allocation rule is to introduce a secondary cost function, $J(\mathbf{x},t,u)$ into the optimization problem of Eq:\ref{eq:allocation-slack}.
+\begin{equation}\label{eq:allocation-problem}
+\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
 \end{equation}
-Where $||Q_s||$ is a secondary control objective introduced for the slack variable. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control. Often satellites are over actuated for the sake of fault tolerance and redundancy.
+That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control\cite{}. Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{}.
 \par
+
+
+
 A lot of allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function and the allocator matrix:
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c

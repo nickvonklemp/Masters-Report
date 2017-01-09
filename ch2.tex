@@ -273,6 +273,7 @@ Every propeller/motor pair is actuated by two servos. The $i^{th}$ propeller, di
 \caption{Intermediate motor frames}
 \label{fig:motor-frame}
 \end{wrapfigure}
+\par
 Motor frames, numbered $1-4$, transform to the body frame first by an angle of $\lambda_i$ about the $\hat{X}_{M_i}$ axis. Then by $\alpha_i$ about the $\hat{Y}_{M_i'}$ axis in an intermediate $M_i'$ frame. The first servo actuates $\lambda_i$, rotating $\mathcal{F}^{M_i}$ to an intermediate $\mathcal{F}^{M_i'}$ frame. Secondly, the next servo actuates $\alpha_i$ to produce a second intermediate frame $M_i''$. That second servo is affixed in the $M_i''$ frame. Lastly there's a relative orthogonal rotation about $\hat{Z}_{M_i''}$ between $\mathcal{F}^b$ and $\mathcal{F}^{M_i''}$. Each module's actuation state is fully described by $[\Omega_{i},~\lambda_{i},~\alpha_{i}]^{T}$ for $i\in [1:4]$. The four motor modules are aligned relative to the body's XYZ axes as shown in Fig:\ref{fig:body-frame}. Modules 1 and 3 have their X-axes in the positive and negative $\hat{X}_b$ directions of the body frame respectively. Similarly Modules 2 and 4 have their X-axes in the positive and negative $\hat{Y}_b$ directions of the body frame.
 \end{minipage}
 \newpage
