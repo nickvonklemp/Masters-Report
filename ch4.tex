@@ -907,29 +907,26 @@ Following the higher level control laws, a distribution algorithm is needed to \
 \begin{equation}\label{eq:allocation-slack}
 \underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
 \end{equation}
-Where $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. In the over-actuated case, there exists an entire set of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The allocation rule is to introduce a secondary cost function, $J(\mathbf{x},t,u)$ into the optimization problem of Eq:\ref{eq:allocation-slack}.
+Where $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. In the over-actuated case, there exists an entire set of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The allocation rule is then to introduce a secondary cost function, $J(\mathbf{x},t,u)$ into the optimization problem of Eq:\ref{eq:allocation-slack}.
 \begin{equation}\label{eq:allocation-problem}
 \underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
 \end{equation}
-That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control\cite{}. Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{}.
+That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}.
 \par
-
-
-
-A lot of allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function and the allocator matrix:
+A lot of allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function, hence the abstraction layer introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function can be abstracted to a matrix multiplication relationship:
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c
 \end{equation}
-Which makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$ to solve for actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived. Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$ designs four 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$, then each of those four vectors relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their associated actuator positions:
+With $\vec{\nu}\in\mathbb{R}^n,~u\in\mathbb(U)\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$ to solve for actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived. Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$ designs four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$. Each of those four vectors then relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their associated actuator positions:
 \begin{equation}\label{eq:4.101}
 \vec{T}_i=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes T(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)~~~~\in\mathcal{F}^b
 \end{equation}
-Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ and the thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}. Because it's a quaternion rotation is a reference frame change which maintains vector magnitude, so $T(\Omega_i)$, and by extension $\Omega_i$, can be solved as:
+Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ and the thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}. Because a quaternion rotation is a reference frame change which maintains vector magnitude, it follows that $T(\Omega_i)$, and by extension $\Omega_i$, can be solved as:
 \begin{subequations}
 \begin{equation}
 |\vec{T}_i|=\sqrt{||[T_x~T_y~T_z]^T||}=\sqrt{T_x^2+T_y^2+T_z^2}=|T(\Omega_i)|=|C_T(J)\rho\Omega_i^2D^4|
 \end{equation}
-\vspace{-6pt}
+\vspace{-8pt}
 \begin{equation}
 \Rightarrow \Omega_i=\sqrt{\frac{|\vec{T}_i|}{C_T(J)\rho D^4}}=\sqrt{\frac{\sqrt{T_x^2+T_y^2+T_z^2}}{C_T(J)\rho D^4}}
 \end{equation}
