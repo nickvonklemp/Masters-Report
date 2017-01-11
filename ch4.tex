@@ -903,7 +903,7 @@ Similarly to the suggested exponentially stable adaptive backstepping controller
 \section{Controller Allocation}
 \label{sec:control.allocation}
 %====================================================
-Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u_c\in\mathbb{U}$. The allocator block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For regular, unconstrained control allocation the solution is posed as an optimization\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} problem; aiming to minimize deviation from the virtual and commanded control inputs, $\vec{\nu}_d$ \& $\vec{\nu}_c$ respectively.
+Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u_c\in\mathbb{U}$. The allocator block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For regular, unconstrained control allocation the solution is posed as an optimization\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} problem; aiming to minimize deviation between the virtual and commanded control inputs, $\vec{\nu}_d$ \& $\vec{\nu}_c$ respectively.
 \begin{equation}\label{eq:allocation-slack}
 \underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
 \end{equation}
@@ -911,13 +911,18 @@ Where $Q_s$ is some cost function to prioritize the slack variable, $s$, require
 \begin{equation}\label{eq:allocation-problem}
 \underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
 \end{equation}
-That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}.
+That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduces such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
+\begin{multline}
+\therefore\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^6}{min}\big(||Q_s||+J(\mathbf{x},u,t)~~\text{s.t}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s\\\text{subject to}~~u=u_{n-1}+\Delta u,~\Delta u\in\mathbb{C}
+\end{multline}
 \par
-A lot of allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function, hence the abstraction layer introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function can be abstracted to a matrix multiplication relationship:
+Most control allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function, hence the abstraction layer which was introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function can be abstracted to a matrix multiplication relationship:
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c
 \end{equation}
-With $\vec{\nu}\in\mathbb{R}^n,~u\in\mathbb(U)\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$ to solve for actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived. Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$ designs four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$. Each of those four vectors then relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their associated actuator positions:
+With $\vec{\nu}\in\mathbb{R}^n,~u\in\mathbb(U)\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, allowing use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). The abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function, $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$, to solve for physical actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is yet to be derived.
+\par
+Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$. Each of those four vectors then relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their associated actuator positions:
 \begin{equation}\label{eq:4.101}
 \vec{T}_i=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes T(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)~~~~\in\mathcal{F}^b
 \end{equation}
@@ -932,9 +937,15 @@ Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\
 \end{equation}
 \end{subequations}
 Then undoing and reversing the transformation of Eq:\ref{eq:4.101}:
+\begin{subequations}
 \begin{equation}
-T(\Omega)_i=Q_{z}^*(-\sigma_i)Q_{y}^*(-\alpha_i)Q_{x}^*(-\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(-\lambda_i)Q_{y}(-\alpha_i)Q_z(-\sigma_i)~~~~\in\mathcal{F}^{M_i}
+T(\Omega_i)=Q_{z}^*(-\sigma_i)Q_{y}^*(-\alpha_i)Q_{x}^*(-\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(-\lambda_i)Q_{y}(-\alpha_i)Q_z(-\sigma_i)~~~~\in\mathcal{F}^{M_i}
 \end{equation}
+\vspace{-15pt}
+\begin{equation}
+\rightarrow T(\Omega_i)=Q_{M_i}^*\otimes \vec{T}_i \otimes Q_{M_i}
+\end{equation}
+\end{subequations}
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}
