@@ -961,19 +961,32 @@ Then undoing and reversing the transformation of Eq:\ref{eq:4.101}:
 \begin{equation}
 \rightarrow \vec{T}(\Omega_i)=Q_{M_i}^*\otimes \vec{T}_i \otimes Q_{M_i}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-Knowing only $\vec{T}(\Omega_i)$ and $\vec{T}_i$ in the motor frame and body frame respectively requires solving for a quaternion which relates the two. If both vectors are of unit length, then the following relationship can be exploited:
+\end{subequations}
+Knowing only $\vec{T}(\Omega_i)$ and $\vec{T}_i$ in the motor frame and body frame respectively requires solving for a quaternion which relates the two. If both vectors are of unit length, $\hat{T}_i$ \& $\hat{T}(\Omega_i)$; then the following relationship can be exploited:
+\begin{subequations}
 \begin{equation}
+\hat{T}_i=\frac{\vec{T}_i}{|\vec{T}_i|}=\frac{\vec{T}_i}{\sqrt{T_x^2+T_y^2+T_z^2}}~~~~\in\mathcal{F}^b
+\end{equation}
+\vspace{-6pt}
+\begin{equation}
+\hat{T}(\Omega_i)=\frac{\vec{T}(\Omega_i)}{|\vec{T}(\Omega_i)}=\frac{\vec{T}(\Omega_i)}{|C_T(J)\rho\Omega^2 D^4|}=\begin{bmatrix}
+0 & 0 & 1
+\end{bmatrix}^T~~~~\in\mathcal{F}^{M_i}
+\end{equation}
+\vspace{-6pt}
+\begin{equation}\label{eq:vector-quaternion}
 Q_{M_i}=\begin{bmatrix}
 q_0\\
 \vec{q}
 \end{bmatrix}
 =
 \begin{bmatrix}
-1+\vec{T}_i\cdot \vec{T}(\Omega_i)\\
--\vec{T}_i\times\vec{T}(\Omega_i)
+1+\hat{T}_i\cdot \hat{T}(\Omega_i)\\
+-\hat{T}_i\times\hat{T}(\Omega_i)
 \end{bmatrix}
 \end{equation}
 \end{subequations}
+Where Eq:\ref{eq:vector-quaternion} is an extension of the principle quaternion formula, Eq:\ref{eq:quaternion-product}, when applied to unit vectors. Then, noting that the transformation from the body frame to each motor frame follows the Z-Y-X sequence,
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}
