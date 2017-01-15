@@ -364,6 +364,29 @@ Second order derivatives for quaternion acceleration aren't as useful as their v
 \begin{equation}
 \ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[\mathbb{I}_b^{-1}(\tau-4(Q^*\otimes \dot{Q})\times(\mathbb{I}_b(Q^*\otimes \dot{Q}))\big]
 \end{equation}
+A Z-Y-X sequenced\footnote{Quaternions themselves are sequencing independent, the sequence here is purely for the rotation order of the Euler angles used as arguments.} body quaternion, $Q_b$, can be constructed from Euler angles as:
+\begin{equation}\label{eq:quaternion-sequence}
+Q_b=Q_z\circ Q_y\circ Qx=\begin{bmatrix}
+cos\frac{\psi}{2}\\
+0\\
+0\\
+sin\frac{\psi}{2}
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+cos\frac{\theta}{2}\\
+0\\
+sin\frac{\theta}{2}\\
+0
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+cos\frac{\phi}{2}\\
+sin\frac{\phi}{2}\\
+0\\
+0
+\end{bmatrix}
+\end{equation}
 %====================================================
 \subsection{Quaternion Unwinding}
 \label{subsec:dynamics.rigidbody.unwinding}
