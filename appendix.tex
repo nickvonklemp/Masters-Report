@@ -225,6 +225,30 @@ So then the inflow ratio can be solved as a function of the propeller element's 
 \lambda=\frac{v_i}{\Omega r} = \sqrt{\frac{C_{T0}}{2}}
 \end{equation}
 Then substituting $\lambda$ back into Eq:\ref{eq:bem-thrust} and solving the integral produces an instantaneous thrust value. The difficulty of solving the blade-element momentum integrals is knowing the exact chord profile and local angle of attack.
+\section{Euler-Angles from Quaternions}
+\label{app:equations.quaternions}
+
+
+
+ Then, noting that the transformation from the body frame to each motor frame follows the Z-Y-X sequence,and using an inversion solution adapted from \cite{computingeuler}, where the transformation to quaternions is based on Shoemake's\cite{shoemake} definition. Each quaternion can be constructed from sequenced Euler angles, as in Eq:\ref{eq:quaternion-sequence}.
+Then, solving for each euler angle using simultaneous solutions and inverse trigonometry:
+\begin{equation}\label{eq:app-quaternion-eule}
+\begin{bmatrix}
+\phi\\
+\theta\\
+\psi
+\end{bmatrix}
+=
+\begin{bmatrix}
+arctan2\big(2(q_0q_x+q_yq_z),~1-2(q_x\text{}^2+q_y\text{}^2)\big)\\
+arcsin\big(2(q_0q_y-q_xq_z)\big)\\
+arctan2\big(2(q_0q_z+q_xq_y),~1-2(q_y\text{}^2+q_z\text{}^2)\big)
+\end{bmatrix}
+\end{equation}
+Where $arctan2(x,y)$ is the four-quadrant tangent inverse\cite{atan2}, producing the principle argument of the complex operands;
+\begin{equation}
+arctan2(x,~y)=PR~arg(x+y\hat{i})=Arg(x+y\hat{i})
+\end{equation}
 %-----------------------------------------------------
 \chapter{Design Bill of Materials}
 \label{app:bom}

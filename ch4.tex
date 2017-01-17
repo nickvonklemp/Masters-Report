@@ -922,7 +922,7 @@ Most control allocation paradigms all assume a linear, multiplicative relationsh
 \end{equation}
 With $\vec{\nu}\in\mathbb{R}^n,~u\in\mathbb(U)\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, accommodating use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). That abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function, $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$, to solve for physical actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is as yet undefined.
 \par
-Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$. Each of those four vectors then relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their associated actuator positions:
+Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$. It then follows that each of those four vectors then relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their individual associated actuator positions through a quaternion transformation:
 \begin{subequations}
 \begin{equation}\label{eq:4.101}
 \vec{T}_i=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes \vec{T}(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)~~~~\in\mathcal{F}^b
@@ -942,7 +942,7 @@ C_T(J)\rho \Omega_i^2 D^4
 \end{subequations}
 Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ from Eq:\ref{eq:motor-module-rotation.a}. The thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}, in the $\hat{Z}_{M_i}$ direction. 
 \par
-Seeing that quaternion rotation operators change the reference frame but retain the magnitude of the vector operand, it follows that $T(\Omega_i)$, and by extension $\Omega_i$, can be solved as:
+Seeing that quaternion rotation (\emph{transformation}) operators change the reference frame whilst retaining the vector operand's magnitude, it follows that $T(\Omega_i)$, and by extension the propeller speed, $\Omega_i$, can be solved as:
 \begin{subequations}
 \begin{equation}
 |\vec{T}_i|=\sqrt{||[T_x~T_y~T_z]^T||}=\sqrt{T_x^2+T_y^2+T_z^2}=|T(\Omega_i)|=|C_T(J)\rho\Omega_i^2D^4|
@@ -952,7 +952,7 @@ Seeing that quaternion rotation operators change the reference frame but retain 
 \Rightarrow \Omega_i=\sqrt{\frac{|\vec{T}_i|}{C_T(J)\rho D^4}}=\sqrt{\frac{\sqrt{T_x^2+T_y^2+T_z^2}}{C_T(J)\rho D^4}}
 \end{equation}
 \end{subequations}
-Then undoing and reversing the transformation of Eq:\ref{eq:4.101}:
+Then attempting to undo and reverse the transformation from motor module to body frame in Eq:\ref{eq:4.101}:
 \begin{subequations}
 \begin{equation}
 \vec{T}(\Omega_i)=Q_{z}^*(-\sigma_i)Q_{y}^*(-\alpha_i)Q_{x}^*(-\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(-\lambda_i)Q_{y}(-\alpha_i)Q_z(-\sigma_i)~~~~\in\mathcal{F}^{M_i}
@@ -973,7 +973,7 @@ Knowing only $\vec{T}(\Omega_i)$ and $\vec{T}_i$ in the motor frame and body fra
 0 & 0 & 1
 \end{bmatrix}^T~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-\vspace{-6pt}
+\vspace{-4pt}
 \begin{equation}\label{eq:vector-quaternion}
 Q_{M_i}=\begin{bmatrix}
 q_0\\
@@ -986,7 +986,9 @@ q_0\\
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Where Eq:\ref{eq:vector-quaternion} is an extension of the principle quaternion formula, Eq:\ref{eq:quaternion-product}, when applied to unit vectors. Then, noting that the transformation from the body frame to each motor frame follows the Z-Y-X sequence,and using an inversion solution adapted from \cite{computingeuler}, where the transformation to quaternions is based on Shoemake's\cite{shoemake} definition. Each quaternion can be constructed from sequenced Euler angles, as in Eq:\ref{eq:quaternion-sequence}.
+Where Eq:\ref{eq:vector-quaternion} is an extension of the inherent quaternion definition which rotations a vector around a single Euler axis, Eq:\ref{eq:quaternion-product}, when applied to unit vectors. That quaternion can indeed be used to solve for relative pitch, roll and yaw Euler angles (Appendix:\ref{app:equations.quaternions}). The difficulty is that Eq:\ref{eq:vector-quaternion} solves for the most direct path rotation from one vector to another and, in most cases, a sequenced Z-Y-X rotation is by no means the shortest possible path.
+\par
+The associated $[\phi,~\theta,~\psi]^T$ solutions to Eq:\ref{eq:app-quaternion-eule} are then of no consequence in trying to solve for sequence of rotation angles\footnote{$\sigma_i$ is already known to be an orthogonal multiplicate\ldots} $[\lambda_i,~\alpha_i,~\sigma_i]^T$. Furthermore, when considering a sequenced Z-Y-X quaternion, no further insight can be extracted without applying cumbersome trigonometry inversions;
 \begin{subequations}
 \begin{equation}
 Q_b=\begin{bmatrix}
@@ -1010,13 +1012,14 @@ sin\frac{\phi}{2}\\
 0
 \end{bmatrix}
 \end{equation}
+\vspace{-6pt}
 \begin{equation}
 =
 \begin{bmatrix}
 cos\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}+sin\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}\\
 cos\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}-sin\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}\\
 cos\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}+sin\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}\\
-sin\frac{\phi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}-cos\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}
+sin\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}-cos\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -1031,25 +1034,133 @@ q_0\\
 \vec{q}
 \end{bmatrix}
 \end{equation}
+\begin{equation}
+\Rightarrow\vec{T}_i=
+\begin{bmatrix}
+cos\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}+sin\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}\\
+cos\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}-sin\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}\\
+cos\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}+sin\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}\\
+sin\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}-cos\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}
+\end{bmatrix}
+\otimes
+\vec{T}(\Omega_i)
+\otimes
+\begin{bmatrix}
+s\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}+c\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}\\
+s\frac{\psi}{2}s\frac{\theta}{2}c\frac{\phi}{2}-c\frac{\psi}{2}c\frac{\theta}{2}s\frac{\phi}{2}\\
+-c\frac{\psi}{2}s\frac{\theta}{2}c\frac{\phi}{2}-s\frac{\psi}{2}c\frac{\theta}{2}s\frac{\phi}{2}\\
+c\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}-s\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}
+\end{bmatrix}
+\end{equation}
 \end{subequations}
-Then, solving for each euler angle using simultaneous solutions and inverse trigonometry:
+Instead, returning to rotation matrices and reiterating that $[\phi,~\theta,~\psi]^T\Rightarrow [\lambda_i,~\alpha_i,~\sigma_i]^T$, then:
+\begin{subequations}
+\begin{equation}
+\vec{T}_i=\begin{bmatrix}
+c\sigma & -s\sigma & 0\\
+s\sigma & c\sigma & 0\\
+0 & 0 & 1 
+\end{bmatrix}
+\begin{bmatrix}
+c\alpha & 0 & s\alpha\\
+0 & 1 & 0\\
+-s\alpha & 0 & c\alpha
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0\\
+0 & c\lambda & -s\lambda\\
+0 & s\lambda & c\lambda
+\end{bmatrix}
+\end{equation}
+\vspace{-6pt}
+\begin{equation}
+\Rightarrow\vec{T}_i=\begin{bmatrix}
+c\sigma c\alpha & c\sigma s\alpha s\lambda - s\sigma c\lambda & c\sigma s\alpha c\lambda + s\sigma s\lambda\\
+s\sigma c\alpha & s\sigma s\alpha s\lambda + c\sigma c\lambda & s\sigma s\alpha c\lambda - c\sigma s\lambda\\
+-s\alpha & c\alpha s\lambda & c\alpha c\lambda
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+0\\
+T(\Omega_i)
+\end{bmatrix}
+\end{equation}
+\vspace{-6pt}
+\begin{equation}\label{eq:rotation-inverse}
+\Rightarrow
+\begin{bmatrix}
+T_x\\
+T_y\\
+T_z
+\end{bmatrix}
+=\begin{bmatrix}
+s\sigma s\lambda + c\sigma s\alpha c\lambda\\
+s\sigma s\alpha c\lambda - c\sigma s\alpha\\
+c\alpha c\lambda
+\end{bmatrix}
+T(\Omega_i)
+\end{equation}
+\end{subequations}
+When $\sigma$ is an orthogonal multiple which rotates the vector about the $\hat{Z}_b$ axis, then Eq:\ref{eq:rotation-inverse} simplifies even further:
 \begin{equation}
 \begin{bmatrix}
-\phi\\
-\theta\\
-\psi
+T_x\\
+T_y\\
+T_z
 \end{bmatrix}
 =
 \begin{bmatrix}
-arctan2\big(2(q_0q_x+q_yq_z),~1-2(q_x\text{}^2+q_y\text{}^2)\big)\\
-arcsin\big(2(q_0q_y-q_xq_z)\big)\\
-arctan2\big(2(q_0q_z+q_xq_y),~1-2(q_y\text{}^2+q_z\text{}^2)\big)
+\begin{bmatrix}
+s\alpha c\lambda\\
+-s\alpha \\
+c\alpha c\lambda
+\end{bmatrix}
+,
+\begin{bmatrix}
+s\lambda\\
+s\alpha c\lambda\\
+c\alpha c\lambda
+\end{bmatrix}
+,
+\begin{bmatrix}
+-s\alpha c\lambda\\
+s\alpha\\
+c\alpha c\lambda
+\end{bmatrix}
+,
+\begin{bmatrix}
+-s\lambda\\
+-s\alpha c\lambda\\
+c\alpha c\lambda
+\end{bmatrix}
+\end{bmatrix}T(\Omega_i)~~~\text{for}~~i\in[1,~2,~3,~4]
+\end{equation}
+Then it becomes a simple case of inverse trigonometry to solve for both $\lambda_i$ and $\alpha_i$ respectively, for the case of $i=1$, the following holds true. Using $T(\Omega_i)=||T_i||$ and $arctan2(x,y)$ for both solutions to get full quadrature results:
+\begin{subequations}
+\begin{equation}
+\alpha = -atan2(T_x,~T_z||T_i||)
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\lambda =  atan2(T_x\text{}^2,~||T_i||\sqrt{||T_i||^2-T_x^2})
+\end{equation}
+\end{subequations}
+Therefore, the secondary component of the control allocation block, $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Fig:\ref{fig:control-block} is then:
+\begin{equation}\label{eq:allocator-inersion}
+\begin{bmatrix}
+\Omega_i\\
+\lambda_i\\
+\alpha_i
+\end{bmatrix}
+=
+R^\dagger(\mathbf{x},\vec{T}_i,t)=
+\begin{bmatrix}
+\big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\big)\text{}^{\frac{1}{2}}\\
+atan2(T_x\text{}^2,~||T_i||\sqrt{||T_i||\text{}^2-T_x\text{}^2})\\
+-atan2(T_x,~T_z||T_i||)
 \end{bmatrix}
 \end{equation}
-Where $arctan2(x,y)$ is the four-quadrant tangent inverse\cite{atan2}, producing the principle argument of the complex operands;
-\begin{equation}
-arctan2(x,~y)=PR~arg(x+y\hat{i})=Arg(x+y\hat{i})
-\end{equation}
+Further simplifications could be from the definitions of each element included in Eq:\ref{eq:allocator-inersion}, but it would just be superfluous. At this stage the only remaining undefined component of the entire control block is the abstracted allocation algorithms, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$, which are now addressed\ldots
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}

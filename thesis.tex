@@ -74,6 +74,7 @@
 \usepackage{hhline}
 \usepackage{amsmath}
 \usepackage{wrapfig}
+\usepackage{tablefootnote}
 %\usepackage[all]{nowidow}
 %---------------------------------------------------------------------
 % 	PAGE FORMATTING
@@ -109,7 +110,7 @@
 }
 
 \newdateformat{mydate}{\monthname[\THEMONTH] \THEYEAR} % Month Year date
-\newcommand{\key}{Control, Allocation, Non-linear, Quadrotor UAV}					   % Keywords (add logical keywords)
+\newcommand{\key}{Non-linear, control, allocation, quadrotor, UAV}					   % Keywords (add logical keywords)
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 %---------------------------------------------------------------------
 %	MACROS
@@ -343,7 +344,7 @@ The structure of the dissertation first presents the design which the subsequent
 \par
 The purpose of the investigation is the practicality and feasibility of such a design, most importantly whether the complexity of the mechanical design is a decent compromise for the added degrees of control actuation. The outcome of the build is to ascertain if it's economically feasible (cost and controller effort) to use such a prototype to expand the range of a quadrotor's motion. The design and control treatment presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the system as a whole and not just one aspect of it.
 \par
-\emph{This dissertation report is presented in a logical progression of concepts and information. In some cases the research and results were completed in a different order from how they're listed.}
+\emph{This dissertation report is presented in a logical progression of concepts and information. In some cases the research and results were completed in a different order from how they're listed here\ldots}
 %---------------------------------------------------------------------
 %	Acknowledgements
 %---------------------------------------------------------------------
@@ -359,38 +360,40 @@ The purpose of the investigation is the practicality and feasibility of such a d
 \chapter{Nomenclature}
 \label{ch:nom}
 %---------------------------------------------------------------------
+\underline{In order of appearance:}
+\par
 DOF - Degree of Freedom(s)\\
 $\mu$C - micro-controller\\
-UAV - Unmanned Aerial Vehicle\\
-MAV - Manned Aerial Vehicle\\
-SISO - Single Input Single Output\\
-MEMS - Microelectromechanical Systems\\
-DIY - Do It Yourself\\
-BLDC - Brushless Direct Current\\
-VTOL - Vetical Takeoff/Landing\\
-OAT - Opposed Active Tilting\\
-dOAT - Dual axist Opposed Active Tilting\\
-PI - Proportional Integral, control strucutre\\
-PD - Proportional Derivative, control structure\\
-PID - Proportional Integral Derivative, control structure\\
-IBC - Ideal Backstepping Control\\
-ABC - Adaptive Backstepping Control\\
-LQR - Linear Quadratic Regulator\\
-LCF - Lyupanov Candidate Function\\
-PSO - Particle Swarm Optimization\\
-ITAE - Integral Time Addative Error\\
-BEM - Blade-Element Momentum\\
-ESC - Electronic Speed Controller\\
-RC - Radio Control\\
-CH - Channel\\
+UAV - Unmanned aerial vehicle\\
+SISO - Single input single output, control loop\\
+MEMS - Micro-electromechanical system\\
+DIY - Do it yourself\\
+VTOL - Vertical takeoff/landing\\
 IMU - Inertial measurement unit\\
-MPC - Model Predictive Control\\
+BLDC - Brushless direct current, motor type\\
+KV - Kilo-volt, BLDC motor rating\\
+$\mu$C - Micro-controller shorthand\\
+PWM - Pulse width modulation\\
+CH - Channel, radio control \& PWM signals typically\\
+RC - Radio control\\
+OAT - Opposed active tilting\\
+dOAT - Dual axis opposed active tilting\\
+PD - Proportional derivative, control law\\
+PID - Proportional integral derivative, control law\\
+IBC - Ideal backstepping control\\
+ABC - Adaptive backstepping control\\
+PSO - Particle swarm optimization, gradient free genetic algorithm\\
+BEM - Blade element theory\\
+ESC - Electronic speed controller\\
+MPC - Model predictive control\\
+LQR - Linear quadratic regulator\\
+LCF - Lyupanov candidate function\\
+ITAE - Integral time additive error\\
 TSK - Takagi-Sugeno-kang\\
 I/O - Input/Output\\
 RPM - Revolution Per Minute\\
 RPS - Revolution Per Second\\
 W.R.T - With respect to\\
-PWM - Pulse Width Modulation\\
 LCF - Lyupanov Candidate Function\\
 \emph{iff} - If and only if\\
 P.D - Positive definite, NOT proportional derivative\\
@@ -402,25 +405,39 @@ S.T - such that
 \chapter{Symbols}
 \label{ch:symbol}
 %---------------------------------------------------------------------
-Propeller Rotational Speed: $\Omega_i~~[rpm]$
+Propeller Rotational Speed: $\Omega_i~~[rpm]~~\text{for motors:}~~i\in\begin{bmatrix}
+1,&2,&3,&4
+\end{bmatrix}$
 \\
-\emph{\color{Gray} Rotational speed in RPS is used for Blade Element Theory Calculations in Chapter:\ref{ch:dynamics}}
+\emph{\color{Gray} Rotational speeds in [RPS] are used for Blade Element Theory Calculations in Chapter:\ref{ch:dynamics}}
+\\
+Net body torque: $\mu\vec{\tau}=\begin{bmatrix}
+\tau_\phi & \tau_\theta & \tau_\psi
+\end{bmatrix}\text{}^T~~~~\in\mathcal{F}^b$
+\\
+Net body thrust: $\mu\vec{T}=\begin{bmatrix}
+T_x & T_y & T_z
+\end{bmatrix}\text{}^T~~~~\in\mathcal{F}^b$
+\\
+Body Position: $\vec{\mathcal{E}}=\begin{bmatrix}
+x & y & z
+\end{bmatrix}^T~~~~\in\mathcal{F}^I$
+\\
+Euler Angles: $\vec{\mathcal{E}}=\begin{bmatrix}
+\phi & \theta & \psi
+\end{bmatrix}^T~~~~\in\mathcal{F}^{I,v1,b}$
 \\
 Servo 1 Position: $\lambda_i~~[rad]$
 \\
 Servo 2 Position: $\alpha_i~~[rad]$
 \\
-Inertial Position: $\vec{P}=\begin{bmatrix}
-X_I & Y_I & Z_I
-\end{bmatrix}^T~\in\mathcal{F}^I$
+Motor module actuator positions: $\begin{bmatrix}
+\Omega_i & \lambda_i & \alpha_i
+\end{bmatrix}^T~~~~\in\mathcal{F}^{M_i}$
 \\
-Body Position: $\vec{E}=\begin{bmatrix}
-x & y & z
-\end{bmatrix}^T~\in\mathcal{F}^b$
-\\
-Euler Angles: $\vec{\mathcal{E}}=\begin{bmatrix}
-\phi & \theta & \psi
-\end{bmatrix}^T$
+Actuator matrix: $u=\begin{bmatrix}
+M_1 & \ldots & M_4
+\end{bmatrix}~~~~\in\mathbb{U}^{12}$
 \\
 Euler Rates: $\frac{d}{dt}\vec{\eta}=\dot{\vec{\eta}}=\Phi(\eta)\dot{\omega}_b$
 \\
