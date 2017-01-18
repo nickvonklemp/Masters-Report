@@ -14,72 +14,72 @@
 \contentsline {section}{\numberline {1.2}Literature Review}{6}{section.1.2}
 \contentsline {subsection}{\numberline {1.2.1}Existing \& Related Work}{6}{subsection.1.2.1}
 \contentsline {subsection}{\numberline {1.2.2}Notable Quadrotor Control Implementations}{9}{subsection.1.2.2}
-\contentsline {chapter}{\numberline {2}Prototype Design}{13}{chapter.2}
-\contentsline {section}{\numberline {2.1}Design}{13}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Actuation Functionality}{14}{subsection.2.1.1}
-\contentsline {section}{\numberline {2.2}Conventions Used}{16}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Reference Frames Convention}{16}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Motor Axis Layout}{19}{subsection.2.2.2}
-\contentsline {section}{\numberline {2.3}Inertial Matrices \& Masses}{21}{section.2.3}
-\contentsline {section}{\numberline {2.4}Electronics}{26}{section.2.4}
-\contentsline {subsection}{\numberline {2.4.1}Actuator Transfer Functions}{30}{subsection.2.4.1}
-\contentsline {chapter}{\numberline {3}Kinematics \& Dynamics}{33}{chapter.3}
-\contentsline {section}{\numberline {3.1}Rigid Body Dynamics}{33}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Lagrange Derivation}{33}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}Rotation Matrix Singularity}{36}{subsection.3.1.2}
-\contentsline {subsection}{\numberline {3.1.3}Quaternion Dynamics}{37}{subsection.3.1.3}
-\contentsline {subsection}{\numberline {3.1.4}Quaternion Unwinding}{38}{subsection.3.1.4}
-\contentsline {section}{\numberline {3.2}Multibody Nonlinearities}{39}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Relative Rotational Gyroscopic \& Inertial Torques}{40}{subsection.3.2.1}
-\contentsline {section}{\numberline {3.3}Aerodynamics}{42}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}Propeller Torque and Thrust}{42}{subsection.3.3.1}
-\contentsline {subsection}{\numberline {3.3.2}Hinged Propeller Conning \& Flapping}{46}{subsection.3.3.2}
-\contentsline {subsection}{\numberline {3.3.3}Drag}{48}{subsection.3.3.3}
-\contentsline {section}{\numberline {3.4}Consolidated Model}{48}{section.3.4}
-\contentsline {chapter}{\numberline {4}Controller Development}{50}{chapter.4}
-\contentsline {section}{\numberline {4.1}Control Loop}{50}{section.4.1}
-\contentsline {section}{\numberline {4.2}Control Plant Inputs}{51}{section.4.2}
-\contentsline {section}{\numberline {4.3}Lyapunov Stability Theorem}{53}{section.4.3}
-\contentsline {section}{\numberline {4.4}Attitude Control}{54}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}The Attitude Control Problem}{54}{subsection.4.4.1}
-\contentsline {subsection}{\numberline {4.4.2}Linear Controllers}{54}{subsection.4.4.2}
-\contentsline {subsubsection}{PD Controller}{54}{subsection.4.4.2}
-\contentsline {subsubsection}{Auxiliary Plant Controller}{56}{equation.4.4.29}
-\contentsline {subsubsection}{PID Controller}{58}{equation.4.4.46}
-\contentsline {subsection}{\numberline {4.4.3}Non-linear Controllers}{59}{subsection.4.4.3}
-\contentsline {subsubsection}{Ideal Backstepping Controller}{59}{subsection.4.4.3}
-\contentsline {subsubsection}{Adaptive Backstepping Controller}{61}{equation.4.4.2}
-\contentsline {section}{\numberline {4.5}Position Control}{62}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}PD Controller}{63}{subsection.4.5.1}
-\contentsline {subsection}{\numberline {4.5.2}Adaptive Backstepping Controller}{64}{subsection.4.5.2}
-\contentsline {section}{\numberline {4.6}Controller Allocation}{66}{section.4.6}
-\contentsline {subsection}{\numberline {4.6.1}Pseudo Inverse Allocator}{68}{subsection.4.6.1}
-\contentsline {subsection}{\numberline {4.6.2}Weighted Pseudo Inverse Allocator}{68}{subsection.4.6.2}
-\contentsline {subsection}{\numberline {4.6.3}Priority Norm Inverse Allocator}{68}{subsection.4.6.3}
-\contentsline {subsection}{\numberline {4.6.4}Non-linear Plant Control Allocation}{68}{subsection.4.6.4}
-\contentsline {subsection}{\numberline {4.6.5}Online Optimized Secondary Goal Allocator}{68}{subsection.4.6.5}
-\contentsline {chapter}{\numberline {5}Simulations \& Results}{69}{chapter.5}
-\contentsline {section}{\numberline {5.1}Controller Tuning}{69}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{69}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{69}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{69}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{69}{subsection.5.1.4}
-\contentsline {section}{\numberline {5.2}Simulation Block}{69}{section.5.2}
-\contentsline {section}{\numberline {5.3}State Estimation}{69}{section.5.3}
-\contentsline {section}{\numberline {5.4}Optimized Controller Comparisons}{69}{section.5.4}
-\contentsline {subsection}{\numberline {5.4.1}Allocator Performance}{69}{subsection.5.4.1}
-\contentsline {subsection}{\numberline {5.4.2}Attitude Control Results}{69}{subsection.5.4.2}
-\contentsline {subsection}{\numberline {5.4.3}Autopilot Outcome}{69}{subsection.5.4.3}
-\contentsline {chapter}{\numberline {6}Prototype Flight Results}{70}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{71}{chapter.7}
-\contentsline {chapter}{\numberline {A}Expanded Equations}{72}{appendix.A}
-\contentsline {section}{\numberline {A.1}Standard Quadrotor Dynamics}{72}{section.A.1}
-\contentsline {section}{\numberline {A.2}Blade-Element Momentum Expansion}{74}{section.A.2}
-\contentsline {section}{\numberline {A.3}Euler-Angles from Quaternions}{74}{section.A.3}
-\contentsline {chapter}{\numberline {B}Design Bill of Materials}{75}{appendix.B}
-\contentsline {section}{\numberline {B.1}Parts List}{75}{section.B.1}
-\contentsline {section}{\numberline {B.2}F3 Deluxe Schematic Diagram}{80}{section.B.2}
-\contentsline {chapter}{\numberline {C}System ID Test Data}{81}{appendix.C}
-\contentsline {section}{\numberline {C.1}Thrust and Torque Test Data}{81}{section.C.1}
-\contentsline {section}{\numberline {C.2}Cobra CM2208-200KV Thrust Data}{82}{section.C.2}
-\contentsline {chapter}{\numberline {D}Inertias}{83}{appendix.D}
+\contentsline {chapter}{\numberline {2}Prototype Design}{14}{chapter.2}
+\contentsline {section}{\numberline {2.1}Design}{14}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Actuation Functionality}{15}{subsection.2.1.1}
+\contentsline {section}{\numberline {2.2}Conventions Used}{17}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Reference Frames Convention}{17}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Motor Axis Layout}{20}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Inertial Matrices \& Masses}{22}{section.2.3}
+\contentsline {section}{\numberline {2.4}Electronics}{27}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Actuator Transfer Functions}{31}{subsection.2.4.1}
+\contentsline {chapter}{\numberline {3}Kinematics \& Dynamics}{35}{chapter.3}
+\contentsline {section}{\numberline {3.1}Rigid Body Dynamics}{35}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Lagrange Derivation}{35}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Rotation Matrix Singularity}{38}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Quaternion Dynamics}{39}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Quaternion Unwinding}{40}{subsection.3.1.4}
+\contentsline {section}{\numberline {3.2}Multibody Nonlinearities}{41}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Relative Rotational Gyroscopic \& Inertial Torques}{42}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.3}Aerodynamics}{44}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Propeller Torque and Thrust}{44}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Hinged Propeller Conning \& Flapping}{48}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Drag}{50}{subsection.3.3.3}
+\contentsline {section}{\numberline {3.4}Consolidated Model}{50}{section.3.4}
+\contentsline {chapter}{\numberline {4}Controller Development}{52}{chapter.4}
+\contentsline {section}{\numberline {4.1}Control Loop}{52}{section.4.1}
+\contentsline {section}{\numberline {4.2}Control Plant Inputs}{53}{section.4.2}
+\contentsline {section}{\numberline {4.3}Lyapunov Stability Theorem}{55}{section.4.3}
+\contentsline {section}{\numberline {4.4}Attitude Control}{56}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}The Attitude Control Problem}{56}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Linear Controllers}{56}{subsection.4.4.2}
+\contentsline {subsubsection}{PD Controller}{56}{subsection.4.4.2}
+\contentsline {subsubsection}{Auxiliary Plant Controller}{58}{equation.4.4.29}
+\contentsline {subsubsection}{PID Controller}{60}{equation.4.4.46}
+\contentsline {subsection}{\numberline {4.4.3}Non-linear Controllers}{61}{subsection.4.4.3}
+\contentsline {subsubsection}{Ideal Backstepping Controller}{61}{subsection.4.4.3}
+\contentsline {subsubsection}{Adaptive Backstepping Controller}{63}{equation.4.4.2}
+\contentsline {section}{\numberline {4.5}Position Control}{64}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}PD Controller}{65}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Adaptive Backstepping Controller}{66}{subsection.4.5.2}
+\contentsline {section}{\numberline {4.6}Controller Allocation}{68}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}Pseudo Inverse Allocator}{70}{subsection.4.6.1}
+\contentsline {subsection}{\numberline {4.6.2}Weighted Pseudo Inverse Allocator}{70}{subsection.4.6.2}
+\contentsline {subsection}{\numberline {4.6.3}Priority Norm Inverse Allocator}{70}{subsection.4.6.3}
+\contentsline {subsection}{\numberline {4.6.4}Non-linear Plant Control Allocation}{70}{subsection.4.6.4}
+\contentsline {subsection}{\numberline {4.6.5}Online Optimized Secondary Goal Allocator}{70}{subsection.4.6.5}
+\contentsline {chapter}{\numberline {5}Simulations \& Results}{71}{chapter.5}
+\contentsline {section}{\numberline {5.1}Controller Tuning}{71}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{71}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{71}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{71}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{71}{subsection.5.1.4}
+\contentsline {section}{\numberline {5.2}Simulation Block}{71}{section.5.2}
+\contentsline {section}{\numberline {5.3}State Estimation}{71}{section.5.3}
+\contentsline {section}{\numberline {5.4}Optimized Controller Comparisons}{71}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Allocator Performance}{71}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Attitude Control Results}{71}{subsection.5.4.2}
+\contentsline {subsection}{\numberline {5.4.3}Autopilot Outcome}{71}{subsection.5.4.3}
+\contentsline {chapter}{\numberline {6}Prototype Flight Results}{72}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{73}{chapter.7}
+\contentsline {chapter}{\numberline {A}Expanded Equations}{74}{appendix.A}
+\contentsline {section}{\numberline {A.1}Standard Quadrotor Dynamics}{74}{section.A.1}
+\contentsline {section}{\numberline {A.2}Blade-Element Momentum Expansion}{76}{section.A.2}
+\contentsline {section}{\numberline {A.3}Euler-Angles from Quaternions}{76}{section.A.3}
+\contentsline {chapter}{\numberline {B}Design Bill of Materials}{77}{appendix.B}
+\contentsline {section}{\numberline {B.1}Parts List}{77}{section.B.1}
+\contentsline {section}{\numberline {B.2}F3 Deluxe Schematic Diagram}{82}{section.B.2}
+\contentsline {chapter}{\numberline {C}System ID Test Data}{83}{appendix.C}
+\contentsline {section}{\numberline {C.1}Thrust and Torque Test Data}{83}{section.C.1}
+\contentsline {section}{\numberline {C.2}Cobra CM2208-200KV Thrust Data}{84}{section.C.2}
+\contentsline {chapter}{\numberline {D}Inertias}{85}{appendix.D}
