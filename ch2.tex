@@ -642,7 +642,9 @@ The embedded system is constructed around an ARM STM32F303\cite{stm32f303} based
 Two separate wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1}, connected via USART. Secondly, an augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded into a single proprietary S.BUS data stream (Fig:\ref{fig:ppm-sbus}). 
 \end{minipage}
 \par
-The need for an S.BUS encoder\cite{sbusencoder} comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer I/O channels which can be dedicated to input capture of those RC channels. Encoding the received data to a serial communication protocol means the 6CH data can be processed on a single serial RX line. The S.Bus encoder implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the standard's following parameters:
+The need for an S.BUS encoder\cite{sbusencoder} comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer I/O channels which can be dedicated to input capture of those RC channels. 
+\par
+Encoding the received data to a serial communication protocol means the 6CH data can be processed on a single serial RX line. The S.Bus encoder implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the standard's following parameters:
 \par
 \begin{tabularx}{\textwidth}{X X}
 \begin{minipage}{\textwidth}
@@ -837,7 +839,7 @@ However, in Fig:\ref{fig:servo-middle-character}, the response for a servo drivi
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=0.98\textwidth]{figs/servo-middle}
-\caption{Middle ring servo rig}
+\caption{Middle ring servo test rig}
 \label{fig:servo-middle}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
