@@ -561,7 +561,7 @@ The torque response equations where tested using the rig in Fig:\ref{fig:torque-
 \vspace{-10pt}
 \end{figure}
 \par
-\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
+\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
@@ -787,7 +787,7 @@ Conversely the recorded torque results, plotted in Fig:\ref{fig:torque-plot}, we
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
 %====================================================
-Other non-linear effects which deteriorate a propeller's performance have been well documented in the helicopter aerodynamic and propeller fields. Typically such affects are more pronounced when observing hinged variable pitch \footnote{Twisted fixed pitched propellers are used on the prototype here and as such effects detailed in Section:\ref{subsec:dynamics.aero.flap} are diminished. Moreover, low translational velocities suppress such responses but they're worth mentioning.} propellers. Conning and flapping are the two most significant aerodynamic responses produced by a propeller. Other phenomenon like cyclic vortex ring states aren't applicable here and fall outside the scope of the investigation. 
+Other non-linear effects which deteriorate a propeller's performance have all been well documented in the helicopter aerodynamic and propeller fields\cite{basichelicopter,bramwell}. Typically such affects are more pronounced when observing hinged variable pitch \footnote{Twisted, fixed pitched propellers are used on the prototype here and as such effects detailed in Sec:\ref{subsec:dynamics.aero.flap} are diminished. Moreover, low translational velocities suppress such responses but they're worth mentioning.} propellers. Conning and flapping are the two most significant aerodynamic responses produced by a propeller. Other phenomenon like cyclic vortex ring states aren't applicable here and fall outside the scope of the investigation. 
 \par
 \begin{figure}[htbp]
 \centering
@@ -795,9 +795,11 @@ Other non-linear effects which deteriorate a propeller's performance have been w
 \caption{Propeller blade flapping}
 \label{fig:prop-flap}
 \end{figure}
-In translational flight for an unducted propeller each blade encounters varying incident fluid flow. The advancing blade, relative to the body's translational direction, encounters a greater fluid flow than the retreating blade. The resultant is that the effective local angle(s) of attack for the two, or more, blades aren't symmetrical. There then exists a dissymmetry of lift across the propeller's surface. As such, throughout each rotational cycle the blade is forced up and down, applying a torque about the propeller's hub. The extent of that deflection is dependent on the body's net translational velocity. The flapping then pitches the effective propeller plane, and hence the thrust vector, away from its principle axis, Fig:\ref{fig:prop-flap}\footnote{Diagram cited from Hoffman et al.(2007)\cite{starmac}}.
+In translational flight for an unducted propeller each blade encounters varying incident fluid flow. The advancing blade, relative to the body's translational direction, encounters a greater fluid flow than the retreating blade. The result is that the effective local angle(s) of attack for the opposing advancing and retreating propeller blades aren't symmetrical. The unbalanced angles of attack produce a dissymmetry of lift across the propeller's surface.
 \par
-The resulting effect is that the propeller's thrust vector is pitched marginally away from an ideal perpendicular vector by some deflection angle. The phenomenon is diminished at low translational velocities and as such, isn't applicable to the range of flight envelopes which the prototype for this project will experience.
+Throughout each rotation the blade is forced up and down as it cycles through varying fluid flows, applying a torque about the propeller's hub. The extent of that torque is dependent on the body's net translational velocity and the propeller material's suceptibility to deflection. The flapping pitches the effective propeller plane (\emph{tip-path plane}), and hence the thrust vector line, away from its principle axis, Fig:\ref{fig:prop-flap}\footnote{Diagram adapted from Hoffman et al.(2007)\cite{starmac}}.
+\par
+The overall net effect is that the propeller's thrust vector is pitched marginally away from an ideal perpendicular vector by some deflection angle. The phenomenon is diminished at low translational velocities and as such, isn't applicable to the range of flight envelopes which the prototype for this project will experience.
 \par
 \begin{figure}[hbtp]
 \centering
@@ -805,15 +807,15 @@ The resulting effect is that the propeller's thrust vector is pitched marginally
 \caption{Propeller coning}
 \label{fig:prop-coning}
 \end{figure}
-Coning (Fig:\ref{fig:prop-coning}) is another form of propeller deflection which, dependent on the blades stiffness properties, causes the propeller blades (advancing and retreating) to both deflect upward. Loading on the propeller surface and supporting a body's weight causes the upward deflection. Coning reduces the effective propeller's disc area, adversely affecting thrust produced. Increased loading accentuates the coning angle experienced by the propellers and as such alters the tip-path-plane.
+Coning (illustrated in Fig:\ref{fig:prop-coning}) is another form of propeller deflection, which is again dependent on the blades stiffness properties, causes the propeller blades (advancing and retreating) to both deflect upward. Loading on the propeller surface and supporting a body's weight causes the upward deflection. The coning reduces the effective propeller disc's radius, adversely affecting thrust produced, Eq:\ref{eq:bem-thrust}. Increased loading accentuates the coning angle experienced by the propellers and as such alters the tip-path-plane.
 \par
-Both aerodynamic effects can be quantified numerically. Their derivation and resultant equations are cumbersome however. In due course their effect on the produced prototype which this project investigates isn't significant enough to produce instability if neglected. The frame could potentially be affected in more adverse ways given certain flight conditions with high transient velocities\ldots
+Both aerodynamic induced propeller deflection effects can be quantified numerically. Their derivation and resultant equations are cumbersome however. In due course their effect on the produced prototype which this project investigates isn't significant enough to produce instability if neglected. The frame could potentially be affected in more adverse ways given certain flight conditions with higher translational velocities or incident wind \& fluid flow disturbances\ldots
 %====================================================
 \subsection{Drag}
 \label{subsec:dynamics.aero.drag}
 %====================================================
-For any solid body with some translational velocity motion within a fluid, there is a first order damping response opposing translational velocity. The net drag, $\vec{D}_{net}$, although locally dependent on individual component cross-sections can be abstracted to a drag coefficient matrix representing the whole body.
-\begin{equation}
+For any solid body with some translational velocity motion within a fluid, there is a first order damping response opposing translational velocity. The net drag force, $\vec{D}_{net}$, although locally dependent on individual component cross-sections can be abstracted to a drag coefficient matrix representing the whole body.
+\begin{equation}\label{eq:distrubance}
 \vec{D}_{net}(\vec{v})=\begin{bmatrix}
 A_{xx} & A_{xy} & A_{xz}\\
 B_{yx} & B_{yy} & A_{yz}\\
@@ -827,29 +829,32 @@ w
 ~~~~\in\mathcal{F}^b
 \end{equation}
 \par
-The drag coefficients, $A,B~\&~C$, are determined by the frames cross-sectional areas in the direction of each axis. Given a well designed \& symmetrical frame, it can be assumed the off-diagonal elements aren't of consequence and as such the drag equation can be simplified to:
+The drag coefficients, $A,B~\&~C$, are determined by the frames directional cross-section areas for each $\hat{X}_b,\hat{Y}_b,\hat{Z}_b$ axis. Given a well designed \& symmetrical frame, it can be assumed the off-diagonal elements aren't of consequence and as such the drag equation can be simplified to:
 \begin{equation}
 \vec{D}_{net}(\vec{v})\approx diag\big(A_{xx}~B_{yy}~C_{zz}\big)\vec{v}~~~~\in\mathcal{F}^b
 \end{equation}
-Without access to wind tunnel testing, the drag coefficients are difficult to ascertain empirically. As such the drag effects are relegated to the lumped disturbance \& uncertainty term, Section:\ref{subsubsec:control.attitude.nonlinear.backstep}. Analogous drag-like opposing effects to angular rotation rates do exist but, for the intents and purposes of most practical flight envelopes, can be disregarded.
+Without access to wind tunnel test facilities, the drag coefficients are difficult to empirically ascertain with a relative degree of certainty. As such the drag effects are relegated to the lumped disturbance \& uncertainty term(s) to be adpatively compensated for, Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. Analogous drag-like opposing effects to angular rotation rates do exist but, for the intents and purposes of most practical flight envelopes, can be disregarded.
+\par
+In simulation; if the plant has sufficient disturbance rejection then a first order drag term in Eq:\ref{eq:distrubance} would be easily accounted for by the adaptive backstepping algorithm. It would be easy to physically test for the disturbance coefficients given further investigation on the prototype frame but, given the flight envelope for this research, is outside the scope of investigation here\ldots
 %====================================================
 \section{Consolidated Model}
-\label{sec:dynamics.model}%====================================================
-Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial \& gyroscopic responses to induced perturbations, $\tau_\lambda$ and $\tau_\alpha$ from Eq:\ref{eq:torque-induced-inner} \& Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $\mathbb{I}_b(u)$ from Section:\ref{sec:proto.inertia}. Finally replacing net \emph{virtual} plant inputs\footnote{Exact actuator relationships are explored in Section:\ref{sec:control.inputs}}, $\mu \vec{\tau}$ and $\mu \vec{F}$, with higher fidelity thrust models; produces the following set of state differentials used for control plant development \ldots
+\label{sec:dynamics.model}
+%====================================================
+Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial \& gyroscopic responses to induced perturbations, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha$ from Eq:\ref{eq:torque-induced-inner} \& Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $\mathbb{I}_b(u)$ from Section:\ref{sec:proto.inertia}. Finally replacing net \emph{virtual} plant inputs\footnote{Exact actuator relationships are explored in Section:\ref{sec:control.inputs}}, $\mu \vec{\tau}$ and $\mu \vec{F}$, with higher fidelity thrust models; produces the following set of state differentials used for control plant development \ldots
 \\
 \begin{subequations}\label{eq:quaternion-states}
 \begin{equation}\label{eq:quaternion-states-velocity}
-\dot{\mathcal{E}}=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~\in\mathcal{F}^I
+\dot{\mathcal{E}}=Q_b\otimes^*\vec{v}_b\otimes Q_b~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:quaternion-states-acceleration}
-\dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b^*\otimes m\vec{G}\otimes Q_b-\vec{D}_{net}(\vec{v}_b)+\mu\vec{F}(u)\big)~~~~\in\mathcal{F}^b
+\dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b\otimes m\vec{G}_I\otimes Q_b^*-\vec{D}_{net}(\vec{v}_b)+\mu\vec{F}(u)\big)~~~~\in\mathcal{F}^b
 \end{equation}
-\vspace{-10pt}
+\vspace{-8pt}
 \begin{equation}\label{eq:quaternion-states-quaternion}
 \dot{Q}_b=\frac{1}{2}Q_b\otimes \vec{\omega}_b ~~~~\in\mathcal{F}^I
 \end{equation}
-\vspace{-10pt}
+\vspace{-8pt}
 \begin{equation}\label{eq:quaternion-states-angular}
 \dot{\vec{\omega}}_b=\mathbb{I}_b(u)^{-1}\big(-\vec{\omega}_b \times \mathbb{I}_b(u)\vec{\omega}_b+\vec{\tau}_Q(u)+\vec{\tau}_g(u)+\sum \vec{Q}(\Omega,\lambda,\alpha)+\mu\vec{\tau}(u)\big)~~~~\in\mathcal{F}^b
 \end{equation}
@@ -858,29 +863,27 @@ Reiterating the different aspects detailed above and consolidating the state equ
 u=\big[\Omega_1^+,~\lambda_1,~\alpha_1,~\ldots~\Omega_4^-,~\lambda_4,~\alpha_4 \big]~\in\mathbb{U}
 \end{equation}
 \end{subequations}
-With net thrust and torque plant inputs, $\mu\vec{F}$ \& $\mu\vec{\tau}$ respectively. Both are later abstracted to virtual control inputs next in Chapter:\ref{ch:control}, (\emph{individual motor number subscripts, $i\in[1:4]$, are implied}).
+With net thrust and torque plant control inputs, $\mu\vec{F}$ \& $\mu\vec{\tau}$ respectively. Both are later abstracted to virtual control inputs next in Chapter:\ref{ch:control}, (\emph{individual motor number subscripts, $i\in[1:4]$, are implied}).
 \begin{subequations}\label{eq:quaternion-inputs}
 \begin{equation}
 \mu\vec{F}(u)=\sum \vec{T}(\Omega,\lambda,\alpha)=\sum Q_{M_i}^*\otimes T(\Omega)\otimes Q_{M_i}~~~~\in\mathcal{F}^b
 \end{equation}
-\vspace{-10pt}
+\vspace{-6pt}
 \begin{equation}
 \mu\vec{\tau}(u)=\sum \vec{l}\times\vec{T}(\Omega,\lambda,\alpha)=\sum \vec{l}\times\big(Q_{M_i}^*\otimes T(\Omega)\otimes Q_{M_i}\big)~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-The scalar thrust $T(\Omega)$ is a function of the propellers rotational velocity however $\vec{T}(\Omega,\lambda,\alpha)$ is a 3 dimensional thrust vector, redirected in the inverse of Eq:\ref{eq:motor-module-rotation.a} and transformed to the body frame $\mathcal{F}^b$. Equivalently $Q(\Omega)$\footnote{Disambiguation: $Q(\Omega)$ here is a torque, not a quaternion.} is the scalar aerodynamic torque term in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}$-axis. 
-\par
-$\vec{Q}(\Omega,\lambda,\alpha)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic propeller torque\footnote{Torque dependent on the power term calculated from Eq:\ref{eq:element-power}} terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
+The scalar thrust $T(\Omega)$ is a function of the propellers rotational velocity however $\vec{T}(\Omega,\lambda,\alpha)$ is a 3 dimensional thrust vector, redirected in the analogue of Eq:\ref{eq:motor-module-rotation.a} and transformed to the body frame $\mathcal{F}^b$. Equivalently $Q(\Omega)$\footnote{Disambiguation: $Q(\Omega)$ here is a torque, not a quaternion.} is the scalar aerodynamic torque term in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}$-axis, $\vec{Q}(\Omega,\lambda,\alpha)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic propeller torque\footnote{Torque dependent on the power term calculated from Eq:\ref{eq:element-power}} terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
 \begin{subequations}
 \begin{equation}\label{eq:aerodynamic-thrust}
 T(\Omega)= C_T(J)\rho\Omega^2D^4
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:aerodynamic-torque}
-Q(\Omega)= C_P(J)\rho\Omega^3D^5 \frac{1}{2\Omega}
+Q(\Omega)= C_P(J)\rho\Omega^3D^5 \frac{1}{R\Omega}
 \end{equation}
 \end{subequations}
-Inertial torque responses from actuator input rates (\emph{in feedback\footnote{Those response terms are used later as higher order inputs rather than terms to be compensated for.} configuration here}) from Eq:\ref{eq:torque-response};
+Inertial torque responses from actuator input rates (\emph{in feedback\footnote{Response terms are used later as secondary actuator inputs in feedforward configuration rather than feedback terms to be compensated for.} configuration here}) from Eq:\ref{eq:torque-response};
 \begin{equation}
 \tau_Q(u)=\sum_{i=1}^4 -Q_{M_i}\otimes \tau_{\lambda_i}(u)\otimes Q_{M_i}^*-Q_{M_i'}\otimes \tau_{\alpha_i}(u) \otimes Q_{M_i'}^*~~~\in\mathcal{F}^b
 \end{equation}
@@ -892,4 +895,4 @@ Finally, the body's net inertial tensor, taken from Eq:\ref{eq:body-net} is give
 \begin{equation}
 \underset{u\in\mathbb{U}}{\mathbb{I}_b(u)}=\mathbb{I}_{body}+\sum_{i=1}^{4} \mathbb{M}_{inner}+\sum_{i=1}^{4} \mathbb{M}_{middle}
 \end{equation}
-It is possible to bundle both attitude states (either euler angles $\vec{\eta}$ or quaternions $Q_b$) together with the linear translational position $\mathcal{E}$ into a single state vector $\mathbf{X}$. Which is then has its own combined control law. This could potentially exploiting the cross-product coupling terms between angular and linear displacements. 
+It is possible to bundle both attitude states (either euler angles $\vec{\eta}$ or quaternions $Q_b$) together with the linear translational position $\mathcal{E}$ into a single state vector $\mathbf{x}$. Which then has its own combined control law. This could potentially exploit the cross-product coupling terms between angular and linear displacements for control benefits.
