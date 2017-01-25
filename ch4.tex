@@ -788,7 +788,7 @@ Transforming that error, $z_1$, to the body frame $\mathcal{F}^b$, in the same w
 \therefore \dot{\hat{z}}_1=Q_b^*\otimes\dot{z}_1\otimes Q_b = Q_b^*\otimes\big(\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b\big)\otimes Q_b = -\vec{v}_b
 \end{equation}
 \end{subequations}
-Then proposing the first positive definite LCF $V_1$ in terms of that tracking error:
+Then proposing the first positive definite LCF, $V_1(\hat{z}_1)$, in terms of that tracking error:
 \par
 \vspace{-12pt}
 \begin{subequations}
@@ -800,7 +800,7 @@ V_1(\hat{z}_1)=\frac{1}{2}\hat{z}_1\text{}^{T}\hat{z}_1
 \Rightarrow\dot{V}_1=\hat{z}_1\text{}^T\dot{\hat{z}}_1=-\hat{z}_1\text{}^T\vec{v}_b
 \end{equation}
 \end{subequations}
-Then the first stabilizing velocity function\footnote{Using $\Omega_d$ to differentiate from $\vec{v}_d$ which would otherwise be the translational velocity produced from the desired trajectory\ldots}, $\Omega_d$, and its associated error, $\hat{z}_2$, can be defined as:
+The first stabilizing velocity function\footnote{Using $\Omega_d$ to differentiate from $\vec{v}_d$ which would otherwise be the translational velocity produced from the desired trajectory\ldots}, $\Omega_d$, and its associated error, $\hat{z}_2$, can be defined as:
 \begin{subequations}
 \begin{equation}
 \vec{v}_b\Rightarrow\Omega_d = \Gamma_1 \hat{z}_1
@@ -824,7 +824,7 @@ So that second error state $\hat{z}_2$ has a derivative:
 =-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)
 \end{equation}
 \end{subequations}
-So introducing that second error to a new LCF $V_2$:
+So introducing that second error into a new LCF $V_2$:
 \begin{equation}
 V_2(\hat{z}_1,\hat{z}_2)=V_1(\hat{z}_1)+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
 \end{equation}
@@ -837,7 +837,7 @@ Which has a derivative:
 \begin{equation}
 =-\hat{z}_1\text{}^T\vec{v}_b+\hat{z}_2\text{}^T\bigg(-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
 \end{equation}
-And substituting Eq:\ref{eq:4.90c} into only the first energy term of the LCF derivative:
+And substituting Eq:\ref{eq:4.90c} for $\vec{v}_b$ into only the first energy term of the LCF derivative. Namely; $-\hat{z}_1\text{}^T\vec{v}_b=-\hat{z}_1\text{}^T\big(\Gamma_1\hat{z}_1-\hat{z}_2\big)$. The remaining terms for $\vec{v}_b$ are left unchanged:
 \begin{equation}
 =-\hat{z}_1\text{}^T\big(\Gamma_1\hat{z}_1-\hat{z}_2\big)+\hat{z}_2\text{}^T\bigg(-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
 \end{equation}
@@ -847,7 +847,7 @@ And substituting Eq:\ref{eq:4.90c} into only the first energy term of the LCF de
 }_1-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
 \end{equation}
 \end{subequations}
-An ideal backstepping control law, with the assumption that $\vec{D}_b$ is known, is then:
+An ideal backstepping control law, with the assumption that $\vec{D}_b$ is precisely known, is then:
 \begin{subequations}
 \begin{equation}
 \mu\vec{F}_{_{IBC}}=\vec{\omega}_b\times m\vec{v}_b-\vec{G}_b-\vec{D}_b-m\hat{z}_1-m\Gamma_1\vec{v}_b+m\Gamma_2\hat{z}_2
@@ -861,12 +861,12 @@ An ideal backstepping control law, with the assumption that $\vec{D}_b$ is known
 \Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2\leq\vec{0}~~~~\forall~(\hat{z}_1,\hat{z}_2)~\text{\&}~\forall~(z_1,\hat{z_2})
 \end{equation}
 \end{subequations}
-Which obviously leads to asymptotic (\emph{extended to exponential}) stability under the assumption that the disturbance term $\vec{D}_b$ is known and can be compensated for well. In the controller both $\Gamma_1$ \& $\Gamma_2$ are P.D symmetric control coefficients to be determined later\ldots
+Which obviously leads to asymptotic (\emph{extended to exponential next}) stability under the assumption that the disturbance term $\vec{D}_b$ is known and can be compensated for well. In the controller both $\Gamma_1$ \& $\Gamma_2$ are symmetric positive definite control coefficient matrices to be determined later\ldots
 \par
-Adjusting the backstepping rule and proposed LCF to include a disturbance approximation $\hat{D}$, similar to the adaptive backstepping attitude controller in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. That approximation leads to an error state and adjusted control law respectively, once again assuming the true disturbance derivative $\dot{\vec{D}}_b$ is far slower than the control dynamics, $\dot{\vec{D}}_b\approx\vec{0}$.
+Adjusting the backstepping rule and proposed LCF to include an adaptive disturbance approximation $\hat{D}$, similar to the adaptive backstepping attitude controller previously in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. That approximation leads to an error state and adjusted control law respectively, once again assuming the true disturbance derivative $\dot{\vec{D}}_b$ is far slower than the control dynamics, $\dot{\vec{D}}_b\approx\vec{0}$.
 \begin{subequations}
 \begin{equation}
-\widetilde{D}=\vec{D}_b-\hat{D}
+\widetilde{D}=\vec{D}_b-\hat{D}~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -926,31 +926,35 @@ Similarly to the suggested exponentially stable adaptive backstepping controller
 \section{Controller Allocation}
 \label{sec:control.allocation}
 %====================================================
-Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u_c\in\mathbb{U}$. The allocator block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For regular, unconstrained control allocation the solution is posed as an optimization\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} problem; aiming to minimize deviation between the virtual and commanded control inputs, $\vec{\nu}_d$ \& $\vec{\nu}_c$ respectively.
+Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u_c\in\mathbb{U}$. The allocation block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For regular, unconstrained control allocation the solution is posed as an optimization\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} and \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} problem; aiming to minimize deviation between the virtual and commanded control inputs, $\vec{\nu}_d$ \& $\vec{\nu}_c$ respectively.
 \begin{equation}\label{eq:allocation-slack}
-\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
+\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(\norm{Q_s}\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
 \end{equation}
-Where $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. In the over-actuated case, there exists an entire set of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The allocation rule is then to introduce a secondary cost function, $J(\mathbf{x},t,u)$ into the optimization problem of Eq:\ref{eq:allocation-slack}.
+Where $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. In Eq:\ref{eq:allocation-slack} a generalized controller, $h(\mathbf{x}_e,t)$, is used; in the context of a 6-DOF control loop that controller would be a combined virtual control inputs $\mu\vec{F}$ and $\mu\vec{\tau}$ for position and attitude control respectively. In the over-actuated case, there exists an entire set of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The over-allocation process is then to introduce a secondary cost function\footnote{Or control objective.}, $J(\mathbf{x},t,u)$, into the optimization problem of Eq:\ref{eq:allocation-slack}.
 \begin{equation}\label{eq:allocation-problem}
 \underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
 \end{equation}
-That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduces such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
+That secondary control objective $J(\mathbf{x},t,u)$ and an associated solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation research. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduced such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
 \begin{multline}
-\therefore\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^6}{min}\big(||Q_s||+J(\mathbf{x},u,t)~~\text{s.t}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s\\\text{subject to}~~u=u_{n-1}+\Delta u,~\Delta u\in\mathbb{C}
+\therefore\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^6}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{s.t}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s\\\text{subject to}~~u=u_{n-1}+\Delta u,~\Delta u\in\mathbb{C}
 \end{multline}
 \par
-Most control allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function, hence the abstraction layer which was introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function can be abstracted to a matrix multiplication relationship:
+Most control allocation paradigms all assume a linear, multiplicative relationship with the effectiveness function, hence the abstraction layer which was introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function, when abstracted to a matrix multiplication relationship, is reduced to:
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c
 \end{equation}
-With $\vec{\nu}\in\mathbb{R}^n,~u\in\mathbb(U)\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, accommodating use of inversion laws (Section:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). That abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function, $R^\dagger(\mathbf{x},~\vec{F}_i,~t)$, to solve for physical actuator positions $(\Omega_i,~\lambda_i,~\alpha_i)$ is as yet undefined.
+With $\vec{\nu}\in\mathbb{R}^n,~u\in\mathbb{U}\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, accommodating use of inversion based allocation laws (Sec:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). That abstraction to a multiplicative relationship was suggested in Eq:\ref{eq:4.7} however the subsequent rotation "inversion" function, $R^\dagger(\mathbf{x},\vec{F}_i,t)$, to solve for physical actuator positions $(\Omega_i,\lambda_i,\alpha_i)$, is as yet undefined.
 \par
-Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$. It then follows that each of those four vectors then relate\footnote{Using the quaternion analogue of Eq:\ref{eq:motor-module-rotation.a}} to their individual associated actuator positions through a quaternion transformation:
+Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$ to be produced by each motor module. It then follows that each of those four vectors then relate\footnote{Using the quaternion analogue of rotation $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$ from Eq:\ref{eq:motor-module-rotation.a}.} to their individual associated actuator positions through a quaternion transformation:
 \begin{subequations}
 \begin{equation}\label{eq:4.101}
-\vec{T}_i=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes \vec{T}(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)~~~~\in\mathcal{F}^b
+\vec{T}_i= Q_{M_i}\otimes\vec{T}(\Omega_i)\otimes Q_{M_i}^*~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-10pt}
+\begin{equation}\label{eq:4.101.b}
+=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes \vec{T}(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)
+\end{equation}
+Where the motor thrust vector, $\vec{T}(\Omega_i)$, is:
 \begin{equation}
 \vec{T}(\Omega_i)=\begin{bmatrix}
 0\\
@@ -963,40 +967,38 @@ C_T(J)\rho \Omega_i^2 D^4
 \end{bmatrix}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \end{subequations}
-Where $\sigma_i$ is the orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i}$ from Eq:\ref{eq:motor-module-rotation.a}. The thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}, in the $\hat{Z}_{M_i}$ direction. 
-\par
-Seeing that quaternion rotation (\emph{transformation}) operators change the reference frame whilst retaining the vector operand's magnitude, it follows that $T(\Omega_i)$, and by extension the propeller speed, $\Omega_i$, can be solved as:
+In the transformation Eq:\ref{eq:4.101} the angle $\sigma_i$ is an orthogonal $\hat{Z}$ transformation from $\mathcal{F}^b\rightarrow\mathcal{F}^{M_i''}$ from Eq:\ref{eq:motor-module-rotation.a}. The thrust function $T(\Omega_i)$ is the BEM theory equation using thrust coefficients, Eq:\ref{eq:aerodynamic-thrust}, in the direction of the rotor shaft's axis of rotation, bound to $\hat{Z}_{M_i}$. Seeing that quaternion rotation (\emph{transformation}) operators change the reference frame whilst retaining the vector operand's magnitude, it follows that $T(\Omega_i)$, and by extension the propeller speed $\Omega_i$, can be solved as:
 \begin{subequations}
 \begin{equation}
-|\vec{T}_i|=\sqrt{||[T_x~T_y~T_z]^T||}=\sqrt{T_x^2+T_y^2+T_z^2}=|T(\Omega_i)|=|C_T(J)\rho\Omega_i^2D^4|
+|\vec{T}_i|=\sqrt{\norm{[T_x~T_y~T_z]^T}}=\sqrt{T_x^2+T_y^2+T_z^2}=|T(\Omega_i)|=|C_T(J)\rho\Omega_i^2D^4|
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-\Rightarrow \Omega_i=\sqrt{\frac{|\vec{T}_i|}{C_T(J)\rho D^4}}=\sqrt{\frac{\sqrt{T_x^2+T_y^2+T_z^2}}{C_T(J)\rho D^4}}
+\rightarrow \Omega_i=\sqrt{\frac{|\vec{T}_i|}{C_T(J)\rho D^4}}=\sqrt{\frac{\sqrt{T_x^2+T_y^2+T_z^2}}{C_T(J)\rho D^4}}
 \end{equation}
 \end{subequations}
-Then attempting to undo and reverse the transformation from motor module to body frame in Eq:\ref{eq:4.101}:
+Then reversing (or \emph{undoing}) the transformation from motor module to body frame in Eq:\ref{eq:4.101}:
 \begin{subequations}
 \begin{equation}
 \vec{T}(\Omega_i)=Q_{z}^*(-\sigma_i)Q_{y}^*(-\alpha_i)Q_{x}^*(-\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(-\lambda_i)Q_{y}(-\alpha_i)Q_z(-\sigma_i)~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-\vspace{-15pt}
+\vspace{-12pt}
 \begin{equation}
 \rightarrow \vec{T}(\Omega_i)=Q_{M_i}^*\otimes \vec{T}_i \otimes Q_{M_i}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \end{subequations}
-Knowing only $\vec{T}(\Omega_i)$ and $\vec{T}_i$ in the motor frame and body frame respectively requires solving for a quaternion which relates the two. If both vectors are of unit length, $\hat{T}_i$ \& $\hat{T}(\Omega_i)$; then the following relationship can be exploited:
+Knowing only $\vec{T}(\Omega_i)$ and $\vec{T}_i$ in the motor frame and body frame respectively requires solving for a quaternion which relates the two. If both vectors are of unit length, $\hat{T}_i$ \& $\hat{T}(\Omega_i)$; then the following relationship can be exploited to find a relative quaternion:
 \begin{subequations}
 \begin{equation}
 \hat{T}_i=\frac{\vec{T}_i}{|\vec{T}_i|}=\frac{\vec{T}_i}{\sqrt{T_x^2+T_y^2+T_z^2}}~~~~\in\mathcal{F}^b
 \end{equation}
-\vspace{-6pt}
+\vspace{-4pt}
 \begin{equation}
-\hat{T}(\Omega_i)=\frac{\vec{T}(\Omega_i)}{|\vec{T}(\Omega_i)}=\frac{\vec{T}(\Omega_i)}{|C_T(J)\rho\Omega^2 D^4|}=\begin{bmatrix}
+\hat{T}(\Omega_i)=\frac{\vec{T}(\Omega_i)}{|\vec{T}(\Omega_i)|}=\frac{\vec{T}(\Omega_i)}{|C_T(J)\rho\Omega^2 D^4|}=\begin{bmatrix}
 0 & 0 & 1
 \end{bmatrix}^T~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-\vspace{-4pt}
+\vspace{-2pt}
 \begin{equation}\label{eq:vector-quaternion}
 Q_{M_i}=\begin{bmatrix}
 q_0\\
@@ -1009,7 +1011,7 @@ q_0\\
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Where Eq:\ref{eq:vector-quaternion} is an extension of the inherent quaternion definition which rotations a vector around a single Euler axis, Eq:\ref{eq:quaternion-product}, when applied to unit vectors. That quaternion can indeed be used to solve for relative pitch, roll and yaw Euler angles (Appendix:\ref{app:equations.quaternions}). The difficulty is that Eq:\ref{eq:vector-quaternion} solves for the most direct path rotation from one vector to another and, in most cases, a sequenced Z-Y-X rotation is by no means the shortest possible path.
+Where Eq:\ref{eq:vector-quaternion} is an extension of the inherent quaternion definition which rotations a vector around a single Euler axis, Eq:\ref{eq:quaternion-product}, when applied to two unit vectors. That quaternion can indeed be used to solve for relative pitch, roll and yaw Euler angles (Appendix:\ref{app:equations.quaternions}). The problem is that Eq:\ref{eq:vector-quaternion} solves for the \textbf{most direct, shortest path} rotation from one vector to another. In most cases, a sequenced Z-Y-X rotation is by no means the shortest possible path so solutions for $[\phi,\theta,\psi]^T$ from Eq:\ref{eq:vector-quaternion} won't be meaningful for trying to resolve suitable servo positions $\lambda_i$ and $\alpha_i$.
 \par
 The associated $[\phi,~\theta,~\psi]^T$ solutions to Eq:\ref{eq:app-quaternion-eule} are then of no consequence in trying to solve for sequence of rotation angles\footnote{$\sigma_i$ is already known to be an orthogonal multiplicate\ldots} $[\lambda_i,~\alpha_i,~\sigma_i]^T$. Furthermore, when considering a sequenced Z-Y-X quaternion, no further insight can be extracted without applying cumbersome trigonometry inversions;
 \begin{subequations}
@@ -1039,10 +1041,10 @@ sin\frac{\phi}{2}\\
 \begin{equation}
 =
 \begin{bmatrix}
-cos\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}+sin\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}\\
-cos\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}-sin\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}\\
-cos\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}+sin\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}\\
-sin\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}-cos\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}
+c\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}+s\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}\\
+c\frac{\psi}{2}c\frac{\theta}{2}s\frac{\phi}{2}-s\frac{\psi}{2}s\frac{\theta}{2}c\frac{\phi}{2}\\
+c\frac{\psi}{2}s\frac{\theta}{2}c\frac{\phi}{2}+s\frac{\psi}{2}c\frac{\theta}{2}s\frac{\phi}{2}\\
+s\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}-c\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -1058,12 +1060,12 @@ q_0\\
 \end{bmatrix}
 \end{equation}
 \begin{equation}
-\Rightarrow\vec{T}_i=
+\rightarrow\vec{T}_i=
 \begin{bmatrix}
-cos\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}+sin\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}\\
-cos\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}-sin\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}\\
-cos\frac{\psi}{2}sin\frac{\theta}{2}cos{\phi}{2}+sin\frac{\psi}{2}cos\frac{\theta}{2}sin\frac{\phi}{2}\\
-sin\frac{\psi}{2}cos\frac{\theta}{2}cos\frac{\phi}{2}-cos\frac{\psi}{2}sin\frac{\theta}{2}sin\frac{\phi}{2}
+c\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}+s\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}\\
+c\frac{\psi}{2}c\frac{\theta}{2}s\frac{\phi}{2}-s\frac{\psi}{2}s\frac{\theta}{2}c\frac{\phi}{2}\\
+c\frac{\psi}{2}s\frac{\theta}{2}c\frac{\phi}{2}+s\frac{\psi}{2}c\frac{\theta}{2}s\frac{\phi}{2}\\
+s\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}-c\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}
 \end{bmatrix}
 \otimes
 \vec{T}(\Omega_i)
@@ -1076,7 +1078,7 @@ c\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}-s\frac{\psi}{2}c\frac{\theta}{2}
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Instead, returning to rotation matrices and reiterating that $[\phi,~\theta,~\psi]^T\Rightarrow [\lambda_i,~\alpha_i,~\sigma_i]^T$, then:
+Instead, returning to rotation matrices for the transformation and reiterating that Euler angle equivalents for the servos are; $[\phi,~\theta,~\psi]^T\Rightarrow [\lambda_i,~\alpha_i,~\sigma_i]^T$. It then follows (\emph{with $i^{th}$ motor subscripts implied}):
 \begin{subequations}
 \begin{equation}
 \vec{T}_i=\begin{bmatrix}
