@@ -1037,7 +1037,6 @@ sin\frac{\phi}{2}\\
 0
 \end{bmatrix}
 \end{equation}
-\vspace{-6pt}
 \begin{equation}
 =
 \begin{bmatrix}
@@ -1078,7 +1077,7 @@ c\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}-s\frac{\psi}{2}c\frac{\theta}{2}
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Instead, returning to rotation matrices for the transformation and reiterating that Euler angle equivalents for the servos are; $[\phi,~\theta,~\psi]^T\Rightarrow [\lambda_i,~\alpha_i,~\sigma_i]^T$. It then follows (\emph{with $i^{th}$ motor subscripts implied}):
+Instead; returning to rotation matrices for the transformation and reiterating that Euler angle equivalents for the servos are; $[\phi,~\theta,~\psi]^T\Rightarrow [\lambda_i,~\alpha_i,~\sigma_i]^T$. It then follows (where \emph{$i^{th}$ motor subscripts} are implied):
 \begin{subequations}
 \begin{equation}
 \vec{T}_i=\begin{bmatrix}
@@ -1095,9 +1094,8 @@ c\alpha & 0 & s\alpha\\
 1 & 0 & 0\\
 0 & c\lambda & -s\lambda\\
 0 & s\lambda & c\lambda
-\end{bmatrix}
+\end{bmatrix}\vec{T}(\Omega_i)
 \end{equation}
-\vspace{-6pt}
 \begin{equation}
 \Rightarrow\vec{T}_i=\begin{bmatrix}
 c\sigma c\alpha & c\sigma s\alpha s\lambda - s\sigma c\lambda & c\sigma s\alpha c\lambda + s\sigma s\lambda\\
@@ -1110,7 +1108,6 @@ s\sigma c\alpha & s\sigma s\alpha s\lambda + c\sigma c\lambda & s\sigma s\alpha 
 T(\Omega_i)
 \end{bmatrix}
 \end{equation}
-\vspace{-6pt}
 \begin{equation}\label{eq:rotation-inverse}
 \Rightarrow
 \begin{bmatrix}
@@ -1126,7 +1123,7 @@ c\alpha c\lambda
 T(\Omega_i)
 \end{equation}
 \end{subequations}
-When $\sigma$ is an orthogonal multiple which rotates the vector about the $\hat{Z}_b$ axis, then Eq:\ref{eq:rotation-inverse} simplifies even further:
+When $\sigma$ is an orthogonal multiple which rotates the vector about the $\hat{Z}_b$ axis. The fact that the principle thrust vector $\vec{T}(\Omega_i)$ has only a $\hat{Z}_{M_i}$ component in the motor frame makes the solution for servo angles dramatically less complex. Then Eq:\ref{eq:rotation-inverse} simplifies even further to the following four trigonometric relations for each motor module:
 \begin{equation}
 \begin{bmatrix}
 T_x\\
@@ -1160,17 +1157,19 @@ c\alpha c\lambda
 \end{bmatrix}
 \end{bmatrix}T(\Omega_i)~~~\text{for}~~i\in[1,~2,~3,~4]
 \end{equation}
-Then it becomes a simple case of inverse trigonometry to solve for both $\lambda_i$ and $\alpha_i$ respectively, for the case of $i=1$, the following holds true. Using $T(\Omega_i)=||T_i||$ and $arctan2(x,y)$ for both solutions to get full quadrature results:
+Then it becomes a simple case of inverse trigonometry to solve for both $\lambda_i$ and $\alpha_i$ respectively, for the example case of $i=1$, the following holds true and can be similarly applied to the remaining motor modules.
+\par
+Using $T(\Omega_i)=||\vec{T}_i||$ and the four quadrant secondary arctangent2 function\footnote{More on the $atan2$ function in Appendix:\ref{app:equations.quaternions}.} function, $arctan2(x,y)$, for both inverse solutions to get full quadrature\footnote{Exploiting the fact that $atan(x)=asin(x/\sqrt{1+x^2})$.} results:
 \begin{subequations}
 \begin{equation}
-\alpha = -atan2(T_x,~T_z||T_i||)
+\lambda =  atan2(T_x\text{}^2,~||\vec{T}_i||\sqrt{||\vec{T}_i||^2-T_x^2})
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\lambda =  atan2(T_x\text{}^2,~||T_i||\sqrt{||T_i||^2-T_x^2})
+\alpha_i = -atan2(T_x,~T_z||\vec{T}_i||)
 \end{equation}
 \end{subequations}
-Therefore, the secondary component of the control allocation block, $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Fig:\ref{fig:control-block} is then:
+Therefore, the secondary component of the control allocation block, $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Fig:\ref{fig:control-block} is then summarized as the single function:
 \begin{equation}\label{eq:allocator-inersion}
 \begin{bmatrix}
 \Omega_i\\
@@ -1181,16 +1180,64 @@ Therefore, the secondary component of the control allocation block, $R^\dagger(\
 R^\dagger(\mathbf{x},\vec{T}_i,t)=
 \begin{bmatrix}
 \big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\big)\text{}^{\frac{1}{2}}\\
-atan2(T_x\text{}^2,~||T_i||\sqrt{||T_i||\text{}^2-T_x\text{}^2})\\
--atan2(T_x,~T_z||T_i||)
+atan2(T_x\text{}^2,~||\vec{T}_i||\sqrt{||\vec{T}_i||\text{}^2-T_x\text{}^2})\\
+-atan2(T_x,~T_z||\vec{T}_i||)
 \end{bmatrix}
 \end{equation}
-Further simplifications could be from the definitions of each element included in Eq:\ref{eq:allocator-inersion}, but it would just be superfluous. At this stage the only remaining undefined component of the entire control block is the abstracted allocation algorithms, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$, which are now addressed\ldots
+Further simplifications could be from the definitions of each element included in Eq:\ref{eq:allocator-inersion}, but it would just be superfluous as each servo angle can be solved for. At this stage the only remaining undefined component of the entire control block is the abstracted allocation algorithms, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$, which are now addressed\ldots
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}
 %====================================================
-
+The most conceptually simple control allocation solutions to Eq:\ref{eq:allocation-problem} stems from what are categorized as "inversion" based cost optimizations (the first three proposed allocators in Sec:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse} \& \ref{subsec:control.allocation.norminverse}). As alluded to previously, the requirements for inversion based allocation is that the effectiveness function $B(\mathbf{x},u,t)$ is a linear relationship which can be abstracted to $B(\mathbf{x},t)u$. The objective of inversion is that for the control problem $\vec{\nu}_c=B(\mathbf{x},t)u$ to find some matrix $B^\dagger(\mathbf{x},t)$ such that for some $\vec{\nu}_d$:
+\begin{subequations}
+\begin{equation}
+\vec{\nu}_c=\vec{\nu}_d=B(\mathbf{x},t)u\Rightarrow B^\dagger(\mathbf{x},t)\vec{\nu}_d=B^\dagger(\mathbf{x},t)B(\mathbf{x},t)u
+\end{equation}
+With the inversion identity:
+\begin{equation}
+B^\dagger(\mathbf{x},t)B(\mathbf{x},t)=\mathbb{I}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\rightarrow u=B^\dagger(\mathbf{x},t)\vec{\nu}_d
+\end{equation}
+{\color{Gray}\emph{Or more generally, without the dependency of linearity:}}
+\begin{equation}
+\color{Gray} u=B^\dagger(\mathbf{x},\vec{\nu}_d,t)
+\end{equation}
+\end{subequations}
+Where $B(\mathbf{x},t)\in\mathbb{R}^{m\times n}$. When the $B$ matrix has full rank; that being $m>n$, the inversion of $B^\dagger$, short of online iterative techniques to solve for the inversion, is not so trivial. A linear least squares technique is the basis of the direct inversion allocation schemes. The secondary control objective, $J(\mathbf{x},u,t)$, is chosen to be a quadratic cost function that can be solved as an explicit least squares problem. The net effect of which aims to minimize controller effort (\emph{magnitude}), such that:
+\begin{equation}\label{eq:allocation-quadratic}
+J(\mathbf{x},u,t)=\underset{u\in\mathbb{U}}{min}\frac{1}{2}\big(u-u_p\big)^TW\big(u-u_p)~~\text{such that}~~\vec{\nu}_c=B(\mathbf{x},u,t)
+\end{equation}
+Its worth mentioning that Eq:\ref{eq:allocation-quadratic} has no slack variable to be optimized, unlike Eq:\ref{eq:allocation-problem}. The matrix $W$ is a positive definite matrix of weighting\footnote{Discussed in full next in Sec:\ref{subsec:control.allocation.weightedinverse}.} coefficients that prioritises different actuators in the actuator matrix $u$ higher than others. Similarly $u_p$ is the preferred actuator position matrix\footnote{Priority acutator positions are detailed in Sec:\ref{subsec:control.allocation.norminverse}.} which the system tends towards.
+\par
+The least squares solution\cite{} to Eq:\ref{eq:allocation-quadratic} for that inversion matrix $B^\dagger(\mathbf{x},t)$ is then:
+\begin{subequations}\label{eq:inversion}
+\begin{equation}
+\underset{\in\mathbb{U}}{u}=(\mathbb{I}-CB(\mathbf{x},t)\big)u_p+C\vec{\nu}_d
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+C=W^{-1}B^T(\mathbf{x},t)\big(B(\mathbf{x},t)W^{-1}B^T(\mathbf{x},t)\big)^{-1}
+\end{equation}
+\end{subequations}
+The solution in Eq:\ref{eq:inversion} is refereed to as the generalized inverse with weighted and preferred actuators. In the specific case where there are no weightings, $W=\mathbb{I}$, and no preferred actuator values are given, $u_p=\vec{0}$, the solution simplifies to:
+\begin{subequations}\label{eq:pseudo-inversion}
+\begin{equation}
+u=B^T(\mathbf{x},t)\big(B(\mathbf{x},t).B^T(\mathbf{x},t)\big)^{-1}\vec{\nu}_d
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=B^\ddagger(\mathbf{x},t) \vec{\nu}_d
+\end{equation}
+\end{subequations}
+The simplified unique case of Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B(\mathbf{x},t)$. The pseudo-inversion is the most basic of allocation techniques, with a least squares minimization of control effort. For a $B(\mathbf{x},t)$ matrix from Eq:\ref{eq:4.8}, the pseudo-inversion allocator is:
+\begin{equation}
+1
+\end{equation}
+Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$.
 %====================================================
 \subsection{Weighted Pseudo Inverse Allocator}
 \label{subsec:control.allocation.weightedinverse}
