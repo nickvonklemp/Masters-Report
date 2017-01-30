@@ -1196,7 +1196,7 @@ The most conceptually simple control allocation solutions to Eq:\ref{eq:allocati
 \end{equation}
 With the inversion identity:
 \begin{equation}
-B^\dagger(\mathbf{x},t)B(\mathbf{x},t)=\mathbb{I}
+B(\mathbf{x},t)B^\dagger(\mathbf{x},t)=\mathbb{I}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -1218,7 +1218,7 @@ The least squares solution\cite{} to Eq:\ref{eq:allocation-quadratic} for that i
 \begin{equation}
 \underset{\in\mathbb{U}}{u}=(\mathbb{I}-CB(\mathbf{x},t)\big)u_p+C\vec{\nu}_d
 \end{equation}
-\vspace{-10pt}
+\vspace{-12pt}
 \begin{equation}
 C=W^{-1}B^T(\mathbf{x},t)\big(B(\mathbf{x},t)W^{-1}B^T(\mathbf{x},t)\big)^{-1}
 \end{equation}
@@ -1228,21 +1228,63 @@ The solution in Eq:\ref{eq:inversion} is refereed to as the generalized inverse 
 \begin{equation}
 u=B^T(\mathbf{x},t)\big(B(\mathbf{x},t).B^T(\mathbf{x},t)\big)^{-1}\vec{\nu}_d
 \end{equation}
-\vspace{-10pt}
+\vspace{-20pt}
 \begin{equation}
 =B^\ddagger(\mathbf{x},t) \vec{\nu}_d
 \end{equation}
 \end{subequations}
-The simplified unique case of Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B(\mathbf{x},t)$. The pseudo-inversion is the most basic of allocation techniques, with a least squares minimization of control effort. For a $B(\mathbf{x},t)$ matrix from Eq:\ref{eq:4.8}, the pseudo-inversion allocator is:
+The simplified unique case of Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B(\mathbf{x},t)$. The pseudo-inversion is the most basic of allocation techniques, with a least squares minimization of control effort. For a $B(\mathbf{x},t)$ matrix from Eq:\ref{eq:4.8} relating to the layout described in Fig:\ref{fig:body-frame}, the pseudo-inversion allocator is:
+\begin{subequations}\label{eq:pseudo-bmatrix}
 \begin{equation}
-1
+B(\mathbf{x},t)=
+\begin{bmatrix}
+1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0\\
+0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0\\
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1\\
+0 & 0 & 0 & 0 & 0 & L & 0 & 0 & 0 & 0 & 0 & -L\\
+0 & 0 & -L & 0 & 0 & 0 & 0 & 0 & L & 0 & 0 & 0\\
+0 & L & 0 & -L & 0 & 0 & 0 & -L & 0 & L & 0 & 0
+\end{bmatrix}~~~~\in\mathbb{R}^{12\times 6}
 \end{equation}
-Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$.
+\vspace{-10pt}
+\begin{equation}
+\Rightarrow B^\ddagger(\mathbf{x},t)=B^T\big(B.B^T\big)^{-1}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=
+\begin{bmatrix}
+\frac{1}{4} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{1}{4} & 0 & 0 & 0 & \frac{1}{4L}\\
+0 & 0 & \frac{1}{4} & 0 & \frac{-1}{2L} & 0\\
+\frac{1}{4} & 0 & 0 & 0 & 0 & \frac{-1}{4L}\\
+0 & \frac{1}{4} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{1}{4} & \frac{1}{2L} & 0 & 0\\
+\frac{1}{4} & 0 & 0 & 0 & 0 & 0\\
+0 & \frac{1}{4} & 0 & 0 & 0 & \frac{-1}{4L}\\
+0 & 0 \frac{1}{4} & 0 & \frac{1}{2L} & 0\\
+\frac{1}{4} & 0 & 0 & 0 & 0 & \frac{1}{4L}\\
+0 & \frac{1}{4} & 0 & 0 & 0 & 0\\
+0 & 0 & \frac{1}{4} & \frac{-1}{2L} & 0 & 0
+\end{bmatrix}~~~~\in\mathbb{R}^{6\times 12}
+\end{equation}
+\end{subequations}
+Such that pseudo-inversion allocation rule $u=B^\dagger(\mathbf{x},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors, $\vec{T}_{1\rightarrow 4}$, for some virtual control input $\vec{\nu}_d=h(\mathbf{x}_e,t)$. Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$. The allocation rule in Eq:\ref{eq:pseudo-bmatrix} is the simplest and most reduced case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law to which all other proposed rules are compared against.
+\par
+The direct inversion solution guarantees the commanded virtual control input is met and that acutators aren't necessarily saturated. In certain cases it may be desired to saturate certain actuators before implemented use of other actuator plants. That would entail iterative "daisy chain"\cite{} based allocation performed numerically online given the state of saturation for each actuator. That particular approach is avoided here as saturated actuators values is undesirable, in the context of thrust generation through propellers saturation is something to be avoided\ldots
 %====================================================
 \subsection{Weighted Pseudo Inverse Allocator}
 \label{subsec:control.allocation.weightedinverse}
 %====================================================
-
+A weighted inversion still treats the preferred actuator positions as negligible, or that $u_p=\vec{0}$ in Eq:\ref{eq:inversion}, but adds priority to different actuators in the form of a $W$ matrix. The positive definite (\emph{symmetrical}) weighting matrix is square with respect to the actuator dimension, $W\in\mathbb{R}^{12\times 12}$ (\emph{or more generally $W\in\mathbb{R}^{m\times m}$}). The Moore-Penrose inversion assumes that all actuators are equally weighted and purely diagonal, $W=\mathbb{I}$. A time dependent adaptive weighting matrix could prioritize actuators following control faults or actuator deterioration. The control objective of a weighted inversion is to design the explicit weighting coefficients as per some preferred heuristic or optimization\footnote{Not considered or discussed are adaptive weightings as those are out of the scope of this work and pertain more to FTC\cite{}.}.
+\par
+Each weighting coefficient determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator, in this case the weighting matrix's divisions correlate to mixed actuator thrust vector values. The $3\times 3$ diagonal groupings relate to individual thrust component biasing whilst off-centre $3\times 3$ groupings mix separate thrust terms. 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/weighted-matrix}
+\label{fig:weighted-matrix}
+\caption{Weighting matrix biasing}
+\end{figure}
 %====================================================
 \subsection{Priority Norm Inverse Allocator}
 \label{subsec:control.allocation.norminverse}
