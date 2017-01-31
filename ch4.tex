@@ -1289,13 +1289,70 @@ Each weighting coefficient determines how the least squares solution to Eq:\ref{
 \par
 Pseudo-inversion, previously, will exactly match the virtual control input $\vec{\nu}_d=B(\mathbf{x},u,t)=\vec{\nu}_c$ so long as the actuators aren't saturated. Biasing actuators with an explicit weighting matrix could otherwise introduce a slack between the desired control requirements and their commanded counterparts. Such a case could result in instability given that trajectory tracking enforced through Lyapunov's theorem in the design of $\vec{\nu}_d$. Short of iteratively\footnote{Online iterative solutions are avoided given their increased computational complexity and the possibility that, given an infinite processing time, a solution may not necessarily be found.}processing variable weights until a viable solution is found, a constraint on the nature of the weighting matrix needs to be introduced.
 \par
-So long as the weightings group contributing to each thrust vector, $W_{T_i}\in\mathbb{R}^{3\times 12}$, each have a unit norm, the designed control torque and force inputs will be met. Physically the resultant thrusts and thrust differentials would be balanced amongst similarly directed components. Furthermore the only permissible thrust vector mixings are between opposing pairs; $\vec{T}_1\text{\&}\vec{T}_3$ and $\vec{T}_2\text{\&}\vec{T}_4$. Such a restriction simplifies the time spent optimizing weighting coefficients in Sec:\ref{sec:simulation.allocator}.
+So long as the weighting groups contributing to each thrust vector, $W_{T_i}\in\mathbb{R}^{3\times 12}$, each have a unit norm, the designed control torque and force inputs will be met. Physically the resultant thrusts and thrust differentials would be balanced amongst similarly directed components. Furthermore the only permissible thrust vector mixings are between opposing pairs; $\vec{T}_1\text{\&}\vec{T}_3$ and $\vec{T}_2\text{\&}\vec{T}_4$. Such a restriction simplifies the time spent optimizing weighting coefficients in Sec:\ref{sec:simulation.allocator}.
 \par
-The phsyical consequences of giving priority biasing to thrust vector components in the $\hat{X}_b$ \& $\hat{Y}_b$\footnote{Recalling that the allocator block designs $\vec{T}_{1\rightarrow 4}$ in the body frame, $\in\mathcal{F}^b$. Then the rotation inversion block $R^\dagger(\mathbf{x},\vec{T}_i,t)$ finds $(\Omega_i,\lambda_i,\alpha_i)$ to transform $\vec{T}(\Omega_i)$ to the body frame; effectively mapping $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$.}
+The physical consequences of giving priority biasing to thrust vector components in the $\hat{X}_b$ \& $\hat{Y}_b$\footnote{Recalling that the allocator block designs $\vec{T}_{1\rightarrow 4}$ in the body frame, $\in\mathcal{F}^b$. Then the rotation inversion block $R^\dagger(\mathbf{x},\vec{T}_i,t)$ finds $(\Omega_i,\lambda_i,\alpha_i)$ to transform $\vec{T}(\Omega_i)$ to the body frame; effectively mapping $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$.} is that the allocation block prioritizes pitching or rolling the motor module before altering the propeller's rotational speed $\Omega_i$. Similarly balancing the of off-diagonal thrust vector mixing blends controller effort amongst opposing actuators. The actual weighting coefficients are to be optimized iteratively in Sec:\ref{sec:simulation.allocator}; aiming to minimize stray aerodynamic torques induced (Sec:\ref{subsec:dynamics.aero.bem}) and rotational kinetic energy produced. The weighting coefficient iterations are completely independent from the controller coefficient loops to be run in Sec:\ref{sec:simulation.tuning}\ldots
 %====================================================
 \subsection{Priority Norm Inverse Allocator}
 \label{subsec:control.allocation.norminverse}
 %====================================================
+The final inversion based allocator applies a non-zero preferred actuator position from Eq:\ref{eq:allocation-problem}; or that $u_p\not=\vec{0}\in\mathbb{U}$. The preferred actuator position is the matrix value of $u$ which the allocator naturally tends toward. An obvious choice for that value is the hovering conditions, that which keeps the quadcopter airborne. There are however some intricacies which must be discussed with respect to what is regarded as hovering conditions.
+\par
+For a generalized body of weight $m$, a net gravitational force opposes upward movement in the inertial frame; $\vec{M}=[0, 0, -G.m]^T\in\mathcal{F}^I$. At the hover state there are no net forces and torques\footnote{Unwanted system dynamics like torques from an eccentric gravitational center or disturbances are compensated for in a plant dependent control law $\mu\vec{\tau}=h(\mathbf{x}_e,t)$.} acting on the system, all dynamics are balanced. As such the hovering conditions are:
+\begin{equation}\label{eq:hover}
+\begin{bmatrix}
+\mu\vec{F}_p\hspace{3pt}\\
+\mu\vec{\tau}_p\hspace{3pt}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\vec{M}\hspace{3pt}\\
+\vec{0}\hspace{3pt}
+\end{bmatrix}~~~~\in\mathcal{F}^I
+\end{equation}
+However, calculating hover conditions purely in the inertial frame give no indication on what attitude the body has. Two options present themselves on how to solve for hover values. First; take hover conditions with respect to the inertial frame, such that the body's attitude tends to the origin always (Fig:\ref{fig:hover-inertial}). 
+\begin{equation}\label{eq:hover-inertial}
+\vec{\nu}_I=
+\begin{bmatrix}
+\mu\vec{F}_p\hspace{3pt}\\
+\mu\vec{\tau}_p\hspace{3pt}
+\end{bmatrix}
+=\begin{bmatrix}
+\vec{M}\hspace{3pt}\\
+\vec{0}\hspace{3pt}
+\end{bmatrix}~~~~\in\mathcal{F}^b
+\end{equation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/hover-inertial}
+\caption{Hover conditions W.R.T the inertial frame $\mathcal{F}^I$}
+\label{fig:hover-inertial}
+\end{figure}
+\par
+Or conversely take hover conditions with respect to the body frame. The difference is that the body's attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions irrespective of the attitude. The preffered hovering conditions are then always dependent on the commanded attitude trajectory (Fig:\ref{fig:hover-body}).
+\begin{equation}\label{eq:hover-body}
+\vec{\nu}_b=
+\begin{bmatrix}
+\mu\vec{F}_p\hspace{3pt}\\
+\mu\vec{\tau}_p\hspace{3pt}
+\end{bmatrix}
+=\begin{bmatrix}
+Q_b^*\otimes\vec{M}\otimes Q_b\\
+\vec{0}
+\end{bmatrix}~~~~\in\mathcal{F}^b
+\end{equation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/hover-body}
+\caption{Hover conditions W.R.T the body frame $\mathcal{F}^b$}
+\label{fig:hover-body}
+\end{figure}
+Explicit actuator values are then solved for Eq:\ref{eq:hover-inertial} \& Eq:\ref{eq:hover-body} using pseudo inversion Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
+\begin{subequations}
+\begin{equation}
+1
+\end{equation}
+\end{subequations}
 
 %====================================================
 \subsection{Non-linear Plant Control Allocation}
