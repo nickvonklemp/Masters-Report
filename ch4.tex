@@ -1218,7 +1218,7 @@ The least squares solution\cite{} to Eq:\ref{eq:allocation-quadratic} for that i
 \begin{equation}
 \underset{\in\mathbb{U}}{u}=(\mathbb{I}-CB(\mathbf{x},t)\big)u_p+C\vec{\nu}_d
 \end{equation}
-\vspace{-12pt}
+\vspace{-10pt}
 \begin{equation}
 C=W^{-1}B^T(\mathbf{x},t)\big(B(\mathbf{x},t)W^{-1}B^T(\mathbf{x},t)\big)^{-1}
 \end{equation}
@@ -1228,7 +1228,7 @@ The solution in Eq:\ref{eq:inversion} is refereed to as the generalized inverse 
 \begin{equation}
 u=B^T(\mathbf{x},t)\big(B(\mathbf{x},t).B^T(\mathbf{x},t)\big)^{-1}\vec{\nu}_d
 \end{equation}
-\vspace{-20pt}
+\vspace{-15pt}
 \begin{equation}
 =B^\ddagger(\mathbf{x},t) \vec{\nu}_d
 \end{equation}
@@ -1246,11 +1246,11 @@ B(\mathbf{x},t)=
 0 & L & 0 & -L & 0 & 0 & 0 & -L & 0 & L & 0 & 0
 \end{bmatrix}~~~~\in\mathbb{R}^{12\times 6}
 \end{equation}
-\vspace{-10pt}
+\vspace{-2pt}
 \begin{equation}
 \Rightarrow B^\ddagger(\mathbf{x},t)=B^T\big(B.B^T\big)^{-1}
 \end{equation}
-\vspace{-10pt}
+\vspace{-4pt}
 \begin{equation}
 =
 \begin{bmatrix}
@@ -1278,13 +1278,20 @@ The direct inversion solution guarantees the commanded virtual control input is 
 %====================================================
 A weighted inversion still treats the preferred actuator positions as negligible, or that $u_p=\vec{0}$ in Eq:\ref{eq:inversion}, but adds priority to different actuators in the form of a $W$ matrix. The positive definite (\emph{symmetrical}) weighting matrix is square with respect to the actuator dimension, $W\in\mathbb{R}^{12\times 12}$ (\emph{or more generally $W\in\mathbb{R}^{m\times m}$}). The Moore-Penrose inversion assumes that all actuators are equally weighted and purely diagonal, $W=\mathbb{I}$. A time dependent adaptive weighting matrix could prioritize actuators following control faults or actuator deterioration. The control objective of a weighted inversion is to design the explicit weighting coefficients as per some preferred heuristic or optimization\footnote{Not considered or discussed are adaptive weightings as those are out of the scope of this work and pertain more to FTC\cite{}.}.
 \par
-Each weighting coefficient determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator, in this case the weighting matrix's divisions correlate to mixed actuator thrust vector values. The $3\times 3$ diagonal groupings relate to individual thrust component biasing whilst off-centre $3\times 3$ groupings mix separate thrust terms. 
+Each weighting coefficient determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator, in this case the weighting matrix's divisions correlate to mixed actuator thrust vector values. The $3\times 3$ diagonal groupings relate to individual thrust component biasing ($T_{ix},T_{iy},T_{iz}$) whilst off-centre $3\times 3$ groupings mix separate thrust terms $\vec{T}_{1\rightarrow 4}$. 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{figs/weighted-matrix}
 \label{fig:weighted-matrix}
 \caption{Weighting matrix biasing}
+\vspace{-20pt}
 \end{figure}
+\par
+Pseudo-inversion, previously, will exactly match the virtual control input $\vec{\nu}_d=B(\mathbf{x},u,t)=\vec{\nu}_c$ so long as the actuators aren't saturated. Biasing actuators with an explicit weighting matrix could otherwise introduce a slack between the desired control requirements and their commanded counterparts. Such a case could result in instability given that trajectory tracking enforced through Lyapunov's theorem in the design of $\vec{\nu}_d$. Short of iteratively\footnote{Online iterative solutions are avoided given their increased computational complexity and the possibility that, given an infinite processing time, a solution may not necessarily be found.}processing variable weights until a viable solution is found, a constraint on the nature of the weighting matrix needs to be introduced.
+\par
+So long as the weightings group contributing to each thrust vector, $W_{T_i}\in\mathbb{R}^{3\times 12}$, each have a unit norm, the designed control torque and force inputs will be met. Physically the resultant thrusts and thrust differentials would be balanced amongst similarly directed components. Furthermore the only permissible thrust vector mixings are between opposing pairs; $\vec{T}_1\text{\&}\vec{T}_3$ and $\vec{T}_2\text{\&}\vec{T}_4$. Such a restriction simplifies the time spent optimizing weighting coefficients in Sec:\ref{sec:simulation.allocator}.
+\par
+The phsyical consequences of giving priority biasing to thrust vector components in the $\hat{X}_b$ \& $\hat{Y}_b$\footnote{Recalling that the allocator block designs $\vec{T}_{1\rightarrow 4}$ in the body frame, $\in\mathcal{F}^b$. Then the rotation inversion block $R^\dagger(\mathbf{x},\vec{T}_i,t)$ finds $(\Omega_i,\lambda_i,\alpha_i)$ to transform $\vec{T}(\Omega_i)$ to the body frame; effectively mapping $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$.}
 %====================================================
 \subsection{Priority Norm Inverse Allocator}
 \label{subsec:control.allocation.norminverse}
