@@ -16,11 +16,11 @@ The control problem for this dissertation is, as outlined in Chater:\ref{ch:intr
 y = c(\mathbf{x},t)+d(\mathbf{x},\vec{\nu},t)
 \end{equation}
 \end{subequations}
-Where the plant dynamics are governed by $f(\mathbf{x},t)$ and the plant's input response by $g(\mathbf{x},\vec{\nu},t)$, for a given control input $\vec{\nu}$. The latter is not necessarily a function based relationship and could take the multiplicative form; $g(\mathbf{x},t)\vec{\nu}$. The objective for setpoint tracking is for the output to track the state; namely $y = \mathbf{x}$. As such, the control problem is to design a stabilizing control law for an error state $\mathbf{x}_e$\footnote{Ignoring how the state error is formulated for the time being\ldots}:
+Where the plant dynamics are governed by $f(\mathbf{x},t)$ and the plant's input response by $g(\mathbf{x},\vec{\nu},t)$, for a given control input $\vec{\nu}$. The latter is not necessarily a function based relationship and could take the multiplicative form; $g(\mathbf{x},t)\vec{\nu}$. The objective for setpoint tracking is for the output to track the state; namely $y = c(\mathbf{x},t)=\mathbf{x}$. As such, the control problem is to design a stabilizing control law for an error state $\mathbf{x}_e$\footnote{Ignoring how the state error is formulated for the time being\ldots}:
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)
 \end{equation}
-Such that the control plant is globally asymptotically stable or that $\lim_{t\rightarrow\infty}\mathbf{x}_e=0$. It is possible to combine attitude and position states into one common trajectory state such that:
+Such that the control plant is globally asymptotically stable or that $\lim_{t\rightarrow\infty}\mathbf{x}_e=0$. It is possible to combine attitude and position states into a single common trajectory state such that:
 \\
 \vspace{-5pt}
 \begin{equation}
@@ -88,19 +88,19 @@ Where $[\vec{l}_i]_\times$ is the cross product vector of the $i^{th}$ torque ar
 [\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\mathbf{x},\vec{F}_i,t)~~~~\text{for}~i\in[1:4]
 \end{equation}
 \par
-To summarize then; each allocation rule controls designs net thrust vectors for each of the four modules, or 12 directional components, in the following form:
+To summarize; each allocation rule decomposes net force and torque vectors into four directional thrust vectors for each, or 12 directional components. The force components are an abstracted allocation layer in place of explicit actuator positions, which are subsequently solved for\ldots
 \begin{equation}
 B^{\dagger}(\mathbf{x},\vec{\nu}_d,t)=\big[ T_{1x},~T_{1y},~T_{1z},~\ldots~T_{4x},~T_{4y},~T_{4z}\big]^T
 \end{equation}
 The control block in the loop (Fig:\ref{fig:control-loop}) is then modified to incorporate the extra allocation abstraction level, shown in Fig:\ref{fig:control-block}. The output from that control block is still the same actuator matrix $u\in\mathbb{U}$. The block merely accommodates for comparison of various $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$ allocation rules without having to redesign the remainder of the loop's structure.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.67\textwidth]{figs/control-block}
+\includegraphics[width=0.63\textwidth]{figs/control-block}
 \caption{Abstracted control block}
 \label{fig:control-block}
+\vspace{-15pt}
 \end{figure}
 \par
-\vspace{-10pt}
 \emph{\color{Gray} Al allocation algorithms proposed follow the same input/output structure described in Fig:\ref{fig:control-block}. Only one allocation algorithm does, however, circumvent the virtual abstraction level of thrust vector's for each module to directly calculate actuator positions, Section:\ref{subsec:control.allocation.online}.}
 \par
 Each control law is co-dependent on an accompanying allocation algorithm. Traditional control loops (under-actuated or well matched) typically have a unity allocation rule and as such require no consideration so they're mostly disregarded. Separate control laws for attitude ad position control are presented next in Section:\ref{sec:control.attitude} and \ref{sec:control.position} respectively. Thereafter a series of allocation rules are proposed in Section:\ref{sec:control.allocation}. Although presented independently, the controller and allocation laws are mutually inclusive. The stability of each control law is proven objectively but actual controller tuning and optimization takes place only in the following Chapter:\ref{ch:simulation}, in Sec:\ref{sec:simulation.tuning}.
@@ -108,18 +108,18 @@ Each control law is co-dependent on an accompanying allocation algorithm. Tradit
 %====================================================
 \subsection*{Model Dependent \& Independent Controllers}
 %====================================================
-Two classes of controllers are presented, attitude and position control laws. The former being the primary focus of this research project and containing a more complete control treatment and comparison of controllers. Both control categories consider MIMO state vector loops for $\mathcal{E}$ \& $Q_b$. The allocation algorithm combines both virtual control inputs $\vec{\mu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$ generated from the two control categories to calculate actuator positions.
+Two classes of controllers are presented, attitude and position control laws. The former being the primary focus of this research project and containing a more complete schedule of control treatment and controller comparison. Both control categories consider MIMO state vector loops for attitude and position states $\mathcal{E}$ \& $Q_b$. The allocation algorithm combines both virtual control inputs $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$ generated from the two control categories to calculate actuator positions.
 \par
-The control dependency on the system plant is as a consequence of the prominent actuator response dynamics, as derived previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques} from Chapter:\ref{ch:dynamics}. Whilst not a prerequisite for stability, plant dependent compensation certainly improves controller performances. Independent and dependent cases are only presented in one type of controller; the most basic case PD controller in Section:\ref{subsec:control.attitude.controllers}. It's shown that for an independent (\emph{PD}) controller to achieve global stability some stringent assumptions must first be met.
+The control dependency on the system plant is as a consequence of the prominent actuator response dynamics, as derived previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Whilst not a prerequisite for stability, plant dependent compensation certainly improves controller performances. Independent and dependent cases are only considered for one type of controller; the most basic case PD controller in Section:\ref{subsec:control.attitude.controllers}. It's shown that for an independent (\emph{PD}) controller to achieve global stability some stringent assumptions must first be met.
 \par
-Inherent plant dependency makes backstepping controllers an attractive control paradigm in this dissertation's context. The proposed dependent control laws compensate for undesirable dynamics their design, basic PD \& PID control structures (\emph{and the like}) will not. The first and most basic control solution, used as a reference case, is a PD controller for attitude and position with direct-inversion\footnote{Pseudo-inversion or Moore-Penrose inversion} allocation, both plant dependent and independent controllers are compared.
+Inherent plant dependency makes backstepping controllers an attractive control paradigm in this dissertation's context. The proposed plant dependent control laws compensate for undesirable dynamics their design, basic PD \& PID control structures (\emph{and the like}) will not. The first and most basic control solution, used as a reference case, is a PD controller for attitude and position with direct-inversion\footnote{Pseudo-inversion or Moore-Penrose inversion} allocation, both plant dependent and independent PD controllers are compared.
 %====================================================
 \section{Lyapunov Stability Theorem}
 \label{sec:control.lyapunov}
 %====================================================
-Lyapunov's stability theory is a critical aspect of non-linear controller design. An abundance of literature has been written on the subject\footnote{Included in almost every meritable textbook and papers; \cite{noteonlyapunov,nonlinearsystems}, amongst others\ldots} spanning through the progression of control engineering. Typically linear systems are proven$^\dagger$ to be stable using the frequency domain and Laplace transforms, the same is not true for non-linear systems. Lyapunov's stability theorem proves (\emph{global}) asymptotic stability for continuous time invariant systems, linear or otherwise.
+Lyapunov's stability theory is a critical aspect of non-linear controller design. An abundance of literature has been written on the subject\footnote{Included in almost every meritable textbook and papers; \cite{noteonlyapunov,nonlinearsystems}, amongst others\ldots} spanning through the progression of control engineering. Typically linear systems are proven$^\dagger$ to be stable using the frequency domain with Laplace transforms, the same is not true for non-linear systems. Lyapunov's stability theorem proves (\emph{global}) asymptotic stability for continuous time invariant systems, linear or otherwise.
 \par
-The theorem applies analysis of a generalized energy function representative of a system's autonomous trajectory. A negative trajectory energy derivative will ensure the system's energy is always dissipating toward a stable settling point. Lyapunov analysis is a popular method for stability verification because the trajectory of the system needn't be explicitly defined for stability to be determined. Proof of Lyapunov's theorem is done with a contradiction disproof and, as such, the theoretical underpinning is somewhat cumbersome.
+The theorem applies analysis of a generalized energy function representative of a system's autonomous trajectory. A negative trajectory energy derivative will ensure the system's energy is always dissipating toward a stable settling point. Lyapunov analysis is a popular method for stability verification because system's trajectory itself needn't be explicitly defined for stability to be ascertained. Proof of Lyapunov's theorem is done with a contradiction disproof and, as such, the theoretical underpinning is somewhat cumbersome.
 \par
 Despite the conceptually difficult proof, it's worth reiterating its fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control. A backstepping controller iteratively enforces Lyapunov stability criterion onto the system through the control structure. In general, given a non-linear time invariant system that follows some continually differentiable trajectory $\mathbf{x}(t)$, typically the trajectory is going to progress subject to some rule:
 \begin{equation}
@@ -129,7 +129,7 @@ Then, constructing a generalized positive-definite function (generalized energy 
 \begin{equation}
 V=x^TPx
 \end{equation}
-Given that, by its definition, the trajectory is continually differentiable; there is a gradient matrix for $V(x)$ in the form:
+Given that, by its definition, the trajectory is continually differentiable; there is a partial gradient matrix for each component of $V(x)$ in the form:
 \begin{equation}
 \nabla V(x)=\bigg[\frac{\delta V(x)}{\delta x_1}~\frac{\delta V(x)}{\delta x_2}~\ldots~\frac{\delta V(x)}{\delta x_n}\bigg]~~~~x\in\mathbb{R}^n
 \end{equation}
@@ -141,9 +141,9 @@ Lyapunov's theorem states that \emph{iff} the candidate function $V(x)$ is posit
 \begin{equation}
 V\big(\mathbf{x}(t)\big)=V\big(\mathbf{x}(0)\big)+\int_0^t \dot{V}\big(\mathbf{x}(t)\big).dt \leq V\big(\mathbf{x}(t)\big)
 \end{equation}
-Which can be physically interpreted as the system's generalized energy function always dissipating, irrespective of trajectory path taken. With a continually decreasing energy, the system will eventually settle to some stable point, hence the trajectory exists in some bounded $\big\{x|V(x)\leq V\big(\mathbf{x}(t)\big)\big\}$, which is defined as global asymptotic stability. Every trajectory of $\dot{\mathbf{x}}(t)=f\big(\mathbf{x}(t)\big)$ converges to the zero\footnote{Adapted to zero error state tracking in lieu or zero set point settling.} setpoint as $t\rightarrow\infty$.
+Which can be physically interpreted as the system's generalized energy function always dissipating, irrespective of trajectory path taken. With a continually decreasing energy function, the system will inevitably settle to some stable point, hence the trajectory exists in some bounded $\big\{x|V(x)\leq V\big(\mathbf{x}(t)\big)\big\}$, which is defined as global asymptotic stability. Every trajectory of $\dot{\mathbf{x}}(t)=f\big(\mathbf{x}(t)\big)$ converges to the zero\footnote{Adapted to zero error state tracking in lieu or zero set point settling.} setpoint as $t\rightarrow\infty$.
 \par
-The asymptotic stability proof can be extended to exponential stability boundedness, such that if the same conditions are met and there exists some positive coefficient $\alpha>0$ such that $\dot{V}(x)\leq-\alpha V(x)$. That implies the system is globally exponentially stable as is bound in such a manner that:
+The asymptotic stability proof can be extended to exponential stability boundedness, such that \emph{iff} the same conditions are met and there exists some positive coefficient $\alpha>0$ such that $\dot{V}(x)\leq-\alpha V(x)$. That implies the system is globally exponentially stable as is bound in such a way that:
 \begin{equation}
 \norm{\mathbf{x}(t)}\leq Me^{-\alpha t/2}\norm{\mathbf{x}(0)}
 \end{equation}
@@ -161,7 +161,7 @@ Set point tracking control of the attitude plant is to then design a stabilizing
 \vec{0}
 \end{bmatrix}
 \end{equation}
-Quaternion error states are defined as the Hamilton product (\emph{difference}) between the desired and current quaternion attitudes. Quaternion error states are in contrast with the subtractive relationship for Euler angle error states. The attitude error state is calculated as:
+Quaternion error states are defined as the Hamilton product (\emph{difference}) between the desired and instantaneous quaternion attitude states. Quaternion error states are in contrast with the subtractive relationship for Euler angle error states. The attitude error state is calculated as:
 \begin{equation}\label{eq:quaternion-error}
 Q_e=Q_d^*\otimes Q_b
 \end{equation}
@@ -170,16 +170,16 @@ The relative angular velocity error between the body frame, $\mathcal{F}^b$, and
 \begin{equation}\label{eq:angular-error}
 \vec{\omega}_e=\vec{\omega}_d-\vec{\omega}_b
 \end{equation}
-The desired angular rate is taken with respect to the desired angular attitude frame, and so it must be transformed to the existing body frame.
+The desired angular rate is taken with respect to the desired angular attitude frame, and so it must be transformed back onto the existing body frame.
 \begin{equation}
 \vec{\omega}_e=Q_e^*\otimes\vec{\omega}_d\otimes Q_e-\vec{\omega}_b
 \end{equation}
-Typically for the trajectories generated here $\vec{\omega}_d=\vec{0}$, so the angular rate error is simply the negative body angular velocity. It would be easy to include a non-zero angular velocity setpoint.
+Typically for the trajectories generated here the desired angular velocity is zero; $\vec{\omega}_d=\vec{0}$. IT follows that the angular rate error is then simply the negative body angular velocity. It would be easy to incorporate a non-zero angular velocity setpoint to accommodate for higher order state derivative tracking trajectories.
 \begin{equation}
 \vec{\omega}_e=-\vec{\omega}_b
 \end{equation}
 \end{subequations}
-The time derivative of the quaternion error state is then, dependent on the angular velocity error, given as:
+The time derivative of the quaternion error state is given by Eq:\ref{eq:quaternion-deriv}. The derivative $\dot{Q}_e$ is then dependent on the angular velocity error and calculated as follows:
 \begin{equation}
 \dot{Q}_e=\frac{1}{2}Q_e\otimes\vec{\omega}_e=-\frac{1}{2}Q_e\otimes\vec{\omega}_b
 \end{equation}
@@ -190,21 +190,21 @@ The time derivative of the quaternion error state is then, dependent on the angu
 \subsubsection{PD Controller}
 \label{subsubsec:control.attitude.controllers.pd}
 %====================================================
-The control law which is used as a basic reference for comparison is a simple Proportional-Derivative structured attitude controller. Specifically, a stability proof derived from the one presented \emph{The Attitude Control Problem}\cite{attitudecontrolproblem} is used for asymptotic stability verification. An attitude PD control law, proportional to the vector quaternion error and angular rate error, designs the control torque as:
+The control law which is used as a basic reference for comparison is a simple Proportional-Derivative structured attitude controller. Specifically, a stability proof derived from the one presented \emph{The Attitude Control Problem}\cite{attitudecontrolproblem} is used for asymptotic stability verification. An attitude PD control law, proportional to the vector quaternion error only\footnote{Such that the error is $\in\mathbb{R}^3$.} and angular rate error, designs the control torque as:
 \begin{equation}\label{eq:independent-pd}
 \mu\vec{\tau}_{_{PD}}=K\vec{\omega}_e+\alpha\vec{q}_e
 \end{equation}
-Where both $K$ and $a$ are positive definite symmetrical $3\times 3$ coefficient matrices still to be determined. This control law does not take into account the quaternion error scalar. Then using a candidate Lyapunov energy function $V_{_{PD}}$:
+Where both $K$ and $\alpha$ are positive definite symmetrical $3\times 3$ coefficient matrices still to be determined. This control law neglects the quaternion scalar error and is susceptible to unwinding. Then using a candidate Lyapunov energy function $V_{_{PD}}$:
 \begin{equation}\label{eq:lyapunov-pd}
-V_{_{PD}}=\alpha\vec{q}_e\text{}^T\vec{q}_e+\alpha(q_0-1)^2+\frac{1}{2}\vec{\omega}_e\text{}^T\mathbb{I}_b\vec{\omega}_e
+V_{_{PD}}(\vec{q}_e,\vec{\omega}_e)=\alpha\vec{q}_e\text{}^T\vec{q}_e+\alpha(q_0-1)^2+\frac{1}{2}\vec{\omega}_e\text{}^T\mathbb{I}_b\vec{\omega}_e
 \end{equation}
 And recalling from Eq:\ref{eq:quaternion-states-angular} that body's the angular velocity differential $\dot{\vec{\omega}}_b$ is:
 \begin{equation}
 \dot{\vec{\omega}}_b=\mathbb{I}_b\text{}^{-1}\big(-\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b+\vec{\tau}_Q+\vec{\tau}_g+\vec{Q}+\mu\vec{\tau}\big)~~~~\in\mathcal{F}^b
 \end{equation}
-With actuator inputs $u\in\mathbb{U}$ implied and $\vec{Q}$ being a simplified representation of the net aerodynamic torque experienced by the body from the rotating propellers, drawn from Eq:\ref{eq:aerodynamic-torque}. Then, noting that from quaternion's inherent properties, it follows that:
+With actuator inputs $u\in\mathbb{U}$ implied and $\vec{Q}$ being a simplified representation of the net aerodynamic torque experienced by the body from the rotating propellers, drawn from Eq:\ref{eq:aerodynamic-torque}. Then, exploiting a unit quaternion's inherent property, it follows that:
 \begin{equation}\label{eq:4.17}
-\vec{q}\text{}^{\hspace{3pt}T}\vec{q}+q_0\text{}^2=\vec{q}\text{}^{\hspace{3pt}2}+q_0\text{}^2=1
+\norm{Q}=\vec{q}\text{}^{\hspace{3pt}T}\vec{q}+q_0\text{}^2=\vec{q}\text{}^{\hspace{3pt}2}+q_0\text{}^2=1
 \end{equation}
 Substituting the angular velocity error state, $\vec{\omega}_e=-\vec{\omega}_b$, the proportional derivative LCF in Eq:\ref{eq:lyapunov-pd} is simplified\footnote{The quaternion scalar $q_0$ in Eq:\ref{eq:4.18} is implied to be the quaternion error state scalar} to:
 \begin{subequations}\label{eq:4.18}
@@ -213,17 +213,17 @@ V_{_{PD}}=\alpha\vec{q}_e\text{}^2+\alpha q_0\text{}^2 -2q_0 + 1 +\frac{1}{2}\ve
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=2\alpha(1-q_0)+\frac{1}{2}\vec{\omega}_b^{~T}\mathbb{I}_b\vec{\omega}_b
+=2\alpha(1-q_0)+\frac{1}{2}\vec{\omega}_b\text{}^T\mathbb{I}_b\vec{\omega}_b
 \end{equation}
 \end{subequations}
-Similarly, using the fact that for a quaternion's time derivative:
+Similarly, using the fact that for a quaternion's derivative:
 \begin{equation}\label{eq:quat-derivative}
 \dot{Q}=\begin{bmatrix}
 -\frac{1}{2}\vec{q}^{\hspace{3pt}T}\vec{\omega}\\
 \frac{1}{2}\big(\vec{q}_\times+q_0\mathbb{I}\big)\vec{\omega}
 \end{bmatrix}
 \end{equation}
-Then, resolving the above into the derivative of the LCF, $\dot{V}_{_{PD}}$:
+Then, substituting the above into the derivative of the LCF, $\dot{V}_{_{PD}}$, yields:
 \begin{subequations}
 \begin{equation}
 \dot{V}_{_{PD}}=2\alpha\frac{1}{2}\vec{q}_e\text{}^T\vec{\omega}_e+\frac{1}{2}\dot{\vec{\omega}}_b\text{}^T\mathbb{I}_b\vec{\omega}_b+\frac{1}{2}\vec{\omega}_b\mathbb{I}_b\dot{\vec{\omega}}_b\text{}^T
@@ -242,7 +242,7 @@ Simplifying the angular acceleration $\dot{\vec{\omega}}_b$ and introducing the 
 \begin{equation}
 \rightarrow\dot{V}_{_{PD}}=-\alpha\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^T\big(-\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b+\vec{\tau}_Q+\vec{\tau}_g+\vec{Q}-K\vec{\omega}_b+\alpha\vec{q}_e\big)
 \end{equation}
-\vspace{-12pt}
+\vspace{-10pt}
 \begin{equation}
 =-\alpha\vec{q}_e\text{}^T\vec{\omega}_b+\alpha\vec{\omega}_b\text{}^T\vec{q}_e-\vec{\omega}_b\text{}^TK\vec{\omega}_b+\vec{\omega}_b\text{}^T\big(-\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b+\vec{\tau}_Q+\vec{\tau}_g+\vec{Q}\big)
 \end{equation}
@@ -254,7 +254,7 @@ It follows that the transpose term $\vec{q}_e\text{}^T\vec{\omega}_b\iff\vec{\om
 Then, under specific circumstances the following assumptions can be made to ensure the asymptotic stability proof can be applied. The stability obviously breaks down if any of the assumptions fail, as such the stability is not global\ldots
 \vspace{-10pt}
 \begin{enumerate}[itemsep=0em]
-\item The inertial matrix, $\mathbb{I}_b$, is roughly diagonal given the symmetrical design and similarly that the angular rate can be made small with appropriately slow trajectory updates, then:
+\item The inertial matrix, $\mathbb{I}_b$, is approximately diagonal. Which, given the symmetrical design and similarly that the angular rate can be made small with appropriately slow trajectory updates, is a fair assumption then:
 \begin{center}
 \vspace{-10pt}
 $\vec{\omega}_b^{~T}\big(\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b\big)\approx\vec{0}$
