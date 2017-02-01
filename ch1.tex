@@ -260,11 +260,11 @@ Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion represent
 Satellite actuator suites mostly include additional redundant effectors, to ensure fault tollerance, and thus require control allocation. Often the extra allocators are CMG actuators, flywheels driven by DC motors, to produce rotational torques. Fuel burning can only actuate for a certain period of time and so thrusters are scheduled to have a lower priority. Seen in the paper \cite{satellitebackstepping}; the authors, Kristiansen et al. [2005], address the over-actuation with direct and well-matched inversion before applying quaternion based backstepping for attitude control. A direct inversion solves Eq:\ref{eq:quadraticallocatorcost} such that:
 \begin{subequations}\label{eq:pseudoinv}
 \begin{equation}\label{eq:pseudoinva}
-u=B^{\dagger}({\vec{\tau}_a}^{b}-D{\vec{\omega}_{ib}}^b)
+u=B^{\dagger}({\vec{\tau}_a}^{\hspace{3pt}b}-D{\vec{\omega}_{ib}}^{\hspace{3pt}b})
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:pseudoinvb}
 B^\dagger=B^T(BB^T)^{-1}
 \end{equation}
 \end{subequations}
-Where $B$ is the effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque ${\vec{\tau}_a}^b$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of actuator distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
+Where $B$ is the effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a linear multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque ${\vec{\tau}_a}^{\hspace{3pt}b}$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of actuator distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
