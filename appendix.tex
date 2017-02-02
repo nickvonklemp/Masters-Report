@@ -230,9 +230,7 @@ Then substituting $\lambda$ back into Eq:\ref{eq:bem-thrust} and solving the int
 \section{Euler-Angles from Quaternions}
 \label{app:equations.quaternions}
 %-----------------------------------------------------
-
-
- Then, noting that the transformation from the body frame to each motor frame follows the Z-Y-X sequence,and using an inversion solution adapted from \cite{computingeuler}, where the transformation to quaternions is based on Shoemake's\cite{shoemake} definition. Each quaternion can be constructed from sequenced Euler angles, as in Eq:\ref{eq:quaternion-sequence}.
+The solution for Euler angles from an attitude quaternion is an easy trigonometric inversion. Noting that the transformation from the body frame to each motor frame follows the Z-Y-X sequence,and using an inversion solution adapted from \cite{computingeuler}, where the transformation to quaternions is based on Shoemake's\cite{shoemake} definition. Each quaternion can be constructed from sequenced Euler angles, as in Eq:\ref{eq:quaternion-sequence}.
 Then, solving for each euler angle using simultaneous solutions and inverse trigonometry:
 \begin{equation}\label{eq:app-quaternion-eule}
 \begin{bmatrix}
@@ -251,6 +249,7 @@ Where $arctan2(x,y)$ is the four-quadrant tangent inverse\cite{atan2}, producing
 \begin{equation}
 arctan2(x,~y)=PR~arg(x+y\hat{i})=Arg(x+y\hat{i})
 \end{equation}
+The use of an full quadrature arctangent function is to find solutions for Euler angles that are not only acute.
 %-----------------------------------------------------
 \chapter{Design Bill of Materials}
 \label{app:bom}
