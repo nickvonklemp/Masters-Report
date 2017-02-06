@@ -1198,7 +1198,7 @@ Conceptually the simplest control allocation solutions to Eq:\ref{eq:allocation-
 \end{equation}
 With the inversion identity:
 \begin{equation}
-B(\mathbf{x},t)B^\dagger(\mathbf{x},t)=\mathbb{I}
+B(\mathbf{x},t)B^\dagger(\mathbf{x},t)=\mathbb{I}_{m\times m}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -1215,7 +1215,7 @@ J(\mathbf{x},u,t)=\underset{u\in\mathbb{U}}{min}\frac{1}{2}\big(u-u_p\big)^TW\bi
 \end{equation}
 Its worth mentioning that Eq:\ref{eq:allocation-quadratic} has no slack variable to be optimized, unlike Eq:\ref{eq:allocation-problem}. The matrix $W$ is a positive definite matrix of weighting\footnote{Discussed in full next in Sec:\ref{subsec:control.allocation.weightedinverse}.} coefficients that prioritises different actuators in the actuator matrix $u$ higher than others. Similarly $u_p$ is the preferred actuator position matrix\footnote{Priority acutator positions are detailed in Sec:\ref{subsec:control.allocation.norminverse}.} which the system tends towards.
 \par
-The least squares solution\cite{} to Eq:\ref{eq:allocation-quadratic} for that inversion matrix $B^\dagger(\mathbf{x},t)$ is then:
+The least squares solution\cite{matrixcomputations} to Eq:\ref{eq:allocation-quadratic} for that inversion matrix $B^\dagger(\mathbf{x},t)$ is then:
 \begin{subequations}\label{eq:inversion}
 \begin{equation}
 \underset{\in\mathbb{U}}{u}=(\mathbb{I}-CB(\mathbf{x},t)\big)u_p+C\vec{\nu}_d
@@ -1271,9 +1271,9 @@ B(\mathbf{x},t)=
 \end{bmatrix}~~~~\in\mathbb{R}^{6\times 12}
 \end{equation}
 \end{subequations}
-Such that pseudo-inversion allocation rule $u=B^\dagger(\mathbf{x},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors, $\vec{T}_{1\rightarrow 4}$, for some virtual control input $\vec{\nu}_d=h(\mathbf{x}_e,t)$. Those thrust vectors numbered $1\rightarrow 4$ are then solved for explicit actuator positions $[\Omega_i,\lambda_i,\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)$ to find the actuator matrix $u\in\mathbb{U}\in\mathbb{R}^{12}$. Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$. The allocation rule in Eq:\ref{eq:pseudo-bmatrix} is the most simplified case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law to which all other proposed rules are compared against.
+Such that the pseudo-inversion allocation rule $u=B^\dagger(\mathbf{x},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors, $\vec{T}_{1\rightarrow 4}$, for some virtual control input $\vec{\nu}_d=h(\mathbf{x}_e,t)$. Those thrust vectors, numbered $1\rightarrow 4$, are then solved for as explicit actuator positions $[\Omega_i,\lambda_i,\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)$ to construct the actuator matrix $u\in\mathbb{U}\in\mathbb{R}^{12}$. Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$. The allocation rule in Eq:\ref{eq:pseudo-bmatrix} is the most simplified case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law to which all other proposed rules are compared against.
 \par
-The direct (\emph{pseudo}) inversion solution guarantees the commanded virtual control input is met and that acutators aren't necessarily saturated. In certain cases it may be desired to completely saturate certain actuators before exploiting other actuator plant inputs. That would entail an iterative "daisy chaining"\cite{allocation} allocation to be performed numerically online, enforcing saturation for each actuator and completion of control objectives. That particular approach is avoided here as completely saturating an actuator isn't desirable; in the context of thrust generation (or vectoring) with propeller's saturation is something to be avoided\ldots
+The direct (\emph{pseudo}) inversion solution guarantees the commanded virtual control input is met and that acutators aren't necessarily saturated. In certain cases it may be desired to completely saturate certain actuators before exploiting other actuator plant inputs. That would entail an iterative "daisy chaining"\cite{allocation} allocation to be performed numerically online, enforcing saturation for atleast some actuators and achievement of control objectives. That particular approach is avoided here as completely saturating an actuator isn't desirable; in the context of thrust generation (or vectoring) with propeller's saturation is something to be avoided\ldots
 %====================================================
 \subsection{Weighted Pseudo Inverse Allocator}
 \label{subsec:control.allocation.weightedinverse}
@@ -1282,66 +1282,23 @@ A weighted inversion still treats the preferred actuator positions as negligible
 \begin{equation}
 \begin{bmatrix}
 \vspace{-10pt}
-\\
+\\{\color{blue}% hex code #2323FF
 \begin{bmatrix}
 1 & 1 & 1\\
 1 & 1 & 1\\
 1 & 1 & 1\\
-\end{bmatrix}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}
+\end{bmatrix}}
 \begin{bmatrix}
 0 & 0 & 0\\
 0 & 0 & 0\\
 0 & 0 & 0\\
 \end{bmatrix}
-\vspace{3pt}
-\\
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
+{\color{purp}% hex code #6C42AA
 \begin{bmatrix}
 1 & 1 & 1\\
 1 & 1 & 1\\
 1 & 1 & 1\\
-\end{bmatrix}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}
-\vspace{3pt}
-\\
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}
+\end{bmatrix}}
 \begin{bmatrix}
 0 & 0 & 0\\
 0 & 0 & 0\\
@@ -1354,21 +1311,71 @@ A weighted inversion still treats the preferred actuator positions as negligible
 0 & 0 & 0\\
 0 & 0 & 0\\
 \end{bmatrix}
+{\color{green}% hex code #27FF27
 \begin{bmatrix}
 1 & 1 & 1\\
 1 & 1 & 1\\
 1 & 1 & 1\\
-\end{bmatrix}
+\end{bmatrix}}
 \begin{bmatrix}
 0 & 0 & 0\\
 0 & 0 & 0\\
 0 & 0 & 0\\
 \end{bmatrix}
+{\color{brn}% hex code #939125
 \begin{bmatrix}
 1 & 1 & 1\\
 1 & 1 & 1\\
 1 & 1 & 1\\
+\end{bmatrix}}
+\vspace{3pt}
+\\
+{\color{purp}% hex code #6C42AA
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
 \end{bmatrix}
+{\color{orange}% hex code #FF8000
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\vspace{3pt}
+\\
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+{\color{brn}% hex code #939125
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+{\color{red}% hex code #FF2323
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}}
 \vspace{3pt}
 \end{bmatrix}
 \end{equation}
