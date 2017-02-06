@@ -1186,7 +1186,7 @@ atan2(T_x\text{}^2,~||\vec{T}_i||\sqrt{||\vec{T}_i||\text{}^2-T_x\text{}^2})\\
 -atan2(T_x,~T_z||\vec{T}_i||)
 \end{bmatrix}
 \end{equation}
-Further simplifications could be from the definitions of each element included in Eq:\ref{eq:allocator-inersion}, but it would just be superfluous as each servo angle can be solved for. At this stage the only remaining undefined component of the entire control block is the abstracted allocation algorithms, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$, which are now addressed\ldots
+Further simplifications could be drawn from the definitions of each element included in Eq:\ref{eq:allocator-inersion}, but it would just be superfluous as each servo angle can be solved for. At this stage the only remaining undefined component of the entire control block is the abstracted allocation algorithms, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$, which are now addressed\ldots
 %====================================================
 \subsection{Pseudo Inverse Allocator}
 \label{subsec:control.allocation.inverse}
@@ -1225,7 +1225,7 @@ The least squares solution\cite{} to Eq:\ref{eq:allocation-quadratic} for that i
 C=W^{-1}B^T(\mathbf{x},t)\big(B(\mathbf{x},t)W^{-1}B^T(\mathbf{x},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-The solution in Eq:\ref{eq:inversion} is refereed to as the generalized inverse with weighted and preferred actuators. In the specific case where there are no weightings, $W=\mathbb{I}$, and no preferred actuator values are given, $u_p=\vec{0}$, the solution simplifies to:
+The solution in Eq:\ref{eq:inversion} is referred to as the generalized inverse with weighted and preferred actuators positions. In the special case where there are no weightings, $W=\mathbb{I}_{n\times n}$, and no preferred actuator values are given, $u_p=\vec{0}$, the solution reduces to:
 \begin{subequations}\label{eq:pseudo-inversion}
 \begin{equation}
 u=B^T(\mathbf{x},t)\big(B(\mathbf{x},t).B^T(\mathbf{x},t)\big)^{-1}\vec{\nu}_d
@@ -1235,7 +1235,7 @@ u=B^T(\mathbf{x},t)\big(B(\mathbf{x},t).B^T(\mathbf{x},t)\big)^{-1}\vec{\nu}_d
 =B^\ddagger(\mathbf{x},t) \vec{\nu}_d
 \end{equation}
 \end{subequations}
-The simplified unique case of Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B(\mathbf{x},t)$. The pseudo-inversion is the most basic of allocation techniques, with a least squares minimization of control effort. For a $B(\mathbf{x},t)$ matrix from Eq:\ref{eq:4.8} relating to the layout described in Fig:\ref{fig:body-frame}, the pseudo-inversion allocator is:
+The simplified unique case of Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B(\mathbf{x},t)$. The pseudo-inversion is the most basic of allocation techniques, with a least squares minimization of controller effort. For an effectiveness $B(\mathbf{x},t)$ matrix from Eq:\ref{eq:4.8} relating to the layout described in Fig:\ref{fig:body-frame}, the pseudo-inversion allocator is:
 \begin{subequations}\label{eq:pseudo-bmatrix}
 \begin{equation}
 B(\mathbf{x},t)=
@@ -1271,14 +1271,107 @@ B(\mathbf{x},t)=
 \end{bmatrix}~~~~\in\mathbb{R}^{6\times 12}
 \end{equation}
 \end{subequations}
-Such that pseudo-inversion allocation rule $u=B^\dagger(\mathbf{x},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors, $\vec{T}_{1\rightarrow 4}$, for some virtual control input $\vec{\nu}_d=h(\mathbf{x}_e,t)$. Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$. The allocation rule in Eq:\ref{eq:pseudo-bmatrix} is the simplest and most reduced case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law to which all other proposed rules are compared against.
+Such that pseudo-inversion allocation rule $u=B^\dagger(\mathbf{x},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors, $\vec{T}_{1\rightarrow 4}$, for some virtual control input $\vec{\nu}_d=h(\mathbf{x}_e,t)$. Those thrust vectors numbered $1\rightarrow 4$ are then solved for explicit actuator positions $[\Omega_i,\lambda_i,\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)$ to find the actuator matrix $u\in\mathbb{U}\in\mathbb{R}^{12}$. Noting that $B(\mathbf{x},t)$ does not necessarily have to be static with respect to either the state vector $\mathbf{x}$ or time $t$. The allocation rule in Eq:\ref{eq:pseudo-bmatrix} is the most simplified case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law to which all other proposed rules are compared against.
 \par
-The direct inversion solution guarantees the commanded virtual control input is met and that acutators aren't necessarily saturated. In certain cases it may be desired to saturate certain actuators before implemented use of other actuator plants. That would entail iterative "daisy chain"\cite{} based allocation performed numerically online given the state of saturation for each actuator. That particular approach is avoided here as saturated actuators values is undesirable, in the context of thrust generation through propellers saturation is something to be avoided\ldots
+The direct (\emph{pseudo}) inversion solution guarantees the commanded virtual control input is met and that acutators aren't necessarily saturated. In certain cases it may be desired to completely saturate certain actuators before exploiting other actuator plant inputs. That would entail an iterative "daisy chaining"\cite{allocation} allocation to be performed numerically online, enforcing saturation for each actuator and completion of control objectives. That particular approach is avoided here as completely saturating an actuator isn't desirable; in the context of thrust generation (or vectoring) with propeller's saturation is something to be avoided\ldots
 %====================================================
 \subsection{Weighted Pseudo Inverse Allocator}
 \label{subsec:control.allocation.weightedinverse}
 %====================================================
-A weighted inversion still treats the preferred actuator positions as negligible, or that $u_p=\vec{0}$ in Eq:\ref{eq:inversion}, but adds priority to different actuators in the form of a $W$ matrix. The positive definite (\emph{symmetrical}) weighting matrix is square with respect to the actuator dimension, $W\in\mathbb{R}^{12\times 12}$ (\emph{or more generally $W\in\mathbb{R}^{m\times m}$}). The Moore-Penrose inversion assumes that all actuators are equally weighted and purely diagonal, $W=\mathbb{I}$. A time dependent adaptive weighting matrix could prioritize actuators following control faults or actuator deterioration. The control objective of a weighted inversion is to design the explicit weighting coefficients as per some preferred heuristic or optimization\footnote{Not considered or discussed are adaptive weightings as those are out of the scope of this work and pertain more to FTC\cite{}.}.
+A weighted inversion still treats the preferred actuator positions as negligible, or that $u_p=\vec{0}$ in Eq:\ref{eq:inversion}, but adds priority to different actuators in the form of a $W$ matrix. The positive definite (\emph{symmetrical}) weighting matrix is square with respect to the actuator dimension, $W\in\mathbb{R}^{12\times 12}$ (\emph{or more generally $W\in\mathbb{R}^{m\times m}$}). The Moore-Penrose inversion assumes that all actuators are equally weighted and purely diagonal, $W=\mathbb{I}$. A time dependent adaptive weighting matrix could prioritize actuators following control faults or actuator deterioration. The control objective of a weighted inversion is to design the explicit weighting coefficients as per some preferred heuristic or optimization\footnote{Not considered or discussed are adaptive weightings as those are out of the scope of this work and pertain more to FTC\cite{FTCallocation}.}.
+\begin{equation}
+\begin{bmatrix}
+\vspace{-10pt}
+\\
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\vspace{3pt}
+\\
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\vspace{3pt}
+\\
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\vspace{3pt}
+\\
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1\\
+1 & 1 & 1\\
+1 & 1 & 1\\
+\end{bmatrix}
+\vspace{3pt}
+\end{bmatrix}
+\end{equation}
 \par
 Each weighting coefficient determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator, in this case the weighting matrix's divisions correlate to mixed actuator thrust vector values. The $3\times 3$ diagonal groupings relate to individual thrust component biasing ($T_{ix},T_{iy},T_{iz}$) whilst off-centre $3\times 3$ groupings mix separate thrust terms $\vec{T}_{1\rightarrow 4}$. 
 \begin{figure}[htbp]
