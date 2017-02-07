@@ -1279,126 +1279,31 @@ The direct (\emph{pseudo}) inversion solution guarantees the commanded virtual c
 \label{subsec:control.allocation.weightedinverse}
 %====================================================
 A weighted inversion still treats the preferred actuator positions as negligible, or that $u_p=\vec{0}$ in Eq:\ref{eq:inversion}, but adds priority to different actuators in the form of a $W$ matrix. The positive definite (\emph{symmetrical}) weighting matrix is square with respect to the actuator dimension, $W\in\mathbb{R}^{12\times 12}$ (\emph{or more generally $W\in\mathbb{R}^{m\times m}$}). The Moore-Penrose inversion assumes that all actuators are equally weighted and purely diagonal, $W=\mathbb{I}$. A time dependent adaptive weighting matrix could prioritize actuators following control faults or actuator deterioration. The control objective of a weighted inversion is to design the explicit weighting coefficients as per some preferred heuristic or optimization\footnote{Not considered or discussed are adaptive weightings as those are out of the scope of this work and pertain more to FTC\cite{FTCallocation}.}.
-\begin{equation}
-\begin{bmatrix}
-\vspace{-10pt}
-\\{\color{blue}% hex code #2323FF
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-{\color{purp}% hex code #6C42AA
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-\vspace{3pt}
-\\
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-{\color{green}% hex code #27FF27
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-{\color{brn}% hex code #939125
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\vspace{3pt}
-\\
-{\color{purp}% hex code #6C42AA
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-{\color{orange}% hex code #FF8000
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-\vspace{3pt}
-\\
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-{\color{brn}% hex code #939125
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0\\
-0 & 0 & 0\\
-\end{bmatrix}
-{\color{red}% hex code #FF2323
-\begin{bmatrix}
-1 & 1 & 1\\
-1 & 1 & 1\\
-1 & 1 & 1\\
-\end{bmatrix}}
-\vspace{3pt}
-\end{bmatrix}
-\end{equation}
 \par
-Each weighting coefficient determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator, in this case the weighting matrix's divisions correlate to mixed actuator thrust vector values. The $3\times 3$ diagonal groupings relate to individual thrust component biasing ($T_{ix},T_{iy},T_{iz}$) whilst off-centre $3\times 3$ groupings mix separate thrust terms $\vec{T}_{1\rightarrow 4}$. 
+Each weighting coefficient determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator, in this case the weighting matrix's divisions correlate to mixed actuator thrust vector values. The $3\times 3$ diagonal groupings $W_{1\rightarrow 4}$ relate to individual thrust component biasing ($T_{ix},T_{iy},T_{iz}$) whilst off-centre $3\times 3$ groupings mix separate thrust terms $\vec{T}_{1\rightarrow 4}$. 
+\par
+Pseudo-inversion, previously, will exactly match the virtual control input $\vec{\nu}_d=B(\mathbf{x},u,t)=\vec{\nu}_c$ so long as the actuators aren't saturated. Biasing actuators with an explicit weighting matrix could otherwise introduce a slack between the desired control requirements and their commanded counterparts. Such a case could result in instability given that trajectory tracking is stabilized through Lyapunov's theorem in the design of $\vec{\nu}_d$, not solving for allocated actuator positions. Short of iteratively\footnote{Online iterative solutions are avoided given their increased computational complexity and the possibility that, given an infinite processing time, a solution may not necessarily be found.}processing variable weights until a viable solution is found, a constraint on the nature of the weighting matrix needs to be introduced.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{figs/weighted-matrix}
 \label{fig:weighted-matrix}
 \caption{Weighting matrix biasing}
-\vspace{-20pt}
 \end{figure}
 \par
-Pseudo-inversion, previously, will exactly match the virtual control input $\vec{\nu}_d=B(\mathbf{x},u,t)=\vec{\nu}_c$ so long as the actuators aren't saturated. Biasing actuators with an explicit weighting matrix could otherwise introduce a slack between the desired control requirements and their commanded counterparts. Such a case could result in instability given that trajectory tracking enforced through Lyapunov's theorem in the design of $\vec{\nu}_d$. Short of iteratively\footnote{Online iterative solutions are avoided given their increased computational complexity and the possibility that, given an infinite processing time, a solution may not necessarily be found.}processing variable weights until a viable solution is found, a constraint on the nature of the weighting matrix needs to be introduced.
+So long each horizontal and vertical weighting groups contributing to each thrust vector, $W_{T_i}\in\mathbb{R}^{3\times 12}$, each have a unit norm, the designed control torque and force inputs will be met. Physically the resultant thrusts and torque (thrust differentials) would be balanced amongst similarly directed components. Furthermore, an additional restraint is that only permissible thrust vector mixings are between opposing pairs; $\vec{T}_1\text{\&}\vec{T}_3$ and $\vec{T}_2\text{\&}\vec{T}_4$. Such a constraint simplifies the time spent optimizing weighting coefficients in Sec:\ref{sec:simulation.allocator}.
 \par
-So long as the weighting groups contributing to each thrust vector, $W_{T_i}\in\mathbb{R}^{3\times 12}$, each have a unit norm, the designed control torque and force inputs will be met. Physically the resultant thrusts and thrust differentials would be balanced amongst similarly directed components. Furthermore the only permissible thrust vector mixings are between opposing pairs; $\vec{T}_1\text{\&}\vec{T}_3$ and $\vec{T}_2\text{\&}\vec{T}_4$. Such a restriction simplifies the time spent optimizing weighting coefficients in Sec:\ref{sec:simulation.allocator}.
+The physical consequences of giving priority biasing to thrust vector components in the $\hat{X}_b$ \& $\hat{Y}_b$\footnote{Recalling that the allocator block designs $\vec{T}_{1\rightarrow 4}$ in the body frame, $\in\mathcal{F}^b$. Then the rotation inversion block $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Eq:\ref{eq:allocator-inersion} finds $(\Omega_i,\lambda_i,\alpha_i)$ to transform $\vec{T}(\Omega_i)$ to the body frame; effectively mapping $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$.} directions is that the allocation block prioritizes using pitch or roll servos, $\lambda_i$ \& $\alpha_i$ respectively, before changing the propeller's rotational speed $\Omega_i$. Similarly balancing the of off-diagonal thrust vector mixing blends controller effort amongst opposing actuators. 
 \par
-The physical consequences of giving priority biasing to thrust vector components in the $\hat{X}_b$ \& $\hat{Y}_b$\footnote{Recalling that the allocator block designs $\vec{T}_{1\rightarrow 4}$ in the body frame, $\in\mathcal{F}^b$. Then the rotation inversion block $R^\dagger(\mathbf{x},\vec{T}_i,t)$ finds $(\Omega_i,\lambda_i,\alpha_i)$ to transform $\vec{T}(\Omega_i)$ to the body frame; effectively mapping $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$.} is that the allocation block prioritizes pitching or rolling the motor module before altering the propeller's rotational speed $\Omega_i$. Similarly balancing the of off-diagonal thrust vector mixing blends controller effort amongst opposing actuators. The actual weighting coefficients are to be optimized iteratively in Sec:\ref{sec:simulation.allocator}; aiming to minimize stray aerodynamic torques induced (Sec:\ref{subsec:dynamics.aero.bem}) and rotational kinetic energy produced. The weighting coefficient iterations are completely independent from the controller coefficient loops to be run in Sec:\ref{sec:simulation.tuning}\ldots
+The explicit weighting coefficients are to be optimized iteratively in simulation, Sec:\ref{sec:simulation.allocator}; aiming to minimize some performance metric. That metric, which evaluates relative performance of a proposed set of weighting coefficients, is penalized\footnote{More on simulations and optimizations next in Chapter:\ref{ch:simulation}-Simulations \& Results.} from actuator slew rate times and a slack variable norm;
+\begin{equation}
+\int \big(a\norm{t^{\nu_d-\nu_c}-1}+b\norm{s}\big).dt
+\end{equation}
+Where the integral is run until $t\rightarrow\infty$ over the length of a single simulation cycle. As such, the weighting matrix coefficients try to reduce the transient time taken for the actuator block to settle whilst ensuring stability isn't compromised. Optimization iterations for the weight coefficients are completely independent from the controller coefficient loops to be run in Sec:\ref{sec:simulation.tuning}\ldots
 %====================================================
 \subsection{Priority Norm Inverse Allocator}
 \label{subsec:control.allocation.norminverse}
 %====================================================
-The final inversion based allocator applies a non-zero preferred actuator position from Eq:\ref{eq:allocation-problem}; or that $u_p\not=\vec{0}\in\mathbb{U}$. The preferred actuator position is the matrix value of $u$ which the allocator naturally tends toward. An obvious choice for that value is the hovering conditions, that which keeps the quadcopter airborne. There are however some intricacies which must be discussed with respect to what is regarded as hovering conditions.
+The last allocator based on typical inversion applies a non-zero preferred actuator position from Eq:\ref{eq:allocation-problem}; or that $u_p\not=\vec{0}\in\mathbb{U}$. The preferred actuator position is the matrix value of $u$ which the allocator naturally tends toward. An obvious choice for that value is conditions required for stable hovering, those which simply keep the quadcopter airborne. There are however some intricacies which must be discussed with respect to what hovering conditions are.
 \par
 For a generalized body of weight $m$, a net gravitational force opposes upward movement in the inertial frame; $\vec{M}=[0, 0, -G.m]^T\in\mathcal{F}^I$. At the hover state there are no net forces and torques\footnote{Unwanted system dynamics like torques from an eccentric gravitational center or disturbances are compensated for in a plant dependent control law $\mu\vec{\tau}=h(\mathbf{x}_e,t)$.} acting on the system, all dynamics are balanced. As such the hovering conditions are:
 \begin{equation}\label{eq:hover}
@@ -1431,7 +1336,7 @@ However, calculating hover conditions purely in the inertial frame give no indic
 \label{fig:hover-inertial}
 \end{figure}
 \par
-Or conversely take hover conditions with respect to the body frame. The difference is that the body's attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions irrespective of the attitude. The preffered hovering conditions are then always dependent on the commanded attitude trajectory (Fig:\ref{fig:hover-body}).
+Or conversely take hover conditions with respect to the body frame. The difference is that the body's attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory (Fig:\ref{fig:hover-body}).
 \begin{equation}\label{eq:hover-body}
 \vec{\nu}_b=
 \begin{bmatrix}
