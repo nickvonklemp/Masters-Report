@@ -1303,9 +1303,9 @@ Where the integral is run until $t\rightarrow\infty$ over the length of a single
 \subsection{Priority Norm Inverse Allocator}
 \label{subsec:control.allocation.norminverse}
 %====================================================
-The last allocator based on typical inversion applies a non-zero preferred actuator position from Eq:\ref{eq:allocation-problem}; or that $u_p\not=\vec{0}\in\mathbb{U}$. The preferred actuator position is the matrix value of $u$ which the allocator naturally tends toward. An obvious choice for that value is conditions required for stable hovering, those which simply keep the quadcopter airborne. There are however some intricacies which must be discussed with respect to what hovering conditions are.
+The last allocator based on typical inversion applies a non-zero preferred actuator position from Eq:\ref{eq:allocation-problem}; or that $u_p\not=\vec{0}\in\mathbb{U}$. The preferred actuator position is the matrix value of $u$ which the allocator naturally tends toward. An obvious choice for that value are the conditions required for stable hovering, those which simply keep the quadcopter airborne. There are however some intricacies which must be discussed with respect to what hovering conditions are.
 \par
-For a generalized body of weight $m$, a net gravitational force opposes upward movement in the inertial frame; $\vec{M}=[0, 0, -G.m]^T\in\mathcal{F}^I$. At the hover state there are no net forces and torques\footnote{Unwanted system dynamics like torques from an eccentric gravitational center or disturbances are compensated for in a plant dependent control law $\mu\vec{\tau}=h(\mathbf{x}_e,t)$.} acting on the system, all dynamics are balanced. As such the hovering conditions are:
+For a generalized body of weight $m$, a net gravitational force opposes upward movement in the inertial frame; $\vec{M}=[0, 0, -G.m]^T\in\mathcal{F}^I$. At the hover state there are no net forces or torques\footnote{Unwanted system dynamics like torques from an eccentric gravitational center or disturbances are compensated for in a plant dependent control law $\mu\vec{\tau}=h(\mathbf{x}_e,t)$.} acting on the system, all dynamics are balanced. As such the hovering conditions are then simply:
 \begin{equation}\label{eq:hover}
 \begin{bmatrix}
 \mu\vec{F}_p\hspace{3pt}\\
@@ -1317,6 +1317,13 @@ For a generalized body of weight $m$, a net gravitational force opposes upward m
 \vec{0}\hspace{3pt}
 \end{bmatrix}~~~~\in\mathcal{F}^I
 \end{equation}
+\par
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\textwidth]{figs/hover-inertial}
+\caption{Hover conditions W.R.T the inertial frame $\mathcal{F}^I$}
+\label{fig:hover-inertial}
+\end{figure}
 However, calculating hover conditions purely in the inertial frame give no indication on what attitude the body has. Two options present themselves on how to solve for hover values. First; take hover conditions with respect to the inertial frame, such that the body's attitude tends to the origin always (Fig:\ref{fig:hover-inertial}). 
 \begin{equation}\label{eq:hover-inertial}
 \vec{\nu}_I=
@@ -1329,12 +1336,6 @@ However, calculating hover conditions purely in the inertial frame give no indic
 \vec{0}\hspace{3pt}
 \end{bmatrix}~~~~\in\mathcal{F}^b
 \end{equation}
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.6\textwidth]{figs/hover-inertial}
-\caption{Hover conditions W.R.T the inertial frame $\mathcal{F}^I$}
-\label{fig:hover-inertial}
-\end{figure}
 \par
 Or conversely take hover conditions with respect to the body frame. The difference is that the body's attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory (Fig:\ref{fig:hover-body}).
 \begin{equation}\label{eq:hover-body}
@@ -1354,10 +1355,11 @@ Q_b^*\otimes\vec{M}\otimes Q_b\\
 \caption{Hover conditions W.R.T the body frame $\mathcal{F}^b$}
 \label{fig:hover-body}
 \end{figure}
+\par
 Explicit actuator values are then solved for Eq:\ref{eq:hover-inertial} \& Eq:\ref{eq:hover-body} using pseudo inversion Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
 \begin{subequations}
 \begin{equation}
-1
+u_p^I=\big(B^\dagger(\mathbf{x},\vec{\nu}_i,t))
 \end{equation}
 \end{subequations}
 
