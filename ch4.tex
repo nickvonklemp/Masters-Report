@@ -1295,7 +1295,7 @@ So long each horizontal and vertical weighting groups contributing to each thrus
 The physical consequences of giving priority biasing to thrust vector components in the $\hat{X}_b$ \& $\hat{Y}_b$\footnote{Recalling that the allocator block designs $\vec{T}_{1\rightarrow 4}$ in the body frame, $\in\mathcal{F}^b$. Then the rotation inversion block $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Eq:\ref{eq:allocator-inersion} finds $(\Omega_i,\lambda_i,\alpha_i)$ to transform $\vec{T}(\Omega_i)$ to the body frame; effectively mapping $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$.} directions is that the allocation block prioritizes using pitch or roll servos, $\lambda_i$ \& $\alpha_i$ respectively, before changing the propeller's rotational speed $\Omega_i$. Similarly balancing the of off-diagonal thrust vector mixing blends controller effort amongst opposing actuators. 
 \par
 The explicit weighting coefficients are to be optimized iteratively in simulation, Sec:\ref{sec:simulation.allocator}; aiming to minimize some performance metric. That metric, which evaluates relative performance of a proposed set of weighting coefficients, is penalized\footnote{More on simulations and optimizations next in Chapter:\ref{ch:simulation}-Simulations \& Results.} from actuator slew rate times and a slack variable norm;
-\begin{equation}
+\begin{equation}\label{eq:actuator-penalty}
 \int \big(a\norm{t^{\nu_d-\nu_c}-1}+b\norm{s}\big).dt
 \end{equation}
 Where the integral is run until $t\rightarrow\infty$ over the length of a single simulation cycle. As such, the weighting matrix coefficients try to reduce the transient time taken for the actuator block to settle whilst ensuring stability isn't compromised. Optimization iterations for the weight coefficients are completely independent from the controller coefficient loops to be run in Sec:\ref{sec:simulation.tuning}\ldots
@@ -1320,11 +1320,12 @@ For a generalized body of weight $m$, a net gravitational force opposes upward m
 \par
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.55\textwidth]{figs/hover-inertial}
+\includegraphics[width=\textwidth]{figs/hover-inertial}
 \caption{Hover conditions W.R.T the inertial frame $\mathcal{F}^I$}
 \label{fig:hover-inertial}
 \end{figure}
-However, calculating hover conditions purely in the inertial frame give no indication on what attitude the body has. Two options present themselves on how to solve for hover values. First; take hover conditions with respect to the inertial frame, such that the body's attitude tends to the origin always (Fig:\ref{fig:hover-inertial}). 
+\par
+However, calculating hover conditions purely in the inertial frame give no indication on what attitude the body has. Two options present themselves on how to solve for hover values. First; take hover conditions with respect to the inertial frame, such that the body's attitude tends to the origin always. The free body diagram in Fig:\ref{fig:hover-inertial} illustrates this. 
 \begin{equation}\label{eq:hover-inertial}
 \vec{\nu}_I=
 \begin{bmatrix}
@@ -1337,7 +1338,7 @@ However, calculating hover conditions purely in the inertial frame give no indic
 \end{bmatrix}~~~~\in\mathcal{F}^b
 \end{equation}
 \par
-Or conversely take hover conditions with respect to the body frame. The difference is that the body's attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory (Fig:\ref{fig:hover-body}).
+Conversely, the second option is to take hover conditions with respect to the body frame (Fig:\ref{fig:hover-body}). The difference is that the body's preferred actuator positions are dependent on each instantaneous orientation. That attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions; irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory.
 \begin{equation}\label{eq:hover-body}
 \vec{\nu}_b=
 \begin{bmatrix}
@@ -1351,18 +1352,32 @@ Q_b^*\otimes\vec{M}\otimes Q_b\\
 \end{equation}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{figs/hover-body}
+\includegraphics[width=\textwidth]{figs/hover-inertial}
 \caption{Hover conditions W.R.T the body frame $\mathcal{F}^b$}
 \label{fig:hover-body}
 \end{figure}
 \par
 Explicit actuator values are then solved for Eq:\ref{eq:hover-inertial} \& Eq:\ref{eq:hover-body} using pseudo inversion Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
-\begin{subequations}
-\begin{equation}
-u_p^I=\big(B^\dagger(\mathbf{x},\vec{\nu}_i,t))
+\begin{subequations}\label{eq:priority-norm}
+\begin{equation}\label{eq:priority-norm-inertial}
+u_p^I=R^\dagger(\mathbf{x},\big(B^\dagger(\mathbf{x},\vec{\nu}_I,t)\big),t)
+\end{equation}
+\vspace{-15pt}
+\begin{equation}\label{eq:priority-norm-body}
+u_p^b=R^\dagger(\mathbf{x},\big(B^\dagger(\mathbf{x},\vec{\nu}_b,t)\big),t)
 \end{equation}
 \end{subequations}
-
+Where the inverse rotation $R^\dagger$ in Eq:\ref{eq:priority-norm} is applied to all four thrust vectors produced by the allocation operator $B^\dagger$. The both actuator matrices are then applied to Eq:\ref{eq:allocation-inversion} and can be combined with a non-diagonal weighting matrix.
+\begin{subequations}
+\begin{equation}
+\underset{\in\mathbb{U}}{u}=(\mathbb{I}-CB(\mathbf{x},t)\big)u_p+C\vec{\nu}_d
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+C=W^{-1}B^T(\mathbf{x},t)\big(B(\mathbf{x},t)W^{-1}B^T(\mathbf{x},t)\big)^{-1}
+\end{equation}
+\end{subequations}
+The physical consequences of both preferred actuator positions are demonstrated in simulation in Sec:\ref{subsec:simulation.comparison.allocator}. Priority actuator positions aren't simulated together with weighting matrices, the two are compared independently\ldots
 %====================================================
 \subsection{Non-linear Plant Control Allocation}
 \label{subsec:control.allocation.nonlinear}
