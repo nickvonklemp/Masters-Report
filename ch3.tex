@@ -884,11 +884,11 @@ Q(\Omega)= C_P(J)\rho\Omega^3D^5 \frac{1}{R\Omega}
 \end{equation}
 \end{subequations}
 Inertial torque responses from actuator input rates (\emph{in feedback\footnote{Response terms are used later as secondary actuator inputs in feedforward configuration rather than feedback terms to be compensated for.} configuration here}) from Eq:\ref{eq:torque-response};
-\begin{equation}
+\begin{equation}\label{eq:actuator-torque}
 \tau_Q(u)=\sum_{i=1}^4 -Q_{M_i}\otimes \tau_{\lambda_i}(u)\otimes Q_{M_i}^*-Q_{M_i'}\otimes \tau_{\alpha_i}(u) \otimes Q_{M_i'}^*~~~\in\mathcal{F}^b
 \end{equation}
 And the variable gravitational torque arm from Eq:\ref{eq:grav-torque}, dependent on net actuator positions $u$:
-\begin{equation}
+\begin{equation}\label{eq:grav-torque}
 \vec{\tau}_g(u)=\Delta C.G \times\vec{G}_b
 \end{equation}
 Finally, the body's net inertial tensor, taken from Eq:\ref{eq:body-net} is given as:

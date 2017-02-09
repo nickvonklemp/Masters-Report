@@ -1352,12 +1352,12 @@ Q_b^*\otimes\vec{M}\otimes Q_b\\
 \end{equation}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{figs/hover-inertial}
+\includegraphics[width=\textwidth]{figs/hover-body}
 \caption{Hover conditions W.R.T the body frame $\mathcal{F}^b$}
 \label{fig:hover-body}
 \end{figure}
 \par
-Explicit actuator values are then solved for Eq:\ref{eq:hover-inertial} \& Eq:\ref{eq:hover-body} using pseudo inversion Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
+Explicit actuator positions are then solved for Eq:\ref{eq:hover-inertial} \& Eq:\ref{eq:hover-body} using pseudo inversion from Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
 \begin{subequations}\label{eq:priority-norm}
 \begin{equation}\label{eq:priority-norm-inertial}
 u_p^I=R^\dagger(\mathbf{x},\big(B^\dagger(\mathbf{x},\vec{\nu}_I,t)\big),t)
@@ -1367,7 +1367,7 @@ u_p^I=R^\dagger(\mathbf{x},\big(B^\dagger(\mathbf{x},\vec{\nu}_I,t)\big),t)
 u_p^b=R^\dagger(\mathbf{x},\big(B^\dagger(\mathbf{x},\vec{\nu}_b,t)\big),t)
 \end{equation}
 \end{subequations}
-Where the inverse rotation $R^\dagger$ in Eq:\ref{eq:priority-norm} is applied to all four thrust vectors produced by the allocation operator $B^\dagger$. The both actuator matrices are then applied to Eq:\ref{eq:allocation-inversion} and can be combined with a non-diagonal weighting matrix.
+Where the inverse rotation operator, $R^\dagger$ from Eq:\ref{eq:priority-norm}, is applied to all four thrust vectors produced by the allocation operator $B^\dagger$. Both actuator matrices are then applied to Eq:\ref{eq:inversion} and could be combined with a non-diagonal weighting matrix.
 \begin{subequations}
 \begin{equation}
 \underset{\in\mathbb{U}}{u}=(\mathbb{I}-CB(\mathbf{x},t)\big)u_p+C\vec{\nu}_d
@@ -1377,12 +1377,23 @@ Where the inverse rotation $R^\dagger$ in Eq:\ref{eq:priority-norm} is applied t
 C=W^{-1}B^T(\mathbf{x},t)\big(B(\mathbf{x},t)W^{-1}B^T(\mathbf{x},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-The physical consequences of both preferred actuator positions are demonstrated in simulation in Sec:\ref{subsec:simulation.comparison.allocator}. Priority actuator positions aren't simulated together with weighting matrices, the two are compared independently\ldots
+The physical consequences of either preferred actuator positions are demonstrated in simulation in Sec:\ref{subsec:simulation.comparison.allocator}. Priority actuator positions aren't simulated together with weighting matrices, the two are compared independently\ldots
 %====================================================
 \subsection{Non-linear Plant Control Allocation}
 \label{subsec:control.allocation.nonlinear}
 %====================================================
-Despite the added actuation, each complex response from an actuator is not used . The dynamics of an actuators motor module, Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, until now have been treated as elements to be compensated for in feedback structure. An alternative approach, seen in Gasco, et al. [2012]\cite{tiltgasco,tiltrihani}, is to 
+Despite the added actuation, each complex dynamic response from an actuator excitation is not fully explotited. The dynamics of an actuator's motor module, Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, until now has been treated as an element to be compensated for in feedback structure. An alternative approach, seen in Gasco, et al. [2012]\cite{tiltgasco,tiltrihani}, is to use the actuator reactions as additional non-linear actuator plants. In \cite{tiltgasco,tiltrihani} the actuator plants and their resultant dynamics were introduced as additional dimensions to the actuator matrix $u\in\mathbb{U}$. 
+\par
+Such an approach was achievable because the authors, despite adding two extra degrees of freedom for each propeller, hadn't vectored the propeller thrust. The non-linear proposal here is to first calculate a Pseudo-inversion actuator solution \emph{without} plant compensation\footnote{Disregarding $\vec{\tau}_Q,\vec{\tau}_g$ \& $\vec{Q}$.}, then introducing those induced actuator responses from such an excitation to alleviate the control plant requirement. A subsequent revised virtual control plant input is used iteratively to find a subsequent pseudo-inversion solution; the process is cycled until the control requirements are met.
+\par
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/allocation}
+\caption{Allocation loop iteration}
+\label{fig:non-linear-allocation}
+\end{figure}
+In Fig:\ref{fig:non-linear-allocation} the iteration loop is shown, each iteration is run online and settles at a balance point. In the loop, the block $B_u(\mathbf{x},u,t)$ is a combination of non-linear actuator response terms from Eq:\ref{eq:actuator-torque},\ref{eq:grav-torque} \& \ref{eq:aerodynamic-torque}; those being $\vec{\tau}_Q$, $\vec{\tau}_g$ \& $\vec{Q}$ respectively. The settling point, where possible, a portion of the commanded control input $\vec{\nu}_d$ is achieved from the otherwise compensated for actuator response dynamics.
+
 %====================================================
 \subsection{Online Optimized Secondary Goal Allocator}
 \label{subsec:control.allocation.online}
