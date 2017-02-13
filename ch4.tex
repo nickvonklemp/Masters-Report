@@ -947,14 +947,14 @@ Most control allocation paradigms assume a linear, multiplicative relationship w
 \end{equation}
 With $\vec{\nu}_d\text{~\&~}\vec{\nu}_c\in\mathbb{R}^n,~u\in\mathbb{U}\in\mathbb{R}^m,~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, accommodating the use of inversion based allocation laws (Sec:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse},\ref{subsec:control.allocation.norminverse}). That abstraction to a multiplicative relationship with decomposed thrust components was suggested in Eq:\ref{eq:4.7}. The subsequent rotation "inversion" function, $R^\dagger(\mathbf{x},\vec{F}_i,t)$, to solve for physical actuator positions $(\Omega_i,\lambda_i,\alpha_i)$, is however as yet undefined.
 \par
-Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four decomposed stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$ to be produced by each motor module. It then follows that each of those four thrust vectors then relate\footnote{Using the quaternion analogue of rotation $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$ from Eq:\ref{eq:motor-module-rotation.a}.} to their individual associated actuator positions through a quaternion transformation:
+Assuming for the moment there is some allocation rule that, from $\vec{\nu}_d$, designs well four decomposed stabilizing 3-dimensional thrust vectors $\vec{T}_{1\rightarrow 4}$ to be produced by each motor module. It then follows that each of those four thrust vectors then relate\footnote{Using the quaternion analogue of rotation $\mathcal{F}^{M_i}\rightarrow\mathcal{F}^b$ from Eq:\ref{eq:motor-module-rotation.a}.} to their individual associated actuator positions through a quaternion \emph{rotation}:
 \begin{subequations}
 \begin{equation}\label{eq:4.101}
 \vec{T}_i= Q_{M_i}\otimes\vec{T}(\Omega_i)\otimes Q_{M_i}^*~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-16pt}
 \begin{equation}\label{eq:4.101.b}
-=Q_{z}(-\sigma_i)Q_{y}(-\alpha_i)Q_{x}(-\lambda_i)\otimes \vec{T}(\Omega_i) \otimes Q_{x}^*(-\lambda_i)Q_{y}^*(-\alpha_i)Q_z^*(-\sigma_i)
+=Q_{z}(\sigma_i)Q_{y}(\alpha_i)Q_{x}(\lambda_i)\otimes \vec{T}(\Omega_i) \otimes Q_{x}^*(\lambda_i)Q_{y}^*(\alpha_i)Q_z^*(\sigma_i)
 \end{equation}
 Where each motor thrust vector, $\vec{T}(\Omega_i)$, is:
 \begin{equation}
@@ -982,7 +982,7 @@ In the transformation Eq:\ref{eq:4.101} the angle $\sigma_i$ is an orthogonal $\
 Then reversing (or \emph{undoing}) the transformation from motor module to body frame in Eq:\ref{eq:4.101}:
 \begin{subequations}
 \begin{equation}
-\vec{T}(\Omega_i)=Q_{z}^*(-\sigma_i)Q_{y}^*(-\alpha_i)Q_{x}^*(-\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(-\lambda_i)Q_{y}(-\alpha_i)Q_z(-\sigma_i)~~~~\in\mathcal{F}^{M_i}
+\vec{T}(\Omega_i)=Q_{z}^*(\sigma_i)Q_{y}^*(\alpha_i)Q_{x}^*(\lambda_i)\otimes \vec{T}_i \otimes Q_{x}(\lambda_i)Q_{y}(\alpha_i)Q_z(\sigma_i)~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \vspace{-14pt}
 \begin{equation}
@@ -1136,7 +1136,7 @@ T_z
 \begin{bmatrix}
 \begin{bmatrix}
 s\alpha c\lambda\\
--s\alpha \\
+-s\lambda \\
 c\alpha c\lambda
 \end{bmatrix}
 ,
@@ -1148,7 +1148,7 @@ c\alpha c\lambda
 ,
 \begin{bmatrix}
 -s\alpha c\lambda\\
-s\alpha\\
+s\lambda\\
 c\alpha c\lambda
 \end{bmatrix}
 ,
@@ -1161,17 +1161,17 @@ c\alpha c\lambda
 \end{equation}
 It then becomes a simple case of inverse trigonometry to solve for both $\lambda_i$ and $\alpha_i$ respectively, for the example case of $i=1$, the following holds true and can be similarly applied to the remaining motor modules.
 \par
-Using $T(\Omega_i)=||\vec{T}_i||$ and the four quadrant secondary arctangent2 function\footnote{More on the $atan2$ function in Appendix:\ref{app:equations.quaternions}.}, $arctan2(x,y)$, for both inversion solutions to get full quadrature\footnote{Exploiting the fact that $atan(x)=asin(x/\sqrt{1+x^2})$.} results:
+Using $T(\Omega_i)=||\vec{T}_i||$ and the four quadrant secondary arctangent2 function\footnote{More on the $arctan2$ function in Appendix:\ref{app:equations.quaternions}.}, $arctan2(x,y)$, for both inversion solutions to get full quadrature\footnote{Exploiting the fact that $arctan(x)=arcsin(x/\sqrt{1-x^2})$.} results:
 \begin{subequations}
 \begin{equation}
-\lambda =  atan2\bigg(T_x\text{}^2,~||\vec{T}_i||\sqrt{||\vec{T}_i||^2-T_x^2}\hspace{2pt}\bigg)
+\lambda =  arctan2\bigg(-T_y,~\sqrt{||\vec{T}_i||^2-T_y^2}\hspace{2pt}\bigg)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\alpha_i = -atan2\big(T_x,~T_z||\vec{T}_i||\hspace{2pt}\big)
+\alpha_i = arctan2\big(T_x,~T_z\hspace{2pt}\big)
 \end{equation}
 \end{subequations}
-Therefore, the secondary component of the control allocation block, $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Fig:\ref{fig:control-block} is then summarized as a single rotation inversion function:
+Therefore, the secondary component of the control allocation block, $R^\dagger(\mathbf{x},\vec{T}_i,t)$ from Fig:\ref{fig:control-block} is then summarized as a single rotation inversion function (for motor module $i=1$):
 \begin{equation}\label{eq:allocator-inersion}
 \begin{bmatrix}
 \Omega_i\\
