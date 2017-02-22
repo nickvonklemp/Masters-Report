@@ -177,97 +177,120 @@ Quadrotor plant dynamics, as mentioned previously, are often simplified; especia
 \includegraphics[width=0.75\textwidth]{figs/arducopter-pi}
 \caption{ArduCopter PI Euler angle attitude control loop, image cited from~\cite{buildyourownquad}}
 \label{fig:arducopter-pi}
-\end{figure}
 \vspace{-10pt}
-Opensource and hobbyist flight controller's software (Arducopter\cite{arducoptersite}, Openpilot\cite{openpilotsite} whose firmware stack is now maintained by LibrePilot, CleanFlight\cite{cleanflight}, BetaFlight\cite{betaflight}, etc \ldots) for custom fabricated UAV platforms all apply their own flavour of structured attitude controllers and state estimation algorithms, based on onboard hardware sensor fusion. The article \emph{Build Your Own Quadrotor}\cite{buildyourownquad} summarizes the control structures implemented on a range of popular flight controllers. The most popular of which, ArduCopter, implements a feed-forward PI compensation controller (Fig:\ref{fig:arducopter-pi}).  PI, PD and PID controllers are all popular and effective plant independent control solutions for general attitude plants. Table:\ref{tab:controllers} lists the common attitude control blocks (not exclusively quadrotors UAVs but MAVs too) and which projects they've been implemented in, after which a critique on the more unique adaptations is given.
+\end{figure}
+Opensource and hobbyist flight controller's software (Arducopter\cite{arducoptersite}, Openpilot\cite{openpilotsite} whose firmware stack is now maintained by LibrePilot, CleanFlight\cite{cleanflight}, BetaFlight\cite{betaflight}, etc \ldots) for custom fabricated UAV platforms all apply their own flavour of structured attitude controllers and state estimation algorithms, based on onboard hardware sensor fusion. The article \emph{Build Your Own Quadrotor}\cite{buildyourownquad} summarizes the control structures implemented on a range of popular flight controllers. The most popular of which, ArduCopter, implements a feed-forward PI compensation controller (Fig:\ref{fig:arducopter-pi}).  PI, PD and PID controllers are all popular and effective plant independent control solutions for general attitude plants. Table:\ref{tab:controllers} lists the common attitude control blocks (not exclusively quadrotors UAVs but MAVs too) and which projects they've been implemented in, after which a critique on the more unique adaptations is given. One ideal backsteping controller listed in Table:\ref{tab:controllers}, presented in \cite{tpheonix}, applies an algorithm derived through Hurwitz polynomials unlike the Lyapunov based backstepping control law(s) derived later in Chapter:\ref{ch:control}.
 \begin{table}[h]
 \centering
 \begin{tabular}{ |c|l|l|c| }
 \hline
-Controller Type & Independent & Dependent & Total\\ \hline
+Controller Type & Independent & Dependent & Total Examples\\ \hline
 PI & \cite{attitudecontrolproblem} & \cite{attitudecontrolproblem} & 2\\ \hline
 PD & \cite{modelingquadcopter, tiltrihani} & \cite{fullquaternion,singleaxistilting} & 4\\ \hline
 PID & \cite{optimizedpidquadcopter, attitudecontrolproblem, quaddynamics, tiltpropellercontrol, pidlqr} & \cite{attitudecontrolproblem, starmac, adaptivedisturbancecontrol} & 8\\ \hline
 Lead & \cite{x4flyer, dynamicmodelling2009} & N/A & 2\\ \hline
-IBC & \cite{tpheonix, backsteppingquadcoptercontrol}\tablefootnote{\cite{tpheonix} applies an IBC algorithm derived through Hurwitz polynomials, not lyapunov theorem.} & \cite{backsteppingquadcoptercontrol} & 3\\ \hline
-ABC & \multicolumn{2}{l|}{\cite{adaptivebackstep, nonlinearadaptive, 6dofbackstep, intelligentbackstep}} & 4\\ \hline
-LQR & \cite{pidlqr} & N/A & 1\\ \hline
+LQR & \cite{pidlqr} & N/A & 1\\ 
+\hline
+\multicolumn{3}{|c|}{Backstepping controllers} & \\
+\hline
+Ideal & \cite{tpheonix, backsteppingquadcoptercontrol} & \cite{backsteppingquadcoptercontrol} & 3\\ \hline
+Adaptive & \multicolumn{2}{l|}{\cite{adaptivebackstep, nonlinearadaptive, 6dofbackstep, intelligentbackstep}} & 4\\ \hline
 \end{tabular}
 \caption{A breakdown of common attitude controllers}
 \label{tab:controllers}
 \end{table}
 \par
 \vspace{-15pt}
-In a collection of papers, written by Bouabdallah, et al.[2003,2004,2007]\ldots , arguably the most prolific early quadrotor authors, a range of different control implementations are derived and reviewed. Their last paper, \emph{Full Control of a Quadrotor}[2007]\cite{fullquadcoptercontrol}, derived and pratically tested an Integral Backstepping attitude controller on an OS4 quadrotor platform. It builds on their research from an earlier paper, [2003]\cite{pidlqr}, wherein an analysis of PID vs LQR attitude controllers in the context of quadrotors is posed. LQR controllers aim to optimize the controller effort (with $u\in\mathbb{U}$, controller effort is then $||u||$ or the $L_2$ norm of the plant input). Although, in theory, solving the assocaited Ricatti$^{\dagger}$ cost function may produce an optimial, stable and efficient control law it needs exact plant matching. In reality, exact plant matching is difficult to achieve for a quadcopter or any aerospace body for that matter. The resultant controller in \cite{pidlqr} achieved asymptotic stability but had poor steady state performance due to low accuracy of the identified actuator dynamics and poor confidence inertial measurements.
+In a collection of papers, written by the most prolific early quadrotor author(s) S. Boubdallah and R. Siegward \cite{pidlqr,indoorslidingmode, fullquadcoptercontrol}; a range of different attitude control implementations are surveyed and tested on the OS4 platform. The final paper, \cite{fullquadcoptercontrol}, derived and pratically tested an integral backstepping attitude controller on the OS4 quadrotor platform. It builds on their research presented earlier in \cite{pidlqr} which provides an analysis of PID vs linear quadratic regulator attitude controllers, specifically in the context of underactuated quadrotor attitude control. LQR controllers aim to optimize the controller effort with actuator inputs $u\in\mathbb{U}$; controller effort is then $\norm{u}_2$ or the $L_2$ norm (magnitutde) of the plant input. Although, in theory, solving the assocaited Ricatti cost function may produce a cost optimial, stable and efficient control law it needs exact plant matching. In reality, exact plant matching is difficult to achieve for a quadcopter or any aerospace body for that matter. The resultant controller in \cite{pidlqr} achieved asymptotic stability but had poor steady state performance due to low accuracy of the identified actuator dynamics and poor confidence inertial measurements.
 \par
-Adaptive Backstepping Control\cite{backstepping}(any of the examples in Table:\ref{tab:controllers}) builds on nominal IBC fundamentals by introducing an aditional disturbance state term in the LCF used for the backstepping iteration. The drawback with this form of Backstepping approach is that, from the Lyapunov control theorem, a derivative for the estimated disturbance (or an \emph{update law}) is needed. Disturbance approximation has been investigated thoroughly but, for a signal without \emph{apriori} information, some heuristic needs to be adopted with the approximation, which usually involves some compromise.
-\newpage
-In one example, \cite{nonlinearadaptive}, the authors implemented a statistical $proj(.)$ operator based technique. Which, when used in adaptive control, the projection operator \cite{outputfeedback}, $proj(.)$, ensures a derivative based estimator is bounded for adaptive regression approxmation \cite{nonlinearregression}.
+Adaptive Backstepping Control (in \cite{backstepping} or any other example in Table:\ref{tab:controllers}) expands on nominal ideal backstepping fundamentals by introducing disturbance and plant uncertainty terms into the Lyapunov energy function to be used for the backstepping suppression. For Lyapunov iteration the adaptive backstepping process requires a disturbance estimate derivative or \emph{update law} which is often difficult to quantify. Approximation of plant disturbances without \emph{apriori} information is a complex subject. At some point in the design an approximation heuristic must be adopted and typically involved some compromise of performance or accuracy. One example of distrubance approximation in \cite{nonlinearadaptive} proposes using a statistical projection operator (or $proj(.)$, \cite{adaptiveregulation}). When used in adaptive control, presented similarly in \cite{outputfeedback}, the projection operator $proj(.)$ ensures a derivative based estimator that is bounded for adaptive regression approxmation\cite{nonlinearregression}.
 \par
-Although the control implementation isn't backstepping based, in \cite{adaptiveslidingmode}, a sliding mode controller was used to compensate for the disturbances in an Unmanned Submersible Vehicle atttiude plant. The underwater current disturbances were approximated using a fuzzy logic system, specifically a \emph{zero-order TSK} fuzzy controller. The TSK system has been proven to act in the same way as an Artificial Neural Network approximator\cite{zeroTSK}; where the fuzzy TSK system is more comprehensible than the latter. Statistical analysis and investigation of approximators without \emph{apriori} knowledge of a system are well beyond the scope of this research but are worth mentioning.
+Although the control implementation is not explicitly backstepping, in \cite{adaptiveslidingmode} a sliding mode controller was used to compensate for the disturbances in an Unmanned Submersible Vehicle atttiude plant. The underwater current disturbances were approximated using a fuzzy logic system, specifically a \emph{zero-order Takagi-Sugeno-kang} fuzzy approximator. The TSK system has been shown in \cite{zeroTSK} to mimic an artificial neural network approximator; where the fuzzy TSK system is more comprehensible than the latter. Statistical analysis and investigation of approximators without \emph{apriori} knowledge of a system are well beyond the scope of this research but are worth mentioning.
 %====================================================
 \subsubsection*{Single/Dual Axis Control \& Allocation}
 \label{subsubsec:intro.lit.control.allocation}
 %====================================================
-The extra actuation introduced with single and dual axis articulation provides room for more control goals to be achieved as the order of actuation increases. Of the few papers published on tilting-axis quadrotors, PD controllers (Nemati et al.[2014]\cite{singleaxistilting} and again in Gasco [2012]\cite{tiltgasco} \& Rihani [2012]\cite{tiltrihani}) and PID controllers (Ryll, et al. [2012,2013]\cite{tiltpropellercontrol,tiltpropellerflight}) are the norm for attitude control blocks. For either of these systems there needs to be an allocation rule to distribute a commanded input amongst the actuator set. In \cite{allocation}, Johansen, et al. [2012] describes\footnote{State variable representations of \cite{allocation} were changed to match this dissertation's conventions.} the control allocation problem for a dynamic plant:
+The steady state attitude control actuation introduced with either single or dual axis articulation provides room for more control goals to be achieved. Of the few papers published on tilting-axis quadrotors, PD controllers (used in \cite{singleaxistilting} and again in \cite{tiltgasco,tiltrihani}) and PID controllers (collectively \cite{tiltpropellercontrol,tiltpropellerflight}) are the standard fare for attitude control blocks. For either of these systems there needs to be an allocation rule to distribute a commanded input amongst the actuator set. In the control allocation survery \cite{allocation} the author describes the control allocation problem for a dynamic plant:
 \begin{subequations} 
+\vspace{-6pt}
 \begin{equation} \label{eq:3.1}
-\dot{\mathbf{x}}=f(\mathbf{x},t)+g(\mathbf{x},t)\vec{\nu}
+\dot{\vec{\mathbf{x}}}=f(\vec{\mathbf{x}},t)+g(\vec{\mathbf{x}},\vec{\nu},t)~~~~~\vec{\mathbf{x}}\in\mathbb{R}^n,\vec{\nu}\in\mathbb{R}^m
 \end{equation}
-\vspace{-15pt}
+\vspace{-20pt}
 \begin{equation} \label{eq:3.2}
-y=c(\mathbf{x},t)
+\vec{y}=c(\vec{\mathbf{x}},t)
 \end{equation}
 \end{subequations}
-\emph{\color{Gray} Note in the state space Equation:\ref{eq:3.1}, it's assumed the plant input, $\vec{\nu}$, has a linear multiplicative relationship with the input response, $g(\mathbf{x},t,\vec{\nu})\Rightarrow g(\mathbf{x},t)\vec{\nu}$.}
+\emph{\color{Gray} State variable representations of \cite{allocation} were changed to match this dissertation's conventions. In the state space Eq:\ref{eq:3.1}, it is assumed the plant input, $\vec{\nu}$, has a linear multiplicative relationship with the input response, $g(\mathbf{x},t,\vec{\nu})\Rightarrow g(\mathbf{x},t)\vec{\nu}$. That linear relationship is a prerequisite for most allocation inversion rules.}
 \\
-With a state $\mathbf{x}\in \mathbb{R}^n$ and $f(\mathbf{x},t)$ \& $g(\mathbf{x},t)$ being the plant's dynamics and input response respectively. In set point tracking, the output is then \emph{tracking} the state $y=c(\mathbf{x},t)=\mathbf{x}$, and hence $y \in \mathbb{R}^n$. In an ideal well posed system the number of actuator inputs equals the number of controllable variable outputs; that being $dim(\mathbf{x})=dim(\nu)\in \mathbb{R}^n$. In the case where the control input $\nu \in \mathbb{R}^m$, if $m>n$ the problem is then over-actuated and a level of abstraction is needed; an asymptotically stabilizing virtual control input $\nu_d$ is designed by a control law $\nu_d=h(\mathbf{x}_e,t)$ to affect dynamics. The goal is to then find a function that maps $\mathbb{R}^m \rightarrow \mathbb{R}^n$ for an actuator matrix $u \in \mathbb{U}^m$. An over-actuated plant can be described in state-space as:
-\begin{subequations}
-\vspace{-10pt}
-\begin{equation} \label{eq:3.3}
-\dot{x}=f(\mathbf{x},t)+g(\mathbf{x},t)\nu_d~~~~\nu_d \in \mathbb{R}^n
+Where in Eq:\ref{eq:3.1} has a state $\vec{\mathbf{x}}\in \mathbb{R}^n$ with dynamics $f(\vec{\mathbf{x}},t)$ and a plant input response $g(\vec{\mathbf{x}},\vec{\nu},t)$. Setpoint tracking control equates the output variable with the state, in practice only state estimate is available:
+\begin{equation}
+y=c(\vec{\mathbf{x}},t)=h(\vec{\mathbf{x}})=\hat{\mathbf{x}}
 \end{equation}
-\vspace{-15pt}
+Hence $y \in \mathbb{R}^n$. In an ideal, well posed system the number of actuator inputs equals the number of outputs; that being $dim(\vec{\mathbf{x}})=dim(\vec{\nu})\in \mathbb{R}^n$. In the case where the control input $\vec{\nu} \in \mathbb{R}^m$, if $m>n$ the problem is then over-actuated and an abstraction is needed. The system commands (mechanically) a physical control input $\vec{\nu}_c$, dependent on explicit actuator positions $u\in\mathbb{U}\in\mathbb{R}^m$ as per some \emph{effectiveness} function drawn from the actuator plant's dynamics:
+\begin{equation}
+\vec{\nu}_c=B(\vec{\mathbf{x}},u,t)~~~~\in\mathbb{R}^n
+\end{equation}
+Assuming that some higher level control law designs well a stabilizing virtual control input from the error state(s) $\vec{\nu}_d=h(\vec{\mathbf{x}}_d,\dot{\vec{\mathbf{x}}}_d,\vec{\mathbf{x}}_b,\dot{\vec{\mathbf{x}}}_b,t)~\in\mathbb{R}^n$, the allocation rule then aims to solve for an explicit actuator position $u\in\mathbb{U}\in\mathbb{R}^m$ which actuates the physical control input $\vec{\nu}_c$, minimizing the deviation $\vec{s}$ between virtual desired and physically commanded inputs $\vec{\nu}_d$ and $\vec{\nu}_c$ respectively. Allocation is effectively a paradigm which transforms dimensions $\mathbb{R}^m\rightarrow\mathbb{R}^n$ using a commanded actuator matrix position $u\in\mathbb{R}^m$. An over-actuated plant can be summarized in non-linear state space as:
+\begin{subequations}
+\vspace{-2pt}
+\begin{equation} \label{eq:3.3}
+\dot{\vec{\mathbf{x}}}=f(\vec{\mathbf{x}},t)+g(\vec{\mathbf{x}},\vec{\nu}_c,t)~~~~\vec{\mathbf{x}}\in \mathbb{R}^n
+\end{equation}
+\vspace{-18pt}
 \begin{equation} \label{eq:3.4}
-\nu_c=B(\mathbf{x},u,t)\Rightarrow B(\mathbf{x},t)u~~~~u\in\mathbb{U}^m,~\nu_c\in\mathbb{R}^n
+\vec{\nu}_c=B(\vec{\mathbf{x}},u,t)~~~~\vec{\nu}_c\in\mathbb{R}^n,~u\in\mathbb{U}^m
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-y=c(\mathbf{x},t)=\mathbf{x}
+\text{with}~u~\text{subject to some}~min(\vec{s}\hspace{3pt})~\text{such that}~\vec{s}=\vec{\nu}_d-\vec{\nu}_c
+\end{equation}
+\vspace{-15pt}
+\begin{equation}
+\vec{\nu}_d=h(\vec{\mathbf{x}}_d,\dot{\vec{\mathbf{x}}}_d,\vec{\mathbf{x}}_b,\dot{\vec{\mathbf{x}}}_b,t)~~~~\vec{\nu}_d\in\mathbb{R}^n
+\end{equation}
+\vspace{-15pt}
+\begin{equation}
+y=c(\vec{\mathbf{x}},t)=\hat{\mathbf{x}}
 \end{equation}
 \end{subequations}
-$B(\mathbf{x},u,t)$ is the effectiveness function which quantifies how the actuator inputs $u$ relate to the virtual commanded input $\nu_c$. $B(\mathbf{x},t,u)$ can be abstracted to a multiplicative relationship $B(\mathbf{x},t)u$ if the plant's dynamics permit it, such that; $B(\mathbf{x},t)\in\mathbb{R}^{n\times m}$. For generic set point tracking the control law will design a desired virtual control input $\nu_d$, the allocation rule then has to solve $u$ for $\nu_c$ such that for some slack variable $s=\nu_c-\nu_d$ is minimized:
+The effectiveness function $B(\mathbf{x},u,t)$ quantifies how actuator inputs $u\in\mathbb{U}$ correlate to the physically commanded plant input $\nu_c$. Inversion based allocation rules which solve for explicit actuator solutions (Sec:\ref{sec:control.allocation}) require that $B(\vec{\mathbf{x}},t,u)$ can be abstracted to a linear multiplicative relationship $B(\vec{\mathbf{x}},t)u$ with $B(\vec{\mathbf{x}},t)\in\mathbb{R}^{n\times m}$, such that a generalized inverse of $B(\mathbf{x},t)$ can be found. For generic set point tracking the control law will design a desired virtual control input $\nu_d$, the allocation rule then has to solve $u$ for $\nu_c$ such that for some slack variable $s=\nu_c-\nu_d$ is minimized:
 \begin{equation}\label{eq:quadraticallocator}
 \underset{u \in \mathbb{R}^m ,s \in \mathbb{R}^n}{min}\norm{Q_s} ~\text{subject to} ~B(\mathbf{x},u,t) - h(\mathbf{x}_e,t)=\nu_c-\nu_d=s~~~~u \in \mathbb{U}
 \end{equation}
-Which ensures the commanded input $\nu_c$ tracks the desired control input $\nu_d$; $\nu_c\rightarrow\nu_d$ as per some cost function of the slack variable $Q_s$. Mostly the L2 norm, $\norm{Q_s}$, is used. In an over-actuated system it then follows that there is a whole set of possible inputs for each $\nu_c$. A unique actuator solution (rather than a family of solutions) to Eq:\ref{eq:quadraticallocator} needs a secondary objective function, $J(\mathbf{x},u,t)$. Eq:\ref{eq:quadraticallocator} then becomes;
+Which ensures the commanded input $\nu_c$ tracks the desired control input $\nu_d$; $\nu_c\rightarrow\nu_d$ as per some cost function of the slack variable $Q_s$. Mostly the L\textsubscript{2} norm, $Q_s=\norm{s}_2$, is used. In an over-actuated system it then follows that there is a whole set of possible inputs for each $\nu_c$. A unique actuator solution (rather than a family of solutions) to Eq:\ref{eq:quadraticallocator} needs a secondary objective function, $j(\mathbf{x},u,t)$. Eq:\ref{eq:quadraticallocator} then becomes;
 \begin{equation} \label{eq:quadraticallocatorcost}
-\underset{u \in \mathbb{R}^m ,s \in \mathbb{R}^n}{min}(\norm{Q_s}+J(\mathbf{x},u,t)) ~\text{subject to} ~\nu_c - \nu_d=s~~~~u \in \mathbb{U}
+\underset{u \in \mathbb{R}^m ,s \in \mathbb{R}^n}{min}(\norm{Q_s}+j(\mathbf{x},u,t)) ~\text{subject to} ~\nu_c - \nu_d=s~~~~u \in \mathbb{U}
 \end{equation}
 \par
-Those same authors, Johansen and Tj{\o}nn\r{a}s [2004,2005,2008], proposed multiple control allocation solutions to a variety of systems. Following \cite{allocation}; in a subsequent paper [2005]\cite{efficientallocation}, Johansen and Tj{\o}nn\r{a}s introduce a secondary cost function, driving the solution away from the typical quadratic programming direct or weighted inversion solution. Aiming for optimal efficiency and not just actuator saturation. In a followup paper, [2008]\cite{adaptiveallocation}, they propose an online adaptive algorithm approach. Using a Lyapunov energy function the minimization adaptive law always settles to a feasible solution.
+Those same authors, Johansen and Tj{\o}nn\r{a}s from \cite{allocation,efficientallocation,adaptiveallocation}, proposed multiple control allocation solutions to a variety of systems. Following \cite{allocation}; in a subsequent paper \cite{efficientallocation}, the authors introduced a secondary cost function, driving the solution away from the typical linear quadratic programming pseudo and weighted inversion solutions.  Aiming for actuator efficiency and not just input saturation, a sequent paper \cite{adaptiveallocation} proposed adaptively allocation actuator positions online. Using a Lyapunov energy equation as the online cost function, the minimization adaptive law was ensured to always settle on a feasible solution.
 \par
-Over-actuation is not something often applied to quadrotors and rather than providing a comprehensive literature review of associated papers here (which are all mostly theoretical derivation), the contextual application and solutions are expanded upon later in Sec:\ref{sec:control.allocation}. The only overactuated quadrotor\footnote{Birotor dual-axis tilting makes the system critically actuated and so requires no allocation.} literature which covers allocation of the extra actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse (sic Moore Penrose Inverse \cite{moorepenrose}) allocation rule. A prerequisite for pseudo inversion is a multiplicative \emph{linear} control effectiveness relationship for Eq:\ref{eq:3.4}. 
+Over-actuation is not often applied to quadrotors and rather than providing a comprehensive literature review of associated papers here (which are all mostly theoretical derivation), the contextual application and solutions are expanded upon later in Sec:\ref{sec:control.allocation}. The only overactuated quadrotor literature which covers allocation of the extra actuators is \cite{tiltgasco,tiltrihani}, where the authors apply a weighted pseudo inverse (otherwise known as the Moore-Penrose Inverse \cite{moorepenrose}) allocation rule. Birotor dual-axis tilting, detailed earlier, results in a critically actuated system and so requires no allocation. As mentioned before, a prerequisite for (\emph{pseudo}) inversion is a multiplicative \emph{linear} control effectiveness relationship for Eq:\ref{eq:3.4}. 
 \par
-Gasco, et al. [2012]\cite{tiltgasco,tiltrihani} applied weighted inversion, relying on some very specific assumptions to achieve that linearity relationship in Eq:\ref{eq:3.4}. For the net torque response the authors assumed the extra actuators pitch and roll angular rates, $\dot{\phi}$~and~$\dot{\theta}$ respectively, were proportionally related as follows:
+The only overactuated quadcopter paper which addressed its required control allocation was that of Gasco and Rihani in \cite{tiltgasco,tiltrihani}. Their solution applied weighted inversion, relying on some very specific assumptions to achieve linearity for the system in Eq:\ref{eq:3.4}. For the gyroscopic torque response to extra actuator $\eta$ or $\gamma$ pitching and rolling movement:
 \begin{equation}
-\dot{\phi}\approx\frac{\phi}{t_{rise}}
+\tau=J\Omega\dot{\eta}~~\in\mathcal{F}^b
 \end{equation}
-In which $t_{rise}$ is the actuators rise time to a set-point. As a result the gyroscopic first order torque $\tau_{gyro}=-\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b$ and second order inertial torque $\tau=\mathbb{I}_b\dot{\vec{\omega}}_b$ are functions of position $\phi$ or $\theta$, not their derivatives. The extent of that consequence is contrasted with the allocation solution in Sec:\ref{sec:control.allocation}.
+With $\Omega$ being that propellers rotational speed and $\dot{\eta}$ being the inducing servos rate. The authors assumed the extra actuators pitch and roll angular rates; $\dot{\eta}$~and~$\dot{\gamma}$ respectively, were both proportionally related to their positions $\eta$ and $\gamma$ as follows:
+\begin{equation}
+\dot{\eta}\approx \frac{1}{t_{settle}}\eta~~\text{and}~~\dot{\gamma}\approx \frac{1}{t_{settle}}\gamma
+\end{equation}
+Where $t_{settle}$ is a constant derived the actuator transfer function's settle time from a unit step. Such an assumption holds true so long as $\Delta\eta$ or $\Delta\gamma$ is smaller than that unit step used, a restrictive and unrealistic assumption but implemented nonetheless. It then follows that the gyroscopic first order torque $\tau=-\vec{\omega}_b\times J_b\vec{\omega}_b$ and second order inertial torque $\tau=J_b\dot{\vec{\omega}}_b$ responses are both functions of their associated servo positions $\eta$ and $\gamma$, not respective their derivatives. The extent of that consequence is contrasted with the allocation solution in Sec:\ref{sec:control.allocation}.
 %====================================================
-\vspace{-10pt}
 \subsubsection*{Satellite Attitude Control}
 %====================================================
-Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion represented or otherwise, is a topic well covered in the field of satellite attitude control; \cite{axissymmetricspacecraft, satellitebackstepping,lpvbackstepping}. The \emph{status quo} for recent research is on non-linear adaptive attitude backstepping control systems, wherein the adaptive update rule is the novel contribution. Often plant uncertainty affects the inertial tensor of a satellite. In \cite{lpvbackstepping}, the authors Wang Jia, et al. [2010], proposed applying adaptive backstepping to compensate for steady state errors of (asymmetric) inertial estimations. Alternatively, instead of deliberating on costly non-orbital prelaunch inertial measurements Bodrany, et al.[2000]\cite{inertiaestimation} developed an algorithm for estimating the inertial tensor based on controlled single axis perturbations. Such an approach does assume any initial estimates are sufficiently close to true body values such that they will settle and stability can be ensured, irrespective of how unacceptable the transient performance may be.
+Unconstrained attitude set-point tracking for 6-DOF bodies, quaternion represented or otherwise, is a topic well covered in the field of satellite attitude control; \cite{axissymmetricspacecraft, satellitebackstepping,lpvbackstepping}. The \emph{status quo} for recent research is on non-linear adaptive attitude backstepping control systems, wherein the adaptive update rule is the novel contribution. Plant uncertainty always adversly affects the confidence in inertial tensor measurements critical to the attitude control of a satellite. In \cite{lpvbackstepping} the authors proposed applying adaptive backstepping to compensate for steady state plant uncertainty errors of the (asymmetric) inertial estimations. 
 \par
-Satellite actuator suites mostly include additional redundant effectors, to ensure fault tollerance, and thus require control allocation. Often the extra allocators are CMG actuators, flywheels driven by DC motors, to produce rotational torques. Fuel burning can only actuate for a certain period of time and so thrusters are scheduled to have a lower priority. Seen in the paper \cite{satellitebackstepping}; the authors, Kristiansen et al. [2005], address the over-actuation with direct and well-matched inversion before applying quaternion based backstepping for attitude control. A direct inversion solves Eq:\ref{eq:quadraticallocatorcost} such that:
+Alternatively, instead of deliberating on costly non-orbital prelaunch inertial measurements, \cite{inertiaestimation} developed an algorithm for estimating the inertial tensor using on controlled single axis perturbations. Such an approach does assume any initial estimates are sufficiently close to true body values such that they will settle and stability can be ensured, irrespective of how unacceptable the transient performance may be.
+\par
+Satellite actuator suites mostly include additional redundant effectors, to ensure fault tolerance, and thus require control allocation. Often the extra allocators are control moment gyroscopic actuators, flywheels driven by DC motors, to produce rotational torques. Thrusters have a limited amount of fuel and can actuate the system a finite number of times. The thrusters can then be scheduled with a lower priority, biasing electronic CMG actuators. In \cite{satellitebackstepping} the authors address the over-actuation with direct pseudo inversion before applying quaternion based backstepping for attitude control. Such an inversion solves for Eq:\ref{eq:quadraticallocatorcost}:
 \begin{subequations}\label{eq:pseudoinv}
 \begin{equation}\label{eq:pseudoinva}
-u=B^{\dagger}({\vec{\tau}_a}^{\hspace{3pt}b}-D{\vec{\omega}_{ib}}^{\hspace{3pt}b})
+u=B^{\dagger}\vec{\nu}_d
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:pseudoinvb}
 B^\dagger=B^T(BB^T)^{-1}
 \end{equation}
 \end{subequations}
-Where $B$ is the effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). It's assumed there's a linear multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque ${\vec{\tau}_a}^{\hspace{3pt}b}$ then dictates the input $u$ as in Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed W.R.T quadcopters; the pseudo inversion method of actuator distribution applies quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
+Where $B$ is the effectiveness matrix and $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). Moreover there is an assumed linear multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque $\vec{\nu}_d$ then dictates the input $u$ as per Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed with respect to quadcopters; the pseudo inversion method of actuator distribution applies linear quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
