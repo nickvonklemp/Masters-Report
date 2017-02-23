@@ -312,8 +312,9 @@ Motor frames, numbered $1\rightarrow 4$, transform to the body frame first by an
 \par
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{figs/body-frame}
+\includegraphics[width=0.88\textwidth]{figs/body-frame}
 \caption{Body frame axes layout}
+\vspace{-15pt}
 \label{fig:body-frame}
 \end{figure}
 \par
@@ -361,33 +362,63 @@ The entire actuator space, including propeller speed $\Omega_i~\text{[RPS]}$, is
 %====================================================
 \subsection*{Inertias}
 An undesirable side effect of the relative rotations within a non-rigid body are the inertial responses associated with such movements. Given Newton's Second Law of Rotational Motion; each applied rotation is going to produce an equal but opposite reaction onto the principle inducing body. Similarly a gyroscopic cross product from rotational velocities is also present when rotating bodies that have their own relative rotation. Such first and second order effects are often neglected given that the angular rates which they are dependent on are mostly small enough to approximate as zero, $\vec{\omega}_b\approx\vec{0}$. A dynamic set-point (non-zero) attitude tracking plant is, however, going to produce non-zero time varying body angular velocities and accelerations. Unlike a traditionally actuated quadrotor, such effects will need to be compensated for.
+\par
+The manifestation of those torque responses are derived next in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Both inertial and gyroscopic effects are dependent on the rotational body's moment of inertia about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. The following inertias presented are all calculated from a SolidWorks model with masses to match physical prototype measurements. Connected bodies affected by the same angular velocity are grouped together into inertial matrices. 
+\par
+The first rotational body to consider is that of the propeller and rotor assembly (Fig:\ref{fig:inertia-prop}, excluding the motors stator). The "rotor" assembly has a net mass $\text{m}_{\text{rot}}=27~\text{g}$ with a center of mass $\text{C.M}_{\text{rot}}=[0~0~19.5]^T~\text[mm]$ relative to the entire motor modules center of rotation. At high speeds the propellers inertial contribution is simplified that of a solid disc. The entire rotor assembly then has an inertia $J_{rot}$, aligned as shown in Fig:\ref{fig:inertia-prop}:
+\begin{equation}
+J_{rot}=\begin{bmatrix}
+151.71 & 0.00 & 0.00\\
+0.00 & 151.66 & 0.00\\
+0.00 & 0.00 & 34.07
+\end{bmatrix}~~~~[\text{g.cm}^2]
+\end{equation}
+The net angular velocity of the rotor assembly relative to the body frame results from the motors own rotational velocity $\Omega_i$ and the servo rates; $\dot{\lambda}_i$ and $\dot{\alpha}_i$, both transformed onto the motor frame $\mathcal{F}^{M_i}$.
+\begin{equation}\label{eq:net-angular-rot}
+\vec{\omega}_{rot}=\begin{bmatrix}
+0\\
+0\\
+\Omega_i
+\end{bmatrix}
++\frac{d\lambda_i}{dt}\big(R_x(\lambda_i)\big)\begin{bmatrix}
+\dot{\lambda_i}\\
+0\\
+0
+\end{bmatrix}+\frac{d\alpha_i}{dt}\big(R_y(\alpha_i)R_x(\lambda_i)\big)\begin{bmatrix}
+0\\
+\dot{\alpha_i}\\
+0
+\end{bmatrix}
+\end{equation}
+\emph{\color{gray} Eq:\ref{eq:net-angular-rot} is later replaced with a quaternion operation. That and the remaining angular velocity equations derived here are therefore not expanded further in their current rotation matrix form(s)\ldots}
 \begin{figure}[htbp]
 \centering
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figs/inertia-prop}
+\caption{Rotor assembly rotational structure}
+\label{fig:inertia-prop}
+\end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \includegraphics[width=\textwidth]{figs/inertia-inner}
 \caption{Inner ring rotational structure}
 \label{fig:inertia-inner}
 \end{subfigure}
-\begin{subfigure}{0.49\textwidth}
-\includegraphics[width=\textwidth]{figs/inertia-middle}
-\caption{Middle ring rotational structure}
-\label{fig:inertia-middle}
-\end{subfigure}
 \caption{Inertial measurement references}
+\vspace{-20pt}
 \end{figure}
 \par
-The manifestation of those responses are derived next in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Both of those effects are dependent on the rotational body's inertial tensor\footnote{All inertias are assumed symmetrical and calculated in SolidWorks with overridden masses to match physical prototype measurements, all those values are included in Appendix:\ref{app:bom}} about each respective rotational axis. The magnitude of those inertias are obviously a by-product of the structure's design. 
+The next assembly on which the motor frame $\mathcal{F}^{M_i}$ is attached to is the inner ring assembly. The inner ring structure is a $92~\text{[g]}$ body, including the rotor assembly into that calculation. 
 
 
 
-Starting with the innermost assembly, in each motor frame $\mathcal{F}^{M_i}$, the inner ring structure is a 92g body (all components incorporated). The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.44~~0~~5.81]^T~~[mm]$ relative to its rotational center). The inner ring, being rotated by $\lambda_i$ about the $\hat{X}_{M_i}$ axis, then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
+The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.44~~0~~5.81]^T~~[mm]$ relative to its rotational center). The inner ring, being rotated by $\lambda_i$ about the $\hat{X}_{M_i}$ axis, then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
 \begin{subequations}\label{eq:inertia.inner}
 \begin{equation} \label{eq:inertia.inner.a}
 \mathbb{I}_{M_i}=\begin{bmatrix}
 561.96 & -32.29	& -0.26\\
 -32.29 & 1888.74 & 0.00\\
 -0.26 & 0.00	& 2090.97\\
-\end{bmatrix}~~~[g.cm^2]
+\end{bmatrix}~~~~[g.cm^2]
 \end{equation}
 \vspace{-5pt}
 \begin{equation} \label{eq:inertia.inner.b}
@@ -429,6 +460,14 @@ The first $\lambda_i$ actuating servo and bearing supports are affixed to the in
 \times10^{-7}~~~[kg.m^2]
 \end{equation}
 \end{subequations}
+\begin{figure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figs/inertia-middle}
+\caption{Middle ring rotational structure}
+\label{fig:inertia-middle}
+\end{subfigure}
+\caption{Inertial measurement references}
+\end{figure}
 With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a}, re-orientated through a rotation $\mathbb{R}_x(\lambda_i)$. The net inertia is then a combination of an inertia as a function of the rotation angle $\lambda_i$ and a constant inertial component (Eq:\ref{eq:inertia.middle.c}), which together are then simplified\footnote{Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places, its units are already $\times10^{-7}$ and thus small products of inertia are omitted.} to Eq:\ref{eq:inertia.middle.d}. It's important to note the two non-zero products of inertia, $\mathbb{I}_{yx}$ and $\mathbb{I}_{yz}$, which are going to result in a vector torque $\vec{\tau}_\alpha$ response. The inertia then encountered by an $\alpha_i$ rotation is:
 \begin{equation}\label{eq:inertia.middle.vpa}
 \mathbb{I}_\alpha(\lambda)\approx[-32{c}_{\lambda},~ 10436-101{c}_{2\lambda},~ 101{s}_{2\lambda}]^T\times10^{-7}~~~[kg.m^2]
