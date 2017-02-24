@@ -388,7 +388,7 @@ The net angular velocity of the rotor assembly relative to the body frame result
 0\\
 \dot{\alpha_i}\\
 0
-\end{bmatrix}
+\end{bmatrix}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \emph{\color{gray} Eq:\ref{eq:net-angular-rot} is later replaced with a quaternion operation. That and the remaining angular velocity equations derived here are therefore not expanded further in their current rotation matrix form(s)\ldots}
 \begin{figure}[htbp]
@@ -404,33 +404,36 @@ The net angular velocity of the rotor assembly relative to the body frame result
 \label{fig:inertia-inner}
 \end{subfigure}
 \caption{Inertial measurement references}
-\vspace{-20pt}
+\vspace{-15pt}
 \end{figure}
 \par
-The next assembly on which the motor frame $\mathcal{F}^{M_i}$ is attached to is the inner ring assembly. The inner ring structure is a $92~\text{[g]}$ body, including the rotor assembly into that calculation. 
-
-
-
-The rotational center \emph{roughly} coincides with the center of its mass ($C.M=[-1.44~~0~~5.81]^T~~[mm]$ relative to its rotational center). The inner ring, being rotated by $\lambda_i$ about the $\hat{X}_{M_i}$ axis, then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
-\begin{subequations}\label{eq:inertia.inner}
-\begin{equation} \label{eq:inertia.inner.a}
-\mathbb{I}_{M_i}=\begin{bmatrix}
-561.96 & -32.29	& -0.26\\
--32.29 & 1888.74 & 0.00\\
--0.26 & 0.00	& 2090.97\\
-\end{bmatrix}~~~~[g.cm^2]
+The next assembly, onto which the motor frame $\mathcal{F}^{M_i}$ is attached to, is the inner ring assembly. The inner ring structure is a $92~[\text{g}]$ body, including the rotor assembly in that calculation. The center of mass is positioned $\text{C.M}_{\text{inner}}=[-1.44~0~5.81]^T~[\text{mm}]$ relative to the center of rotation. The inner ring, being rotated by the $\lambda_i$ servo about the $\hat{X}_{M_i}$ axis, then has an inertial matrix (centered and aligned with axes as in Fig:\ref{fig:inertia-inner}):
+\begin{equation} \label{eq:inertia.inner}
+J_{inner}=J_{M_i}=\begin{bmatrix}
+520.8 & -31.7	& -0.3\\
+-31.7 & 1836.3 & 0.00\\
+-0.3 & 0.00	& 2050.9\\
+\end{bmatrix}~~~~[\text{g.cm}^2]
 \end{equation}
-\vspace{-5pt}
-\begin{equation} \label{eq:inertia.inner.b}
-\approx diag\big(562, ~1889, ~2091\big)\times10^{-7}~~~[kg.m^2]
+The effect of rapidly spinning propellers, relative to the servo rotational velocity, on the inertia in Eq:\ref{eq:inertia.inner} is approximated well by a solid disc. The inner ring's inertial components are then regarded as constant with respect to $\Omega_i$. Given the order of magnitude of the inertia, its fair to simplify the inner rings inertial matrix to a diagonal matrix $J_{M_i}\approx diag\big(521, ~1836, ~2051\big)\times10^{-7}~[\text{kg.m}^2]$. The rotational velocity of the inner ring assembly, $\vec{\omega}_{inner}$ or $\vec{\omega}_{M_i}$ for simplicity as it is the velocity of the inner ring frame $\mathcal{F}^{M_i}$, is similar to and in the same frame as Eq:\ref{eq:net-angular-rot}, without the added rotor rotation of $\Omega_i$:
+\begin{equation}\label{eq:net-angular-inner}
+\vec{\omega}_{inner}=\vec{\omega}_{M_i}=\frac{d\lambda_i}{dt}\big(R_x(\lambda_i)\big)\begin{bmatrix}
+\dot{\lambda}_i\\
+0\\
+0
+\end{bmatrix}
++\frac{d\alpha_i}{dt}\big(R_y(\alpha_i)R_x(\lambda_i)\big)\begin{bmatrix}
+0\\
+\dot{\alpha}_i\\
+0
+\end{bmatrix}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-\end{subequations}
-The effect of rapidly spinning propellers on the inertia in Eq:\ref{eq:inertia.inner.a} is approximated well by a solid disc, hence the inner ring's inertial components are regarded as constant. The moment of inertia about that $\hat{X}_{M_i}$ rotational axis, pertinent to a $\lambda_i$ rotation, is then $\mathbb{I}_{\lambda}\approx 531\times10^{-7}~~[kg.m^2]$.
+That first $\lambda_i$ actuating servo and its coaxial support bearing are both affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring assembly, attached to the frame $\mathcal{F}^{M_i'}$, is a $98~[\text{g}]$ body excluding the inner most ring, with a center of mass $\text{C.M}_{\text{middle}}=[-4.70~0.37~-0.36]^T~[\text{cm}]$ relative to its center of rotation.
 \par
-The first $\lambda_i$ actuating servo and bearing supports are affixed to the intermediate middle ring assembly (Fig:\ref{fig:inertia-middle}). The middle ring frame, $\mathcal{F}^{M_i'}$, is a $98g$ body, excluding the inner most ring. Collectively the mass for both the inner and middle rings assemblies is $m_{module}=190g$. The middle ring is rotated by $\alpha_i$ about its $\hat{Y}_{M_i'}$ axis. The compound body's inertia about that axis of rotation, $\hat{Y}_{M_i}$, is a combination of both the middle ring's inertia and the inner ring's.  The latter's contribution dependant on the \emph{rotation} (not transformation) angle $\lambda_i$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia}\footnote{$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{x}$ always exists.}, is:
+Together the mass for both the inner and middle rings assemblies is the motor module mass $m_{module}=190~[\text{g}]$. The middle ring assembly has a center of mass $\text{C.M}_{\text{middle}}$=The motor module assembly is rotated by the $\alpha_i$ servo about its $\hat{Y}_{M_i'}$ axis. The modules compound body inertia is $J_{module}$ is a combination of the middle ring's inertia $J_{middle}$ and the inner ring's inertia $J_{inner}$ rotated by $\lambda_i$ about $\hat{X}_{M_i}$ (aligned as per Fig:\ref{fig:inertia-module}). The latter contribution is dependant on the \emph{rotation} (not transformation) angle $\lambda_i$ which, from the conservation of angular momentum theory \cite{rigidbodyinertia} is:
 \begin{subequations}\label{eq:inertia.middle}
 \begin{equation} \label{eq:inertia.middle.a}
-\text{If} ~~\mathbb{I}_{middle}=\begin{bmatrix}
+\text{If} ~~J_{middle}=\begin{bmatrix}
 2905.70 & 0.02 & 390.89\\
 0.02 & 8446.41 & 0.01\\
 390.89 & 0.01 & 11125.74\\
@@ -460,18 +463,26 @@ The first $\lambda_i$ actuating servo and bearing supports are affixed to the in
 \times10^{-7}~~~[kg.m^2]
 \end{equation}
 \end{subequations}
-\begin{figure}
+$\mathbb{R}_x$ is a full rank and square, so an inverse $\mathbb{R}^{-1}_{x}$ always exists.
+\par
+\begin{figure}[htbp]
 \begin{subfigure}{0.49\textwidth}
 \includegraphics[width=\textwidth]{figs/inertia-middle}
 \caption{Middle ring rotational structure}
 \label{fig:inertia-middle}
 \end{subfigure}
-\caption{Inertial measurement references}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{figs/inertia-middle}
+\caption{Module assembly rotational structure}
+\label{fig:inertia-module}
+\end{subfigure}
+\caption{Inertial measurement references cont.}
 \end{figure}
 With $\mathbb{I}_{inner}=\mathbb{I}_{M_i}$ being the inertia from Eq:\ref{eq:inertia.inner.a}, re-orientated through a rotation $\mathbb{R}_x(\lambda_i)$. The net inertia is then a combination of an inertia as a function of the rotation angle $\lambda_i$ and a constant inertial component (Eq:\ref{eq:inertia.middle.c}), which together are then simplified\footnote{Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places, its units are already $\times10^{-7}$ and thus small products of inertia are omitted.} to Eq:\ref{eq:inertia.middle.d}. It's important to note the two non-zero products of inertia, $\mathbb{I}_{yx}$ and $\mathbb{I}_{yz}$, which are going to result in a vector torque $\vec{\tau}_\alpha$ response. The inertia then encountered by an $\alpha_i$ rotation is:
 \begin{equation}\label{eq:inertia.middle.vpa}
 \mathbb{I}_\alpha(\lambda)\approx[-32{c}_{\lambda},~ 10436-101{c}_{2\lambda},~ 101{s}_{2\lambda}]^T\times10^{-7}~~~[kg.m^2]
 \end{equation}
+\par
 Variable inertias dependent on state input variables are one of many non-trivial aspects unique to the multi-body interconnected design. Control solutions are thus decidedly plant dependent in their formulation. The center of mass for each motor module's compound assembly coincides with neither rotational axes' intersections. As a result the effective center of mass for each module, and the entire structure, is going to be a time varying function each motor module's angular rotational position.
 \begin{figure}[hbtp]
 \centering
