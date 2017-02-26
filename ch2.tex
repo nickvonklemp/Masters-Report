@@ -472,15 +472,15 @@ J_{M_i'}(\lambda_i)=J_{const}+J_{M_i}(\lambda_i)
 \vspace{-10pt}
 \begin{equation} \label{eq:inertia.middle.d}
 \approx\begin{bmatrix}
-3468 & 0 & 391\\
-0 & 10436 & 0\\
-391 & 0 & 13155\\
+3427 & 0 & 391\\
+0 & 10497 & 0\\
+391 & 0 & 12952\\
 \end{bmatrix}
 +
 \begin{bmatrix}
 0 & -32{c}_{\lambda} & -32{s}_{\lambda}\\
--32{c}_{\lambda} & -101{c}_{2\lambda} & 101s_{2\lambda}\\
--32{s}_{\lambda} & 101s_{2\lambda} & 101{c}_{2\lambda}\\
+-32{c}_{\lambda} & -225{c}^2_{\lambda} & 112s_{2\lambda}\\
+-32{s}_{\lambda} & 112s_{2\lambda} & 225{c}^2_{\lambda}\\
 \end{bmatrix}
 \times10^{-7}~~~[kg.m^2]
 \end{equation}
@@ -500,7 +500,7 @@ J_{M_i'}(\lambda_i)=J_{const}+J_{M_i}(\lambda_i)
 \vspace{-20pt}
 \end{figure}
 \par
-Where $J_{M_i}=J_{inner}$ is the inner ring's inertia from Eq:\ref{eq:inertia.inner}, re-orientated through a rotation $R_x(\lambda_i)$, the convention here is that $s\lambda$ and $c\lambda$ are short handed for $\sin(lambda)$ and $cos(\lambda)$ respectively. The module's net inertia is a combination of an inertia as a function of the rotation angle $\lambda_i$ and a constant inertial component (Eq:\ref{eq:inertia.middle.c}), which together are then simplified to Eq:\ref{eq:inertia.middle.d}. Note that Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places here but in practice the full floating point matrix is used. Finally, the angular velocity experienced by the net motor assembly, $\vec{\omega}_{module}$ in frame $\mathcal{F}^{M_i'}$, is solely as a result of the $\alpha_i$ servo rotation:
+Where $J_{M_i}=J_{inner}$ is the inner ring's inertia from Eq:\ref{eq:inertia.inner}, re-orientated through a rotation $R_x(\lambda_i)$; the convention here is that $s\lambda$ and $c\lambda$ are short handed for $\sin(lambda)$ and $cos(\lambda)$ respectively. The module's net inertia is a combination of an inertia as a function of the rotation angle $\lambda_i$ and a constant inertial component (Eq:\ref{eq:inertia.middle.c}), which together are then simplified to Eq:\ref{eq:inertia.middle.d}. Note that Eq:\ref{eq:inertia.middle.d} is rounded to no decimal places here but in practice the full floating point matrix is used. Finally, the angular velocity experienced by the net motor assembly, $\vec{\omega}_{module}$ in frame $\mathcal{F}^{M_i'}$, is solely as a result of the $\alpha_i$ servo rotation:
 \begin{equation}
 \vec{\omega}_{module}=\vec{\omega}_{M_i'/b}=\frac{d\alpha_i}{dt}\big(R_y(\alpha_i)\big)\begin{bmatrix}
 0\\
@@ -509,16 +509,26 @@ Where $J_{M_i}=J_{inner}$ is the inner ring's inertia from Eq:\ref{eq:inertia.in
 \end{bmatrix}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 \par
-Variable inertias dependent on state input variables are one of many non-trivial aspects unique to the multi-body interconnected design. Control solutions are thus decidedly plant dependent in their formulation. The center of mass for each motor module's compound assembly coincides with neither rotational axes' intersections. As a result the effective center of mass for each module, and the entire structure, is going to be a time varying function each motor module's angular rotational position.
+Variable inertias dependent on state input variables are one of many non-trivial aspects unique to the multibody design. Control solutions are thus decidedly plant dependent in their formulation. The center of mass for each motor module's compound assembly coincides with neither rotational axes' intersections. As a result the effective center of mass for each module, and the entire structure, is going to be a time varying function each motor module's angular rotational position.
 \begin{figure}[hbtp]
+\begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{figs/inertia-center}
+\includegraphics[width=\textwidth]{figs/inertia-center}
+\caption{Damping assembly attached to frame}
+\label{fig:inertia-damping}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/inertia-center}
 \caption{Body structure's center of mass}
 \label{fig:inertia-center}
-\vspace{15pt}
+\end{subfigure}
+\caption{}
+\label{fig:damping-center}
+\vspace{-15pt}
 \end{figure}
 \par
-The second $\alpha_i$ rotating servo adjoins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the servo and bearing supports contribute then to the body structure's inertia, whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, each "damping" assembly collectively weighs $84g$ and suspends the motor modules from the body frame with a set of silicon damping balls. The body structure's center of mass (without motor modules, Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-9.57~mm$ below the Body Frame's origin of motion; $\vec{\mathbf{O}}_b\in\mathcal{F}^b$.
+The second servo that rotates $\alpha_i$ adjoins the complete motor module (both the inner and middle ring assemblies) to the body structure. The inertial volume of the second pair of servo and bearing supports contribute then to the body structure's inertia; whose value excludes any of the four motor modules. Consisting of servo and bearing damping brackets, each "damping" assembly collectively weighs $84g$ and suspends the motor modules from the body frame with a set of silicon damping balls. The body structure's center of mass (without motor modules, Fig:\ref{fig:inertia-center}) coincides with the XY directional axes and lies $\Delta Z=-9.57~mm$ below the Body Frame's origin of motion; $\vec{\mathbf{O}}_b\in\mathcal{F}^b$.
 \\
 \emph{\color{Gray}Note: that body frame origin which all motion is calculated with respect to is co-planar to the motor module's rotational centers, \underline{not} the net center of mass.}
 \\
