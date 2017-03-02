@@ -381,13 +381,13 @@ The net angular velocity of the rotor assembly relative to the body frame is pro
 0\\
 \Omega_i
 \end{bmatrix}
-+\frac{d\lambda_i}{dt}\big(R_x(\lambda_i)\big)\begin{bmatrix}
-\dot{\lambda_i}\\
++\frac{d\lambda_i}{dt}R_x(\lambda_i)\begin{bmatrix}
+\lambda_i\\
 0\\
 0
-\end{bmatrix}+\frac{d\alpha_i}{dt}\big(R_y(\alpha_i)R_x(\lambda_i)\big)\begin{bmatrix}
+\end{bmatrix}+\frac{d\alpha_i}{dt}R_y(\alpha_i)R_x(\lambda_i)\begin{bmatrix}
 0\\
-\dot{\alpha_i}\\
+\alpha_i\\
 0
 \end{bmatrix}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
@@ -422,9 +422,9 @@ The effect of rapidly spinning propellers, relative to the servo rotational velo
 0\\
 0
 \end{bmatrix}
-+\frac{d\alpha_i}{dt}\big(R_y(\alpha_i)R_x(\lambda_i)\big)\begin{bmatrix}
++\frac{d\alpha_i}{dt}R_y(\alpha_i)R_x(\lambda_i)\begin{bmatrix}
 0\\
-\dot{\alpha}_i\\
+\alpha_i\\
 0
 \end{bmatrix}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
@@ -536,9 +536,9 @@ The body's weight, including all four damping assemblies and electronics, totals
 \begin{subequations}\label{eq:inertia.body}
 \begin{equation}\label{eq:inertia.body.a}
 \underset{C.M}{J_{body}}=\begin{bmatrix}
-181569.69 & 0.43 -19.42\\
+181569.69 & 0.43 &-19.42\\
 0.43 & 181692.15 & 8.85\\
--19.42 & 8.85 360067.15\\
+-19.42 & 8.85 & 360067.15\\
 \end{bmatrix}\times 10^{-7}~~~[kg.m^2]
 \end{equation}
 Using the Parallel Axis theorem to shift that inertia to the origin of motion, that same net inertia at the origin, $\vec{\mathbf{O}}_b$, is:
@@ -672,7 +672,7 @@ C.M = \frac{\sum_{i=1}^{n} m_i.\vec{X}_i}{\sum_{i=1}^{n} m_i}
 \end{equation}
 Using $\vec{X}_{inner}$ and $\vec{X}_{middle}$ as rotated centers of mass defined in Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d} respectively, the entire assembly has a variable center of mass:
 \begin{equation}\label{eq:mass-center.b}
-C.M(u)=\frac{m_{body}.\vec{X}_{body}+\sum_{i=1}^{4} m_{inner}.\vec{X}_{inner}+\sum_{i=1}{4} m_{middle}.\vec{X}_{middle}}{m_{body}+\sum_{i=1}^{4} m_{inner} + \sum_{i=1}^{4} m_{middle}}
+C.M(u)=\frac{m_{body}.\vec{X}_{body}+\sum_{i=1}^{4} m_{inner}.\vec{X}_{inner}+\sum_{i=1}^{4} m_{middle}.\vec{X}_{middle}}{m_{body}+\sum_{i=1}^{4} m_{inner} + \sum_{i=1}^{4} m_{middle}}
 \end{equation}
 Using a gravity vector $\vec{G}_b=R_I^b\vec{F}_g=R_I^b\begin{bmatrix}0&0&-9.81m\end{bmatrix}^T~[\text{N}]$, the resultant gravitational torque about the origin $\vec{\mathbf{O}}_b$ in the body frame $\mathcal{F}^b$ is:
 \begin{equation}
