@@ -330,19 +330,19 @@ u\in\mathbb{R}^m,~\vec{\nu}_d\in\mathbb{R}^n,~B\in\mathbb{R}^{m\times n},~B^\dag
 \end{subequations}
 Where $B$ is the effectiveness matrix, a static effector form of the effectiveness function $B(\vec{\mathbf{x}},u,t)$. The generalized inverse $B^{\dagger}$ is such that $BB^{\dagger}=\mathbb{I}$. Specifically $B^{\dagger}$ is the general \emph{pseudo} inverse of $B$ (more on inversions in Sec:\ref{sec:control.allocation}). Moreover there is an assumed linear multiplicative relationship between the input, $u\in\mathbb{U}$, and the input effectiveness matrix in Eq:\ref{eq:3.4}. The controller designed actuator torque $\vec{\nu}_d$ then dictates the input $u$ as per Eq:\ref{eq:pseudoinva}. Much like the over-actuation previously discussed with respect to quadcopters; the pseudo inversion method of actuator distribution applies linear quadratic optimization to the allocation slack cost function, Eq:\ref{eq:quadraticallocator}. 
 \par
-The resultant quaternion attitude backstepping controller in \cite{satellitebackstepping} demonstrated global uniform asymptotic stability. The effectiveness of that backstepping stability lies in the choice of trajectory aiming to be stabilized; $z\rightarrow\vec{0}$.
+The resultant quaternion attitude backstepping controller developed in \cite{satellitebackstepping} demonstrated global uniform asymptotic stability. The strength of that backstepping stability lies in the choice of trajectory aiming to be stabilized; $z\rightarrow\vec{0}$. The first Lyapunov trajectory was defined as:
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:quaternion-trajectory.a}
 z_1=\begin{bmatrix}
 1-|q_0|\\
 \vec{q}_e
 \end{bmatrix}
 \end{equation}
-Such that the candidate Lyapunov function is always positive definite;
+Such that the Lyapunov energy function candidate is always positive definite and its derivative is positive definite descrescent. The particulars of that stability proof are omitted but it is worth detailing their chosen candidate function;
 \begin{equation}
-V_1(z)=z_1\text{}^Tz_1~~~~\forall[q_0,\vec{q}_e]
+V_1(z)=z_1\text{}^Tz_1>0~~~~\forall[q_0,\vec{q}_e]
 \end{equation}
 \end{subequations}
-Where the absolute quaternion error scalar ensures a global trajectory's asymptotic stability. The stable equilibrium points at $Q_e=\begin{bmatrix}
-\pm 1 & \vec{0}\hspace{2pt}
-\end{bmatrix}^T$ apply settling of the trajectory's error, allowing the satellite to track its setpoint. However considering that the controller is an ideally compensating controller, the disturbance rejection and uncertainty compensation of the attitude controller could potentially disrupt that achieved stability. Something which was not discussed in the original paper.
+The absolute quaternion error scalar in Eq:\ref{eq:quaternion-trajectory.a} ensures a global trajectory's asymptotic stability (Sec:\ref{subsubsec:control.attitude.nonlinear.idealbackstep}), not just local stability that would otherwise be gained. The stable equilibrium points at $Q_e=\begin{bmatrix}
+\pm 1 & \vec{0}~
+\end{bmatrix}^T$ apply settling of the trajectory's \emph{error}, allowing the satellite to track its setpoint. However considering that the controller is an ideally compensating controller, the disturbance rejection and uncertainty compensation of the attitude controller could potentially disrupt that achieved stability. Something which was not discussed in the original paper.
