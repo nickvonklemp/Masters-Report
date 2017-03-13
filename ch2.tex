@@ -395,7 +395,7 @@ The first rotational body to consider is that of the propeller and rotor assembl
 \end{figure}
 \par
 The entire rotor assembly then has an inertia $J_{rot}$, with principle inertial axes aligned as in Fig:\ref{fig:inertia-prop}:
-\begin{equation}
+\begin{equation}\label{eq:prop-inertia}
 J_{rot}=\begin{bmatrix}
 105.5 & 0.0 & 0.0\\
 0.0 & 105.5 & 0.0\\
@@ -752,7 +752,7 @@ So the center of gravity when all actuators are at their zero positions is: $C.M
 %-----------------------------------------------------
 \newpage
 %-----------------------------------------------------
-An abstracted hardware diagram for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It's an illustration for the connection of different electronic peripherals used to aid the on-board control system. The structure of the implemented autopilot system and control loops are addressed later in Chapter:\ref{ch:flight}. This section aims to provide a brief overview of the specific modules used, their purpose and a description of how they're interfaced. No code structure or control loops are considered yet\ldots
+An abstracted hardware diagram for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It is an illustration for the connection of different electronic peripherals used to aid the on-board control system. The structure of the implemented autopilot system and control loops are addressed later. This section aims to provide a brief overview of the specific modules used, their purpose and a description of how they are interfaced. No control loops or code structure are considered yet, those are detailed in Ch:\ref{ch:control} and Ch:\ref{ch:flight} respectively.
 \par
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
@@ -770,26 +770,24 @@ An abstracted hardware diagram for the (electronic) system layout is shown in Fi
 \label{fig:f3-deluxe-layout}
 \vspace{-10pt}
 \end{figure}
-The embedded system is constructed around an ARM STM32F303\cite{stm32f303} based $\mu$C. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing}\footnote{CleanFlight or BetaFlight opensource software is regularly used for the F3 but its hardware specifications are not openly avaiable. The reverse engineered electrical schematic for the board is included in Appendix:\ref{app:deluxe-diagram}}, which has had its bootloader removed and custom firmware, unique to this project, developed for it. That software is later described in Chapter:\ref{ch:flight}; the I/O for all the peripherals are however detailed here. The flight-controller has the following onboard peripherls: an I2C MPU-6050\cite{mpu6050} 6-axis gyroscope \& accelerometer with an I2C connected HMC5883\cite{hmc5883} magnetometer compass, an I2C MS5611\cite{ms5611} barometer and finally 64 Mb of SPI flash memory. The electrical schematic diagram of those peripherals and the core STM32F303 microprocessor is detailed in Appendix:\ref{app:deluxe-diagram} but their connection(s) and layout are shown in Fig:\ref{fig:f3-deluxe-layout}. 
+The embedded system is constructed around an ARM STM32F303\cite{stm32f303} based microcontroller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing} which has had its bootloader removed and custom firmware, unique to this project, developed for it. CleanFlight or BetaFlight opensource software (\cite{cleanflight} or \cite{betaflight} respectively) are typically used for the SPRacing F3; despite open source software its hardware specifications are  however not openly available. The reverse engineered electrical schematic for the board is included in App:\ref{app:deluxe-diagram} but a simplified overview of its internal connections is shown in Fig:\ref{fig:f3-deluxe-board}.
 \par
-\begin{minipage}{\textwidth}
+The embedded software implemented is described in Ch:\ref{ch:flight}; the I/O for all the peripherals are however detailed here. The flight-controller has the following onboard peripherals: an I2C MPU-6050 6-axis gyroscope \& accelerometer \cite{mpu6050} with an I2C connected HMC5883 magnetometer compass \cite{hmc5883}, an I2C MS5611 barometer \cite{ms5611} and finally 64 Mb of SPI flash memory.
 \par
-\begin{wrapfigure}{r}{0.49\textwidth}
-\vspace{3pt}
+\emph{\color{Gray}The combination of above sensors fused for state estimation and their associated filtration algorithms are dealt with in Sec:\ref{sec:simulation.state} of Ch:\ref{ch:simulation}.\\}
+\begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.49\textwidth]{figs/ppm-sbus}
+\includegraphics[width=0.5\textwidth]{figs/ppm-sbus}
 \caption{SBUS converter \& 6CH receiver}
 \label{fig:ppm-sbus}
-\end{wrapfigure}
+\vspace{-20pt}
+\end{figure}
 \par
-\emph{\color{Gray}\\ The combination of above sensors fused for state estimation and their associated filtration algorithms are dealt with in Section:\ref{sec:simulation.state} of Chapter:\ref{ch:simulation}.\\}
+Two separate wireless communication loops are used. First; the system relays full state information for a complete 6-DOF XYZ position and orientation autopilot system. Sent from an independent ground control station (\emph{GCS}) using 2.4 GHz XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\ref{}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
 \par
-Two separate wireless communication peripherals are used. First the system relays full state information, for a complete 6-DOF autopilot system, from a ground control station using 2.4 GHz XBEE S1 module(s)\cite{xbees1}, connected via USART. Secondly, an augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through 6 Channel 2.4 GHz R/F comms. The 6 CH received signals, otherwise permeated as six individual 20 KHz PWM signals via an OrangeRx R615x\cite{r615x} receiver, are encoded into a single proprietary S.BUS data stream (Fig:\ref{fig:ppm-sbus}). 
-\end{minipage}
+Secondly; a partial trajectory (basic orientation) augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through a 6 channel 2.4 GHz radio frequency module. The secondary system allows for phsyical control without the need of a trajectory generation loop. The 6 CH received signals, otherwise permeated as six individual 20 kHz PWM signals via an OrangeRx R615x receiver \cite{r615x}, are encoded into a single proprietary S.BUS data stream (Fig:\ref{fig:ppm-sbus}). 
 \par
-The need for an S.BUS encoder\cite{sbusencoder} comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer I/O channels which can be dedicated to input capture of those RC channels. 
-\par
-Encoding the received data to a serial communication protocol means the 6CH data can be processed on a single serial RX line. The S.Bus encoder implements a USART derivative communications standard, Fig:\ref{fig:sbus} shows the sampled data stream used to ascertain the standard's following parameters:
+The need for a serial bus (S.BUS) encoder, specifically \cite{sbusencoder}, comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer input/output channels which can be dedicated to input capture of those RC channels. Encoding the received data to a serial data line means the 6CH commands can be processed with a single RX channel. The encoder implements a USART derivative communications standard called S.BUS. Shown in Fig:\ref{fig:sbus} the S.BUS data, captured with a logic analyzer \cite{saleae}, was used to ascertain the data stream's following parameters:
 \par
 \begin{tabularx}{\textwidth}{X X}
 \begin{minipage}{\textwidth}
@@ -797,7 +795,7 @@ Encoding the received data to a serial communication protocol means the 6CH data
 \item 25 Bytes per packet
 \item 8-Bit byte length
 \item 1 Start byte 0x240
-\item 1 Byte of flags
+\item 1 Byte of state flags
 \item 1 Stop byte 0x0
 \item Bytes are:
 \vspace{-5pt}
@@ -814,7 +812,7 @@ Encoding the received data to a serial communication protocol means the 6CH data
 &
 \begin{minipage}{\textwidth}
 \begin{itemize}[itemsep=0em]
-\item 22 bytes of CH data 
+\item 22 total bytes of CH data 
 \item Each channel's data is 11 bits long
 \item 16CH encoded
 \item Channel data is little endian prioritized
@@ -824,7 +822,7 @@ Encoding the received data to a serial communication protocol means the 6CH data
 {
 $\overbrace{[0x240]}^{Start~byte}\overbrace{[8B_1][3B_2}^{CH1}|\overbrace{5B_2][6B_3}^{CH2}|\overbrace{2B_3][8B_4][1B_5}^{CH3}|\ldots$
 \\
-$\overbrace{7B_5][4B_6|}^{CH4}~\longrightarrow~\overbrace{3B_22][8B_23]}^{CH16}\overbrace{[8B_24]}^{Flags}\overbrace{[0x00]}^{Stop~byte}$
+$\overbrace{7B_5][4B_6|}^{CH4}\ldots\longrightarrow\ldots\overbrace{3B_22][8B_23]}^{CH16}\overbrace{[8B_24]}^{Flags}\overbrace{[0x00]}^{Stop~byte}$
 }
 \end{minipage}
 \\
@@ -838,37 +836,23 @@ $\overbrace{7B_5][4B_6|}^{CH4}~\longrightarrow~\overbrace{3B_22][8B_23]}^{CH16}\
 \end{figure}
 \par
 {\color{red}
-The received information from the transmitted 6 channels is filtered through a moving average IIR$^\dagger$ filter. The filters difference equation is as follows: 
+The received information from the transmitted 6 channels is smoothed with a digital filter, using an infinite impulse response moving average filter. The filters difference equation can be as follows: 
 \begin{equation}
 y_n = \big(1-\frac{1}{N}\big)y_{n-1}+\frac{1}{N}x_n
 \end{equation}
-Moving over an average of $N=5$ samples. The signal's sample rate is sufficiently fast enough such that the digital filter's frequency response isn't of consequence. Similarly all the measured RPM signals are filtered as well. Any received signals referred to are all post filtration. Filtering for non-IMU state estimates is separately performed on the Ground Control Station computer.}
+Moving over an average of $N=5$ samples which, each with a propagation delay of 14 ms due to S.BUS transmission, the filter has a 70 ms zero order holding time. The signal's sampling delays are sufficiently faster than the transfer times of the signals are not of consequence. 
 \par
-Each of the eight digital servo actuators are driven individually from 330 Hz center aligned PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Center alignmed PWM\footnote{Unqiue to the STM32 \& PIC micros, supported by the ARM mthumb instruction set.} reduces current spikes at the start of each timing cycle. Output pulses typically range from 1ms - 2ms to linearly control the rotational position. The exact range and transfer function is empirically determined next in Subsection:\ref{subsec:proto.design.transfer}. The four 20A brushless DC speed controllers (ESCs) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with 1ms - 2ms input pulse widths. There are a total of 12 PWM output compare signals drawn from the $\mu$C. Servos are powered by a regulated 6V DC 10A power supply \cite{rotorstar} whilst the ESCs switch unregulated 14.1 V DC from an externally tethered power supply. The DC supply could potentially be drawn from an on-board battery bank but that would add significant weight to an already heavy platform.
+Similarly all the measured RPM signals measured by the OrangeRx RPM speed sensors are filtered over 5 samples as well. Any received signals referred to are all post filtration. Filtering for state estimation made without using the inertial-measurement unit (using the camera system) is separately performed on the Ground Control Station computer.}
 \par
-There's no integrated feedback for instantaneous RPM values from the ESCs. Using discrete OrangeRX BLDC RPM sensors \cite{orangerpm}, that measure switching phases across two of the three motor phases, the exact RPM can be ascertained.
+Each of the eight digital servo actuators are controlled individually from 330 Hz center aligned PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses typically range from $1-2~[\text{ms}]$ to linearly control the rotational position. The servos exact range and transfer function(s) is empirically determined next in Sec:\ref{subsec:proto.design.transfer}. The four $20~[\text{A}]$ brushless DC electronic speed controllers (\emph{ESC}s) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with $1-2~[\text{ms}]$ input pulse widths. 
 \par
-\begin{figure}[htbp]
-\begin{subfigure}{0.5\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/rpm-sensor-noload}
-\caption{RPM sensor plot - no load}
-\label{fig:rpm-sensor-noload}
-\end{subfigure}
-\begin{subfigure}{0.5\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/rpm-sensor-prop}
-\caption{RPM sensor plot - 6X4.5 prop}
-\label{fig:rpm-sensor-prop}
-\end{subfigure}
-\caption{RPM sensor calibration plots}
-\label{fig:rpm-sensor}
-\end{figure}
-The switching signal of a 3-Phase induction motor\footnote{Although termed DC motors, BLDC motors are actually 3-$\phi$ IM motors which, combined with an ESC, behave like closed loop DC motors.} is\cite{vfd}:
+There is a total of 12 PWM output compare signals drawn from the fligtcontroller, 8 for the servos and 4 for the ESCs. The servos are powered by a regulated $6~[\text{V}]$ DC $10~[\text{A}]$ power supply \cite{rotorstar} whilst the ESCs switch unregulated $14.1~[\text{V}]$ DC supplied from an external power tethered. The DC supply could be drawn from a bank, which would adversely affect the weight.
+\par
+There is no integrated feedback for instantaneous RPM values available from the ESCs. Dedicated OrangeRX BLDC RPM sensors, \cite{orangerpm}, are used to measure each of the four motor's rotational speeds. Despite being termed \emph{brushless DC motors}, the motors are actually 3-phase motors which, but when used with an ESC they behave like closed loop DC motors. The RPM sensors physically measure switching phases across two of the three motor phases, following that exact RPM can be ascertained. In general, the switching signal of a 3-Phase induction motor is shown by \cite{vfd} to be proportional to the rotational velocity:
 \begin{equation}
-F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[Hz]
+F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[\text{Hz}]
 \end{equation}
-The signal produced by the RPM sensors varies the period of a 50\% duty cycle square wave, the wave frequency is directly proportional to that of the pole's switching frequency. The RPM sensor's output signal is then calibrated to a gain of 7 for the 14 pole BLDC Cobra motors used. That gain is verified with the linear relationship(s) is shown in Fig:\ref{fig:rpm-sensor}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated.
+The output signal generated by the OrangeRx RPM sensors varies the period of a 50\% duty cycle square wave, that wave frequency is directly proportional to the motor's pole switching frequency. The sensor output signal has a gain of 7 for the 14 pole BLDC Cobra motors. That gain is verified with the linear relationship(s) physically measured using an optical rotation sensor, plotted in Fig:\ref{fig:rpm-sensor}. Knowing exact RPM rates means the subsequent thrust and aerodynamic torques for the control plant inputs can be calculated with greater certainty.
 \par
 \begin{figure}[hbtp]
 \begin{subfigure}{0.5\textwidth}
@@ -884,10 +868,30 @@ The signal produced by the RPM sensors varies the period of a 50\% duty cycle sq
 \label{fig:ldpower-20A}
 \end{subfigure}
 \caption{BLDC electronic speed controllers}
+\vspace{-6pt}
 \end{figure}
-The speed controllers, although LDPower 20A devices, are all re-flashed with BLHeli\footnote{LDPower 20A ESCs(Fig:\ref{fig:ldpower-20A}) match Hobbywing Xrotor 20A speed controllers (Fig:\ref{fig:xrotor-20A}), they both use SiLabs F396 MCUs. Physical rotational values in the plots Fig:\ref{fig:rpm-sensor} were measured with optical encoders.}\cite{BLHeli} firmware. The custom software on the ESC's $\mu$C can provide greater refinement over parameter configuration like the deflection range of inputs, however, default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the linear RPS (in Hz) speed curve for an unloaded motor; similarly in Fig:\ref{fig:rpm-sensor-prop} shows the speed curve when loaded for a 6-inch prop. 
 \par
-It's interesting to note that the loaded speed curve is slightly parabolic (Fig:\ref{fig:rpm-sensor-prop}), resulting from the aerodynamic drag term which is quadratic with respect to rotational velocity, expanded on in Sec:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over 16 000 RPM. The sensor feedback is used for minor loop RPM control.
+The speed controllers, although LDPower 20A devices, are all re-flashed with BLHeli firmware \cite{BLHeli}. The LDPower ESCs (Fig:\ref{fig:ldpower-20A}) match Hobbywing Xrotor 20A ones (Fig:\ref{fig:xrotor-20A}) which both use SiLabs F396 microcontrollers; the same firmware can be flashed onto the MCUs. The custom BLHeli software provides greater refinement over parameter configuration like the deflection range of inputs, however, default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the rotation per second, or otherwise frequency in Hz, speed curve for an unloaded motor; similarly in Fig:\ref{fig:rpm-sensor-prop} shows the speed curve when loaded for a $6\times 4.5$ prop. 
+\begin{figure}[htbp]
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/rpm-sensor-noload}
+\caption{RPM sensor plot - no load}
+\label{fig:rpm-sensor-noload}
+\end{subfigure}
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/rpm-sensor-prop}
+\caption{RPM sensor plot - 6X4.5 prop}
+\label{fig:rpm-sensor-prop}
+\end{subfigure}
+\vspace{-4pt}
+\caption{RPM sensor calibration plots}
+\label{fig:rpm-sensor}
+\vspace{-14pt}
+\end{figure}
+\par
+It is worth noting the loaded speed plot in Fig:\ref{fig:rpm-sensor-prop} is slightly quadratic; the loaded response is from the second order aerodynamic torque term, quadratic with respect to RPS, expanded on in Sec:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over 16 kRPM.
 \par
 Timers channels are used to measure the varying frequency output from the RPM sensors. General purpose Timers 15 (TIM15:CH1$\rightarrow$CH2), 16 (TIM16:CH1) and 17 (TIM17:CH1) are configured to capture the input PWM signal generated by the speed sensors. Included on the I2C communciation line is an I2C O-LED display for debugging and status update purposes.
 \par
@@ -900,13 +904,13 @@ Any STM32 $\mu$controller is programmed through a dedicated debugging device. Th
 %====================================================
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{figs/servo-position}
+\includegraphics[width=0.6\textwidth]{figs/servo-position}
 \caption{Servo transfer function test rig}
 \label{fig:servo-position}
 \end{figure}
-The full scale deflection of each digital servo is in fact greater than its quoted 180\textdegree ~range. Each servo has a rotational range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The exact characteristics for every servo differ slightly and thus individual transfer functions for each of the 8 servos are used in simulation. In the prototype control loop the servos are left in open loop; the major loop controller coefficients are expected to account for minor loop actuator dynamics. With that being said, for such an expectation to be validated the simulation would need to accurately represent the servo's response. 
+The full scale deflection for digital servos are in fact greater than their quoted 180\textdegree ~range. Each servo has a rotational input range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). In the prototype control loop for the servos are left in open loop; the major loop controller coefficients are expected to account for minor loop actuator dynamics. With that being said, for such an expectation to be validated the simulation would need to represent the servo's response accurately. 
 \par
-Seeing that the 180\textdegree ~limitation was imposed as a design decision; one of the first points of contention is the effect such a constraint would have on the feasible operating trajectories. The control algorithms derived in Chapter:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics. Later the servo saturation limitations are introduced and the constraints to feasibly achievable trajectories are investigated.
+Seeing that the 180\textdegree ~limitation was imposed as a design decision, one of the first points of contention is the effect such a constraint would have on the feasible operating trajectories. The control algorithms derived in Ch:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics. Following that servo saturation limitations are introduced and the constraints to feasibly achievable trajectories are investigated.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -926,28 +930,21 @@ Seeing that the 180\textdegree ~limitation was imposed as a design decision; one
 \vspace{-10pt}
 \end{figure}
 \par
-For the servo \footnote{Servo number 1 of 8 tested, $\lambda_1$, is used for transfer function demonstration. For simulation, each of the 8 servos were individually determined.} whose rotational range and step response are shown in Fig:\ref{fig:servo-no-load}, the relationship between the input pulse-width $x~[m.s]$ and the rotational output position $y~degrees$ is given by:
+For the servos rotational range and step response are shown in Fig:\ref{fig:servo-no-load}, the relationship between the input pulse-width $x~[\text{m.s}]$ and the rotational output position $y~[\text{\textdegree}]$ is given by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
-0\text{\textdegree} & ~~x<0.65~m.s\\
-129.12x-82.64 & ~~0.64~m.s \leq x \leq 2.46~m.s\\
-230\text{\textdegree} & ~~x>2.46~m.s\\
+0\text{\textdegree} & ~~x<0.65~\text{ms}\\
+129.12x-82.64 & ~~0.64~\text{ms} \leq x \leq 2.46~\text{ms}\\
+230\text{\textdegree} & ~~x>2.46~\text{ms}\\
 \end{array}
 \end{cases}
 \end{equation}\par
-\begin{figure}[hbtp]
-\vspace{-20pt}
-\centering
-\includegraphics[width=0.8\textwidth]{figs/servo-block}
-\caption{Servo block diagram}
-\label{fig:servo-block}
-\end{figure}
-Although, in practice, the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400~RPS$ with a dead time of $\approx 1.2~m.s$ and a mechanical deadband of $\leq4\mu s$. The net transfer block for the servo is shown in Fig:\ref{fig:servo-block}, including non-linearities but neglecting the deadband. Each servo has an approximate (\emph{critically damped}) second order transfer function$^{\dagger}$:
+In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400$ RPS with a dead time of $t_d\approx 1.2~[\text{m.s}]$ and a (\emph{negligible}) mechanical deadband of $4~[\mu\text{s}]$. Each servo has an approximate (\emph{critically damped}) second order transfer function
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
 G_{servo}(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
-=e^{-0.012s}\frac{(15.717)^2}{s^2+2(1)(15.717)+(15.717)^2}
+=e^{-0.012s}\frac{(15.717)^2}{s^2+2(1)(15.717)s+(15.717)^2}
 \end{equation}
 With saturation limits:
 \begin{equation}
@@ -960,84 +957,95 @@ G(s) & 0.65 \leq |U(s)| \leq 2.46\\
 \end{cases}
 \end{equation}
 \end{subequations}
-The transfer plot in Fig:\ref{fig:servo-step} is that of an unloaded servo's response. When loaded with the inner ring assembly (Fig:\ref{fig:servo-inner-character}) the plant response {\color{Blue}$\mathbf{y(t)}$} is consistent with that of Eq:\ref{eq:servo-transfer}. Despite rotating a load mass and hence requiring a greater torque, the servo's characteristics remains unchanged, even when the BLDC motor (with a 6$\times$4.5" prop) is spun an average rate of 6500 RPM, {\color{Red}$\mathbf{y'(t)}$}, further tensioning the assembly.
+The net transfer block for the servo is shown in Fig:\ref{fig:servo-block}, including saturating non-linearities but neglecting the mechanical deadband\ldots
 \begin{figure}[hbtp]
-\begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=0.98\textwidth]{figs/servo-inner}
+\includegraphics[width=0.5\textwidth]{figs/servo-block}
+\caption{Servo block diagram}
+\label{fig:servo-block}
+\vspace{-15pt}
+\end{figure}
+\par
+The plot previously in Fig:\ref{fig:servo-step} shows the transfer characteristics at the shaft output of an unloaded servo. When rotating the inertial body of the inner ring assembly, arranged as in Fig:\ref{fig:servo-inner-character}, the plant response plot of {\color{Blue}$\mathbf{y(t)}$} is consistent with the transfer function in Eq:\ref{eq:servo-transfer}. Despite rotating a load and hence requiring a greater torque, the servo's characteristics remains unchanged, even when the BLDC motor (with a $6\times4.5$ prop) with a rotational velocity of 6500 RPM is introduced, plotted {\color{Red}$\mathbf{y'(t)}$}, further increasing the torque load of the assembly as a result of gyroscopic resistance, Eq:\ref{eq:prop-inertia}.
+\begin{figure}[htbp]
+\vspace{-10pt}
+\centering
+\begin{subfigure}{0.46\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/servo-inner}
 \caption{Inner ring servo rig}
 \label{fig:servo-inner}
 \end{subfigure}
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.46\textwidth}
 \centering
-\includegraphics[width=0.98\textwidth]{graphs/servo-step-inner}
+\includegraphics[width=\textwidth]{graphs/servo-step-inner}
 \caption{Servo response plot}
 \label{fig:servo-step-inner}
 \end{subfigure}
+\vspace{-5pt}
 \caption{Inner ring servo characteristics}
 \label{fig:servo-inner-character}
-\vspace{-10pt}
-\end{figure}
-\par
-However, in Fig:\ref{fig:servo-middle-character}, the response for a servo driving the middle ring is shown. Its rate transients remains the same but oscillations at the settling point are introduced by the larger mass being driven. These are product of the structure's flex within the middle ring assembly and \emph{not from the servo plant}. The rotational position was measured (Fig:\ref{fig:servo-middle}) with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft. The oscillations are still present under load, {\color{Red}$\mathbf{y'(t)}$}, despite the frame being further tensioned by a thrust vector. The mechanical harmonics can be accounted for by either introducing a more rigid sub-frame, limiting the maximum angular rate or applying a damping minor loop controller. The latter would require a \emph{virtual} closed loop with an approximated error rate as the prototype structure doesn't incorporate positional feedback for each motor module.
-\begin{figure}[hbtp]
-\begin{subfigure}{0.5\textwidth}
+%\end{figure}
+%\begin{figure}[hbtp]
+\begin{subfigure}{0.46\textwidth}
 \centering
-\includegraphics[width=0.98\textwidth]{figs/servo-middle}
+\includegraphics[width=\textwidth]{figs/servo-middle}
 \caption{Middle ring servo test rig}
 \label{fig:servo-middle}
 \end{subfigure}
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.46\textwidth}
 \centering
-\includegraphics[width=0.98\textwidth]{graphs/servo-step-middle}
+\includegraphics[width=\textwidth]{graphs/servo-step-middle}
 \caption{Servo response plot}
 \label{fig:servo-step-middle}
 \end{subfigure}
+\vspace{-5pt}
 \caption{Middle ring servo characteristics}
 \label{fig:servo-middle-character}
 \vspace{-20pt}
 \end{figure}
+\par
+In Fig:\ref{fig:servo-middle-character} the response for the middle ring servo is shown. Its rate transients remain the same but oscillations occur at the settling point, introduced by the larger inertia being driven, which has flex within its structure. The rotational position of the assembly was measured with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft (Fig:\ref{fig:servo-middle}). The oscillations are still present under load, plotted in {\color{Red}$\mathbf{y'(t)}$}, despite the frame being tensioned by the thrust vector. The mechanical harmonics can be accounted for by either introducing a more rigid sub-frame, limiting the maximum angular rate or simply adding a state dependent uncertainty term to the control plant.
 \subsubsection*{BLDC Transfer Functions}
-Each Cobra 2208 BLDC motor, when loaded with a 6$\times$4.5 propeller has a quadratic speed curve, Fig:\ref{fig:bldc-range}. This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (Sec:\ref{subsec:dynamics.aero.bem}). 
+Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve, plotted in Fig:\ref{fig:bldc-range}. This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (more on propeller aerodynamics in Sec:\ref{subsec:dynamics.aero.bem}). 
 \par
 \begin{figure}[htb]
-\vspace{-15pt}
 \centering
 \includegraphics[width=0.44\textwidth]{figs/bldc-rpm}
 \caption{BLDC rpm speed calibration and transfer function rig}
 \label{fig:bldc-rpm}
-\vspace{-15pt}
 \end{figure}
-The relationship\footnote{The input range can be adjusted in BLHeli ESC software to improve input resolution, but was left unchanged.} between input pulse-width to the ESCs and output RPM sensor signal (Fig:\ref{fig:bldc-range}) is:
+Through the BLHeli interface, the input range for the motor's speed controllers can be adjusted, but for the purposes of this project were left unchanged. That input relationship between pulse-widths to the ESC and output RPM sensor signal is given by the hybrid state equations for input range limits:
 \begin{equation}
 y(x)=
 \begin{cases}\begin{array}{ll}
-0 & ~~x<1.065~m.s\\
--20593x^2 + 80187x - 60004 & ~~1.065~m.s \leq x \leq 1.655~m.s\\
-16300\text{\textdegree} & ~~x>1.655~m.s\\
+0 & ~~x<1.065~\text{ms}\\
+-20593x^2 + 80187x - 60004 & ~~1.065~\text{ms} \leq x \leq 1.655~\text{ms}\\
+16300 & ~~x>1.655~\text{ms}\\
 \end{array}
 \end{cases}
+~~~\Bigg\}[\text{RPM}]
 \label{eq:bldc-range}
 \end{equation}
 \par
-The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case 20A. Imposing 10A current limiting (a consequence of using lower power ESCs), the plot for {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}, significantly restricts the motor's transient and steady-state performance. The motor's step response, {\color{Purple}$\mathbf{y(t)}$} has a negligible dead time and 2$^{nd}$ order dynamics\footnote{It can't be stressed enough how much the BLHeli ESC firmware improved dynamic response of the motors}, far faster than the servo's plant. The motors transfer function for speed in RPM is:
+The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case $20~[\text{A}]$. Imposing $10~[\text{A}]$ current limiting, a consequence of using lower power ESCs is plotted {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}, significantly restricts the motor's transient and steady-state performance. The motor's step response, {\color{Purple}$\mathbf{y(t)}$}, has a negligible dead time and 2\textsuperscript{nd} order dynamics, with a transient time constant far faster than the servo's plant. The motor's transfer function for speed in RPM is:
 \begin{subequations}\label{eq:bldc-transfer}
 \begin{equation}
-G_{BLDC}(s)=\frac{1}{\big(1+1.7583s\times 10^{-3}\big)\big(1+1.7494s\times 10^{-3}\big)}
+G_{BLDC}(s)=\frac{1}{\big(1+1.7583s\times 10^{-3}\big)\big(1+1.7494s\times 10^{-3}\big)}~~~~[\text{RPM}]
 \end{equation}
 And saturation limits:
 \begin{equation}
 Y_{BLDC}(s)=
 \begin{cases}\begin{array}{ll}
-0\text{\textdegree} & ~~|U(s)|<1.065\\
+0\text & ~~|U(s)|<1.065\\
 G(s) & 1.065 \leq |U(s)| \leq 1.655\\
 16300 & ~~|U(s)|>1.655\\
 \end{array}
 \end{cases}
 \end{equation}
 \end{subequations}
-\begin{figure}[hbtp]
-\vspace{-20pt}
+\newpage
+\begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=0.98\textwidth]{graphs/bldc-range}
@@ -1050,8 +1058,6 @@ G(s) & 1.065 \leq |U(s)| \leq 1.655\\
 \caption{Cobra BLDC step response}
 \label{fig:bldc-step}
 \end{subfigure}
-\vspace{-10pt}
 \caption{BLDC motor characteristics}
-\vspace{-20pt}
 \end{figure}
 %====================================================
