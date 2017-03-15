@@ -102,7 +102,7 @@ The general rotation equation to \emph{rotate} some vector $\vec{v}$ about a nor
 \vec{v}~'=\big(1-cos(\theta)\big)\big(\vec{v}\cdot \hat{u}\big)\hat{u}+cos(\theta)\vec{v}+sin(\theta)\big(\hat{u}\times\vec{v}\big)
 \end{equation}
 In Eq:\ref{eq:genrotationmatrix}, when $\hat{u}$ is a unit vector in the direction of either $\hat{X}$,$\hat{Y}$ or $\hat{Z}$ axes, the equation can be simplified to produce the three fundamental rotation matrices; $R_x(\phi)$, $R_y(\theta)$ and $R_z(\psi)$. That set of three principle rotation matrices about the Cartesian X-Y-Z axes are defined as:
-\begin{subequations}
+\begin{subequations}\label{eq:rotationmatrix}
 \begin{equation}
 R_x(\phi)=\begin{bmatrix}
 1 & 0 & 0\\
@@ -142,7 +142,7 @@ Where, for some vector $\vec{a}$, the operator $[\vec{a}\hspace{1pt}]_\times$ de
 \vec{a}\times\vec{b}=\big[\vec{a}\hspace{1pt}\big]_\times\vec{b}
 \end{equation}
 \vspace{-12pt}
-\begin{equation}
+\begin{equation}\label{eq:cross-product-matrix}
 \big[\vec{a}\big]_\times\triangleq\begin{bmatrix}
 0 & -a_3 & a_2\\
 a_3 & 0 & -a_1\\

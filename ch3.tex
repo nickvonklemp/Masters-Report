@@ -89,7 +89,7 @@ So applying Eq:\ref{eq:reynolds} to the partial derivatives in Eq:\ref{eq:partia
 \end{equation}
 It then follows that the Lagrangian in Eq:\ref{eq:lagrangian.b} changes to:
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:3.7a}
 \mathcal{L}=\frac{1}{2}\vec{\nu}^{~T}(m_b)\vec{\nu} + \frac{1}{2}\vec{\omega}^{~T}(J_b)\vec{\omega}
 -m_b\vec{G}_b z~~~~\in\mathcal{F}^b
 \end{equation}
@@ -186,13 +186,13 @@ The singularity inherent to Euler Angle parametrization is often mentioned but f
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{figs/gimbal}
+\includegraphics[width=0.9\textwidth]{figs/gimbal}
 \caption{3-Axis gimbal}
 \label{fig:gimbal}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{figs/gimbal-lock}
+\includegraphics[width=0.9\textwidth]{figs/gimbal-lock}
 \caption{Locked gimbal with loss of DOF}
 \label{fig:gimbal-lock}
 \end{subfigure}
@@ -219,17 +219,18 @@ r
 \end{bmatrix}
 =\Phi(\eta)\omega_b
 \end{equation}
+\vspace{-2pt}
 \begin{equation}
-\therefore det\big(\Phi(\eta)\big)=
+\rightarrow det\big(\Phi(\eta)\big)=cos(\phi)\big(cos(\phi)sec(\theta)\big)+sin(\phi)\big(\sin(\phi)sec(\theta)\big)=sec(\theta)
 \end{equation}
+\vspace{-6pt}
 \begin{equation}
-\text{As}~\underset{{\theta \rightarrow \pi /2}}{lim}~sec(\theta),tan(\theta)\rightarrow \infty
+\therefore \underset{{\theta \rightarrow \pi /2}}{lim}|\Phi(\eta)|=sec(\theta)\rightarrow \infty
 \end{equation}
-Or that $\Phi(\eta)$ is undefined at $\theta=\pi/2$. 
-It's clear to see that in Eq:\ref{eq:euler-derivative} there exists an undefined singularity as $\theta\rightarrow\pi/2$. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the Z-Y-X rotation (or transformation) matrices are formulated:
+The Euler matrix $\Phi(\eta)$ looses rank as $\theta\rightarrow\pi/2$, loosing differentiability as well. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the Z-Y-X rotation (or transformation) matrices are formulated, from Eq:\ref{eq:rotationmatrix}.
 \begin{subequations}
 \begin{equation}
-\mathbb{R}_I^b = \mathbb{R}_z\mathbb{R}_y\mathbb{R}_x=\begin{bmatrix}
+R_I^b = R_zR_yR_x=\begin{bmatrix}
 c_\psi & -s_\psi & 0\\
 s_\psi & c_\psi & 0\\
 0 & 0 & 1
@@ -246,25 +247,32 @@ c_\theta & 0 & s_\theta\\
 \end{bmatrix}
 \end{equation}
 \begin{equation}
-\mathbb{R}_I^b=\begin{bmatrix}
+R_I^b(\eta)=\begin{bmatrix}
 c_\psi c_\theta & c_\psi s_\theta s_\phi - s_\psi c_\phi & c_\psi s_\theta c_\phi + s_\psi s_\phi\\
 s_\psi c_\theta & s_\psi s_\theta s_\phi + c_\psi c_\phi & s_\psi s_\theta  c_\phi - c_\psi s_\phi\\
 -s_\theta & c_\theta s_\phi & c_\phi c_\theta\\
 \end{bmatrix}
 \end{equation}
 In the case where $\theta=\pi/2$, and using trigonometric double angles, the following can be reduced;
-\begin{equation}\label{eq:gimbal}
-=\begin{bmatrix}
+\begin{equation}
+R_I^b(\eta)=\begin{bmatrix}
 0 & c_\psi s_\phi - s_\psi c_\phi & c_\psi c_\phi + s_\psi s_\phi\\
 0 & s_\psi s_\phi + c_\psi c_\phi & s_\psi c_\phi - c_\psi s_\phi\\
 -1 & 0 & 0\\
-\end{bmatrix}
+\end{bmatrix}\Bigg|_{\theta=\pi/2}
+\end{equation}
+\vspace{-6pt}
+\begin{equation}
 =
 \begin{bmatrix}
 0 & s(\phi - \psi) & c(\phi - \psi)\\
 0 & c(\phi - \psi) & s(\phi - \psi)\\
 -1 & 0 & 0
-\end{bmatrix}=\mathbb{R}_{x'}(\phi-\psi)
+\end{bmatrix}
+\end{equation}
+\vspace{-4pt}
+\begin{equation}\label{eq:gimbal}
+=R_{x'}(\phi-\psi)
 \end{equation}
 \end{subequations}
 Where the resultant in Eq:\ref{eq:gimbal} represents an $\hat{X}'$-axis rotation in a new intermediate frame, post a $\pi/2$ rotation about the $\hat{Y}$-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi/2$, when $\phi$ \& $\psi$ effect the same angle.
@@ -272,9 +280,9 @@ Where the resultant in Eq:\ref{eq:gimbal} represents an $\hat{X}'$-axis rotation
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
 %====================================================
-An algorithm proposed in \emph{How To Avoid a Singularity When Using Euler Angles?}\cite{euleranglesingularity} suggested a solution to the problem of Euler Angle singularities. The heuristic proposed was to switch between sequencing conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion} attitude representations in $\mathbb{R}^4$ (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots most notably made popular by Shoemake [1987]\cite{shoemake} for use in animation).
+An algorithm proposed in \cite{euleranglesingularity} suggested a solution to avoid Euler Angle singularities. The heuristic proposed involved switching between sequence conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and inefficient. Far more elegant is the use of \emph{quaternion} attitude representations in $\mathbb{R}^4$ (\cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others\ldots most notably made popular by \cite{shoemake} for use in animation).
 \par
-A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. An $\mathbb{R}^3$ position is paramterized as one rotation $\theta$ about a single unit \emph{Euler} axis $\hat{u}$ (sic Rodriguez Formula\cite{unwinding}). Without deliberating too much on their proof or details, a quaternion consists or a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
+A quaternion is analogous to a rotation matrix because it represents an attitude difference between two reference frames. An $\mathbb{R}^3$ attitude is paramterized as one rotation $\theta$ about a single unit \emph{Euler} axis $\hat{u}$ (demonstrated using the Rodriguez Formula in \cite{unwinding}). In brief a quaternion consists of a scalar component, $q_0$, and complex vector component, $\vec{q}\in \mathbb{C}^3$, such that;
 \begin{equation}
 Q\triangleq 
 \begin{bmatrix}
@@ -283,11 +291,11 @@ q_0 \\
 \end{bmatrix}
 ~~\in\mathbb{R}^4
 \end{equation}
-The relationship between an Euler Angles rotation matrix $\mathbb{R}_I^b(\eta)$ and a quaternion attitude $Q_b$ is given by the Rodriguez formula:
+The relationship between an Euler Angles rotation matrix $R_I^b(\eta)$ and a quaternion attitude $Q_b$ is given by the Rodriguez formula:
 \begin{equation}\label{eq:rodriguez}
-\mathbb{R}_I^b(\eta)=\mathbb{R}(Q_b)=\mathbb{I}+2q_0[\vec{q}\hspace{2pt}]_\times+2[\vec{q}\hspace{2pt}]_\times\text{}^2
+R_I^b(\eta)=R(Q_b)=\mathbb{I}+2q_0[\vec{q}\hspace{2pt}]_\times+2[\vec{q}\hspace{2pt}]_\times\text{}^2
 \end{equation}
-Any and all quaternions, unless otherwise stated, in this dissertation are unit quaternions\footnote{Unit quaternions are a subset of the quaternion space}, $Q\in\mathbb{Q}_u$. The need for quaternions with unity magnitude is such to ensure rotational operations don't affect the magnitude of the vector operand. A unit quaternion is defined as:
+Where $[.]_\times$ is the cross-product matrix defined earlier in Eq:\ref{eq:cross-product-matrix}. All quaternions, unless otherwise specified, are unit quaternions $Q\in\mathbb{Q}_u$. Quaternion with a unity magnitude ensure that rotational operations maintain the vector operand's magnitude. A unit quaternion is defined:
 \begin{equation}
 \norm{Q}=\sqrt{{q_0}^2+\vec{q}\text{}\hspace{2pt}^2}=1
 \end{equation}
@@ -305,22 +313,29 @@ p_0 \\
 \end{bmatrix}
 \end{equation}
 \vspace{-5pt}
+\begin{equation}
+=\begin{bmatrix}
+q_0p_0-\vec{q}\cdot\vec{p}\\
+q_0\vec{p}+p_0\vec{q}+\vec{q}\times\vec{p}
+\end{bmatrix}
+\end{equation}
+\vspace{-5pt}
 \begin{equation}\label{eq:quaternion-product}
 =q_0 p_0 - \vec{q}\cdot \vec{p}+p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}
 \end{equation}
 \end{subequations}
-Seeing that the vector component of a quaternion is complex valued, it is natural that there exists a quaternion conjugate property. Namely:
+Because the vector component of a quaternion is complex valued, it is natural that there exists a quaternion complex conjugate property, defined as:
 \begin{equation}
 Q^*=\begin{bmatrix}
 q_0 \\
 -\vec{q}
 \end{bmatrix}
 \end{equation}
-It then follows that\footnote{Disambiguation: $\mathbb{I}$ in this context is a $4\times 4$ identity matrix, not an inertial matrix} the fundamental quaternion identity is:
+It then follows that the fundamental quaternion identity is:
 \begin{equation}
 Q\otimes Q^* = \mathbb{I}_{4\times 4}
 \end{equation}
-Application of a right handed quaternion rotation to a vector $\vec{v} \in\mathbb{R}^3$ involves multiplication by two unit quaternions. 
+A right handed quaternion rotation applied to a vector $\vec{v} \in\mathbb{R}^3$ involves multiplication by two unit quaternions. 
 \begin{equation}
 \begin{bmatrix}
 0 \\
@@ -333,17 +348,17 @@ Application of a right handed quaternion rotation to a vector $\vec{v} \in\mathb
 \end{bmatrix}
 \otimes Q^*
 \end{equation}
-Mostly, the zero scalar components are omitted in a rotation (\emph{or transformation}) operation, as such it is implied vector operands are substituted with quaternions.
+Mostly, the zero scalar components are omitted in a rotation (\emph{or transformation}) operation, it is implied that vector operands are substituted with quaternions.
 \begin{equation}\label{eq:quaternion-rotation}
 \vec{v}\hspace{2pt}'=Q \otimes (\vec{v}\hspace{2pt}) \otimes Q^*
 \end{equation} 
-In the case of rigid body attitude representation, $Q_b$ is the quaternion which represents the difference between $\mathcal{F}^b$ and $\mathcal{F}^I$. A quaternion operator is equivalent to a rotation matrix operation:
+In the case of rigid body attitude parameterization with quaternions, $Q_b$ is the quaternion which represents the difference between $\mathcal{F}^b$ and $\mathcal{F}^I$. A quaternion operator is equivalent to a rotation matrix operation, for some vector $\vec{v}_I\in\mathcal{F}^I$;
 \begin{equation}
-\mathbb{R}_I^b \underset{Q}{\iff} Q_b \otimes (.) \otimes Q_b^*
+\vec{v}_b=R_I^b(\eta)\vec{v}_I \underset{Q}{\iff} Q_b \otimes (\vec{v}_I) \otimes Q_b^*
 \end{equation}
-A Z-Y-X sequenced\footnote{The resultant quaternion rotational products are sequence independent, but the quaternions rotational trajectories do depend on the sequence used. Here they are sequenced following the order of the rotational Euler angles used as arguments.} body quaternion, $Q_b$, can be constructed from Euler angles as:
+A Z-Y-X sequenced body quaternion, $Q_b$, can be constructed from Euler angles as:
 \begin{equation}\label{eq:quaternion-sequence}
-Q_b=Q_z\circ Q_y\circ Qx=\begin{bmatrix}
+Q_b=Q_z\otimes Q_y\otimes Qx=\begin{bmatrix}
 cos(\psi/2)\\
 0\\
 0\\
@@ -364,32 +379,41 @@ sin(\phi/2)\\
 0
 \end{bmatrix}
 \end{equation}
-A quaternion time derivative, with $Q_\omega$ being a quaternion with a vector component equal to angular velocity $\vec{\omega}_{b/I}$ and a zero scalar component, is given by:
+A quaternion time derivative, defined in \cite{quaterniondynamics}, with $Q_\omega$ being a quaternion with a vector component equal to angular velocity $\vec{\omega}_{b/I}$ and a zero scalar component, is:
 \begin{equation}\label{eq:quaternion-deriv}
 \frac{d}{dt}Q_b=\frac{1}{2}Q_b\otimes Q_{\omega}=\begin{bmatrix}
 -\frac{1}{2}\vec{q}\hspace{2pt}^{T} \vec{\omega}_b\\
 \frac{1}{2}\big([\vec{q}\hspace{2pt}]_\times+q_0\mathbb{I}\big)\vec{\omega}_b
 \end{bmatrix}
 \end{equation}
-Using quaternions to represent attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, to represent attitudes and their rates. A body quaternion is fully defined in the inertial frame with respect to the body frame or inversely so. The first quaternion time derivative replaces Eq:\ref{eq:states.a} \& Eq:\ref{eq:states.c};
+Using quaternions to represent attitudes negates the need for an Euler Matrix, $\Phi(\eta)$, to represent attitudes and their rates. A body quaternion is fully defined in the inertial frame with respect to the body frame or inversely so. The first quaternion time derivative replaces angular velocity rate differentials Eq:\ref{eq:states.a} and Eq:\ref{eq:states.c};
 \begin{subequations}
 \begin{equation}
-\dot{\mathcal{E}}=\mathbb{R}_b^I(-\eta)\vec{\nu}\underset{Q}{\iff}Q_b(-\eta)\otimes\vec{\nu}\otimes Q_b(-\eta)^*=Q_b^*\otimes \vec{\eta} \otimes Q_b~~~~\in\mathcal{F}^I
+\dot{\mathcal{E}}=R_b^I(-\eta)\vec{\nu}\underset{Q}{\iff}Q_b(-\eta)\otimes\vec{\nu}\otimes Q_b(-\eta)^*=Q_b^*\otimes \vec{\nu} \otimes Q_b~~~~\in\mathcal{F}^I
 \end{equation}
-\vspace{-10pt}
+\vspace{-14pt}
 \begin{equation}
-\dot{\eta}=\Phi(\eta)\vec{\omega}_b\underset{Q}{\iff}\dot{Q}=\frac{1}{2}Q_b\otimes Q_\omega~~~~\in\mathcal{F}^{v2,v1,I}
+\dot{\eta}=\Phi(\eta)\vec{\omega}_b~~\in\mathcal{F}^{v2,v1,I}\underset{Q}{\iff}\dot{Q}_b=\frac{1}{2}Q_b\otimes Q_\omega~~\in\mathcal{F}^{I}
 \end{equation}
 \end{subequations}
-Second order time derivatives for quaternion acceleration aren't as useful or concise as their higher order velocity counterparts. The second order derivative is provided here however it's only relevant to quaternion backstepping later in the control chapter. If possible, quaternion accelerations are mostly avoided due to the complexity of their evaluation;
+Second order time derivatives for quaternion acceleration aren't as useful or concise as their higher order velocity counterparts. The second order derivative is provided here however it's only relevant to quaternion backstepping later in the control chapter. If possible, quaternion accelerations are mostly avoided due to their complexity of their evaluation;
 \begin{equation}
-\ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[\mathbb{I}_b^{-1}(\tau-4(Q^*\otimes \dot{Q})\times(\mathbb{I}_b(Q^*\otimes \dot{Q}))\big]
+\ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[J_b^{-1}(\tau-4(Q^*\otimes \dot{Q})\times(J_b(Q^*\otimes \dot{Q}))\big]
 \end{equation}
+An Euler angle attitude error state used for control plants is defined as the subtracted error between desired and existing attitude orientations $\vec{eta}_d$ and $\vec{eta}_b$ respectively. Where $\vec{\eta}_d$ is some attitude produced from a trajectory generation loop.
+\begin{equation}\label{eq:euler-error}
+\vec{\eta}_e=\vec{\eta}_d-\vec{\eta}_b
+\end{equation}
+In contrast with Eq:\ref{eq:euler-error}, a quaternion attitude error is a multiplicative term defined as the difference between two quaternions $Q_d$ and $Q_b$;
+\begin{equation}\label{eq:quaternion-error}
+Q_e=Q_d^*\otimes Q_b
+\end{equation}
+Quaternion attitude control and its stability goals are expanded upon later in Sec:\ref{subsec:control.attitude.problem}.
 %====================================================
 \subsection{Quaternion Unwinding}
 \label{subsec:dynamics.rigidbody.unwinding}
 %====================================================
-Although quaternions are indeed better than Euler angles, lacking the associated singularity, they do contain one caveat. Seeing that a quaternion $Q=[q_0~\vec{q}\hspace{2pt}]^T$ represents an attitude orientation of a body in $\mathbb{R}^3$ using $\mathbb{R}^4$ variables there exists what is called a dual coverage\cite{unwinding}. Each unit quaternion, stemming from Euler-Rodriguez theorem, is parametrized such that the quaternion operation represents a single Euler-axis rotation of $\theta$ about a unit axis $\hat{u}$ such that:
+Although quaternions are indeed better than Euler angles, lacking the associated singularity, they do contain one caveat. Becuase a quaternion $Q=[q_0~\vec{q}\hspace{2pt}]^T$ represents a body's attitude in $\mathbb{R}^3$ using $\mathbb{R}^4$ there is an infinite coverage of attitude states, \cite{unwinding}. Each unit quaternion, stemming from Euler-Rodriguez theorem, represents a single Euler-axis rotation of $\theta$ about a unit axis $\hat{u}$ such that:
 \begin{equation}
 Q=\begin{bmatrix}
 q_0\\
@@ -400,7 +424,7 @@ cos(\theta/2)\\
 sin(\theta/2)\hat{u}
 \end{bmatrix}
 \end{equation}
-That rotation is applied with a quaternion operator Eq:\ref{eq:quaternion-rotation}. In then follows that for each unique attitude in 3-Dimensions there exist two quaternions which correlate to the same position, differing by their rotational direction about the Euler-axis. Seeing that $\theta=2\pi-\theta$\footnote{Disambiguation: $\theta$ is not the $\hat{Y}$-axis Euler angle here\ldots}, then there are two definitions for $Q_b$;
+That rotation is applied with a quaternion operator, Eq:\ref{eq:quaternion-rotation}. For every attitude state in 3-Dimensions there exist two unique quaternions which correspond to the same orientation, differing by their rotational direction about the Euler-axis. The rotation angle $\theta$ about the Euler-axis $\hat{u}$ is reciprocal in that $\theta=\theta + 2k\pi,~k\in\mathbb{N}$, there are then two definitions for $Q_b$;
 \begin{subequations}
 \begin{equation}
 Q_b =
@@ -416,7 +440,7 @@ sin(\theta/2)\hat{u}
 \end{equation}
 \vspace{-6pt}
 \begin{equation}
-Q=\begin{bmatrix}
+Q_b=\begin{bmatrix}
 cos(\pi - \theta/2)\\
 sin(\pi - \theta/2)\hat{u}
 \end{bmatrix}
@@ -435,80 +459,102 @@ sin(\theta/2)\hat{u}
 \in\mathbb{R}^4
 \end{equation}
 \end{subequations}
-The conjecture in Eq:\ref{eq:euler-quaternion} is that for each physical attitude in $\mathbb{R}^3$ there are two corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is two possible error state trajectories for every attitude difference. Both a clockwise $\theta$ rotation and an anticlockwise $2\pi-\theta$ negative rotation will point to the same quaternion error state. This could lead to an erroneous and unnecessary "unwinding" of a complete counter revolution as a result of a dual covered error state. 
-\par
-Often the signed scalar component of the attitude quaternion error (Sec:\ref{subsec:control.attitude.problem}) is simply neglected or assumed positive. As such for attitude controllers the requirement is that for positive and negative scalars the control input is consistent:
+Eq:\ref{eq:euler-quaternion} asserts that for each attitude in $\mathbb{R}^3$ there are \emph{two} corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is two possible error state trajectories exist for every attitude difference. Both a clockwise, $\theta$, and an anticlockwise, $2\pi-\theta$, rotations which point to the same quaternion attitude error state. This could lead to an erroneous and unnecessary "unwinding" of a complete counter revolution. As such for attitude controllers the requirement is that for positive and negative scalars the control input is consistent:
 \begin{equation}
-\nu_d=h([q_0~\vec{q}\hspace{2pt}]^T,t)=h([-q_0~\vec{q}\hspace{2pt}]^T,t)
+\vec{\nu}_d=h([q_0~\vec{q}\hspace{2pt}]^T,t)=h([-q_0~\vec{q}\hspace{2pt}]^T,t)
 \end{equation}
-Or more simply that $Q_e=[|q_0|~\vec{q}\hspace{2pt}]^T$. The most simple solution adhering to that constraint, which control designers often adopt, is to simply neglect the scalar component altogether. The adjustment is to use a simplified error state argument for the control law; $h(\vec{q}_e,t)$. Such a solution is an oversimplification and would only ever be asymptotically stable in the local and not global regions. 
+Or more simply that $Q_e=[|q_0|~\vec{q}\hspace{2pt}]^T$. The most simple solution adhering to that constraint, which is often used, is to neglect the quaternion scalar component altogether. Using a reduced error state, only the quaternion error vector as an argument for the control law; $h(\vec{q}_e,t)$. Such a solution is an oversimplification and would only ever be locally stable. 
 \par
-An alternative solution is using an only positive quaternion scalar, one that will always ensure that an error state represents a right-handed clockwise rotation and not necessarily the most direct rotation trajectory. If the resolution of trajectory co-ordinates generated is sufficiently high enough, the control plant will however never encounter a problem. One proposal in \emph{Nonlinear Quadcopter Attitude Control}\cite{nonlinearquadcopter} suggested using a \emph{signum} operator to design the signs of the controller coefficients for the virtual control plant input. 
+An alternative is to use only the absolute quaternion scalar, which ensures the error state represents a right-handed (clockwise) rotation and not necessarily the shortest path. If the resolution of trajectory co-ordinates generated is sufficiently fine the control plant won't encounter a problem. One proposal presented in \cite{nonlinearquadcopter} suggested using a \emph{signum} operator to design the controller coefficient sign for the virtual angular velocity, $\vec{\omega}_d$ control plant input. 
 \begin{subequations}\label{eq:signum-unwinding}
 \begin{equation}
-\vec{\omega}_d=\frac{2}{\tau}sgn(q_0)\vec{q}
+\vec{\omega}_d=\frac{2}{\Gamma_1}sgn(q_0)\vec{q}
 \end{equation}
 \begin{equation}
-sgn(\vec{q})=
+sgn(q_0)=
 \begin{cases}\begin{array}{ll}
-1 & ~~\vec{q}\geq 0\\
--1 & ~~\vec{q}< 0\\
+1 & ~~q_0\geq 0\\
+-1 & ~~q_0< 0\\
 \end{array}
 \end{cases}
 \end{equation}
 \end{subequations}
-The resultant \emph{hybrid} mode controller provides global asymptotic stability, but only in the case that the Euler-axis angle $\theta\leq \pm\pi$. The control law described in Eq:\ref{eq:signum-unwinding} would still need the control torques to be designed from that angular velocity virtual control setpoint.
+Eq:\ref{eq:signum-unwinding} was shown to be asymptotically stable but only locally in the case where the Euler-axis angle is constrained; $\theta\leq \pm\pi$. That control law  would still need the control torques to be calculated from that angular velocity $\vec{\omega}_d$ setpoint.
 \par
-Another proposal \cite{unwinding} to the unwinding problem was to lift the quaternion error-state back into $\mathbb{R}^3$ using the Rodriguez formula, Eq:\ref{eq:rodriguez}. The mapping back to $\mathbb{R}^3$ effectively ensures that $\theta$ is minimized, or that the error-state imposes the shortest possible rotation between the reference and desired body frames. Controllers presented in Sec:\ref{sec:control.attitude} all incorporate the signed quaternion scalar into the control law;  hence relying on the trajectory generation to provide the desired direction of the rotation path.
+In \cite{intelligentbackstep}, the authors used a backstepping controller with a trajectory using the absolute quaternion scalar. The resultant was a global asymptotically stable control law which tracked quaternion setpoints for a satellite's attitude. Controllers presented in Sec:\ref{sec:control.attitude} all incorporate the signed quaternion scalars into the control law;  hence relying on the trajectory generation to provide the desired direction of the rotation path.
 %====================================================
 \section{Multibody Nonlinearities}
 \label{sec:dynamics.nonlinearities}
 %====================================================
-Typically multibody dynamics are solved (and simulated) as a series of torque \& force interactions or responses. There are many different schools of thought on the subject which each have proposed various methodologies for stepping through the systems dynamics [sic Implicit Euler\cite{physicallybased,multibodydynamics} or otherwise \ldots]. For the prototype design here, only relative rotational motion is permissible between the interconnected rigid bodies. Each body is considered independently, as free and rigid, whose constraint torques induced from excitation are imposed onto sequential rotational joints. Opposed to those torques are Newtonian responses of importance which manifest as what are termed \emph{gyroscopic} and \emph{inertial} torques. Those responses are now quantified and introduced into the dynamic model derived in Sec:\ref{subsec:dynamics.rigidbody.lagrange}. By the nature of the design there can be no unbalanced constraining forces existing between each body and as such the translational model is regarded as rigid.
+Typically multibody dynamics are solved (and simulated) as a series of constrained torque \& force responses. There are different schools of thought on the subject which each propose methodologies for stepping through the systems dynamics (\emph{i.e} Implicit Euler\cite{physicallybased,multibodydynamics}\ldots). For the prototype design here, only relative rotational motion is mechanically permissible between the connected rigid bodies. Each body is considered independently, as free and rigid, whose constraint torques induced from excitation are imposed onto sequential rotational joints. Opposing those torques are \emph{gyroscopic} and \emph{inertial} Newtonian responses. Those responses are now quantified and introduced to the dynamic model derived in Sec:\ref{subsec:dynamics.rigidbody.lagrange}. The design has no translational degrees of freedom each body and is treated as rigid.
 \par
-A distinction must be made between torque responses here and those of Eq:\ref{eq:states.d}. The latter being a response to be diminished in feedback compensation and the former being something which is later exploited by the control allocation algorithm in a feedforward type configuration, Sec:\ref{sec:control.allocation}. The multibody analysis which follows is a very Newtonian approach in that each body involved is resolved independently and relative responses are transformed onto the inducing body. The alternative numeric solution is to form a Lagrangian for the entire dynamic system, this would simplify solving net effects. Such an approach is unused here as each individual effect needs to be quantified if they're to be used as potential actuator inputs.
+A distinction must be made between torque responses here and those of Eq:\ref{eq:states.d}. The latter are responses to be compensated for in feedback control whereas the former are later exploited by the control allocation algorithm in a feedforward type configuration, Sec:\ref{sec:control.allocation}. The multibody analysis here follows a Newtonian approach where each body is resolved independently and then relative responses are transformed onto the inducing body(s). 
+
+The alternative numeric solution is to form a Lagrangian for the 13 body dynamic system. Those independent bodies are four rotor/propeller bodies (Fig:\ref{fig:inertia-prop}), four inner ring bodies (Fig:\ref{fig:inertia-inner}), four middle ring bodies (Fig:\ref{fig:inertia-middle}) and finally the frame structure (Fig:\ref{fig:inertia-frame}) each with 6 degrees of freedom. The constraints on the assembly's joints reduce the degrees of freedom and would simplify solving for net effects as a resultant of relative motion. However such an approach is not used here as all 6-DOF for every rigid body needs to be quantified before they can be reduced, making the kinematic derivation quite cumbersome.
 %====================================================
 \subsection{Relative Rotational Gyroscopic \& Inertial Torques}
 \label{subsec:dynamics.nonlinearities.gyrotorques}
 %====================================================
-The torque responses induced from relative rotations, the only permissible intra-body movement, are transferred from the interacting bodies as a result of Newtons second law of rotational motion. For each of the motor modules' pitching or rolling motion, the respective servo motors apply some torque to invoke that rotation. Opposed to the rotational motion are both inertial and gyroscopic response(s) of that body being acted upon. The latter being a consequence of a vector's time derivative in a rotating frame, Eq:\ref{eq:reynolds}.
+The torque responses resulting from relative rotations, the only permissible intra-body movement, are transferred from the interacting bodies as a result of Newton's second law applied to rotational motion. For each of the motor modules' pitching or rolling motion, the respective servo motors apply some torque to invoke that rotation. Opposed to the angular acceleration are both inertial and gyroscopic torque responses of the body being rotated.
 \par
-Each of the four motor modules are symmetrical and as such the induced torque response characteristics for one module can be extrapolated through a reference frame rotation. Seeing that each relative rotation from the actuator set $u\in\mathbb{U}$ is actuated independently and upon a different body, their responses are calculated separately too.
+Each of the four motor modules are symmetrical and as such the induced torque response characteristics for one module can be extrapolated through a reference frame rotation. Because each relative rotation from the actuator set, $u\in\mathbb{U}$, is actuated independently and upon a different body, their responses are calculated separately too.
 \par
-Drawing again from Lagrangian theory\footnote{The generalized linear kinetic energy for each module is an extension of that in Eq:\ref{eq:rigid-frame.a} and is independent of any of the actuator positions.} and considering only the rotational kinetic energy for the inner ring assembly $\mathcal{F}^{M_i}$. There are no permissible transnational motions between each body and as such there can be no linear kinetic energy contribution. The Lagrangian for the inner ring is formed, with concern on the effect $\lambda_i$ has on the system:
+Drawing again from Lagrangian theory and considering only the angular kinetic for the inner ring assembly $\mathcal{F}^{M_i}$. There is no relative translational motion between each body and so there is no translational kinetic energy contribution. The translational kinetic energy for each module is an extension of body's kinetic energy in Eq:{eq:3.7a} and independent of any actuator positions. The motor module's translational motion is accounted for in Eq:\ref{eq:rigid-frame.a}. 
+\par
+Deriving dynamic responses for $\lambda$ changes on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$ requires a relative path co-ordinate to be defined. Seeing that the only path variable between the two frames is $\lambda_i$; the path co-ordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ for the servo position $\lambda$ are used to form the Lagrangian for the inner ring $\mathcal{L}_{M_i}$. The inner ring assembly has two separate bodies with relative rotational motion and independent kinetic energies; the rotor assembly with an inertia $J_{rot}$ from Eq:\ref{eq:prop-inertia} and the inner ring (\emph{sans} rotor assembly) which has an inertia $J_{ir}$:
 \begin{equation}
-\mathcal{L}_{M_i}=\frac{1}{2}\vec{\Omega}_i\text{}^T\big(\mathbb{I}_{p}\big)\vec{\Omega}_i+\frac{1}{2}\dot{\vec{\lambda}}_i\text{}^T\big(\mathbb{I}_{\lambda}\big)\dot{\vec{\lambda}}_i
-\end{equation}
-Where $\mathbb{I}_p$ is the propeller's rotational inertia, Eq:\ref{eq:inertia-prop}, and $\mathbb{I}_\lambda$ being the inner ring's inertia, defined in Eq:\ref{eq:inertia.inner.a}. Noting that $\vec{\Omega}_i=[0~~0~~\Omega_i]^T\in\mathcal{F}^{M_i}$ and $\dot{\vec{\lambda}}_i=[\dot{\lambda}_i~~0~~0]^T\in\mathcal{F}^{M_i'}$, the two contributors are not in a common frame. As such the equation \footnote{The transformation of $\dot{\vec{\lambda}}_i\rightarrow\dot{\vec{\lambda}}_i'$ is superfluous but included for completeness.} changes to:
+J_{ir}=J_{n}-J_{r}=J_{M_i}-J_{rot}
+\end{equation} 
+Where $J_{M_i}$ is the net inertia for the inner ring assembly from Eq:\ref{eq:inertia.inner}. The rotor assembly has an angular velocity $\vec{\omega}_{rot/M_i'}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$:
 \begin{subequations}
 \begin{equation}
-\mathcal{L}_{M_i}=\frac{1}{2}\vec{\Omega}_i\text{}^T\big(\mathbb{I}_{p}\big)\vec{\Omega}_i+\frac{1}{2}\dot{\vec{\lambda}}_i'\text{}^T\big(\mathbb{I}_{\lambda}\big)\dot{\vec{\lambda}}_i'
+\vec{\omega}_{r/M_i'}=\vec{\Omega}_i+\frac{d}{dt}\Big(R_x(\lambda)\vec{\lambda}_i\Big)~~~~\in\mathcal{F}^{M_i}
+\end{equation}
+With $\vec{\Omega}_i=\begin{bmatrix}0 & 0 & \Omega_i\end{bmatrix}^T$ and $\vec{\lambda}_i=\begin{bmatrix}\lambda_i & 0 & 0\end{bmatrix}^T$; so by the chain rule and from the rotation matrix's derivative Eq:\ref{eq:rotation-matrix-derivative} it then follows:
+\begin{equation}
+\therefore\vec{\omega}_{r/M_i'}=\vec{\Omega}_i+\big[\dot{\vec{\lambda}}\hspace{2pt}\big]_{\times}R_x(\lambda)\vec{\lambda}_i+R_x(\lambda)\dot{\vec{\lambda}}_i
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
-\dot{\vec{\lambda}}_i'=Q_x(-\lambda_i)\otimes\big(\dot{\vec{\lambda}}_i\big)\otimes Q_x^*(-\lambda_i)\Rightarrow \dot{\vec{\lambda}}_i'=\dot{\vec{\lambda}}_i
+\begin{equation}\label{eq:angular-rot}
+=\vec{\Omega}_i+R_x(\lambda)\dot{\vec{\lambda}}_i=\vec{\Omega}_i+\dot{\vec{\lambda}}_i
 \end{equation}
 \end{subequations}
-Where both $\mathbb{I}_{p}$ and $\mathbb{I}_{\lambda}$ are taken W.R.T to their rotational centre(s).
-\par
-Then recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} with generalized co-ordinates\footnote{Relative to the body frame and not the inertial frame because Eq:\ref{eq:states.d} accounts for the inertial response of the entire body frame. Here only the induced relative responses are being considered.} $\mathbf{u}(t)$ for the motor module frame, $\mathcal{F}^{M_i}$, relative to  the body frame, $\mathcal{F}^b$.
-\begin{equation}
-\frac{d}{dt}\bigg(\frac{\delta L}{\delta \dot{\mathbf{u}}}\bigg)-\frac{\delta L}{\delta \mathbf{u}} = \mathbf{V} = \vec{\tau}_{net}
+Similarly the inner ring's angular velocity $\vec{\omega}_{M_i'}$ relative to $\mathcal{F}^{M_i'}$ is only as a result of $\Delta\lambda_i$:
+\begin{equation}\label{eq:angular-inner}
+\vec{\omega}_{M_i'}=\frac{d}{dt}\Big(R_x(\lambda)\vec{\lambda}_i\Big)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-It then follows that:
+The Lagrangian $\mathcal{L}_{M_i}$ consists purely of kinetic energy from the angular velocities of Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}.
 \begin{subequations}
 \begin{equation}
-\frac{d}{dt_b}\bigg(\frac{\delta\mathcal{L}}{\delta\dot{\mathbf{u}}}\bigg)=\frac{d}{dt_{M_i}}\mathbb{I}_p\vec{\Omega}_i+\vec{\omega}_{M_i/b}\times\mathbb{I}_p\vec{\Omega}_i+\frac{d}{dt_{M_i}}\mathbb{I}_{\lambda}\dot{\vec{\lambda}}_i+\vec{\omega}_{M_i/b}\times\mathbb{I}_{\lambda}\dot{\vec{\lambda}}_i
+\mathcal{L}_{M_i}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i'}\text{}^T\big(J_{ir}\big)\vec{\omega}_{M_i'}
 \end{equation}
-With $\vec{\omega}_{M_i/b}$ being the net angular velocity of the inner ring frame relative to the body frame. Both inner and middle ring servo rates, $d\vec{\lambda}_i/dt$ \& $d\vec{\alpha}_i/dt$ respectively, contribute to that inner ring's relative angular velocity:
+\vspace{-6pt}
 \begin{equation}
-\vec{\omega}_{M_i/b}= Q_x(-\lambda_i)Q_y(-\alpha_i)\otimes\dot{\vec{\alpha}}_i\otimes Q_y^*(-\alpha_i)Q_x^*(-\lambda_i)+Q_x(-\lambda_i)\otimes\dot{\vec{\lambda}}_i\otimes Q_x^*(-\lambda_i)
+=\frac{1}{2}\Big(\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\big(J_{r}\big)\Big(\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\frac{1}{2}\dot{\vec{\lambda}}_i^{\hspace{2pt}T}\big(J_{ir}\big)\dot{\vec{\lambda}}_i
+\end{equation}
+\end{subequations}
+Noting that the inner ring's inertia $J_{ir}$ is now a separate body from the rotor $J_{r}$. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} with path co-ordinates $\vec{\mathbf{u}}(t)$ for the inner ring frame, $\mathcal{F}^{M_i}$, relative to  the middle ring frame, $\mathcal{F}^{M_i'}$:
+\begin{subequations}
+\begin{equation}
+\frac{d}{dt}\bigg(\frac{\delta \mathcal{L}_{M_i}}{\delta \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\delta \mathcal{L}_{M_i}}{\delta \vec{\mathbf{u}}} = \vec{\mathbf{V}} = \vec{\tau}_{\lambda}~~~~\in\mathcal{F}^{M_i}
+\end{equation}
+Because the partial derivative $\delta\mathcal{L}_{M_i}/\delta\vec{\mathbf{u}}=0$, only the partial derivative with respect to the path derivative $\dot{\vec{\mathbf{u}}}$ remains. That partial derivative of Eq:\ref{eq:angular-inner} is:
+\begin{equation}\label{eq:3.42b}
+\therefore\frac{\delta \mathcal{L}_{M_i}}{\delta \dot{\vec{\mathbf{u}}}}=\big(J_{r}\big)\Big(\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\big(J_{ir}\big)\dot{\vec{\lambda}}_i
+\end{equation}
+Inserting the Reynolds transportation theorem, Eq:\ref{eq:reynolds} for a vector's derivative in a rotating reference frame, into Eq:\ref{eq:3.42b}:
+\begin{equation}
+\rightarrow \frac{d}{dt} \bigg(\frac{\delta \mathcal{L}_{M_i}}{\delta \dot{\vec{\mathbf{u}}}}\bigg)=\Big(J_{r}\dot{\vec{\Omega}}_i+\vec{\omega}_{M_i'}\times J_{r}\vec{\Omega}_i+J_{r}\ddot{\vec{\lambda}}_i+\vec{\omega}_{M_i'}\times J_{r}\dot{\vec{\lambda}}_i\Big)+\Big(J_{ir}\ddot{\vec{\lambda}}_i+\vec{\omega}_{M_i'}\times J_{ir}\dot{\vec{\lambda}}_i\Big)
+\end{equation}
+\end{subequations}
+Recombining inertial contributions with the same angular velocity ($J_{r}+J_{ir}=J_{M_i}$) and recognizing that, from Eq:\ref{eq:angular-inner} $\vec{\omega}_{M_i'}=\dot{\vec{\lambda}}$; the generalized net torque encountered by a rotation of $\lambda$ is:
+\begin{equation}
+\vec{\tau}_\lambda=\frac{d}{dt}\bigg(\frac{\delta\mathcal{L}}{\delta\dot{\vec{\mathbf{u}}}}\bigg)=J_{r}\dot{\vec{\Omega}}_i+\dot{\vec{\lambda}}_i\times J_{r}\vec{\Omega}_i+J_{M_i}\ddot{\vec{\lambda}}_i+\dot{\vec{\lambda}}_i\times J_{M_i}\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 The net torque from a $\lambda_i$ rotation, induced in the motor module frame $\mathcal{F}^{M_i}$, can be grouped into second order \emph{Inertial} and first order \emph{Gyroscopic} components. Depending on the fidelity of the model or aggressiveness of control actions taken, higher order induced terms could be ignored to save computational complexity.
 \begin{equation}\label{eq:torque-induced-inner}
-\vec{\tau}_\lambda=\underbrace{\mathbb{I}_p\dot{\vec{\Omega}}_i+\mathbb{I}_{\lambda}\ddot{\vec{\lambda}}_i}_{Inertial}+\underbrace{\vec{\omega}_{M_i/b}\times\mathbb{I}_p\vec{\Omega}_i+\vec{\omega}_{M_i/b}\times\mathbb{I}_{\lambda}\dot{\vec{\lambda}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i}
+\vec{\tau}_\lambda=\underbrace{J_r\dot{\vec{\Omega}}_i+J_{M_i}\ddot{\vec{\lambda}}_i}_{Inertial}+\underbrace{\dot{\vec{\lambda}}_i\times J_r\vec{\Omega}_i+\dot{\vec{\lambda}}_i\times J_{M_i}\dot{\vec{\lambda}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-\end{subequations}
 Similarly for the middle ring, with the inertia, $\mathbb{I}_{\alpha}(\lambda_i)$, as a function of the inner ring rotation angle, $\lambda$, from Eq:\ref{eq:inertia.middle.c}. Using a new set of generalized co-ordinates, $\mathbf{v}(t)$, for the middle ring frame, $\mathcal{F}^{M_i'}$, relative to the body frame, the Lagrangian is then:
 \begin{subequations}
 \vspace{-8pt}
