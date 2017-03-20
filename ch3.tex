@@ -356,7 +356,7 @@ In the case of rigid body attitude parameterization with quaternions, $Q_b$ is t
 \begin{equation}
 \vec{v}_b=R_I^b(\eta)\vec{v}_I \underset{Q}{\iff} Q_b \otimes (\vec{v}_I) \otimes Q_b^*
 \end{equation}
-A Z-Y-X sequenced body quaternion, $Q_b$, can be constructed from Euler angles as:
+Since quaternions are non-commutative, the construction of a body quaternion $Q_b$ from an Euler angle set $\vec{\eta}$ is sequence dependent. Euler angles, despite being singular, are conceptually simple terms for describing a body's orientation. A Z-Y-X sequenced body quaternion, $Q_b$, can be constructed from Euler angles as:
 \begin{equation}\label{eq:quaternion-sequence}
 Q_b=Q_z\otimes Q_y\otimes Qx=\begin{bmatrix}
 cos(\psi/2)\\
@@ -627,20 +627,20 @@ Which are similarly grouped into first and second order gyroscopic and inertial 
 \caption{Torque response rig}
 \label{fig:torque-response}
 \end{figure}
-Each of the induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha(\lambda_i)$, occur in intermediary frames associated with the inner and middle ring assemblies. As such, their negative responses effect\footnote{Depending on dynamic equations used it could  effect Eq:\ref{eq:rigid-frame.b}. However the equations Eq:\ref{eq:rigid-frame} are unnecessary when using quaternion dynamics.} Eq:\ref{eq:states.d}, and each need to be transformed to the body frame.
+Each of the induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha(\lambda_i)$, occur in intermediary frames associated with the inner and middle ring assemblies. As such, their negative responses effect Eq:\ref{eq:states.d}, and each need to be transformed to the body frame. Depending on dynamic equations used it could  effect Eq:\ref{eq:rigid-frame.b}. However the equations Eq:\ref{eq:rigid-frame} are unnecessary when using quaternion dynamics.
 \begin{equation}\label{eq:torque-response}
 \vec{\tau}_Q(u)=\sum_{i=1}^4 -Q_{M_i}^*\otimes \vec{\tau}_{\lambda_i}(u)\otimes Q_{M_i}-Q_{M_i'}^*\otimes \vec{\tau}_{\alpha_i}(u) \otimes Q_{M_i'}~~~\in\mathcal{F}^b
 \end{equation}
 \par
-The torque response equations where tested using the rig in Fig:\ref{fig:torque-response}. The first plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased rotation rates of $\Omega_i$\footnote{Motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-').}, illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly the second plot in Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
+The torque response equations where tested using the rig in Fig:\ref{fig:torque-response}. The first plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased rotation rates of $\Omega_i$, motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-'), illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly the second plot in Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
 \begin{figure}[hbtp]
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.2\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-lambda}
 \caption{$\tau_\lambda$ variations with propeller speeds $\Omega_i$}
 \label{fig:tau-lambda}
 \end{subfigure}
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.2\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-alpha}
 \caption{$\tau_\alpha$ variations with changing $\mathbb{I}_\alpha(\lambda_i)$}
@@ -652,37 +652,58 @@ The torque response equations where tested using the rig in Fig:\ref{fig:torque-
 \end{figure}
 \par
 \emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
+\newpage
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-The relationship between a propeller's rotational speed, $\Omega_i$, and its produced thrust, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers puport. Thrust induced is mostly dependent on the incident air stream flowing into the propellers rotational plane; typically being the component of the body velocity normal to that propeller's plane (Eq:\ref{eq:normal-fluid}). Parallel fluid flowing across the propeller contributes toward in-plane aerodynamic drag (hence torque). 
+The relationship between a propeller's rotational speed, $\Omega_i$, and its perpendicular thrust vector, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers use (e.g \cite{x4flyer,modelingquadcopter} etc\ldots). The thrust produced is mostly dependent on the incident air stream flowing through the propeller's rotational plane; mostly being the component of the body velocity normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag (hence torque). 
 \par
-The combination of aerodynamic Blade-element\cite{bem,forwarddescent} and fluid-dynamics Momentum (\emph{disc actuator}) theories stipulates an integral term taken across the propellers length which accurately models the produced thrust and torque. A verbose presentation of all aerodynamic effects experienced by a quadrotor's propeller(s) is thoroughly detailed in \cite{bladesforquadrotors} and again \cite{nonlineardynamics}. The following provides a review of pertinent aerodynamic theories. Some phenomena aren't included, like Vortex Ring States or parasitic drag like effects, which weren't deemed to be pertinent.
+The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum (\emph{disc actuator}) theories equate an integral term taken across the propeller's length with the produced thrust and torque. A presentation of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories, vortex ring state and parasitic drag effects are not included as they will be approximately negligible given the aircraft's flight envelope here.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
 %====================================================
-\emph{\color{Gray} A feasible situation which the prototype could encounter is where an upstream propeller provides the incident fluid flow to another downstream propeller. Such a situation presents a complicated fluid dynamics \& vortex wake effect problem. Propeller overlapping effects are investigated in \cite{configurationpropulsion}, but remain open to further research in the context of the aircraft considered here.}
+\emph{\color{Gray} A possible situation which the prototype could encounter is where an upstream propeller provides the incident fluid flow to another downstream propeller. Such a situation presents a complicated fluid dynamics and vortex wake effect problem. Propeller overlapping effects are discussed in \cite{configurationpropulsion} but remain open to further research in the context of the aircraft considered here.}
 \par
-\emph{\color{Gray}To expedite the system ID process some simplifications are made on the aerodynamics to construct an approximate model; specifically using coefficients in place of complete local chord and pitch based integrals. Such an assumption holds true given that fixed pitch propellers are used.}
-\par
+To expedite the system identification process some simplifications are made on the aerodynamics to construct an approximate model; specifically using coefficients in place of complete local chord and pitch based integrals. Such an assumption holds true given that twisted, fixed pitch propellers are used (Fig:\ref{fig:fixed-pitch}) and not variable pitch swash-plate actuated propellers (Fig:\ref{fig:variable-pitch}).
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{figs/bem-flow}
-\caption{Disc Actuator Propeller Planar Flow}
-\label{fig:bem-flow}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/fixed-pitch}
+\caption{Twisted, fixed pitch}
+\label{fig:fixed-pitch}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/variable-pitch}
+\caption{Variable pitch, \cite{variablepitch}}
+\label{fig:variable-pitch}
+\end{subfigure}
+\caption{Propeller types}
+\label{fig:props}
+\vspace{-20pt}
 \end{figure}
-The rotation of a propeller applies a thrust force, $\vec{T}$, onto the fluid stream\footnote{Only perpendicular mass flow across the propeller's plane is considered for momentum theory, adjacent fluid velocities are small enough that propeller induced drag is neglected\ldots} in which it acts. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident head velocity, $v_\infty$, and a resultant slip velocity downstream relative to the rotational plane, $v_s$. There exists some relationship about the change of fluid flow applied by the propeller's rotation. Such a relationship can then be given by:
+\par
+A rotating propeller's profile applies a perpendicular thrust force, $T$, onto the fluid stream in which it acts. For the following theoretical explanation for propellers in terms of momentum theory, only perpendicular fluid flow through the propeller's plane is considered. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident upstream velocity, $v_\infty$, and a resultant slip velocity, $v_s$, downstream relative to the rotational plane.
+\par
+There exists some relationship for the change of fluid flow applied by the propeller's rotation, which can be given by:
 \begin{equation}
 v_ s = \Delta v + v_\infty
 \end{equation}
-Wherein $\Delta v$ is the change in velocity, added to the fluid by the propeller blade's rotating aerofoil profile. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. Bernoulli's principle$^{\dagger}$ has it that net fluid flow through that plane is:
+Where $\Delta v$ is the change in fluid velocity caused by the propeller blade's rotating aerofoil profile. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. That induced inflowing fluid velocity is different to the net velocity contribution of the propeller, $v_i\not=\Delta v$. It is shown in \cite{bladesforquadrotors} that, using Bernoulli's pressure principle, the net fluid flow through the propeller's plane is:
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/bem-flow}
+\caption{Disc Actuator Propeller Planar Flow}
+\label{fig:bem-flow}
+\end{figure}
 \par
-And as such, stemming from classical Disc Actuator$^{\dagger}$ (fluid \emph{momentum}) theory, the \underline{scalar} force, $T(\Omega)$, acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity (pressure differential).
+And stemming from classical Disc Actuator (fluid \emph{momentum}) theory, the \underline{scalar} force, $T(\Omega)$, acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity (pressure differential).
 \begin{equation}\label{eq:prop-mass}
 T=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
