@@ -533,7 +533,7 @@ The Lagrangian for the inner ring's movement $\mathcal{L}_{M_i'}$, in the middle
 \end{subequations}
 Noting that the inner ring's inertia $J_{ir}$ is now a separate body from the rotor $J_{r}$. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} with path co-ordinates $\vec{\mathbf{u}}(t)$ for the inner ring frame, $\mathcal{F}^{M_i}$, relative to  the middle ring frame, $\mathcal{F}^{M_i'}$:
 \begin{equation}
-\frac{d}{dt}\bigg(\frac{\delta \mathcal{L}_{M_i'}}{\delta \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\delta \mathcal{L}_{M_i'}}{\delta \vec{\mathbf{u}}} = \vec{\mathbf{V}} = \vec{\tau}_{\lambda}~~~~\in\mathcal{F}^{M_i'}
+\frac{d}{dt}\bigg(\frac{\delta \mathcal{L}_{M_i'}}{\delta \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\delta \mathcal{L}_{M_i'}}{\delta \vec{\mathbf{u}}} = \vec{\mathbf{U}} = \vec{\tau}_{\lambda}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 Then, from \cite{rotationlinearize} the partial derivative of the rotation matrix $R_x(\lambda)$ (and by extension the \emph{transformation matrix} $R_x(-\lambda)$) is linearized using Taylor series approximations. It follows that for some small perturbation $\delta\theta$ away from the nominal $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
 \begin{equation}\label{eq:rotation-linear}
@@ -579,7 +579,7 @@ The net torque response from a $\lambda_i$ rotation, induced in the middle ring 
 \end{equation}
 Taking special care to illustrate the difference between $J_{M_i}'$ and $J_{M_i'}$. The former being the inner ring's inertia transformed into the middle ring frame $\mathcal{F}^{M_i'}$ and the latter is the middle ring's inertia in that same reference frame. Similarly for the middle ring frame $\mathcal{F}^{M_i'}$ relative to the intermediary frame $\mathcal{F}^{M_i''}$, the only relative path variable is $\vec{\mathbf{v}}(t)=\begin{bmatrix}0 & \alpha_i & 0\end{bmatrix}^T$. The entire motor module structure consists of three separate rotating bodies each with their own relative angular velocities; the rotor assembly, inner ring structure and middle ring structure.
 \par
-Again, following the same process but with respect to the intermediary frame $\mathcal{F}^{M_i''}$, the rotor assembly has a transformed inertia:
+Following the same process to evaluate the middle ring's response but with respect to the intermediary frame $\mathcal{F}^{M_i''}$, the rotor assembly has a transformed inertia:
 \begin{subequations}
 \begin{equation}
 J_r''=R_y(\alpha)^T\big(J_r'\big)R_y(\alpha)=R_y(\alpha)^TR_x(\lambda)\big(J_r\big)R_x(\lambda)R_y(\alpha)~~~~\in\mathcal{F}^{M_i''}
@@ -611,10 +611,10 @@ Where $J_{M_i'}$ is the collective motor module inertia from Eq:\ref{eq:inertia.
 \rightarrow \vec{\omega}_{r/M_i''}=\vec{\Omega}_i\text{}\hspace{-2pt}''+\dot{\vec{\lambda}}_i\text{}\hspace{-2pt}'+\dot{\vec{\alpha}}_i
 \end{equation}
 \end{subequations}
-Next, the inner ring has an angular velocity $\vec{\omega}_{M_i'/M_i''}$ relative to the intermediate frame $\mathcal{F}^{M_i''}$:
+Next, the inner ring has an angular velocity $\vec{\omega}_{M_i/M_i''}$ relative to the intermediate frame $\mathcal{F}^{M_i''}$:
 \begin{subequations}
 \begin{equation}
-\vec{\omega}_{M_i'/M_i''}=\frac{d}{dt}\big(R_y(-\alpha)\vec{\lambda}_i\big)+\frac{d}{dt}(\vec{\alpha}_i)~~~~\in\mathcal{F}^{M_i''}
+\vec{\omega}_{M_i/M_i''}=\frac{d}{dt}\big(R_y(-\alpha)\vec{\lambda}_i\big)+\frac{d}{dt}(\vec{\alpha}_i)~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -635,17 +635,23 @@ Therefore the Langragian from Eq:\ref{eq:alpha-lagrange} expands to:
 +\frac{1}{2}\Big[R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]^T\big(J_{ir}''\big)\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]
 +\frac{1}{2}\dot{\vec{\alpha}}_i^{\hspace{2pt}T}\big(J_m'\big)\dot{\vec{\alpha}}_i
 \end{multline}
-Again, justifying the rotation matrix linearization using Eq:\ref{eq:rotation-linear}, matrices $J_r''$, $J_{ir}''$ and $J_m'$ are instantaneous transformed inertias. The Euler-Lagrange 
-
-
-partial derivative of the Lagrangian with respect to $\dot{\vec{\mathbf{v}}}$ is then:
+Again, justifying the rotation matrix linearization using Eq:\ref{eq:rotation-linear}, matrices $J_r''$, $J_{ir}''$ and $J_m'$ are instantaneous transformed inertias. The Euler-Lagrange formulation then simplifies, with the partial derivative $\delta\mathcal{L}_{M_i''}/\delta\vec{\mathbf{v}}=0$, to:
+\begin{equation}
+\frac{d}{dt}\Big(\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}}\Big)-\frac{\delta\mathcal{L}_{M_i''}}{\delta\vec{\mathbf{v}}}=\frac{d}{dt}\Big(\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}}\Big)=\vec{\mathbf{V}}=\vec{\tau}_\alpha
+\end{equation}
+Finding the partial derivative of the Lagrangian $\mathcal{L}_{M_i''}$ with respect to $\dot{\vec{\mathbf{v}}}$ is then:
 \begin{subequations}
 \begin{equation}
-\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}} = \big(J_r''\big)\Big[R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}\Big]+\big(J_{ir}''\big)\Big[R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_m'\big)\dot{\vec{\alpha}}_i
+\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}} = \big(J_r''\big)\Big[R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_{ir}''\big)\Big[R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_m'\big)\dot{\vec{\alpha}}_i
 \end{equation}
-\vspace{-6pt}
+\vspace{-12pt}
+\begin{multline}\label{eq:alpha-lagrange-deriv}
+\rightarrow \frac{d}{dt}\Big(\frac{\delta \mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}}\Big)=\big(J_r''\dot{\vec{\Omega}}_i\hspace{-2pt}''+\vec{\omega}_{M_i/M_i''}\times J_r''\vec{\Omega}_i\hspace{-2pt}''+J_r''\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times J_r''\dot{\vec{\lambda}}_i\hspace{-2pt}'+J_r''\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times J_r''\dot{\vec{\alpha}}_i\big)\\
++\big(J_{ir}''\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times J_{ir}''\dot{\vec{\lambda}}_i\hspace{-2pt}'+J_{ir}''\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times J_{ir}''\dot{\vec{\alpha}}_i\big)+\big(J_m'\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times J_m'\dot{\vec{\alpha}}_i\big)
+\end{multline}
+Which is a complicated and seemingly ominous result to try expand and make sense of. However; recognizing that Eq:\ref{eq:alpha-lagrange-deriv} contains kinetic energies already introduced in Eq:\ref{eq:torque-induced-inner}. After some mathematics, Eq:\ref{eq:alpha-lagrange-deriv} can be simplified with extracted responses pertinent to $\Delta\alpha_i$ and then the generalized force transformed response $R_y(-\alpha)\vec{\tau}_\lambda$:
 \begin{equation}
-\vec{\omega}_{M_i'/b}=Q_y(-\alpha_i)\otimes\dot{\vec{\alpha}}_i\otimes Q_y^*(\alpha_i)
+
 \end{equation}
 Which are similarly grouped into first and second order gyroscopic and inertial components.
 \begin{equation} \label{eq:torque-induced-middle}
