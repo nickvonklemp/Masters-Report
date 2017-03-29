@@ -506,7 +506,7 @@ Drawing again from Lagrangian theory and considering only the angular kinetic fo
 \begin{figure}
 \centering
 \includegraphics[width=0.6\textwidth]{figs/response-inner}
-\caption{Inertial bodies for $\vec{\tau}_\lambda$}
+\caption{Exploded inertial bodies for $\vec{\tau}_\lambda$}
 \label{fig:response-inner}
 \end{figure}
 Deriving dynamic responses for changes in $\lambda_i$ on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$ requires a relative path co-ordinate to be defined. Seeing that the only path variable between the two frames is $\lambda_i$; the path co-ordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ for the servo position $\lambda$ are used to form the Lagrangian for the inner ring's motion in the middle ring frame; $\mathcal{L}_{M_i'}\in\mathcal{F}^{M_i'}$. The inner ring assembly consists of two separate bodies (Fig:\ref{fig:response-inner}) with relative rotational motion and independent kinetic energies; the rotor assembly with an inertia $J_{r}$ (defined earlier in Eq:\ref{eq:prop-inertia}) and the inner ring (\emph{sans} rotor assembly) which has an inertia $J_{ir}$:
@@ -585,7 +585,13 @@ The net torque response from a $\lambda_i$ rotation, induced in the middle ring 
 \end{equation}
 Taking special care to illustrate the difference between $J_{M_i}'$ and $J_{M_i'}$. The former being the inner ring's inertia transformed into the middle ring frame $\mathcal{F}^{M_i'}$ and the latter is the middle ring's inertia in that same reference frame. Similarly for the middle ring frame $\mathcal{F}^{M_i'}$ relative to the intermediary frame $\mathcal{F}^{M_i''}$, the only relative path variable is $\vec{\mathbf{v}}(t)=\begin{bmatrix}0 & \alpha_i & 0\end{bmatrix}^T$. The entire motor module structure consists of three separate rotating bodies each with their own relative angular velocities; the rotor assembly, inner ring structure and middle ring structure.
 \par
-Following the same process to evaluate the middle ring's response but with respect to the intermediary frame $\mathcal{F}^{M_i''}$, the rotor assembly has a transformed inertia:
+\begin{figure}
+\centering
+\includegraphics[width=0.6\textwidth]{figs/response-middle}
+\caption{Exploded inertal bodies for $\vec{\tau}_{\alpha}$}
+\label{fig:response-middle}
+\end{figure}
+Following the same process to evaluate the middle ring's response, but with respect to the intermediary frame $\mathcal{F}^{M_i''}$. The entire motor module assembly (Fig:\ref{fig:response-middle}) consists of three independent bodies; the rotor assembly, inner ring (again without rotor contributions) and finally the middle ring assembly. The rotor assembly has a transformed inertia:
 \begin{subequations}
 \begin{equation}
 J_r''=R_y(\alpha)^T\big(J_r'\big)R_y(\alpha)=R_y(\alpha)^TR_x(\lambda)\big(J_r\big)R_x(\lambda)R_y(\alpha)~~~~\in\mathcal{F}^{M_i''}
