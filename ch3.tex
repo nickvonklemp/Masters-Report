@@ -509,7 +509,7 @@ Drawing again from Lagrangian theory and considering only the angular kinetic fo
 \caption{Inertial bodies for $\vec{\tau}_\lambda$}
 \label{fig:response-inner}
 \end{figure}
-Deriving dynamic responses for $\lambda$ changes on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$ requires a relative path co-ordinate to be defined. Seeing that the only path variable between the two frames is $\lambda_i$; the path co-ordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ for the servo position $\lambda$ are used to form the Lagrangian for the inner ring's motion in the middle ring frame; $\mathcal{L}_{M_i'}\in\mathcal{F}^{M_i'}$. The inner ring assembly consists of two separate bodies (Fig:\ref{fig:response-inner}) with relative rotational motion and independent kinetic energies; the rotor assembly with an inertia $J_{r}$ (defined earlier in Eq:\ref{eq:prop-inertia}) and the inner ring (\emph{sans} rotor assembly) which has an inertia $J_{ir}$:
+Deriving dynamic responses for changes in $\lambda_i$ on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$ requires a relative path co-ordinate to be defined. Seeing that the only path variable between the two frames is $\lambda_i$; the path co-ordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ for the servo position $\lambda$ are used to form the Lagrangian for the inner ring's motion in the middle ring frame; $\mathcal{L}_{M_i'}\in\mathcal{F}^{M_i'}$. The inner ring assembly consists of two separate bodies (Fig:\ref{fig:response-inner}) with relative rotational motion and independent kinetic energies; the rotor assembly with an inertia $J_{r}$ (defined earlier in Eq:\ref{eq:prop-inertia}) and the inner ring (\emph{sans} rotor assembly) which has an inertia $J_{ir}$:
 \begin{equation}
 J_{ir}=J_{n}-J_{r}=J_{M_i}-J_{r}~~~~\in\mathcal{F}^{M_i}
 \end{equation} 
@@ -523,11 +523,11 @@ Where $J_{M_i}$ is the net inertia for the inner ring assembly from Eq:\ref{eq:i
 =R_x(-\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i
 \end{equation}
 \end{subequations}
-With propeller's angular velocity vector $\vec{\Omega}_i=\begin{bmatrix}0 & 0 & \Omega_i\end{bmatrix}^T$ and the servo position $\vec{\lambda}_i=\begin{bmatrix}\lambda_i & 0 & 0\end{bmatrix}^T$. Similarly the inner ring's angular velocity $\vec{\omega}_{M_i/M_i'}$ relative to $\mathcal{F}^{M_i'}$ is only as a result of $\Delta\lambda_i$:
+With propeller's angular velocity vector $\vec{\Omega}_i=\begin{bmatrix}0 & 0 & \Omega_i\end{bmatrix}^T$ in $[\text{rad.s}^{-1}]$, \underline{not in revolutions per second}, and the servo position $\vec{\lambda}_i=\begin{bmatrix}\lambda_i & 0 & 0\end{bmatrix}^T$. Similarly the inner ring's angular velocity $\vec{\omega}_{M_i/M_i'}$ relative to $\mathcal{F}^{M_i'}$ is only as a result of $\Delta\lambda_i$:
 \begin{equation}\label{eq:angular-inner}
 \vec{\omega}_{M_i/M_i'}=\frac{d}{dt}(\vec{\lambda}_i)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
-The Lagrangian for the inner ring's movement $\mathcal{L}_{M_i'}$, in the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed onto the middle ring frame $\mathcal{F}^{M_i'}$:
+The Lagrangian for the inner ring's energy $\mathcal{L}_{M_i'}$, relative to the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed onto the middle ring frame $\mathcal{F}^{M_i'}$:
 \begin{subequations}
 \begin{equation}
 \mathcal{L}_{M_i'}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i/M_i'}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{M_i/M_i'}
@@ -541,7 +541,7 @@ Noting that the inner ring's inertia $J_{ir}$ is now a separate body from the ro
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\delta \mathcal{L}_{M_i'}}{\delta \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\delta \mathcal{L}_{M_i'}}{\delta \vec{\mathbf{u}}} = \vec{\mathbf{U}} = \vec{\tau}_{\lambda}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
-Then, from \cite{rotationlinearize} the partial derivative of the rotation matrix $R_x(\lambda)$ (and by extension the \emph{transformation matrix} $R_x(-\lambda)$) is linearized using Taylor series approximations. It follows that for some small perturbation $\delta\theta$ away from the nominal $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
+From \cite{rotationlinearize} the partial derivative of a rotation matrix $R_x(\lambda)$ (and by extension the \emph{transformation matrix} $R_x(-\lambda)$) is linearized using Taylor series expansion. It follows that for some small perturbation $\delta\theta$ away from the nominal $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
 \begin{equation}\label{eq:rotation-linear}
 R_u(\bar{\theta}+\delta\theta)\approx\underbrace{\big(1-[\Psi_u(\bar{\theta})\delta\theta]_\times\big)}_{\text{infinitesimal rot}}R_u(\bar{\theta})
 \end{equation}
@@ -560,7 +560,7 @@ It follows that the partial derivatives of the Lagrangian Eq:\ref{eq:lagrange-in
 \begin{equation}\label{eq:3.42b}
 \therefore\frac{\delta \mathcal{L}_{M_i'}}{\delta \dot{\vec{\mathbf{u}}}}=\big(J_{r}'\big)\Big(R_x(-\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\big(J_{ir}'\big)\dot{\vec{\lambda}}_i
 \end{equation}
-Inserting the Reynolds transportation theorem, Eq:\ref{eq:reynolds} for a vector's derivative in a rotating reference frame, into Eq:\ref{eq:3.42b}:
+Inserting the Reynolds transportation theorem, Eq:\ref{eq:reynolds} for a vector's derivative in a rotating reference frame, into Eq:\ref{eq:3.42b} yields:
 \begin{multline}
 \rightarrow \frac{d}{dt} \bigg(\frac{\delta \mathcal{L}_{M_i'}}{\delta \dot{\vec{\mathbf{u}}}}\bigg)=\Big(J_{r}'R_x(-\lambda)\dot{\vec{\Omega}}_i+\vec{\omega}_{M_i/M_i'}\times J_{r}'R_x(-\lambda)\vec{\Omega}_i+J_{r}'\ddot{\vec{\lambda}}_i+\vec{\omega}_{M_i/M_i'}\times J_{r}'\dot{\vec{\lambda}}_i\Big)\\+\Big(J_{ir}'\ddot{\vec{\lambda}}_i+\vec{\omega}_{M_i/M_i'}\times J_{ir}'\dot{\vec{\lambda}}_i\Big)
 \end{multline}
