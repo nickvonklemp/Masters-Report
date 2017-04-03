@@ -745,18 +745,20 @@ The change of fluid flow as a result of the propeller's rotation can be given as
 \begin{equation}
 v_s = \Delta v + v_\infty
 \end{equation}
-Where $\Delta v$ is the net change in fluid velocity caused by the propeller blade's rotating aerofoil profile. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. That induced inflowing fluid velocity is different to the net velocity contribution of the propeller; $v_i\not=\Delta v$. It is shown in \cite{bladesforquadrotors} that, using Bernoulli's pressure principle, the net fluid flow through the propeller's plane is:
+Where $\Delta v$ is the net change in fluid velocity caused by the propeller blade's rotating aerofoil profile. The propeller induces a velocity directly in front of it's rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. That induced inflowing fluid velocity is different to the net velocity contribution of the propeller; $v_i\not=\Delta v$. It is shown in \cite{bladesforquadrotors} that, using Bernoulli's pressure theorem, the net fluid flow through the propeller's plane is:
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
 \newpage
-Stemming from classical disc actuator (fluid \emph{momentum}) theory, the \underline{scalar} force, $T(\Omega)$, acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity (pressure differential).
+Stemming from classical disc actuator (fluid \emph{momentum}) theory, \cite{fluidmomentum}, the \underline{scalar} force $T(\Omega)$ acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity (pressure differential).
 \begin{equation}\label{eq:prop-mass}
 T=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
-Where $R_b$ is the disc (propeller) radius for the fluid stream under consideration. The fluid density of that stream, $\rho$, is typically $1.225~[\text{ kg.m}^{-3}]$ at standard temperature and pressure (\emph{stp}). The desired form of thrust generated is as a function of rotational velocity $\Omega_i$, so Eq:\ref{eq:prop-mass} is not satisfactory. It can however be solved as a function of aerodynamic propulsive power expended, $\Delta P=\vec{T}\Delta v$. Rotational kinetic energy of a propeller and its transferred propulsive power is difficult to quantify, with compound parasitic losses deteriorating the efficiency of the propeller. Furthermore, the local fluid velocity through the propeller is not purely normal to the propeller plane. 
+Where $R_b$ is the disc (propeller) radius in $[\text{m}]$ for the fluid stream under consideration. The fluid density of that stream, $\rho$, is typically $1.225~[\text{ kg.m}^{-3}]$ at standard temperature and pressure (\emph{stp}). The desired form of thrust generated is as a function of propeller rotational velocity $\Omega_i$, so Eq:\ref{eq:prop-mass} is not satisfactory. 
 \par
-The fluid flow induced by the propeller's rotation directly in front of its plane of rotation is not purely perpendicular but has axial and tangential induced velocity components, $a$ and $a'$ respectively. Those induced components for the fluid velocity can be abstracted to induction factors dependent on the incident fluid velocity to the propeller's plane of rotation:
+Eq:\ref{eq:prop-mass} can however be solved as a function of aerodynamic propulsive power expended, $\Delta P=T\Delta v$. Rotational kinetic energy of a propeller and its transferred propulsive power is difficult to quantify, with compound parasitic losses deteriorating the efficiency of the propeller. Furthermore, the local fluid velocity through the propeller is not purely normal to the propeller plane. 
+\par
+The fluid flow induced by the propeller's rotation directly in front of its plane of rotation is not purely perpendicular but has axial \underline{and} tangential induced components, termed $a$ and $a'$ respectively. Those induced components for the fluid velocity can be abstracted to induction factors dependent on the incident fluid velocity to the propeller's plane of rotation:
 \begin{subequations}\label{eq:induction-factors}
 \vspace{-5pt}
 \begin{equation}\label{eq:induction-axial}
@@ -767,7 +769,7 @@ v_i=a v_\infty~~\text{in the axial direction}
 v_\theta=a' \Omega_i R_b~~\text{in the tangential direction}
 \end{equation}
 \end{subequations}
-From induction factors defined Eq:\ref{eq:induction-factors}, the velocity components can be written as functions of free upstream velocity $v_\infty$.
+From induction factors defined Eq:\ref{eq:induction-factors}, the velocity components can be written as factors of upstream velocity $v_\infty$.
 \begin{subequations}
 \vspace{-5pt}
 \begin{equation}
@@ -778,7 +780,7 @@ v_b=(1+a)v_\infty
 v_s=(1+2a)v_\infty
 \end{equation}
 \end{subequations}
-A consequence of the tangential fluid flow is that there exists an angular momentum flow rate across the propeller plane. This results in a torque response to the rotational motion about the propeller's axis of rotation, analogous to Eq:\ref{eq:prop-mass}.
+A consequence of the tangential fluid flow is that an angular momentum flow rate exists across the propeller plane. This produces a torque opposing the rotational motion about the propeller's axis, analogous but perpendicular to Eq:\ref{eq:prop-mass}.
 \\
 \vspace{-10pt}
 \begin{equation}\label{eq:prop-moment}
@@ -787,24 +789,24 @@ A consequence of the tangential fluid flow is that there exists an angular momen
 \begin{figure}[hbtp]
 \vspace{-15pt}
 \centering
-\includegraphics[width=0.9\textwidth]{figs/bem-profile}
+\includegraphics[width=\textwidth]{figs/bem-profile}
 \caption{Blade element profile at radius r}
 \label{fig:bem-profile}
 \end{figure}
 \par
-Together, Eq:\ref{eq:prop-mass} \& Eq:\ref{eq:prop-moment} make up propeller momentum theory but cannot be solved on their own. Blade-element theory analyses incremental aerofoil sections of width $dr$ of the propeller profile (Fig:\ref{fig:bem-profile}) at some radius $r$. Net local fluid velocity across a single elemental aerofoil profile $\vec{U}$ is calculated as:
+Together, Eq:\ref{eq:prop-mass} and Eq:\ref{eq:prop-moment} comprise propeller momentum theory but cannot be solved on their own. Blade-element theory analyses incremental aerofoil sections of width $dr$ of the propeller profile (Fig:\ref{fig:bem-profile}) at some radius $r$. Each aerofoil element has a net local fluid velocity $\vec{U}$ across its profile, calculated as:
 \begin{equation}
 \vec{U}=\sqrt{(v_\infty+v_i)^2+(v_\Omega+v_\theta)^2}
 \end{equation}
-Each elemental profile, of chord length $c$, has a local pitch, $\theta$, of its aerofoil zero-lift line relative to the horizontal. Local fluid velocities (again in Fig:\ref{fig:bem-profile}) encountered by the propeller make their own an angle of attack $\phi$ such that:
+Where each profile has a chord length $c$ and an inclination (or \emph{pitch}) $\theta$ of the aerofoil \emph{zero-lift line} relative to the horizontal. Local fluid velocities incident to the propeller profile (shown in Fig:\ref{fig:bem-profile}) make their own angle of attack $\phi$ such that:
 \begin{equation}
 \phi=\theta-\alpha_{effective}
 \end{equation}
-That local angle of attack changes with the inflow magnitude $v_\infty$ and the induced axial velocity $v_i$. That trigonometric ratio is given as:
+That local angle of attack varies with the incident fluid flow magnitude $v_\infty$ and the induced axial velocity $v_i$. That trigonometric ratio between the two is given as:
 \begin{equation}
 \phi=tan^{-1}\bigg(\frac{v_\infty+v_i}{v_\Omega+v_\theta}\bigg)=tan^{-1}\bigg(\frac{v_\infty(1+a)}{\Omega r(1+a')}\bigg)
 \end{equation}
-The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of aerofoil's dimensionless lift, $C_L$, and drag, $C_D$, coefficients\footnote{The lift and drag coefficients are determined by the aerofoil's characteristics, but would be constant across the length of a variable pitch, non-twisted hinged propeller\ldots}.
+In-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local angle of attack $\phi$, then contributes towards elemental lift and drag forces as a function of aerofoil's dimensionless lift, $C_L$, and drag, $C_D$, coefficients. Those coefficients are determined by the aerofoil's characteristics, but would be constant across the length of a variable pitch, hinged and untwisted hinged prop (Fig:\ref{fig:variable-pitch}).
 \begin{subequations}
 \begin{equation}
 \Delta L=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_L
@@ -814,7 +816,7 @@ The in-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a l
 \Delta D=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_D
 \end{equation}
 \end{subequations}
-With air density $\rho$\footnote{Typically $\rho = 1.225 kg/m^3$} and local chord length $c$. Those lift and drag forces are taken as components parallel and perpendicular to the plane of rotation. Those components are then thrust $T$ and torque $F_x$ forces (Fig:\ref{fig:bem-profile}). The in-plane force $F_x$ applies an aerodynamic torque $Q$ as the force acts at a radius $r$.
+With air density $\rho$ at stp. Lift and drag forces, when taken parallel and perpendicular to the plane of rotation, are thrust $T$ and torque $F_x$ forces (Fig:\ref{fig:bem-profile}). The in-plane force applies an aerodynamic torque $Q$ at the propellers hub because the force $F_x$ acts at a radius $r$, \cite{starmac}.
 \begin{subequations}
 \begin{equation}\label{eq:element-thrust}
 dT=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L cos(\phi)+C_D sin(\phi)\big).dr

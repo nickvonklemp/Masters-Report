@@ -97,7 +97,7 @@ NASA aerospace frames are used for principle Cartesian inertial and body coordin
 \end{equation}
 Relative angular displacement between two frames is commonly measured by the three angle Euler set. The Euler angle set $\vec{\eta}=[\phi ~\theta ~\psi]^T$ represents pitch $\phi$, roll $\theta$ and yaw $\psi$ rotations about the $\hat{X}$,$\hat{Y}$ and $\hat{Z}$ axes respectively. Depending on how the rotation sequence is formulated, those angles can be used to construct rotation matrices which give relation to vectors or can transform coordinates. 
 \par
-The general rotation equation to \emph{rotate} some vector $\vec{v}$ about a normalized unit axis $\hat{u}$ through a rotation angle $\theta$ is given by the formula, proven in \cite{quaddynamics}:
+The general rotation equation to \emph{rotate} some vector $\vec{v}$ about a normalized unit axis $\hat{u}$ through a rotation angle $\theta$ is given by the formula, proven in \cite{rigidbodymotion}:
 \begin{equation}\label{eq:genrotationmatrix}
 \vec{v}~'=\big(1-cos(\theta)\big)\big(\vec{v}\cdot \hat{u}\big)\hat{u}+cos(\theta)\vec{v}+sin(\theta)\big(\hat{u}\times\vec{v}\big)
 \end{equation}
