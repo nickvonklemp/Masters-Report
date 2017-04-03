@@ -689,7 +689,7 @@ The final non-linear response as a result of relative rotations is the entire bo
 \begin{equation}
 \dot{\vec{\omega}}_b=\big(J_b^{-1}\big)\Big(-\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_{net}\Big)~~~~\in\mathcal{F}^b
 \end{equation}
-From inspection, and drawing from Eq:\ref{eq:torque-induced-middle}, the relative rotations induce a response as a result of the net body angular velocity $\vec{\omega}_b$ is given by:
+From inspection, drawing from both Eq:\ref{eq:torque-induced-middle} and Eq:\ref{eq:torque-induced-inner}, the relative rotations induce a response as a result of the net body angular velocity $\vec{\omega}_b$ is given by:
 \begin{equation}
 \vec{\tau}_b=\sum_{i=1}^4\vec{\omega}_b\times\big(J_r'''\big)\vec{\omega}_{r/b}+\vec{\omega}_b\times\big(J_{ir}'''\big)\vec{\omega}_{M_i/b}+\vec{\omega}_b\times\big(J_m''\big)\vec{\omega}_{M_i'/b}
 \end{equation}
@@ -816,14 +816,14 @@ In-plane fluid flow $\vec{U}(r,\phi)$, for an element at radius $r$ with a local
 \Delta D=\frac{1}{2}\rho \vec{U}(r,\phi)^2 c C_D
 \end{equation}
 \end{subequations}
-With air density $\rho$ at stp. Lift and drag forces, when taken parallel and perpendicular to the plane of rotation, are thrust $T$ and torque $F_x$ forces (Fig:\ref{fig:bem-profile}). The in-plane force applies an aerodynamic torque $Q$ at the propellers hub because the force $F_x$ acts at a radius $r$, \cite{starmac}.
+With air density $\rho$ is typically taken at stp. Lift and drag forces, when taken parallel and perpendicular to the plane of rotation, are thrust $T$ and torque $F_q$ forces (Fig:\ref{fig:bem-profile}). The in-plane force applies an aerodynamic torque $Q$ at the propellers hub because the force $F_q$ acts at a radius $r$, \cite{starmac}.
 \begin{subequations}
 \begin{equation}\label{eq:element-thrust}
 dT=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L cos(\phi)+C_D sin(\phi)\big).dr
 \end{equation}
 \vspace{-5pt}
 \begin{equation}\label{eq:element-drag}
-dF_x=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\phi)+C_D cos(\phi)\big).dr
+dF_q=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\phi)+C_D cos(\phi)\big).dr
 \end{equation}
 \vspace{-5pt}
 \begin{equation}\label{eq:element-torque}
@@ -835,7 +835,7 @@ dF_x=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\phi)+C_D cos(\phi)\big).dr
 \end{equation}
 \end{subequations}
 \par
-Typically a power term, Eq:\ref{eq:element-power}, is given in lieu of torque or drag terms, Eq:\ref{eq:element-torque} or Eq:\ref{eq:element-drag}. Then calculating forces and power terms as per momentum theory for each element, in terms of axial and tangential induction factors:
+Rotational power expended is a product of angular velocity and opposing torque; Eq:\ref{eq:element-power}, and is used in lieu of torque or drag terms, Eq:\ref{eq:element-torque} or Eq:\ref{eq:element-drag}. Then calculating forces and power terms as per momentum theory for each element, in terms of axial and tangential induction factors:
 \begin{subequations}\label{eq:moment-thrust-element}
 \begin{equation}
 dT=\rho 4 \pi r^2 v_\infty(1+a)a.dr
@@ -846,8 +846,11 @@ dP=\rho 4 \pi r^2 v_\infty(1+a)\Omega r (1+a').dr
 \end{equation}
 \end{subequations}
 \par
-Finally equating momentum and element terms together produces the blade-element momentum equation(s) for thrust and power produced by a propeller. Following a few assumptions, most importantly that the lift coefficient $C_L$ is a linear function of the effective angle of attack $\alpha_{eff}$. The lift curve gradient , $a_L$, for an ideally twisted blade, like the fixed pitch propellers under consideration here, is typically $2\pi$ such that $C_L=2\pi(\theta-\phi)$. And assuming that tangentially induced velocities $v_\theta$ are small (or that the tangential induction factor $a'<<1$) when compared to the propeller's speed $\Omega r$. Similarly the net inflow and axial induced velocities $v_\infty + v_i<<\Omega r$.\footnote{Small angle approximations then apply to $cos(\phi+\alpha_{eff})\approx 1$ and $sin(\phi+\alpha_{eff})\approx \phi+\alpha_{eff}$}
-\newpage
+Equating momentum and element terms produces the blade-element momentum equation(s) for aerodynamic thrust and power from a propeller. Following a few assumptions; most importantly that the lift coefficient $C_L$ is a linear function of the effective angle of attack $\alpha_{eff}$. The lift curve gradient, $a_L$, is shown in \cite{aerodynamicsforengineering} for an ideally twisted blade, like the fixed pitch propellers under consideration here, to be $2\pi$.
+\begin{equation}\label{eq:lift-curve-gradient}
+C_L=2\pi(\theta-\phi)
+\end{equation}
+Assuming tangentially induced velocities $v_\theta$ are small (or that the tangential induction factor $a'<<1$) when compared to the propeller's speed translational speed at radius $r$, $v(r)=\Omega r$. Following that small angle approximations then apply to Eq:\ref{eq:element-thrust} through \ref{eq:element-torque}; $cos(\phi+\alpha_{eff})\approx 1$ and $sin(\phi+\alpha_{eff})\approx \phi+\alpha_{eff}$. Similarly the net inflow and axial induced velocities $v_\infty + v_i<<\Omega r$, the following integrals are then found:
 \begin{subequations}
 \begin{equation}\label{eq:bem-thrust}
 T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \big(\theta-\frac{v_\infty+v_i}{\Omega r}\big).dr
@@ -857,7 +860,7 @@ T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \big(\theta-\frac{v_\infty+
 P=\int_{r=0}^R \frac{1}{2}a_L b c \rho (\Omega r)^3\bigg[\big(\theta-\frac{v_\infty+v_i}{\Omega r}\big)\big(\frac{v_\infty+v_i}{\Omega r}\big) + C_d\bigg].dr
 \end{equation}
 \end{subequations}
-With $b$ being the number of propeller blades. Generally knowing exact pitch and chord values as a function $r/R$ is difficult and calculating integrals at each process step is cumbersome. Both Eq:\ref{eq:bem-thrust} \& Eq:\ref{eq:bem-power} can be solved by equating element and momentum terms (a full expansion is given in Appendix:\ref{app:equations.bem}). Often dimensionless thrust, torque and power coefficients are defined across the entire blade's length:
+Where $b$ is the number of propeller blades. Knowing exact pitch and chord values as a function of $r/R$ is difficult and calculating integrals at each process step is cumbersome. Both Eq:\ref{eq:bem-thrust} and Eq:\ref{eq:bem-power} can be solved by equating element and momentum terms (a full expansion is given in Appendix:\ref{app:equations.bem}). Often dimensionless thrust, torque and power coefficients are defined across the entire blade's length:
 \begin{subequations}\label{eq:coefficients}
 \begin{equation}\label{eq:thrust-coefficient}
 C_T(J)=\frac{T}{\rho \Omega^2 D^4}
@@ -867,25 +870,12 @@ C_T(J)=\frac{T}{\rho \Omega^2 D^4}
 C_P(J)=\frac{P}{\rho \Omega^3 D^5}
 \end{equation}
 \end{subequations}
-\par
-\begin{minipage}{\textwidth}
-\begin{wrapfigure}{l}{0.5\textwidth}
-\vspace{-18pt}
-\centering
-\includegraphics[width=0.5\textwidth]{graphs/coeffs-plot}
-\vspace{-20pt}
-\caption{Power \& thrust coefficients}
-\label{fig:coeffs-plot}
-\end{wrapfigure}
-\par
-Where $\Omega$ is the propellers rotational speed in [RPS] and $D$ is the propellers diameter in [mm]. For fixed pitch propellers the thrust and power coefficients are easily determined and remain consistent. Eq:\ref{eq:thrust-coefficient} and Eq:\ref{eq:power-coefficient} both vary due to what is defined as the \emph{advance ratio} $J$.
+Where $\Omega$ is the propeller's rotational speed in revolutions per second (\emph{RPS}) and different to Eq:\ref{eq:angular-rot} with units $[\text{rad.s}^{-1}]$. The propeller's diameter $D$ is $[\text{m}]$. For fixed pitch propellers the thrust and power coefficients are easily determined and remain consistent. Both Eq:\ref{eq:thrust-coefficient} and Eq:\ref{eq:power-coefficient} vary due to the dimensionless \emph{advance ratio} $J$.
 \begin{equation}\label{eq:advance}
 J = \frac{v_\infty}{\Omega R}
 \end{equation}
-In most cases, the net head stream velocity $v_\infty$ is the perpendicular component (projected onto the plane's normal vector $\hat{n}$, Eq:\ref{eq:normal-fluid}) of the vehicles transnational velocity in the body frame, $\vec{v}_b\cdot\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values. 
-\end{minipage}
+Typically the net head stream velocity $v_\infty$ is simply the perpendicular component (projected onto the plane's normal vector $\hat{n}$, Eq:\ref{eq:normal-fluid}) of the vehicle's translational velocity in the body frame, $\vec{v}_b\cdot\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values.
 \par
-\vspace{15pt}
 Propeller databases like \cite{UIUC}\footnote{The UIUC database also includes blade profiles, pitch and chord lengths. The database is the outcome of \cite{lowreynolds}.} provide comprehensive values for a range of propeller types at different advance ratios. The introduction of those coefficients greatly simplifies the thrust estimation process. For a typical 6X4.5 inch propeller\footnote{Coefficients are linearly interpolated from similar pitched database results to match physical test values.}, the static thrust and power coefficients respectively are:
 \begin{subequations}
 \begin{equation}
@@ -897,6 +887,12 @@ Propeller databases like \cite{UIUC}\footnote{The UIUC database also includes bl
 \end{equation}
 \end{subequations}
 Fig:\ref{fig:coeffs-plot} shows the thrust, {\color{Blue}$C_{T}$}, and power, {\color{Red}$C_{P}$}, coefficients as a function of the advance ratio $J$. As the incident head fluid velocity, $v_\infty$, increases, the thrust coefficient decreases. So too does the power coefficient and hence the aerodynamic torque. The thrust and power coefficients can be assumed constant for low advance ratios, or in the case considered here, translational velocities.
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.5\textwidth]{graphs/coeffs-plot}
+\caption{Power \& thrust coefficients}
+\label{fig:coeffs-plot}
+\end{figure}
 \par
 In Fig:\ref{fig:propeller-plots}, the thrust \& torque test rigs and the results of both static (thrust and torque) tests are plotted. In each test the measured values are shown ({\color{Red}$T(\Omega)$} \& {\color{Red}$Q(\Omega)$} with quadratic trend-lines) and an estimated value dependent on static coefficients ({\color{LimeGreen}$\hat{T}C_t(\Omega)$} \& {\color{LimeGreen}$\hat{Q}C_p(\Omega)$}). Using the results from the plot(s) in Fig:\ref{fig:coeffs-plot} as a lookup table and calculating the values from Eq:\ref{eq:coefficients}, induced propeller thrust and torques can be accurately modeled (\emph{quadratically}\footnote{The power term is cubic W.R.T its rotational velocity}). 
 \par
