@@ -227,6 +227,70 @@ So then the inflow ratio can be solved as a function of the propeller element's 
 \end{equation}
 Then substituting $\lambda$ back into Eq:\ref{eq:bem-thrust} and solving the integral produces an instantaneous thrust value. The difficulty of solving the blade-element momentum integrals is knowing the exact chord profile and local angle of attack.
 %-----------------------------------------------------
+\section{Induced Torques}
+\label{app:torques}
+%-----------------------------------------------------
+In Ch:\ref{subsec:dynamics.nonlinearities.gyrotorques} the proposed Lagrangian equations for both $\Delta\lambda$ and $\Delta\alpha$ servo movements is presented. Reiterating those equations, the inner ring torque response from Eq:\ref{eq:lagrange-inner}:
+\begin{subequations}
+\begin{equation}\label{eq:app-lagrange-inner}
+\mathcal{L}_{M_i'}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i/M_i'}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{M_i/M_i'}
+\end{equation}
+And for the middle ring response from Eq:\ref{eq:alpha-lagrange}
+\begin{equation}\label{eq:app-lagrange-middle}
+\mathcal{L}_{M_i''}=\frac{1}{2}\vec{\omega}_{r/M_i''}^{\hspace{2pt}T}\big(J_{r}''\big)\vec{\omega}_{r/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{ir}''\big)\vec{\omega}_{M_i'/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{m}'\big)\vec{\omega}_{M_i'/M_i''}
+\end{equation}
+\end{subequations}
+The Euler-Lagrange formulation of generalize path co-ordinates $\vec{\mathbf{v}}$ solves for generalized forces $\vec{\mathbf{V}}$ acting on the system as follows:
+\begin{equation}
+\frac{d}{dt}\Big(\frac{\delta\mathcal{L}}{\delta\dot{\vec{\mathbf{v}}}}\Big)-\frac{\delta\mathcal{L}}{\delta\vec{\mathbf{v}}}=\vec{\mathbf{V}}
+\end{equation}
+In the same shared frame which $\vec{\mathbf{v}}$ is defined with respect to. Solutions for generalized forces for both Eq:\ref{eq:app-lagrange-inner} and Eq:\ref{eq:app-lagrange-middle} are given in Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively. That solution exploits the assumption, detailed in Eq:\ref{eq:rotation-linear}, that partial derivatives of rotation matrices can be linearized. That assumption leads to the simplification that, for a transformed inertia $J_r'$ of the inner ring in Eq:\ref{eq:app-lagrange-inner} for example, its partial derivative is given:
+\begin{subequations}
+\begin{equation}
+\frac{\delta}{\delta\lambda}\big(J_r')=\frac{\delta}{\delta\lambda}\Big(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\Big)
+\end{equation}
+Which, from the product rule, leads to:
+\begin{equation}
+=\frac{\delta}{\delta\lambda}\Big(R_x(\lambda)\Big)\big(J_r\big)R_x^{-1}(\lambda)+R_x(\lambda)\big(J_r\big)\frac{\delta}{\delta\lambda}\Big(R_x^{-1}(\lambda)\Big)
+\end{equation}
+If a rotation matrix's partial derivative can be linearized for small $\Delta\lambda$, as in \cite{rotationlinearize}, it then follows:
+\begin{equation}
+\frac{\delta}{\delta\lambda}\Big(R_x(\lambda)\Big)\approx 0
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+\rightarrow\frac{\delta}{\delta\lambda}\big(J_r'\big)\approx 0
+\end{equation}
+\end{subequations}
+That simplification results in a reduction of the lagrangian 
+\par
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/torque-response}
+\caption{Torque response rig}
+\label{fig:torque-response}
+\end{figure}
+The torque response equations where tested using the rig in Fig:\ref{fig:torque-response}. The first plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased rotation rates of $\Omega_i$, motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-'), illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly the second plot in Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
+\begin{figure}[hbtp]
+\begin{subfigure}{0.2\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/tau-lambda}
+\caption{$\tau_\lambda$ variations with propeller speeds $\Omega_i$}
+\label{fig:tau-lambda}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/tau-alpha}
+\caption{$\tau_\alpha$ variations with changing $\mathbb{I}_\alpha(\lambda_i)$}
+\label{fig:tau-alpha}
+\end{subfigure}
+\vspace{-5pt}
+\caption{Torque responses for inner and middle rings}
+\vspace{-10pt}
+\end{figure}
+\par
+\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
+%-----------------------------------------------------
 \section{Euler-Angles from Quaternions}
 \label{app:equations.quaternions}
 %-----------------------------------------------------
@@ -514,34 +578,4 @@ Parts: H.1, H.2, Corona Servo \& Fasteners, 80g Damping Balls, Servo Mount Dampi
 \captionof{figure}{Official Test Results for Cobra Motors}
 \restoregeometry
 %-----------------------------------------------------
-\newpage
 %-----------------------------------------------------
-\chapter{Induced Torques}
-\label{app:torques}
-\par
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.6\textwidth]{figs/torque-response}
-\caption{Torque response rig}
-\label{fig:torque-response}
-\end{figure}
-The torque response equations where tested using the rig in Fig:\ref{fig:torque-response}. The first plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased rotation rates of $\Omega_i$, motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-'), illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly the second plot in Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
-\begin{figure}[hbtp]
-\begin{subfigure}{0.2\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/tau-lambda}
-\caption{$\tau_\lambda$ variations with propeller speeds $\Omega_i$}
-\label{fig:tau-lambda}
-\end{subfigure}
-\begin{subfigure}{0.2\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/tau-alpha}
-\caption{$\tau_\alpha$ variations with changing $\mathbb{I}_\alpha(\lambda_i)$}
-\label{fig:tau-alpha}
-\end{subfigure}
-\vspace{-5pt}
-\caption{Torque responses for inner and middle rings}
-\vspace{-10pt}
-\end{figure}
-\par
-\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
