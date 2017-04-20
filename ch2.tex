@@ -91,7 +91,21 @@ Attitude conventions used for deriving the system's dynamics, in Ch:\ref{ch:dyna
 \caption{Inertial and body reference frames}
 \label{fig:ref_frame}
 \end{figure}
-NASA aerospace frames are used for principle Cartesian inertial and body coordinate representation (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^I$, is aligned such that the $\hat{Y}_I$ axis is in the $\hat{N}$orth direction, $\hat{X}_I$ is in the $\hat{E}$ast direction and $-\hat{Z}_I$ is  in the $\hat{D}$ownward direction. In Euler orbital sequences the $\hat{Z}$ direction would be toward the Earth's center, sometimes referred to as the N\^{E}D convention which differs from the NASA frames used here. The body frame, $\mathcal{F}^b$, then has both $\hat{X}_b$ and $\hat{Y}_b$ aligned obliquely between two perpendicular arms of the quadrotor's body and the $\hat{Z}_b$ axis in the body's normal upward direction (illustrated in Fig:\ref{fig:body-frame}). The body frame's axes and center of motion relative to the prototype design's center of mass is related as detailed next in Sec:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $I$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vector's coordinates exists or taken relative to. 
+NASA aerospace frames are used for principle Cartesian inertial and body coordinate representation (Fig:\ref{fig:ref_frame}). The inertial frame,~$\mathcal{F}^I$, is aligned such that the $\hat{Y}_I$ axis is in the $\hat{N}$orth direction, $\hat{X}_I$ is in the $\hat{E}$ast direction and $-\hat{Z}_I$ is  in the $\hat{D}$ownward direction. In Euler orbital sequences the $\hat{Z}$ direction would be toward the Earth's center, sometimes referred to as the N\^{E}D convention which differs from the NASA frames used here. The body frame, $\mathcal{F}^b$, then has both $\hat{X}_b$ and $\hat{Y}_b$ aligned obliquely between two perpendicular arms of the quadrotor's body and the $\hat{Z}_b$ axis in the body's normal upward direction (illustrated in Fig:\ref{fig:body-frame}). 
+\par
+Relative displacement between the inertial and body reference frames is given by $\vec{\mathcal{E}}$ defined in the inertial frame:
+\begin{equation}\label{eq:position-frame}
+\vec{\mathcal{E}}=\begin{bmatrix}
+x & y & z\end{bmatrix}^T~~~~[\text{m}],~~\in\mathcal{F}^I
+\end{equation}
+An axial hat and upper case differentiates the axis from position quantities in Eq:\ref{eq:position-frame}. The time derivative of the body's position refers to the \emph{inertial frame} rate:
+\begin{equation}
+\frac{d}{dt}\vec{\mathcal{E}}=\begin{bmatrix}
+\dot{x} & \dot{y} & \dot{z}\end{bmatrix}^T~~~~[\text{m.s}^{-1}],~~\in\mathcal{F}^I
+\end{equation}
+The body's \emph{velocity} is the body frame position 
+\par
+The body frame's axes and center of motion relative to the prototype design's center of mass is related as detailed next in Sec:\ref{subsec:proto.conventions.motoraxis}. Frame superscripts $I$ and $b$ represent inertial and body frames respectively whilst vector subscripts imply the reference frame in which the vector's coordinates exists or taken relative to. 
 \begin{equation}
 \vec{v}_I=R_b^I(\eta)\vec{v}_b~~~~~~\vec{v}_b\in\mathcal{F}^b,~\vec{v}_I\in\mathcal{F}^I
 \end{equation}
@@ -742,7 +756,7 @@ So the center of gravity when all actuators are at their zero positions is: $C.M
 \begin{minipage}{\textwidth}
 \centering
 \fbox{
-\includegraphics[clip, trim=3.5cm 1cm 3.4cm 1cm, width=0.8\textwidth]{pdfpages/electrical-schematic.pdf}
+\includegraphics[clip, trim=3.5cm 1cm 3.4cm 1cm, width=0.81\textwidth]{pdfpages/electrical-schematic.pdf}
 }
 \end{minipage}
 \vspace{-10pt}
@@ -752,7 +766,7 @@ So the center of gravity when all actuators are at their zero positions is: $C.M
 %-----------------------------------------------------
 \newpage
 %-----------------------------------------------------
-An abstracted hardware diagram for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It is an illustration for the connection of different electronic peripherals used to aid the on-board control system. The structure of the implemented autopilot system and control loops are addressed later. This section aims to provide a brief overview of the specific modules used, their purpose and a description of how they are interfaced. No control loops or code structure are considered yet, those are detailed in Ch:\ref{ch:control} and Ch:\ref{ch:flight} respectively.
+An abstracted hardware diagram for the (electronic) system layout is shown in Fig:\ref{fig:electrical-schematic}. It is an illustration for the connection of different electronic peripherals used to aid the on-board control system. The structure of the implemented autopilot system and control loops are addressed later. This section aims to provide a brief overview of the specific modules used, their purpose and a description of how they are interfaced. No control loops or code structures are considered yet, those are detailed in Ch:\ref{ch:control} and Ch:\ref{ch:flight} respectively.
 \par
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
@@ -783,7 +797,7 @@ The embedded software implemented is described in Ch:\ref{ch:flight}; the I/O fo
 \vspace{-20pt}
 \end{figure}
 \par
-Two separate wireless communication loops are used. First; the system relays full state information for a complete 6-DOF XYZ position and orientation autopilot system. Sent from an independent ground control station (\emph{GCS}) using 2.4 GHz XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\ref{}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
+Two separate wireless communication loops are used. First; the system relays full state information for a complete 6-DOF XYZ position and orientation autopilot system. Sent from an independent ground control station (\emph{GCS}) using 2.4 GHz XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\ref{arnold}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
 \par
 Secondly; a partial trajectory (basic orientation) augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through a 6 channel 2.4 GHz radio frequency module. The secondary system allows for phsyical control without the need of a trajectory generation loop. The 6 CH received signals, otherwise permeated as six individual 20 kHz PWM signals via an OrangeRx R615x receiver \cite{r615x}, are encoded into a single proprietary S.BUS data stream (Fig:\ref{fig:ppm-sbus}). 
 \par
@@ -842,11 +856,11 @@ y_n = \big(1-\frac{1}{N}\big)y_{n-1}+\frac{1}{N}x_n
 \end{equation}
 Moving over an average of $N=5$ samples which, each with a propagation delay of 14 ms due to S.BUS transmission, the filter has a 70 ms zero order holding time. The signal's sampling delays are sufficiently faster than the transfer times of the signals are not of consequence. 
 \par
-Similarly all the measured RPM signals measured by the OrangeRx RPM speed sensors are filtered over 5 samples as well. Any received signals referred to are all post filtration. Filtering for state estimation made without using the inertial-measurement unit (using the camera system) is separately performed on the Ground Control Station computer.}
+Similarly all the measured RPM signals measured by the OrangeRx RPM speed sensors are filtered over 5 samples as well. Any received signals referred to are all post filtration. Filtering for state estimation made without using the inertial-measurement unit (using the camera system) is to be performed separately on the Ground Control Station computer.}
 \par
-Each of the eight digital servo actuators are controlled individually from 330 Hz center aligned PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 \& TIM3:CH1$\rightarrow$CH4). Output pulses typically range from $1-2~[\text{ms}]$ to linearly control the rotational position. The servos exact range and transfer function(s) is empirically determined next in Sec:\ref{subsec:proto.design.transfer}. The four $20~[\text{A}]$ brushless DC electronic speed controllers (\emph{ESC}s) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with $1-2~[\text{ms}]$ input pulse widths. 
+Each of the eight digital servo actuators are controlled individually from $330~[\text{Hz}]$ center aligned PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 and TIM3:CH1$\rightarrow$CH4). Output pulses typically range from $1-2~[\text{ms}]$ to linearly control the rotational position. The servos exact range and transfer function(s) is empirically determined next in Sec:\ref{subsec:proto.design.transfer}. The four $20~[\text{A}]$ brushless DC electronic speed controllers (\emph{ESC}s) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with $1-2~[\text{ms}]$ input pulse widths. 
 \par
-There is a total of 12 PWM output compare signals drawn from the fligtcontroller, 8 for the servos and 4 for the ESCs. The servos are powered by a regulated $6~[\text{V}]$ DC $10~[\text{A}]$ power supply \cite{rotorstar} whilst the ESCs switch unregulated $14.1~[\text{V}]$ DC supplied from an external power tethered. The DC supply could be drawn from a bank, which would adversely affect the weight.
+There is a total of 12 PWM output compare signals drawn from the flight controller, 8 for the servos and 4 for the ESCs. The servos are powered by a regulated $6~[\text{V}]$ DC $10~[\text{A}]$ power supply \cite{rotorstar} whilst the ESCs switch unregulated $14.1~[\text{V}]$ DC supplied from an external power tether. The DC supply could be drawn from a bank, which would adversely affect the weight.
 \par
 There is no integrated feedback for instantaneous RPM values available from the ESCs. Dedicated OrangeRX BLDC RPM sensors, \cite{orangerpm}, are used to measure each of the four motor's rotational speeds. Despite being termed \emph{brushless DC motors}, the motors are actually 3-phase motors which, but when used with an ESC they behave like closed loop DC motors. The RPM sensors physically measure switching phases across two of the three motor phases, following that exact RPM can be ascertained. In general, the switching signal of a 3-Phase induction motor is shown by \cite{vfd} to be proportional to the rotational velocity:
 \begin{equation}
@@ -891,7 +905,7 @@ The speed controllers, although LDPower 20A devices, are all re-flashed with BLH
 \vspace{-14pt}
 \end{figure}
 \par
-It is worth noting the loaded speed plot in Fig:\ref{fig:rpm-sensor-prop} is slightly quadratic; the loaded response is from the second order aerodynamic torque term, quadratic with respect to RPS, expanded on in Sec:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over 16 kRPM.
+It is worth noting the loaded speed plot in Fig:\ref{fig:rpm-sensor-prop} is slightly quadratic; the loaded response is from the second order aerodynamic torque term, quadratic with respect to RPS, expanded on in Sec:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over $16\times 10^3~[\text{RPM}]$.
 \par
 Timers channels are used to measure the varying frequency output from the RPM sensors. General purpose Timers 15 (TIM15:CH1$\rightarrow$CH2), 16 (TIM16:CH1) and 17 (TIM17:CH1) are configured to capture the input PWM signal generated by the speed sensors. Included on the I2C communciation line is an I2C O-LED display for debugging and status update purposes.
 \par
@@ -930,7 +944,7 @@ Seeing that the 180\textdegree ~limitation was imposed as a design decision, one
 \vspace{-10pt}
 \end{figure}
 \par
-For the servos rotational range and step response are shown in Fig:\ref{fig:servo-no-load}, the relationship between the input pulse-width $x~[\text{m.s}]$ and the rotational output position $y~[\text{\textdegree}]$ is given by:
+For the servos whose rotational range and step response are shown in Fig:\ref{fig:servo-no-load}, the relationship between the input pulse-width $x~[\text{m.s}]$ and the rotational output position $y~[\text{\textdegree}]$ is given by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -944,7 +958,9 @@ In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegr
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
 G_{servo}(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
-=e^{-0.012s}\frac{(15.717)^2}{s^2+2(1)(15.717)s+(15.717)^2}
+\end{equation}
+\begin{equation}
+=e^{-0.012s}\frac{(14.869)^2}{s^2+2(1)(14.869)s+(14.869)^2}
 \end{equation}
 With saturation limits:
 \begin{equation}
@@ -957,16 +973,18 @@ G(s) & 0.65 \leq |U(s)| \leq 2.46\\
 \end{cases}
 \end{equation}
 \end{subequations}
+\par
 The net transfer block for the servo is shown in Fig:\ref{fig:servo-block}, including saturating non-linearities but neglecting the mechanical deadband\ldots
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.5\textwidth]{figs/servo-block}
+\includegraphics[width=0.8\textwidth]{figs/servo-block}
+\vspace{-5pt}
 \caption{Servo block diagram}
 \label{fig:servo-block}
 \vspace{-15pt}
 \end{figure}
 \par
-The plot previously in Fig:\ref{fig:servo-step} shows the transfer characteristics at the shaft output of an unloaded servo. When rotating the inertial body of the inner ring assembly, arranged as in Fig:\ref{fig:servo-inner-character}, the plant response plot of {\color{Blue}$\mathbf{y(t)}$} is consistent with the transfer function in Eq:\ref{eq:servo-transfer}. Despite rotating a load and hence requiring a greater torque, the servo's characteristics remains unchanged, even when the BLDC motor (with a $6\times4.5$ prop) with a rotational velocity of 6500 RPM is introduced, plotted {\color{Red}$\mathbf{y'(t)}$}, further increasing the torque load of the assembly as a result of gyroscopic resistance, Eq:\ref{eq:prop-inertia}.
+The plot in Fig:\ref{fig:servo-step} shows the transfer characteristics, at the shaft output, of an unloaded servo. When rotating the inertial body of the inner ring assembly, arranged as in Fig:\ref{fig:servo-inner-character}, the plant response plot of {\color{Blue}$\mathbf{y(t)}$} is consistent with the transfer function in Eq:\ref{eq:servo-transfer}. Despite rotating a load and hence requiring a greater torque. The servo's characteristics remains unchanged, even when the BLDC motor (with a $6\times4.5$ prop) with a rotational velocity of 6500 RPM is introduced, plotted {\color{Red}$\mathbf{y'(t)}$}, further increasing the torque load of the assembly as a result of the gyroscopic response, Eq:\ref{eq:prop-inertia}.
 \begin{figure}[htbp]
 \vspace{-10pt}
 \centering
@@ -1005,7 +1023,7 @@ The plot previously in Fig:\ref{fig:servo-step} shows the transfer characteristi
 \vspace{-20pt}
 \end{figure}
 \par
-In Fig:\ref{fig:servo-middle-character} the response for the middle ring servo is shown. Its rate transients remain the same but oscillations occur at the settling point, introduced by the larger inertia being driven, which has flex within its structure. The rotational position of the assembly was measured with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft (Fig:\ref{fig:servo-middle}). The oscillations are still present under load, plotted in {\color{Red}$\mathbf{y'(t)}$}, despite the frame being tensioned by the thrust vector. The mechanical harmonics can be accounted for by either introducing a more rigid sub-frame, limiting the maximum angular rate or simply adding a state dependent uncertainty term to the control plant.
+Fig:\ref{fig:servo-middle-character} shows the response for the middle ring servo. Its rate transients remain the same but oscillations occur at the settling point, introduced by the larger inertia being driven, which has flex within its structure. The rotational position of the assembly was measured with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft (Fig:\ref{fig:servo-middle}). The oscillations are still present under load, plotted in {\color{Red}$\mathbf{y'(t)}$}, despite the frame being tensioned by the thrust vector. The mechanical harmonics can be accounted for by either introducing a more rigid sub-frame, limiting the maximum angular rate or simply adding a state dependent uncertainty term to the control plant.
 \subsubsection*{BLDC Transfer Functions}
 Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve, plotted in Fig:\ref{fig:bldc-range}. This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (more on propeller aerodynamics in Sec:\ref{subsec:dynamics.aero.bem}). 
 \par
@@ -1015,7 +1033,7 @@ Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quad
 \caption{BLDC rpm speed calibration and transfer function rig}
 \label{fig:bldc-rpm}
 \end{figure}
-Through the BLHeli interface, the input range for the motor's speed controllers can be adjusted, but for the purposes of this project were left unchanged. That input relationship between pulse-widths to the ESC and output RPM sensor signal is given by the hybrid state equations for input range limits:
+Through the BLHeli interface, the input range for the motor's speed controllers can be adjusted, but for the purposes of this project were left unchanged. That relationship between input pulse-widths to the ESC and output RPM sensor signal is given by the hybrid state equations for input range limits:
 \begin{equation}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -1024,7 +1042,7 @@ y(x)=
 16300 & ~~x>1.655~\text{ms}\\
 \end{array}
 \end{cases}
-~~~\Bigg\}[\text{RPM}]
+~~~\Bigg\}~~~~[\text{RPM}]
 \label{eq:bldc-range}
 \end{equation}
 \par

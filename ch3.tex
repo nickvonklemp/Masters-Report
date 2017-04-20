@@ -12,28 +12,28 @@ The following generally applicable, rigid body dynamics are first derived with r
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
 %====================================================
-Fundamentally any body, rigid or otherwise, can undergo two kinds of motion, namely rotational and translation. Often a Lagrangian approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom \cite{classicaldynamics,rotationrigidbody}. The Lagrangian principle ensures that (translational and rotational) kinematic energies and potential energy are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian\cite{lagrange-formalism} formulation fully defines the aerospace 6-DOF equation set.
+Fundamentally any body, rigid or otherwise, can undergo two kinds of motion, namely rotational and translational. Often a Lagrangian approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom \cite{classicaldynamics,rotationrigidbody}. The Lagrangian principle ensures that (translational and rotational) kinematic energies and potential energy are conserved throughout the system's trajectory progression. When combined with Euler-Rotational equations, the Euler-Lagrangian formulation from \cite{lagrange-formalism} fully defines the aerospace 6-DOF equation set.
 \par
-Lagrangian formalism is regarded as especially useful in non-Cartesian (\emph{spherical etc\ldots}) co-ordinate frames or multi-body systems. With that being said, Cartesian co-ordinates were defined in Sec:\ref{subsec:proto.conventions.motoraxis} for this system. An alternative relative co-ordinate system could be used for implicit-Euler based dynamics \cite{autonomousrobotseuler}.
-Rigid body dynamics in a Cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newton-Euler and Euler-Lagrange formulations both result in the same differential equations of motion, but follow different derivations. The Lagrangian operator, $\mathcal{L}$, is a term consisting of the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\vec{\mathbf{r}}(t)$, for both position $\vec{\xi}$ and attitude $\vec{H}$ co-ordinates;
+Lagrangian formalism is regarded as especially useful in non-Cartesian (\emph{spherical etc\ldots}) co-ordinate frames or multi-body systems. With that being said, Cartesian co-ordinates were defined in Sec:\ref{subsec:proto.conventions.motoraxis} for this system. An alternative relative co-ordinate system could be used for implicit-Euler based dynamics, as in \cite{autonomousrobotseuler}.
+Rigid body dynamics in a Cartesian co-ordinate frame do lend themselves to Newtonian mechanics. The Newton-Euler and Euler-Lagrange formulations both result in the same differential equations of motion, but follow different derivations. The Lagrangian operator, $\mathcal{L}$, is a scalar term for the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\vec{\mathbf{r}}(t)$ for a body, with both position $\vec{\xi}$ and attitude $\vec{H}$ included;
 \begin{equation}\label{eq:generalpath}
 \vec{\mathbf{r}}(t)=\begin{bmatrix}
 \vec{\xi} & \vec{H}
 \end{bmatrix}^T~~~~\in\mathcal{F}^{\Lambda}
 \end{equation}
-The co-ordinates in Eq:\ref{eq:generalpath} are generalized and taken with respect to some shared frame $\Lambda$. Those generalized co-ordinates are later refined to Cartesian body co-ordinates with respect to the inertial frame. The Lagrangian is, by definition:
+The co-ordinates in Eq:\ref{eq:generalpath} are generalized and taken with respect to some hypothetical shared frame $\Lambda$. Those generalized co-ordinates are later refined to Cartesian body co-ordinates with respect to the inertial frame. The Lagrangian is, by definition:
 \begin{subequations}
 \begin{equation}\label{eq:lagrangian.a}
 \mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t)=T(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}})-U(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}})
 \end{equation}
-With the trajectory's kinetic and potential energy function(s) are $T$ and $U$ respectively. Introducing a rigid body's general (translational and rotational) kinetic and potential energies, together in the shared reference frame $\mathcal{F}^\Lambda$. 
+Where the trajectory's kinetic and potential energy function(s) are $T$ and $U$ respectively. Introducing a rigid body's general (translational and rotational) kinetic and potential energies, together in the shared reference frame $\mathcal{F}^\Lambda$. 
 \newpage
-There is no angular contribution of potential stored energy, so $U(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}})$ depends only only gravitational potential energy. With gravity is defined as $G_I=\begin{bmatrix} 0&0&-9.81 \end{bmatrix}^T~[\text{m.s}^{-2}]$~in the Inertial frame,$\in\mathcal{F}^I$, the Lagrangian scalar is then:
+There is no angular contribution of potential stored energy, so $U(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}})$ depends only on gravitational potential energy. The gravity vector is defined as $G_I=\begin{bmatrix} 0&0&-9.81 \end{bmatrix}^T~[\text{m.s}^{-2}]$~in the Inertial frame,$\in\mathcal{F}^I$. The Lagrangian scalar is then:
 \begin{equation}\label{eq:lagrangian.b}
 \mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t)=\frac{1}{2}\dot{\vec{\xi}}^{~T}(m_b)\dot{\vec{\xi}}+\frac{1}{2}\dot{\vec{H}}^{~T}(J_b)\dot{\vec{H}}-m\vec{G}_{\Lambda}z
 \end{equation}
 \end{subequations}
-Noting that $J_b$ is body's inertial matrix aligned and translated with respect to the common frame $\mathcal{F}^{\Lambda}$. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\vec{\mathbf{V}}$, acting on the system in $\Lambda$. In the rigid body motion case the generalized forces are net forces $\vec{F}_{net}$ torques $\vec{\tau}_{net}$ in the shared frame $\in\mathcal{F}^{\Lambda}$.
+Noting that $J_b$ is body's inertial matrix aligned and translated with respect to the common frame $\mathcal{F}^{\Lambda}$. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\vec{\mathbf{V}}$, acting on the system in frame $\Lambda$. In the rigid body motion case the generalized forces are net forces $\vec{F}_{net}$ and net torques $\vec{\tau}_{net}$ in the shared frame $\in\mathcal{F}^{\Lambda}$.
 \begin{equation}\label{eq:euler-lagrange}
 \frac{d}{dt}\bigg(\frac{\delta \mathcal{L}}{\delta \dot{\vec{\mathbf{r}}}}\bigg)-\frac{\delta \mathcal{L}}{\delta \vec{\mathbf{r}}} = \vec{\mathbf{V}} = \begin{bmatrix}
 \vec{F}_{net}\\
@@ -54,14 +54,14 @@ m_b\vec{G}_\Lambda\\
 \frac{d}{dt}m_b\dot{\vec{\xi}} ~~~ \frac{d}{dt}J_b\dot{\vec{H}}\bigg]^T~~~~\in\mathcal{F}^{\Lambda}
 \end{equation}
 \end{subequations}
-Where $\vec{G}_\Lambda$ is the gravitation force in the common frame $\mathcal{F}^\Lambda$ which $\mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}})$ is with respect to. The body mass $m_b$ and inertia $J_b$ could potentially have some non-zero time derivative, but here are considered to be constant. Time varying inertias are addressed later in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Any vector in a rotating generalized coordinate system has time derivative relative to another reference frame as per the Reynolds Transportation Theorem\cite{reynolds}:
+Where $\vec{G}_\Lambda$ is the gravitation force transformed to the common frame $\mathcal{F}^\Lambda$ which $\mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}})$ is with respect to. The body mass $m_b$ and inertia $J_b$ could potentially have some non-zero time derivative, but here are considered to be constant. Time varying inertias are addressed later in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Any vector in a rotating generalized coordinate system has time derivative, relative to another reference frame, as per the Reynolds Transportation Theorem\cite{reynolds}:
 \begin{equation}\label{eq:reynolds}
 \frac{d\vec{f}}{dt_a}=\frac{d\vec{f}}{dt_b}+\vec{\omega}_{a/b}\times\vec{f}
 \end{equation}
 So applying Eq:\ref{eq:reynolds} to the partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates $[\vec{\xi},~\vec{H}]^T$ as 6-DOF Cartesian body coordinates with respect to an inertial frame (the body frame $\mathcal{F}^b$ and inertial frame $\mathcal{F}^I$). Reiterating that the angular orientations $\vec{\xi}$ are with respect to a common frame $\mathcal{F}^{\Lambda}$, unlike Euler angles $\vec{\eta}\in\mathcal{F}^{v2,v1,I}$. Recalling the definition of attitude in a common frame $\vec{\eta}_b$ from Eq:\ref{eq:angular-rates.b}, where $\vec{\omega}_b=\dot{\vec{\eta}}_b$ and $\vec{\eta}_b\in\mathcal{F}^{b}$, the trajectory is refined: 
 \begin{equation}
 \vec{\mathbf{r}}=\begin{bmatrix}
-\vec{\xi}&
+\vec{v}&
 \vec{H}
 \end{bmatrix}^T
 \triangleq
