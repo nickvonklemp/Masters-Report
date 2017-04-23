@@ -1,7 +1,7 @@
 %****************************************************
 %	CHAPTER 2 - Prototype Design
 %****************************************************
-\chapter{Prototype Design}
+m\chapter{Prototype Design}
 \label{ch:proto}
 %====================================================
 \section{Design}
@@ -606,48 +606,58 @@ That body's inertia $J_\text{y}$ at the origin $\vec{\mathbf{O}}_b$ is then:
 \end{equation}
 \end{subequations}
 \par
-Net inertia for the complete multibody vehicle, $J_b$, about the origin $\vec{\mathbf{O}}_b$ is a combination of all the relative attached bodies. The assembly's inertia $J_b$ is the \emph{net} body frame's inertia, different from $J_\text{y}$ which is the inertia for \emph{only} the body structure. That collective assembly being; the four motor modules, rotated by $\alpha_i$ and then translated to the body frame origin, and the body structure's contribution itself. Those inertial matrices' relative axial transformations from their respective centers of rotation, in frames $\mathcal{F}^{M_i}$ for $i\in[1:4]$, to the body frame $\mathcal{F}^b$ is analogous to that of Eq:\ref{eq:motor-module-rotation}. Reiterating that $\vec{\mathbf{O}}_b$ is \emph{co-planar} to each module's center of rotation; each motor module's inertia, $J_{\zeta}(\lambda_i)$ or $J_{M_i'}$ defined in Eq:\ref{eq:inertia.middle.b}, is further rotated by $\alpha_{i}$ about the $\hat{Y}_{M_i'}$ axis and finally an orthogonal $\hat{Z}_{M_i''}$  axis rotation (aligned with $\hat{Z}_b$) onto $\mathcal{F}^b$. 
+Net inertia for the complete multibody vehicle, $J_b$, about the origin $\vec{\mathbf{O}}_b$ is a combination of all the relative attached bodies. The entire assembly's inertia $J_b$ is the \emph{net} body frame's inertia, different from $J_\text{y}$ which is the inertia for \emph{only} the body structure. That collective assembly being the four motor modules, each rotated first by $\lambda_i$, then $\alpha_i$ and finally translated to the body frame origin; and the body structure's contribution itself. 
 \par
-For the entire body's net inertia each contributing inertial matrix must be defined with respect to the body's origin; first aligned parallel to the common set of body frame axes $\hat{X}_b,\hat{Y}_b$ and $\hat{Z}_b$ and then translated to the origin $\vec{\mathbf{O}}_b$. Each motor module's inertia, still centered relative to each individual rotational centers $\vec{\mathbf{M}}_i$ in Fig:\ref{fig:inertia-frame}, but re-orientated to align parallel with $\vec{\mathbf{O}}_b$ with rotations about axes $\hat{X}\in\mathcal{F}^{M_i},~\hat{Y}\in\mathcal{F}^{M_i'},~\hat{Z}\in\mathcal{F}^{M_i''}$.
+Those motor modules' inertial axial transformations from their respective centers of rotation, in frames $\mathcal{F}^{M_i}$ for $i\in[1:4]$, to the body frame $\mathcal{F}^b$ are analogous to that of Eq:\ref{eq:motor-module-rotation}. Reiterating that $\vec{\mathbf{O}}_b$ is \emph{co-planar} to each module's center of rotation; each motor module's inertia, $J_\text{p}(\lambda_i)$ or $J_{M_i'}$, defined in Eq:\ref{eq:inertia.middle.b}, is further rotated by $\alpha_{i}$ about the $\hat{Y}_{M_i'}$ axis and finally an orthogonal $\hat{Z}_{M_i''}$  axis rotation (aligned with $\hat{Z}_b$) onto $\mathcal{F}^b$. 
+\par
+For the entire body's net inertia each contributing inertial matrix must be defined with respect to the body's origin; first aligned parallel to the common set of body frame axes $\hat{X}_b,\hat{Y}_b$ and $\hat{Z}_b$ and then translated to the origin $\vec{\mathbf{O}}_b$. For each motor module's inertia, still centered relative to each individual rotational centers $\vec{\mathbf{M}}_i$ in Fig:\ref{fig:inertia-frame}, but re-orientated to align parallel with $\vec{\mathbf{O}}_b$ with rotations about axes $\hat{X}\in\mathcal{F}^{M_i},~\hat{Y}\in\mathcal{F}^{M_i'},~\hat{Z}\in\mathcal{F}^{M_i''}$, is calculated:
 \begin{subequations}\label{eq:module-inertia}
 \begin{equation}\label{eq:module-inertia.a}
 J_{\vec{\mathbf{M}}_i}=R_{z}(\sigma_i)R_{y}(\alpha_i)\big(J_{\zeta}(\lambda_i)\big)R^{-1}_{y}(\alpha_i)R^{-1}_{z}(\sigma_i)
 \end{equation}
-$R_{z}(\sigma_i)$ was defined as relative orthogonal $\hat{Z}_b$ rotations earlier in Eq:\ref{eq:motor-module-rotation.b}. Expanding each module's inertia to individual inner and middle ring inertial contributions then yields:
+\vspace{-16pt}
+\begin{equation}
+\text{for bodies}~\mathbf{M}_i,~i\in[1:4]
+\end{equation}
+Where the rotation $R_{z}(\sigma_i)$ was defined as relative orthogonal $\hat{Z}_b$ rotation earlier in Eq:\ref{eq:motor-module-rotation.b}. Expanding each module's inertia to individual inner and middle ring inertial contributions then yields:
 \begin{equation}\label{eq:module-inertia.c}
 \therefore J_{\vec{\mathbf{M}}_i}=R_{z}R_{y}(\alpha_i)\big(J_\text{m}\big)R^{-1}_{y}(\alpha_i)R^{-1}_z+R_{z}R_{y}(\alpha_i)R_{x}(\lambda_i)\big(J_\text{n}\big)R^{-1}_{x}(\lambda_i)R^{-1}_{y}(\alpha_i)R^{-1}_z
 \end{equation}
 \end{subequations}
-\emph{\color{Gray}It's at this stage that, despite simplifications, the symbolic inertial equations all become overly cumbersome to include with numeric values\ldots For the sake of brevity, exact calculated inertial values for the input dependent plant are omitted.}
+\emph{\color{Gray}It's at this stage that, despite simplifications, the symbolic inertial equations all become overly cumbersome to include with numeric values\ldots
+\\
+For the sake of brevity, exact calculated inertial values for the input dependent plant are omitted.}
+\par
 \begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.9\textwidth]{figs/inertia-frame}
+\includegraphics[width=\textwidth]{figs/inertia-frame}
 \caption{Inertial, mass and motor modules respective centers}
 \label{fig:inertia-frame}
-\vspace{-15pt}
 \end{figure}
 \par
-Each module's rotational center $\vec{\mathbf{M}}_{1\rightarrow 4}$ are spaced equally relative to the origin of motion, $\vec{\mathbf{O}}_b$, with a parallel axis arm $L_{arm}=195.16~~[\text{mm}]$ (illustrated in Fig:\ref{fig:inertia-frame}). To avoid notational confusion the term $\vec{L}_i=\begin{bmatrix} \pm 195.16 & 0 & 0 \end{bmatrix}^T$ or $\begin{bmatrix} 0 & \pm 195.16 & 0
-\end{bmatrix}^T$ is used to represent the vector displacement between the origin $\vec{\mathbf{O}}_b$ and each motor modules center of rotation $\vec{\mathbf{M}}_{1\rightarrow 4}$. The net inertial equation $J_b(u)$, about the origin $\vec{\mathbf{O}}_b$ and dependent on the actuator position matrix $u\in\mathbb{U}$, can be calculated as:
+Each module's rotational center, the vectors $\vec{\mathbf{M}}_{1\rightarrow 4}$, are all spaced equally relative to the origin of motion, $\vec{\mathbf{O}}_b$, with a parallel axis arm $L_{arm}=195.16~~[\text{mm}]$ (Fig:\ref{fig:inertia-frame}). To avoid notational confusion the term $\vec{L}_i=\begin{bmatrix} \pm 195.16 & 0 & 0 \end{bmatrix}^T$ or $\begin{bmatrix} 0 & \pm 195.16 & 0
+\end{bmatrix}^T$ is used to represent the vector displacement between the origin $\vec{\mathbf{O}}_b$ and each motor modules center of rotation $\vec{\mathbf{M}}_{1\rightarrow 4}$. The net inertial equation $J_b(u)$, about the origin $\vec{\mathbf{O}}_b$ and depending on the actuator position matrix value $u\in\mathbb{U}$, can be calculated as:
 \begin{subequations}
 \label{eq:body-inertia}
 \begin{equation}\label{eq:body-inertia.a}
 \underset{\vec{\mathbf{O}}_b}{J_b(u)}=J_\text{y}+\sum_{i=1}^{4}J'_{\vec{\mathbf{M}}_i}~~~~[\text{kg.m}^2],~u\in\mathbb{U}
 \end{equation}
-Where $J'_{\vec{\mathbf{M}}_i}$ is the motor module inertia from Eq:\ref{eq:module-inertia} but translated to the origin $\vec{\mathbf{O}}_b$ using a parallel axis theorem with $m_{\zeta}=190~[\text{g}]$:
+Where $J'_{\vec{\mathbf{M}}_i}$ is the motor module inertia from Eq:\ref{eq:module-inertia} but translated to the origin $\vec{\mathbf{O}}_b$ using a parallel axis theorem with $m_\text{p}=190~[\text{g}]$:
 \begin{equation}\label{eq:body-inertia.b}
-J'_{\vec{\mathbf{M}}_i}=J_{\vec{\mathbf{M}}_i}+m_{\zeta}\big(\vec{L}_i \cdot \vec{L}_i - \vec{L}_i\otimes\vec{L}_i\big)
+J'_{\vec{\mathbf{M}}_i}=J_{\vec{\mathbf{M}}_i}+m_\text{p}\big(\vec{L}_i \cdot \vec{L}_i - \vec{L}_i\otimes\vec{L}_i\big)
 \end{equation}
 \end{subequations}
-Although Eq:\ref{eq:body-inertia} produces the entire body's inertia, each equation to calculate $J_{\vec{\mathbf{M}}_i}$ involves cascaded transformations which may deteriorate the resultants certainty. Each motor module's inertia is first translated to their respective centers of rotation then rotated as per the two servos and then finally translated again back to the body frame's origin. Alternatively considering inertias about each sub-body's center of mass and then directly translating to the body frame's origin will improve the certainty of the produced inertial equations. It is also perhaps more intuitive to consider each sub-body's contribution individually, despite having been derived as combined inertial bodies in the above equations. 
+Although Eq:\ref{eq:body-inertia} produces the entire body's inertia, each equation to calculate $J_{\vec{\mathbf{M}}_i}$ involves cascaded transformations which may deteriorate the resultants certainty. Each motor module's inertia is first translated to their respective centers of rotation then rotated as per the two servos and then finally translated again back to the body frame's origin. 
+\par
+Alternatively the inertia contribution of each sub-body's can be considered separately and translated directly to the body frame's origin from each respective center of mass. This will improve the certainty of the produced inertial equations, each translation/rotation has with it an associated uncertainty and floating point concatenation. It is also perhaps more intuitive for the reader to consider each sub-body's contribution individually, despite having been derived as combined inertial bodies in the above. The vehicles net inertia can the be described as 9 discrete contributing bodies; four inner rings $J_\text{n}$, four middle rings $J_\text{m}$ and one body structure $J_\text{y}$:
 \begin{equation}\label{eq:body-net}
 \underset{\vec{\mathbf{O}}_b}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}}~~~~u\in\mathbb{U}
 \end{equation}
-Isolating each body and independently considering each inertia; starting with the inner rings, each having an inertia $J_\text{n}$ with respect to its \emph{center of mass} (and not center of rotation) measured \emph{relative} to its center of rotation. The following is then fundamentally different from the process in Eq:\ref{eq:inertia.inner}, calculating the inner ring's inertial contribution about the origin $\vec{\mathbf{O}}_b$.
+Isolating each body and independently considering each inertia; starting with the inner ring's, each having an inertia $J_\text{n}$ with respect to its \emph{center of mass} (and not center of rotation) measured \emph{relative} to its center of rotation. The following is then fundamentally different from the process in Eq:\ref{eq:inertia.inner}, calculating the inner ring's inertial contribution about the origin $\vec{\mathbf{O}}_b$.
 \par
 \begin{subequations}
 \label{eq:body-net-inner}
-For the inner ring, with a mass $m_\text{n}$ and center of mass $C.M_\text{n}$ relative to the center of rotation $\vec{\mathbf{M}}_i$ respectively:
+For the inner ring only, with a mass $m_\text{n}$ and center of mass $C.M_\text{n}$ relative to its center of rotation $\vec{\mathbf{M}}_i$. The inner ring(s) contribution then follows:
 \begin{equation}\label{eq:body-net-inner.a}
 m_\text{n}=92~~[\text{g}]
 \end{equation}
@@ -657,7 +667,7 @@ C.M_\text{n}=\begin{bmatrix}
 -1.44 & 0.0 & 5.14
 \end{bmatrix}^T~~[\text{mm}]
 \end{equation}
-The inner ring's inertial matrix at that center of mass was found to be:
+The inner ring's inertial matrix at that body's center of mass (Fig:\ref{fig:inertia-inner}) was found to be:
 \begin{equation}\label{eq:body-net-inner.c}
 \underset{C.M}{J_\text{n}}=\begin{bmatrix}
 496.6 & -31.7 & 6.6\\
@@ -665,15 +675,15 @@ The inner ring's inertial matrix at that center of mass was found to be:
 6.6 & 0 & 2048.9
 \end{bmatrix}~~[\text{g.cm}^2]
 \end{equation}
-The inner ring's center of mass, rotated by $\lambda_i$ and $\alpha_i$ servos about their respective axes, is then:
+Relative to the body frame origin $\vec{\mathbf{O}}_b$ the inner ring's center of mass, rotated by $\lambda_i$ and $\alpha_i$ servos about their respective axes with a relative orthogonal $R_z$ rotation too, is then:
 \begin{equation}\label{eq:body-net-inner.d}
 C.M'_\text{n}=R_zR_y(\alpha_i)R_x(\lambda_i) \big(C.M_\text{n}\big)
 \end{equation}
-So transforming the inertia from Eq:\ref{eq:body-net-inner.c}, still about the center of mass $C.M_\text{n}$, but with axes aligned parallel with the body frame, or using the shorthand $||\vec{\mathbf{O}}_b$:
+So transforming the inertia from Eq:\ref{eq:body-net-inner.c}, still about the center of mass $C.M_\text{n}$, but with axes aligned parallel with the body frame, or using the shorthand $||\vec{\mathbf{O}}_b$. The inner ring's inertia as a function of both servo angles $\lambda_i$ and $\alpha_i$ is:
 \begin{equation}\label{eq:body-net-inner.e}
 \underset{||\vec{\mathbf{O}}_b}{J'_\text{n}(\lambda_i,\alpha_i)}=R_zR_y(\alpha_i)R_x(\lambda_i)\big(J_\text{n}\big)R^{-1}_x(\lambda_i)R^{-1}_y(\alpha_i)\mathbb{R}^{-1}_z
 \end{equation}
-The vector difference between the new, rotated center of mass to the body origin $\vec{\mathbf{O}}_b$ is given by:
+The vector difference between the new, rotated center of mass $C.M_\text{n}'$ with the body origin $\vec{\mathbf{O}}_b$ is given by:
 \begin{equation}
 \Delta L = \vec{L}_i-C.M'_\text{n}
 \end{equation}
@@ -681,22 +691,22 @@ Then using the above in a parallel axis translation, adapted from Eq:\ref{eq:ine
 \begin{equation}
 \underset{\vec{\mathbf{O}}_b}{J_\text{n}}=\underset{||\vec{\mathbf{O}}_b}{J'_\text{n}}+ m_\text{n} \big((\Delta L \cdot \Delta L)\mathbb{I}_{3\times 3} - \Delta L \otimes \Delta L \big)
 \end{equation}
-And for reference, when both $\lambda_i=0$ and $\alpha_i=0$, the inner ring's inertia is:
+And for reference, when both servos are at rest $\lambda_i=0$ and $\alpha_i=0$, the inner ring's inertial contribution about the origin is:
 \begin{equation}
 \underset{\vec{\mathbf{O}}_b}{J_\text{n}}=\begin{bmatrix}
 520.9 & -31.0 & 922.6\\
 -31.0 & 36348.5 & 0.0\\
 922.6 & 0.0 & 36573.0
-\end{bmatrix}\times 10^{-7}\Big|_{\lambda_i,\alpha_i=0}~~~~[\text{kg.m}^2],~\in\mathcal{F}^{b}
+\end{bmatrix}\times 10^{-7}\bigg|_{\lambda_i,\alpha_i=0}~~~~[\text{kg.m}^2],~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-Similarly, the same process is applied for the middle ring's rotated and translated inertia. The middle ring (\emph{only}) has a mass and center of mass relative to the center of rotation respectively:
+Similarly, the same process is applied for the middle ring's rotated and translated inertia. The middle ring \emph{only} (Fig:\ref{fig:inertia-middle}) has a mass and center of mass relative to the module's center of rotation respectively:
 \begin{subequations}
 \label{eq:body-net-middle}
 \begin{equation}
 m_\text{m}=98~~[\text{g}]
 \end{equation}
-\vspace{-10pt}
+\vspace{-14pt}
 \begin{equation}
 C.M_\text{m}=\begin{bmatrix}
 -47.00 & 3.74 & -3.63
@@ -710,7 +720,7 @@ The inertial matrix of the middle ring body, excluding the inner ring, about its
 223.6 & 13.3 & 8947.5\\
 \end{bmatrix}~~[\text{g.cm}^2]
 \end{equation}
-The center of mass is rotated only by the $\alpha_i$ servo about the $\hat{Y}_{M_i'}$ axis:
+Rotated the center of mass only by the $\alpha_i$ servo about the $\hat{Y}_{M_i'}$ axis yields the center of mass $C.M_\text{m}'$ relative to $\vec{\mathbf{O}}_b$:
 \begin{equation}\label{eq:body-net-middle.d}
 C.M'_\text{m}=R_{z}R_{y}(\alpha_i)\big(C.M_\text{m}\big)
 \end{equation}
@@ -726,7 +736,7 @@ Which then leads to the parallel axis translation of the middle ring's inertia t
 \begin{equation}
 \underset{\vec{\mathbf{O}}_b}{J_\text{m}}=\underset{||\vec{\mathbf{O}}_b}{J_\text{m}}+m_\text{m}\big((\Delta L\cdot\Delta L)\mathbb{I}_{3x3}-\Delta L \otimes \Delta L \big)
 \end{equation}
-Then, for reference at $\alpha_i=0$ the middle ring's inertial contribution at $\vec{\mathbf{O}}_b$ is:
+Again, for reference, at rest with the middle ring servo $\alpha_i=0$ the middle ring's inertial contribution at $\vec{\mathbf{O}}_b$ is:
 \begin{equation}
 \underset{\vec{\mathbf{O}}_b}{J_\text{m}}=\begin{bmatrix}
 2905.7 & 715.4 & -303.9\\
@@ -741,38 +751,46 @@ Then, reiterating Eq:\ref{eq:body-net}, the instantaneous inertia of the entire 
 \begin{equation}\label{eq:body-net-2}
 \underset{\vec{\mathbf{O}}_b}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}}~~~~u\in\mathbb{U}
 \end{equation}
-The mass for the whole assembly is $m_b=1574.7~[\text{g}]$. For reference, according to Eq:\ref{eq:body-net-2}, the inertial matrix for the assembly at the actuator rest conditions, $u=\vec{0}$, about the origin $\vec{\mathbf{O}}_b$ is:
+The mass for the whole vehicle is $m_b=1574.7~[\text{g}]$. For reference, using Eq:\ref{eq:body-net-2}, the inertial matrix for the assembly at the actuator rest conditions, $u=\vec{0}$, about the origin $\vec{\mathbf{O}}_b$ is:
 \begin{equation}
 J_b(\vec{0})=\begin{bmatrix}
 317448.2 & 0.4 & -14.5\\
 0.4 & 317570.7 & 6.5\\
 -14.5 & 6.5 & 628257.5
-\end{bmatrix}\times 10^{-7}\Big|_{u=\vec{0}}~~~~[\text{kg.m}^2],~\in\mathcal{F}^b
+\end{bmatrix}\times 10^{-7}\bigg|_{u=\vec{0}}~~~~[\text{kg.m}^2],~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
 Unless otherwise specified; any inertia $J_b(u)$ indicates an instantaneous calculated solution to Eq:\ref{eq:body-net-2} given a particular $u(t)\in\mathbb{U}$. The purpose of the derivations for rotated centers of mass in Eq:\ref{eq:body-net-inner} and Eq:\ref{eq:body-net-middle} is twofold; highlighting both the inertial contributions \emph{and} the variable center of masses for each sub-body.
 \par
-The variable inertias dependent on state inputs are one of many non-trivial aspects unique to the multibody design. Similarly the center of mass for each motor module's compound assembly coincides with neither rotational axes' intersections. As a result the effective center of mass for each module, and hence the entire body, is going to be a time varying function each motor module's angular rotational position.
-
-Because the origin of motion in the body frame $\mathcal{F}^b$ and the net body's center of mass are not coincidental, it is important to calculate the net center of mass position, varying with actuator positions $u\in\mathbb{U}$. In the general case for a collection of $n$ bodies, with each body's center of mass at some position $\vec{X}_i$ and each having a mass $m_i$, resultant center of mass is:
-\begin{subequations}
-\label{eq:mass-center}
+Seeing that the origin of motion $\vec{\mathbf{O}}_b$ in the body frame $\mathcal{F}^b$ and the net body's center of mass $C.M_\text{b}$ are not coincidental, it is important to specify the net center of mass position, which varies with actuator positions $u\in\mathbb{U}$. In the general case for a collection of $n$ bodies, with each body's center of mass at some position $\vec{X}_i$ and each having a mass $m_i$, resultant center of mass is:
+\begin{subequations}\label{eq:mass-center}
 \begin{equation}\label{eq:mass-center.a}
 C.M = \frac{\sum_{i=1}^{n} m_i.\vec{X}_i}{\sum_{i=1}^{n} m_i}
 \end{equation}
-Using $C.M_\text{n}'$ and $C.M_\text{m}'$ as rotated centers of mass defined in Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d} respectively, the entire assembly has a variable center of mass:
+Using $C.M_\text{n}'$ and $C.M_\text{m}'$ as rotated centers of mass defined in Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d} respectively and $C.M_\text{y}$ for the body structure, the vehicle has a variable center of mass $C.M_\text{b}(u)$:
 \begin{equation}\label{eq:mass-center.b}
-C.M(u)=\frac{m_\text{y}C.M_\text{y}+\sum_{i=1}^{4} m_\text{n}C.M_\text{n}'+\sum_{i=1}^{4} m_\text{m}C.M_\text{m}'}{m_\text{y}+\sum_{i=1}^{4} m_\text{n} + \sum_{i=1}^{4} m_\text{m}}
+C.M_\text{b}(u)=\frac{m_\text{y}C.M_\text{y}+\sum_{i=1}^{4} m_\text{n}C.M_\text{n}'+\sum_{i=1}^{4} m_\text{m}C.M_\text{m}'}{m_\text{y}+\sum_{i=1}^{4} m_\text{n} + \sum_{i=1}^{4} m_\text{m}}
 \end{equation}
-So the center of gravity when all actuators are at their zero positions is: $C.M=\begin{bmatrix}0 & 0 & -4.94\end{bmatrix}^T~[\text{mm}]$. Using a gravity vector $\vec{G}_b=R_I^b\vec{F}_g=R_I^b\begin{bmatrix}0&0&-9.81(m_b)\end{bmatrix}^T~[\text{N}]$ in the body frame $\mathcal{F}^{b}$, the resultant gravitational torque about the origin $\vec{\mathbf{O}}_b$ in the body frame $\mathcal{F}^b$ is:
+\end{subequations}
+So the center of gravity when all actuators are at their zero positions is: $C.M_b(\vec{0})=\begin{bmatrix}0 & 0 & -4.94\end{bmatrix}^T~[\text{mm}]$. Using a gravity vector $\vec{G}$ in the body frame as a result of gravitational acceleration $g=-9.81~[\text{m.s}^{\text{-}2}]$:
+\begin{subequations}\label{eq:grav-def}
 \begin{equation}
-\Delta C.G = \vec{\mathbf{O}}_b-C.M(u)
+\vec{G}_b=R_I\big(\vec{\eta}\big)^b\vec{G}_I~~~~[\text{N}],~\in\mathcal{F}^b
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=R_I^b\big(\vec{\eta}\big)\begin{bmatrix}0&0&-9.81(m_\text{b})\end{bmatrix}^T
+\end{equation}
+The resultant gravitational torque about the origin $\vec{\mathbf{O}}_b$ in the body frame $\mathcal{F}^b$ is:
+\begin{equation}
+\Delta C.G = \vec{\mathbf{O}}_b-C.M_\text{b}(u)
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:grav-torque}
 \vec{\tau}_g=\Delta C.G\times\vec{G}_b~~~~[\text{N.m}],\tau_g\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
+Inertia uncertainty, proven to be destabilizing and detrimental to control efforts in \cite{}, can indeed be incorporated into state dependent plant uncertainty. A controller with strong disturbance and uncertainty rejection like a well designed $\text{H}_\infty$ controller, in \cite{}, would be ideally suited to controlling an attitude plant without having to explicitly specify all of the above. However it is worth the effort given that Lagrange dynamics are applied to the servo actuator responses later in Sec:\ref{sec:dynamics.nonlinearities}. Such equations of motion will later need explicit terms for instantaneous transformed inertias.
 \newpage
 %====================================================
 \section{Electronics}
@@ -811,9 +829,9 @@ An abstracted hardware diagram for the (electronic) system layout is shown in Fi
 \label{fig:f3-deluxe-layout}
 \vspace{-10pt}
 \end{figure}
-The embedded system is constructed around an ARM STM32F303\cite{stm32f303} based microcontroller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing} which has had its bootloader removed and custom firmware, unique to this project, developed for it. CleanFlight or BetaFlight opensource software (\cite{cleanflight} or \cite{betaflight} respectively) are typically used for the SPRacing F3; despite open source software its hardware specifications are  however not openly available. The reverse engineered electrical schematic for the board is included in App:\ref{app:deluxe-diagram} but a simplified overview of its internal connections is shown in Fig:\ref{fig:f3-deluxe-board}.
+The embedded system is constructed around an ARM STM32F303\cite{stm32f303} based microcontroller. The micro-processor board is a commercial flight control board, specifically an SPRacing F3 Deluxe\cite{spracing} which has had its bootloader removed and custom firmware, unique to this project, developed for it. CleanFlight or BetaFlight opensource software (from \cite{cleanflight} and \cite{betaflight} respectively) are typically used for the SPRacing F3; despite open source software its hardware specifications are  however not openly available. The reverse engineered electrical schematic for the board is included in App:\ref{app:deluxe-diagram} but a simplified overview of its internal connections is shown in Fig:\ref{fig:f3-deluxe-board}.
 \par
-The embedded software implemented is described in Ch:\ref{ch:flight}; the I/O for all the peripherals are however detailed here. The flight-controller has the following onboard peripherals: an I2C MPU-6050 6-axis gyroscope \& accelerometer \cite{mpu6050} with an I2C connected HMC5883 magnetometer compass \cite{hmc5883}, an I2C MS5611 barometer \cite{ms5611} and finally 64 Mb of SPI flash memory.
+The embedded software implemented is described in Ch:\ref{ch:flight}; the I/O for all the peripherals are however detailed here. The flight-controller has the following onboard peripherals; an I2C MPU-6050 6-axis gyroscope and accelerometer \cite{mpu6050} with an I2C connected HMC5883 magnetometer compass \cite{hmc5883}; an I2C MS5611 barometer \cite{ms5611} and finally 64 Mb of SPI flash memory.
 \par
 \emph{\color{Gray}The combination of above sensors fused for state estimation and their associated filtration algorithms are dealt with in Sec:\ref{sec:simulation.state} of Ch:\ref{ch:simulation}.\\}
 \begin{figure}[hbtp]
@@ -824,11 +842,11 @@ The embedded software implemented is described in Ch:\ref{ch:flight}; the I/O fo
 \vspace{-20pt}
 \end{figure}
 \par
-Two separate wireless communication loops are used. First; the system relays full state information for a complete 6-DOF XYZ position and orientation autopilot system. Sent from an independent ground control station (\emph{GCS}) using 2.4 GHz XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\ref{arnold}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
+Two separate wireless communication loops are used. First; the system relays full state information for a complete 6-DOF X-Y-Z position and $\phi-\theta-\psi$orientation autopilot system. Sent from an independent ground control station (\emph{GCS}) using 2.4 GHz XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\ref{arnold}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
 \par
 Secondly; a partial trajectory (basic orientation) augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through a 6 channel 2.4 GHz radio frequency module. The secondary system allows for phsyical control without the need of a trajectory generation loop. The 6 CH received signals, otherwise permeated as six individual 20 kHz PWM signals via an OrangeRx R615x receiver \cite{r615x}, are encoded into a single proprietary S.BUS data stream (Fig:\ref{fig:ppm-sbus}). 
 \par
-The need for a serial bus (S.BUS) encoder, specifically \cite{sbusencoder}, comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer input/output channels which can be dedicated to input capture of those RC channels. Encoding the received data to a serial data line means the 6CH commands can be processed with a single RX channel. The encoder implements a USART derivative communications standard called S.BUS. Shown in Fig:\ref{fig:sbus} the S.BUS data, captured with a logic analyzer \cite{saleae}, was used to ascertain the data stream's following parameters:
+The need for a serial bus (S.BUS) encoder, specifically using \cite{sbusencoder}, comes about as a consequence of the introduction of the 8 additional servos. As a result, there are no longer 6 free additional timer input/output channels which can be dedicated to input capture of those RC channels. Encoding the received data to a serial data line means the 6CH commands can be processed with a single RX channel by the microcontroller. The encoder implements a USART derivative communications standard called S.BUS. Shown in Fig:\ref{fig:sbus} the S.BUS data, captured with a logic analyzer \cite{saleae}, was used to ascertain the data stream's following parameters:
 \par
 \begin{tabularx}{\textwidth}{X X}
 \begin{minipage}{\textwidth}
@@ -885,11 +903,11 @@ Moving over an average of $N=5$ samples which, each with a propagation delay of 
 \par
 Similarly all the measured RPM signals measured by the OrangeRx RPM speed sensors are filtered over 5 samples as well. Any received signals referred to are all post filtration. Filtering for state estimation made without using the inertial-measurement unit (using the camera system) is to be performed separately on the Ground Control Station computer.}
 \par
-Each of the eight digital servo actuators are controlled individually from $330~[\text{Hz}]$ center aligned PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 and TIM3:CH1$\rightarrow$CH4). Output pulses typically range from $1-2~[\text{ms}]$ to linearly control the rotational position. The servos exact range and transfer function(s) is empirically determined next in Sec:\ref{subsec:proto.design.transfer}. The four $20~[\text{A}]$ brushless DC electronic speed controllers (\emph{ESC}s) are each driven from a 20 Hz PWM output (TIM4:CH1$\rightarrow$CH4), similarly with $1-2~[\text{ms}]$ input pulse widths. 
+Each of the eight digital servo actuators are controlled individually from $330~[\text{Hz}]$ center aligned PWM timer output compare channels (TIM2:CH1$\rightarrow$CH4 and TIM3:CH1$\rightarrow$CH4). Output pulses typically range from $1-2~[\text{ms}]$ to linearly control the rotational position. The servos exact range and transfer function(s) is empirically determined next in Sec:\ref{subsec:proto.design.transfer}. The four $20~[\text{A}]$ brushless DC electronic speed controllers (\emph{ESC}s) are each driven from a $20~[\text{Hz}]$ PWM output (TIM4:CH1$\rightarrow$CH4), similarly with $1-2~[\text{ms}]$ input pulse widths. 
 \par
-There is a total of 12 PWM output compare signals drawn from the flight controller, 8 for the servos and 4 for the ESCs. The servos are powered by a regulated $6~[\text{V}]$ DC $10~[\text{A}]$ power supply \cite{rotorstar} whilst the ESCs switch unregulated $14.1~[\text{V}]$ DC supplied from an external power tether. The DC supply could be drawn from a bank, which would adversely affect the weight.
+There is a total of 12 PWM output compare signals drawn from the flight controller, 8 for the servos and 4 for the ESCs. The servos are powered by a regulated $6~[\text{V}]$ DC $10~[\text{A}]$ power supply \cite{rotorstar} whilst the ESCs switch unregulated $14.1~[\text{V}]$ DC supplied from an external power tether. The DC supply could be drawn from a battery bank but that would adversely affect the weight of an already heavy platform.
 \par
-There is no integrated feedback for instantaneous RPM values available from the ESCs. Dedicated OrangeRX BLDC RPM sensors, \cite{orangerpm}, are used to measure each of the four motor's rotational speeds. Despite being termed \emph{brushless DC motors}, the motors are actually 3-phase motors which, but when used with an ESC they behave like closed loop DC motors. The RPM sensors physically measure switching phases across two of the three motor phases, following that exact RPM can be ascertained. In general, the switching signal of a 3-Phase induction motor is shown by \cite{vfd} to be proportional to the rotational velocity:
+There is no integrated feedback for instantaneous RPM values available from the ESCs. Dedicated OrangeRX BLDC RPM sensors, \cite{orangerpm}, are used to measure each of the four motor's rotational speeds. Despite being termed \emph{brushless DC motors}, the motors are actually 3-phase motors which, when used with an ESC, behave like closed loop DC motors. The RPM sensors physically measure switching phases across two of the three motor phases, following that exact RPM can be ascertained. In general, the switching signal of a 3-Phase induction motor is shown by \cite{vfd} to be proportional to the rotational velocity:
 \begin{equation}
 F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[\text{Hz}]
 \end{equation}
@@ -912,7 +930,7 @@ The output signal generated by the OrangeRx RPM sensors varies the period of a 5
 \vspace{-6pt}
 \end{figure}
 \par
-The speed controllers, although LDPower 20A devices, are all re-flashed with BLHeli firmware \cite{BLHeli}. The LDPower ESCs (Fig:\ref{fig:ldpower-20A}) match Hobbywing Xrotor 20A ones (Fig:\ref{fig:xrotor-20A}) which both use SiLabs F396 microcontrollers; the same firmware can be flashed onto the MCUs. The custom BLHeli software provides greater refinement over parameter configuration like the deflection range of inputs, however, default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the rotation per second, or otherwise frequency in Hz, speed curve for an unloaded motor; similarly in Fig:\ref{fig:rpm-sensor-prop} shows the speed curve when loaded for a $6\times 4.5$ prop. 
+The ESCs, although LDPower 20A devices, are re-flashed with BLHeli firmware \cite{BLHeli}. The LDPower ESCs (Fig:\ref{fig:ldpower-20A}) match Hobbywing Xrotor 20A ones (Fig:\ref{fig:xrotor-20A}) which both use SiLabs F396 microcontrollers; the same firmware can be flashed onto both MCUs. Custom BLHeli software provides greater refinement over configurations like the deflection range of inputs, but default values were used. The plot in Fig:\ref{fig:rpm-sensor-noload} shows the rotation per second, or otherwise frequency in Hz, speed curve for an unloaded motor; similarly in Fig:\ref{fig:rpm-sensor-prop} shows the speed curve when loaded for a $6\times 4.5$ prop. 
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
@@ -932,7 +950,7 @@ The speed controllers, although LDPower 20A devices, are all re-flashed with BLH
 \vspace{-14pt}
 \end{figure}
 \par
-It is worth noting the loaded speed plot in Fig:\ref{fig:rpm-sensor-prop} is slightly quadratic; the loaded response is from the second order aerodynamic torque term, quadratic with respect to RPS, expanded on in Sec:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over $16\times 10^3~[\text{RPM}]$.
+It is worth noting the loaded speed plot in Fig:\ref{fig:rpm-sensor-prop} is slightly quadratic; the loaded response is from the second order aerodynamic drag term, quadratic with respect to the propellers revolutions per second, expanded on in Sec:\ref{subsec:dynamics.aero.bem}. Moreover, when the motor is torque loaded by the propeller, the ESC current limits rotational speeds at just over $16\times 10^3~[\text{RPM}]$.
 \par
 Timers channels are used to measure the varying frequency output from the RPM sensors. General purpose Timers 15 (TIM15:CH1$\rightarrow$CH2), 16 (TIM16:CH1) and 17 (TIM17:CH1) are configured to capture the input PWM signal generated by the speed sensors. Included on the I2C communciation line is an I2C O-LED display for debugging and status update purposes.
 \par
@@ -981,7 +999,7 @@ y(x)=
 \end{array}
 \end{cases}
 \end{equation}\par
-In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400$ RPS with a dead time of $t_d\approx 1.2~[\text{m.s}]$ and a (\emph{negligible}) mechanical deadband of $4~[\mu\text{s}]$. Each servo has an approximate (\emph{critically damped}) second order transfer function
+In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400$ RPS with a dead time of $t_d\approx 1.2~[\text{ms}]$ and a (\emph{negligible}) mechanical deadband of $4~[\mu\text{s}]$. Each servo has an approximate (\emph{critically damped}) second order transfer function
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
 G_{servo}(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
@@ -1011,56 +1029,64 @@ The net transfer block for the servo is shown in Fig:\ref{fig:servo-block}, incl
 \vspace{-15pt}
 \end{figure}
 \par
-The plot in Fig:\ref{fig:servo-step} shows the transfer characteristics, at the shaft output, of an unloaded servo. When rotating the inertial body of the inner ring assembly, arranged as in Fig:\ref{fig:servo-inner-character}, the plant response plot of {\color{Blue}$\mathbf{y(t)}$} is consistent with the transfer function in Eq:\ref{eq:servo-transfer}. Despite rotating a load and hence requiring a greater torque. The servo's characteristics remains unchanged, even when the BLDC motor (with a $6\times4.5$ prop) with a rotational velocity of 6500 RPM is introduced, plotted {\color{Red}$\mathbf{y'(t)}$}, further increasing the torque load of the assembly as a result of the gyroscopic response, Eq:\ref{eq:prop-inertia}.
+The plot in Fig:\ref{fig:servo-step} shows the transfer characteristics, at the shaft output, of an unloaded servo. When rotating the inertial body of the inner ring assembly, arranged as in Fig:\ref{fig:servo-inner}. Plotted in Fig:\ref{fig:servo-step-inner} is the plant response plot of {\color{Blue}$\mathbf{y(t)}$} which is consistent with the transfer function in Eq:\ref{eq:servo-transfer}. Despite rotating a load and hence requiring a greater torque. The servo's characteristics remains unchanged, even when the BLDC motor (with a $6\times4.5$ prop) with a rotational velocity of 6500 RPM is introduced, plotted {\color{Red}$\mathbf{y'(t)}$}, further increasing the torque load of the assembly as a result of the gyroscopic response, Eq:\ref{eq:prop-inertia}.
 \begin{figure}[htbp]
-\vspace{-10pt}
+\vspace{-6pt}
 \centering
-\begin{subfigure}{0.46\textwidth}
+\begin{subfigure}{0.7\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/servo-inner}
+\vspace{-10pt}
 \caption{Inner ring servo rig}
 \label{fig:servo-inner}
 \end{subfigure}
-\begin{subfigure}{0.46\textwidth}
+\\
+\begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/servo-step-inner}
 \caption{Servo response plot}
 \label{fig:servo-step-inner}
 \end{subfigure}
-\vspace{-5pt}
+\vspace{-4pt}
 \caption{Inner ring servo characteristics}
 \label{fig:servo-inner-character}
-%\end{figure}
-%\begin{figure}[hbtp]
-\begin{subfigure}{0.46\textwidth}
+\vspace{-10pt}
+\end{figure}
+\par
+Similarly Fig:\ref{fig:servo-step-middle} shows the response for the middle ring servo. Its transients remain the same however oscillations are introduced at the settling point. Those oscillations are as a result of the larger inertia being driven, adding deflection within the frame structure. It is important to specify that the oscillations are not at the servo's output shaft, the rotational position was measured with respect to the bearing supported shaft, coaxial to the servos (Fig:\ref{fig:servo-middle}). Those harmonics are still present under load, plotted in {\color{Red}$\mathbf{y'(t)}$}, despite the frame being tensioned by a lifting thrust. The mechanical oscillations can be accounted for by either introducing a more rigid sub-frame, limiting the maximum angular rate of the servos or simply adding a state dependent input uncertainty term to the control plant.
+\begin{figure}[hbtp]
+\vspace{-4pt}
+\centering
+\begin{subfigure}{0.75\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/servo-middle}
+\vspace{-12pt}
 \caption{Middle ring servo test rig}
 \label{fig:servo-middle}
 \end{subfigure}
-\begin{subfigure}{0.46\textwidth}
+\\
+\begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/servo-step-middle}
+\vspace{-10pt}
 \caption{Servo response plot}
 \label{fig:servo-step-middle}
 \end{subfigure}
-\vspace{-5pt}
 \caption{Middle ring servo characteristics}
 \label{fig:servo-middle-character}
-\vspace{-20pt}
+\vspace{-28pt}
 \end{figure}
-\par
-Fig:\ref{fig:servo-middle-character} shows the response for the middle ring servo. Its rate transients remain the same but oscillations occur at the settling point, introduced by the larger inertia being driven, which has flex within its structure. The rotational position of the assembly was measured with respect to the bearing supported output shaft, coaxial to the servos, and \emph{not} the servo's output shaft (Fig:\ref{fig:servo-middle}). The oscillations are still present under load, plotted in {\color{Red}$\mathbf{y'(t)}$}, despite the frame being tensioned by the thrust vector. The mechanical harmonics can be accounted for by either introducing a more rigid sub-frame, limiting the maximum angular rate or simply adding a state dependent uncertainty term to the control plant.
 \subsubsection*{BLDC Transfer Functions}
-Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve, plotted in Fig:\ref{fig:bldc-range}. This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (more on propeller aerodynamics in Sec:\ref{subsec:dynamics.aero.bem}). 
-\par
-\begin{figure}[htb]
+Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve (plotted in Fig:\ref{fig:bldc-range}). This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (more on propeller aerodynamics in Sec:\ref{subsec:dynamics.aero.bem}).
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.44\textwidth]{figs/bldc-rpm}
 \caption{BLDC rpm speed calibration and transfer function rig}
 \label{fig:bldc-rpm}
+\vspace{-16pt}
 \end{figure}
-Through the BLHeli interface, the input range for the motor's speed controllers can be adjusted, but for the purposes of this project were left unchanged. That relationship between input pulse-widths to the ESC and output RPM sensor signal is given by the hybrid state equations for input range limits:
+\par
+Using the BLHeli interface, the input range for the motor's speed controllers can be adjusted, but for the purposes of this project were left unchanged. That relationship between input pulse-widths to the ESC and output RPM sensor signal is given by the hybrid state equations for input range limits:
 \begin{equation}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -1072,7 +1098,6 @@ y(x)=
 ~~~\Bigg\}~~~~[\text{RPM}]
 \label{eq:bldc-range}
 \end{equation}
-\par
 The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case $20~[\text{A}]$. Imposing $10~[\text{A}]$ current limiting, a consequence of using lower power ESCs is plotted {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}, significantly restricts the motor's transient and steady-state performance. The motor's step response, {\color{Purple}$\mathbf{y(t)}$}, has a negligible dead time and 2\textsuperscript{nd} order dynamics, with a transient time constant far faster than the servo's plant. The motor's transfer function for speed in RPM is:
 \begin{subequations}\label{eq:bldc-transfer}
 \begin{equation}
@@ -1089,20 +1114,24 @@ G(s) & 1.065 \leq |U(s)| \leq 1.655\\
 \end{cases}
 \end{equation}
 \end{subequations}
-\newpage
-\begin{figure}[htbp]
-\begin{subfigure}{0.5\textwidth}
+\vspace{-22pt}
+\begin{figure}[hbtp]
+\begin{subfigure}{0.48\textwidth}
 \centering
 \includegraphics[width=0.98\textwidth]{graphs/bldc-range}
+\vspace{-8pt}
 \caption{BLDC RPM range}
 \label{fig:bldc-range}
 \end{subfigure}
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.48\textwidth}
 \centering
 \includegraphics[width=0.98\textwidth]{graphs/BLDC-step}
+\vspace{-8pt}
 \caption{Cobra BLDC step response}
 \label{fig:bldc-step}
 \end{subfigure}
+\vspace{-6pt}
 \caption{BLDC motor characteristics}
+\vspace{-20pt}
 \end{figure}
 %====================================================
