@@ -567,7 +567,7 @@ J_{ir}=J_{n}-J_{r}=J_{M_i}-J_{r}~~~~\in\mathcal{F}^{M_i}
 Where $J_n$ or $J_{M_i}$ is the net inertia for the inner ring assembly from Eq:\ref{eq:inertia.inner}. The rotor assembly has an angular velocity $\vec{\omega}_{r/M_i'}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$:
 \begin{subequations}\label{eq:angular-rot}
 \begin{equation}
-\vec{\omega}_{r/M_i'}=R_x(\lambda)\vec{\Omega}_i+\frac{d}{dt}(\vec{\lambda}_i)~~~~\in\mathcal{F}^{M_i'}
+\vec{\omega}_{r/M_i'}=R_x(\lambda)\vec{\Omega}_i+\frac{d\lambda}{dt}(\vec{\lambda}_i)~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -576,7 +576,7 @@ Where $J_n$ or $J_{M_i}$ is the net inertia for the inner ring assembly from Eq:
 \end{subequations}
 With the propeller's angular velocity vector $\vec{\Omega}_i=\begin{bmatrix}0 & 0 & \Omega_i\end{bmatrix}^T$ in $[\text{rad.s}^{-1}]$, \underline{not in revolutions per second}, and the servo position $\vec{\lambda}_i=\begin{bmatrix}\lambda_i & 0 & 0\end{bmatrix}^T$. Similarly the inner ring's angular velocity $\vec{\omega}_{M_i/M_i'}$ relative to $\mathcal{F}^{M_i'}$ is only as a result of $\Delta\lambda_i$:
 \begin{equation}\label{eq:angular-inner}
-\vec{\omega}_{M_i/M_i'}=\frac{d}{dt}(\vec{\lambda}_i)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
+\vec{\omega}_{M_i/M_i'}=\frac{d\lambda}{dt}(\vec{\lambda}_i)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 The Lagrangian for the inner ring's energy $\mathcal{L}_{M_i'}$, relative to the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed onto the middle ring frame $\mathcal{F}^{M_i'}$:
 \begin{subequations}
@@ -655,7 +655,7 @@ Where $\vec{\Omega}_i\text{}\hspace{-2pt}'$ and $\dot{\vec{\Omega}}_i\text{}\hsp
 \end{subequations}
 The net torque response from a $\lambda_i$ rotation, induced in the middle ring frame $\mathcal{F}^{M_i'}$, can be grouped into \emph{inertial rates}, second order \emph{inertial} and first order \emph{gyroscopic} components;
 \begin{equation}\label{eq:torque-induced-inner}
-\vec{\tau}_\lambda=\underbrace{\big(\dot{J}_{r}'\big)\vec{\Omega}_i'+\big(\dot{J}_{n}'\big)\dot{\vec{\lambda}}_i}_{Inertial~rates}+\underbrace{\big(J_r'\big)\dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'+\big(J_{n}'\big)\ddot{\vec{\lambda}}_i}_{Inertial}+\underbrace{\dot{\vec{\lambda}}_i\times \big(J_r'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\dot{\vec{\lambda}}_i\times \big(J_{n}'\big)\dot{\vec{\lambda}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i'}
+\vec{\tau}_\lambda=\underbrace{\big(\dot{J}_{r}'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\big(\dot{J}_{n}'\big)\dot{\vec{\lambda}}_i}_{Inertial~rates}+\underbrace{\big(J_r'\big)\dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'+\big(J_{n}'\big)\ddot{\vec{\lambda}}_i}_{Inertial}+\underbrace{\dot{\vec{\lambda}}_i\times \big(J_r'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\dot{\vec{\lambda}}_i\times \big(J_{n}'\big)\dot{\vec{\lambda}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 Taking special care not to confuse $J_{n}'$ and $J_{m}$. The former being the inner ring's inertia transformed into the middle ring frame $\mathcal{F}^{M_i'}$ and the latter is the middle ring's inertia in that same reference frame. 
 \par
@@ -673,7 +673,7 @@ Following the same process to evaluate the middle ring's response, but with resp
 J_r''=R_y(\alpha)\big(J_r'\big)R_y^{-1}(\alpha)=R_y(\alpha)R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)R_y^{-1}(\alpha)~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
 Which has a derivative:
-\begin{equation}
+\begin{equation}\label{eq:rotor-inertia-rate}
 \dot{J}_r''=R_y(\alpha)\big(\dot{J}_r'\big)R_y^{-1}(\alpha)+[\dot{\vec{\alpha}}\hspace{2pt}]_\times R_y(\alpha)\big(J_r'\big)R_y^{-1}(\alpha)-R_y(\alpha)\big(J_r'\big)[\dot{\vec{\alpha}}\hspace{2pt}]_\times R_y^{-1}(\alpha)
 \end{equation}
 \end{subequations}
@@ -682,12 +682,12 @@ The inner ring has an inertia, still \emph{without} including the rotor assembly
 \begin{equation}
 J_{ir}''=R_y(\alpha)\big(J_{ir}'\big)R_y^{-1}(\alpha)=R_y(\alpha)R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)R_y^{-1}(\alpha)~~~~\in\mathcal{F}^{M_i''}
 \end{equation} 
-Similarly having a derivative $\dot{J}_{ir}''$:
-\begin{equation}
+Which similarly has a derivative $\dot{J}_{ir}''$:
+\begin{equation}\label{eq:inner-inertia-rate}
 \dot{J}_{ir}''=R_y(\alpha)\big(\dot{J}_{ir}'\big)R_y^{-1}(\alpha)+[\dot{\vec{\alpha}}\hspace{2pt}]_\times R_y(\alpha)\big(J_{ir}'\big)R_y^{-1}(\alpha)-R_y(\alpha)\big(J_{ir}'\big)[\dot{\vec{\alpha}}\hspace{2pt}]_\times R_y^{-1}(\alpha)
 \end{equation}
 \end{subequations}
-Lastly the middle ring assembly's inertia from Eq:\ref{eq:inertia.middle.a}, with neither the rotor's nor the inner ring's contributions:
+Finally the middle ring assembly's inertia from Eq:\ref{eq:inertia.middle.a}, with neither the rotor's nor the inner ring's contributions:
 \begin{subequations}
 \begin{equation}
 J_m'=R_y(\alpha)\big(J_\text{p}\big)R_y^{-1}(\alpha)-R_y(\alpha)R_x(\lambda)\big(J_\text{n}\big)R_x^{-1}(\lambda)R_y^{-1}(\alpha)
@@ -696,15 +696,19 @@ J_m'=R_y(\alpha)\big(J_\text{p}\big)R_y^{-1}(\alpha)-R_y(\alpha)R_x(\lambda)\big
 \begin{equation}
 =J_\text{p}'-J_{n}''=J_\text{p}'-\big(J_{ir}''+J_{r}''\big)~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
+With a derivative $\dot{J}_m'$, using $\dot{J}_{r}''$ and $\dot{J}_{ir}''$ from Eq:\ref{eq:rotor-inertia-rate} and Eq:\ref{eq:inner-inertia-rate} respectively:
+\begin{equation}
+\dot{J}_m'=[\dot{\vec{\alpha}}]_\times R_y(\alpha)\big(J_p\big)R_y^{-1}(\alpha)-R_y(\alpha)\big(J_p\big)[\dot{\vec{\alpha}}]_\times R_y^{-1}(\alpha)-(\dot{J}_{ir}''+\dot{J}_{r}'')
+\end{equation}
 \end{subequations}
-Where $J_{\zeta}$ is the collective motor module inertia from Eq:\ref{eq:inertia.middle.b}. Each body then has its own relative angular velocity with respect to the frame $\mathcal{F}^{M_i''}$. For the rotor; $\vec{\omega}_{r/M_i''}$ is the relative angular velocity of that assembly:
+Where $J_{p}$ is the collective motor module inertia from Eq:\ref{eq:inertia.middle.b}. Each body then has its own relative angular velocity with respect to the frame $\mathcal{F}^{M_i''}$. For the rotor; $\vec{\omega}_{r/M_i''}$ is the relative angular velocity of that assembly:
 \begin{subequations}\label{eq:rotor-relative}
 \begin{equation}
-\vec{\omega}_{r/M_i''}=R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+\frac{d}{dt}\Big(R_y(-\alpha)\vec{\lambda}_i\Big)+\frac{d}{dt}\big(\vec{\alpha}_i\big)~~~~\in\mathcal{F}^{M_i''}
+\vec{\omega}_{r/M_i''}=R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+\frac{d\lambda}{dt}\Big(R_y(\alpha)\vec{\lambda}_i\Big)+\frac{d\alpha}{dt}\big(\vec{\alpha}_i\big)~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i
+=R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -714,7 +718,7 @@ Where $J_{\zeta}$ is the collective motor module inertia from Eq:\ref{eq:inertia
 Next, the inner ring has an angular velocity $\vec{\omega}_{M_i/M_i''}$ relative to the intermediate frame $\mathcal{F}^{M_i''}$:
 \begin{subequations}\label{eq:inner-relative}
 \begin{equation}
-\vec{\omega}_{M_i/M_i''}=\frac{d}{dt}\big(R_y(-\alpha)\vec{\lambda}_i\big)+\frac{d}{dt}(\vec{\alpha}_i)~~~~\in\mathcal{F}^{M_i''}
+\vec{\omega}_{M_i/M_i''}=\frac{d\lambda}{dt}\big(R_y(\alpha)\vec{\lambda}_i\big)+\frac{d\alpha}{dt}(\vec{\alpha}_i)~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -723,7 +727,7 @@ Next, the inner ring has an angular velocity $\vec{\omega}_{M_i/M_i''}$ relative
 \end{subequations}
 Finally the middle ring has an angular velocity $\vec{\omega}_{M_i'/M_i''}$ relative to the intermediary frame:
 \begin{equation}\label{eq:middle-relative}
-\vec{\omega}_{M_i'/M_i''}=\frac{d}{dt}(\vec{\alpha}_i)=\dot{\vec{\alpha}}_i~~~~\in\mathcal{F}^{M_i''}
+\vec{\omega}_{M_i'/M_i''}=\frac{d\alpha}{dt}(\vec{\alpha}_i)=\dot{\vec{\alpha}}_i~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
 Then using the relative path co-ordinate $\vec{\mathbf{v}}(t)$ the Lagrangian $\mathcal{L}_{M_i''}$ can be constructed for the motor module relative to the frame $\mathcal{F}^{M_i''}$;
 \begin{equation}\label{eq:alpha-lagrange}
@@ -731,37 +735,50 @@ Then using the relative path co-ordinate $\vec{\mathbf{v}}(t)$ the Lagrangian $\
 \end{equation}
 Therefore the Langragian from Eq:\ref{eq:alpha-lagrange} expands to:
 \begin{multline}\label{eq:alpha-lagrange-two}
-\mathcal{L}_{M_i''}=\frac{1}{2}\Big[R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}\Big]^T\big(J_r''\big)\Big[R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+Ry(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]\\
-+\frac{1}{2}\Big[R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]^T\big(J_{ir}''\big)\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]
+\mathcal{L}_{M_i''}=\frac{1}{2}\Big[R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}\Big]^T\big(J_r''\big)\Big[R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+Ry(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]\\
++\frac{1}{2}\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]^T\big(J_{ir}''\big)\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]
 +\frac{1}{2}\dot{\vec{\alpha}}_i^{\hspace{2pt}T}\big(J_m'\big)\dot{\vec{\alpha}}_i
 \end{multline}
-Again, justifying the rotation matrix linearization using Eq:\ref{eq:rotation-linear}, matrices $J_r''$, $J_{ir}''$ and $J_m'$ are all instantaneous transformed inertias. The Euler-Lagrange formulation then simplifies, with the partial derivative $\delta\mathcal{L}_{M_i''}/\delta\vec{\mathbf{v}}=0$, to:
+Again, justifying the rotation matrix linearization using Eq:\ref{eq:rotation-linear}, matrices $J_r''$, $J_{ir}''$ and $J_m'$ are all instantaneous transformed inertias. The Euler-Lagrange formulation then simplifies, with the partial derivative $\partial\mathcal{L}_{M_i''}/\partial\vec{\mathbf{v}}=0$, to:
 \begin{equation}
-\frac{d}{dt}\Bigg(\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}}\Bigg)-\frac{\delta\mathcal{L}_{M_i''}}{\delta\vec{\mathbf{v}}}=\frac{d}{dt}\Bigg(\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}}\Bigg)=\vec{\mathbf{V}}=\vec{\tau}_\alpha
+\frac{d}{dt}\Bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\Bigg)-\frac{\partial\mathcal{L}_{M_i''}}{\partial\vec{\mathbf{v}}}=\frac{d}{dt}\Bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\Bigg)=\vec{\mathbf{V}}=\vec{\tau}_\alpha
 \end{equation}
 Finding the partial derivative of the Lagrangian $\mathcal{L}_{M_i''}$ with respect to $\dot{\vec{\mathbf{v}}}$ is then:
 \begin{subequations}
 \begin{equation}
-\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}} = \big(J_r''\big)\Big[R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i+R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_{ir}''\big)\Big[R_y(-\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_m'\big)\dot{\vec{\alpha}}_i
+\frac{\delta\mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}} = \big(J_r''\big)\Big[R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_{ir}''\big)\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]+\big(J_m'\big)\dot{\vec{\alpha}}_i
 \end{equation}
-\vspace{-12pt}
+Which then has the time derivative, split into product ruled derivative components:
 \begin{multline}\label{eq:alpha-lagrange-deriv}
-\rightarrow \frac{d}{dt}\Bigg(\frac{\delta \mathcal{L}_{M_i''}}{\delta\dot{\vec{\mathbf{v}}}}\Bigg)=\Big(\big(J_r''\big)\dot{\vec{\Omega}}_i\hspace{-2pt}''+\vec{\omega}_{M_i/M_i''}\times\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''+\big(J_r''\big)\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times \big(J_r''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\ddot{\vec{\alpha}}_i\\+\vec{\omega}_{M_i'/M_i''}\times \big(J_r''\big)\dot{\vec{\alpha}}_i\Big)
-+\Big(\big(J_{ir}''\big)\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times\big(J_{ir}''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_{ir}''\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times\big(J_{ir}''\big)\dot{\vec{\alpha}}_i\Big)+\Big(\big(J_m'\big)\ddot{\vec{\alpha}}_i\\+\vec{\omega}_{M_i'/M_i''}\times\big(J_m'\big)\dot{\vec{\alpha}}_i\Big)
+\rightarrow \frac{d}{dt}\Bigg(\frac{\partial \mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\Bigg)=\Big(\big(\dot{J}_r''\big)(\vec{\Omega}_i\hspace{-2pt}''+\dot{\vec{\lambda}}_i\hspace{-2pt}'+\dot{\vec{\alpha}}_i)\Big)
+\\
++\Big(\big(J_r''\big)\dot{\vec{\Omega}}_i\hspace{-2pt}''+\vec{\omega}_{M_i/M_i''}\times\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''+\big(J_r''\big)\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times \big(J_r''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times \big(J_r''\big)\dot{\vec{\alpha}}_i\Big)
+\\
++\Big(\big(\dot{J}_{ir}''\big)(\dot{\vec{\lambda}}_i\hspace{-2pt}'+\dot{\vec{\alpha}}_i)\Big)
++\Big(\big(J_{ir}''\big)\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times\big(J_{ir}''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_{ir}''\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times\big(J_{ir}''\big)\dot{\vec{\alpha}}_i\Big)
+\\
++\Big(\big(\dot{J}_m'\big)\dot{\vec{\alpha}}_i\Big) +\Big(\big(J_m'\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times\big(J_m'\big)\dot{\vec{\alpha}}_i\Big)
 \end{multline}
-Which is an ominous and seemingly complicated result to try expand and make sense of. However it can be simplified; recognizing that Eq:\ref{eq:alpha-lagrange-deriv} contains kinetic energies already introduced in Eq:\ref{eq:torque-induced-inner}, but transformed to the frame $\mathcal{F}^{M_i''}$. After some mathematics, Eq:\ref{eq:alpha-lagrange-deriv} can be simplified with responses pertinent to $\Delta\alpha_i$ and then the generalized force transformed response $R_y(-\alpha)\vec{\tau}_\lambda$:
+Which is an ominous and seemingly complicated result to try expand and make sense of. However it can be simplified; recognizing that Eq:\ref{eq:alpha-lagrange-deriv} contains kinetic energies already introduced in Eq:\ref{eq:torque-induced-inner}, but transformed to the frame $\mathcal{F}^{M_i''}$. After some mathematics, Eq:\ref{eq:alpha-lagrange-deriv} can be simplified with responses pertinent to $\Delta\alpha_i$ and then the generalized force transformed response $R_y(\alpha)\vec{\tau}_\lambda$:
 \begin{multline}
-\vec{\mathbf{V}}=\ddot{\vec{\alpha}}_i\big(J_r''\big)+\dot{\vec{\alpha}}_i\times \big(J_r''\big)\big[R_y(-\alpha)R_x(-\lambda)\vec{\Omega}_i\big]+\dot{\vec{\alpha}}_i\times \big(J_r''\big)\big[R_y(-\alpha)\vec{\dot{\lambda}}\big]+\dot{\vec{\alpha}}_i\times \big(J_r''\big) \dot{\vec{\alpha}}_i+\ddot{\vec{\alpha}}_i\big(J_{ir}''\big)\\+\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\big[R_y(-\alpha)\dot{\vec{\lambda}}_i\big]+\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\dot{\vec{\alpha}}_i+\big(J_m'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_m'\big)\dot{\vec{\alpha}}_i+R_y(-\alpha)\vec{\tau}_\lambda
+\vec{\mathbf{V}}=\big(\dot{J}_r''\big)\dot{\vec{\alpha}}_i+\big(J_r''\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_r''\big)\Big(R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+R_y(\alpha)\dot{\vec{\lambda}}+\dot{\vec{\alpha}}_i\Big)+\big(\dot{J}_{ir}''\big)\dot{\vec{\alpha}}_i+\ddot{\vec{\alpha}}_i\big(J_{ir}''\big)
+\\
++\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\Big(R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big)+\big(\dot{J}_m'\big)\dot{\vec{\alpha}}_i+\big(J_m'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_m'\big)\dot{\vec{\alpha}}_i+\big[R_y(\alpha)\vec{\tau}_\lambda\big]
 \end{multline}
 Which can be further simplified by introducing angular velocities; $\vec{\omega}_{r/M_i''}$ of the rotor relative to the intermediary frame from Eq:\ref{eq:rotor-relative}, $\vec{\omega}_{M_i/M_i''}$ of the inner ring relative to that intermediary frame $\mathcal{F}^{M_i''}$ from Eq:\ref{eq:inner-relative} and finally $\vec{\omega}_{M_i'/M_i''}$ of the middle ring relative to the fixed intermediate frame from Eq:\ref{eq:middle-relative}.
 \begin{multline}
-=\big(J_r''\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_r''\big)\vec{\omega}_{r/M_i''}+\ddot{\vec{\alpha}}_i\big(J_{ir}''\big)+\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\vec{\omega}_{M_i/M_i''}+\big(J_m'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_m'\big)\vec{\omega}_{M_i'/M_i''}\\+R_y(-\alpha)\vec{\tau}_\lambda~~~~\in\mathcal{F}^{M_i''}
+=\big(\dot{J}_r''\big)\dot{\vec{\alpha}}_i+\big(J_r''\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_r''\big)\vec{\omega}_{r/M_i''}+\big(\dot{J}_{ir}''\big)\dot{\vec{\alpha}}_i+\big(J_{ir}''\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\vec{\omega}_{M_i/M_i''}+\big(\dot{J}_m'\big)\dot{\vec{\alpha}}_i
+\\
++\big(J_m'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \big(J_m'\big)\vec{\omega}_{M_i'/M_i''}+\big[R_y(\alpha)\vec{\tau}_\lambda\big]~~~~\in\mathcal{F}^{M_i''}
 \end{multline}
 \end{subequations}
+\par
 Isolating the torque response from $\Delta\alpha$, and again grouping inertial bodies with shared angular velocities together. The first and second order \emph{gyroscopic} and \emph{inertial} responses are then:
-\begin{equation} \label{eq:torque-induced-middle}
-\vec{\tau}_\alpha(\lambda_i)=\underbrace{\big(J_{\zeta}'(\lambda)\big)\ddot{\vec{\alpha}}_i}_{Inertial}+\underbrace{\dot{\vec{\alpha}}_i\times \big(J_r''\big)\vec{\omega}_{r/M_i''}+\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\vec{\omega}_{M_i/M_i''}+\dot{\vec{\alpha}}_i\times \big(J_m'\big)\vec{\omega}_{M_i'/M_i''}}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i''}
-\end{equation}
+\begin{multline} \label{eq:torque-induced-middle}
+\vec{\tau}_\alpha(\lambda_i)=\underbrace{\big(\dot{J}_p'\big)\dot{\vec{\alpha}}}_{Inertial~rate}+\underbrace{\big(J_\text{p}'\big)\ddot{\vec{\alpha}}_i}_{Inertial}
+\\
++\underbrace{\dot{\vec{\alpha}}_i\times \big(J_r''\big)\vec{\omega}_{r/M_i''}+\dot{\vec{\alpha}}_i\times \big(J_{ir}''\big)\vec{\omega}_{M_i/M_i''}+\dot{\vec{\alpha}}_i\times \big(J_m'\big)\vec{\omega}_{M_i'/M_i''}}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i''}
+\end{multline}
 \par
 Both Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} are obvious results stemming from a clear second order inertial response to accelerations $\ddot{\lambda}_i$ and $\ddot{\alpha}_i$ respectively. The remaining gyroscopic components of those torque responses results from the cross product of those angular velocities $\dot{\lambda}_i$ and $\dot{\alpha}_i$ and the internal bodies relative angular velocities. Careful inspection of the multi-body system could have produced the same equation(s). The assumption in Eq:\ref{eq:rotation-linear} that rotated inertias can be linearised is shown to hold true in Appendix:\ref{app:torques} where simulations and physical tests corroborating the above models.
 \par
@@ -789,8 +806,66 @@ Uncertainties associated with the above inertial models or their particular valu
 \subsection{Induced response simulation and Tests}
 \label{subsec:dynamics.nonlinearities.torque-tests}
 %====================================================
-App goes in here
-
+In Ch:\ref{subsec:dynamics.nonlinearities.gyrotorques} the proposed Lagrangian equations for both $\Delta\lambda$ and $\Delta\alpha$ servo movements is presented. Reiterating those equations, the inner ring torque response from Eq:\ref{eq:lagrange-inner}:
+\begin{subequations}
+\begin{equation}\label{eq:app-lagrange-inner}
+\mathcal{L}_{M_i'}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i/M_i'}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{M_i/M_i'}
+\end{equation}
+And for the middle ring response from Eq:\ref{eq:alpha-lagrange}
+\begin{equation}\label{eq:app-lagrange-middle}
+\mathcal{L}_{M_i''}=\frac{1}{2}\vec{\omega}_{r/M_i''}^{\hspace{2pt}T}\big(J_{r}''\big)\vec{\omega}_{r/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{ir}''\big)\vec{\omega}_{M_i'/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{m}'\big)\vec{\omega}_{M_i'/M_i''}
+\end{equation}
+\end{subequations}
+The Euler-Lagrange formulation of generalize path co-ordinates $\vec{\mathbf{v}}$ solves for generalized forces $\vec{\mathbf{V}}$ acting on the system as follows:
+\begin{equation}
+\frac{d}{dt}\Big(\frac{\delta\mathcal{L}}{\delta\dot{\vec{\mathbf{v}}}}\Big)-\frac{\delta\mathcal{L}}{\delta\vec{\mathbf{v}}}=\vec{\mathbf{V}}
+\end{equation}
+In the same shared frame which $\vec{\mathbf{v}}$ is defined with respect to. Solutions for generalized forces for both Eq:\ref{eq:app-lagrange-inner} and Eq:\ref{eq:app-lagrange-middle} are given in Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively. That solution exploits the assumption, detailed in Eq:\ref{eq:rotation-linear}, that partial derivatives of rotation matrices can be linearized. That assumption leads to the simplification that, for a transformed inertia $J_r'$ of the inner ring in Eq:\ref{eq:app-lagrange-inner} for example, its partial derivative is given:
+\begin{subequations}
+\begin{equation}
+\frac{\delta}{\delta\lambda}\big(J_r')=\frac{\delta}{\delta\lambda}\Big(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\Big)
+\end{equation}
+Which, from the product rule, leads to:
+\begin{equation}
+=\frac{\delta}{\delta\lambda}\Big(R_x(\lambda)\Big)\big(J_r\big)R_x^{-1}(\lambda)+R_x(\lambda)\big(J_r\big)\frac{\delta}{\delta\lambda}\Big(R_x^{-1}(\lambda)\Big)
+\end{equation}
+If a rotation matrix's partial derivative can be linearized for small $\Delta\lambda$, as in \cite{rotationlinearize}, it then follows:
+\begin{equation}
+\frac{\delta}{\delta\lambda}\Big(R_x(\lambda)\Big)\approx 0
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+\rightarrow\frac{\delta}{\delta\lambda}\big(J_r'\big)\approx 0
+\end{equation}
+\end{subequations}
+That simplification results in a reduction of the lagrangian 
+\par
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/torque-response}
+\caption{Torque response rig}
+\label{fig:torque-response}
+\end{figure}
+The torque response equations where tested using the rig in Fig:\ref{fig:torque-response}. The first plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased rotation rates of $\Omega_i$, motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-'), illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly the second plot in Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
+\begin{figure}[hbtp]
+\begin{subfigure}{0.2\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/tau-lambda}
+\caption{$\tau_\lambda$ variations with propeller speeds $\Omega_i$}
+\label{fig:tau-lambda}
+\end{subfigure}
+\begin{subfigure}{0.2\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/tau-alpha}
+\caption{$\tau_\alpha$ variations with changing $\mathbb{I}_\alpha(\lambda_i)$}
+\label{fig:tau-alpha}
+\end{subfigure}
+\vspace{-5pt}
+\caption{Torque responses for inner and middle rings}
+\vspace{-10pt}
+\end{figure}
+\par
+\emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
 
 %====================================================
 \section{Aerodynamics}
