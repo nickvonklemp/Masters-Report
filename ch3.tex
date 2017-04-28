@@ -806,9 +806,8 @@ Careful inspection could have yielded the inertial and gyroscopic components of 
 \par
 Both servo's respective induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha(\lambda_i)$, occur in sequential gimbal-like frames. The opposing negative responses to induced relative rotations effect the angular state dynamics in Eq:\ref{eq:states.d}, and must be transformed to the common body frame.
 \begin{equation}\label{eq:torque-response}
-\vec{\tau}_Q(u)=-\sum_{i=1}^4 R_z(\sigma)R_y(\alpha)\vec{\tau}_{\lambda}(i)-R_z(\sigma)\vec{\tau}_{\alpha}(\lambda_i)~~~~\in\mathcal{F}^b
+\vec{\tau}_Q(u)=-\sum_{i=1}^4 \Big(R_z(\sigma)R_y(\alpha)\vec{\tau}_{\lambda}(i)+R_z(\sigma)\vec{\tau}_{\alpha}(\lambda_i)\Big)~~~~[\text{N.m}],~\in\mathcal{F}^b
 \end{equation}
-\par
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{figs/response-body}
@@ -817,11 +816,10 @@ Both servo's respective induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\a
 \label{fig:response-body}
 \vspace{-5pt}
 \end{figure}
-\par
-The final non-trivial response as a result of relative rotations is the entire bodies inertial and gyroscopic response to net angular velocities of the multibody system relative to the inertial frame. Within the basic 6-DOF differential equations, an inertial and gyroscopic term is included, reiterating that equation:
-\begin{subequations}
+The final non-trivial torque term to account for is as a result of the response relative rotations have to the net angular velocity of the entire multibody system. That being the inertial and gyroscopic responses to net angular velocity relative to the inertial frame. Such responses are an extension of the fundamental rigid 6-DOF differential equation for angular motion from Eq:\ref{eq:states.d}
+\begin{subequations};
 \begin{equation}
-\dot{\vec{\omega}}_b=\big(J_b^{-1}\big)\Big(-\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_{net}\Big)~~~~\in\mathcal{F}^b
+\dot{\vec{\omega}}_b=\big(J_b^{-1}\big)\Big(-\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_{\mu}\Big)~~~~[\text{rad.s}^{\text{-}s}],~\in\mathcal{F}^b
 \end{equation}
 From inspection, drawing from both Eq:\ref{eq:torque-induced-middle} and Eq:\ref{eq:torque-induced-inner}, the relative rotations induce a response as a result of the net body angular velocity $\vec{\omega}_b$ is given by:
 \begin{equation}
