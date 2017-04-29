@@ -816,11 +816,18 @@ Both servo's respective induced torques, $\vec{\tau}_\lambda$ and $\vec{\tau}_\a
 \label{fig:response-body}
 \vspace{-5pt}
 \end{figure}
-The final non-trivial torque term to account for is as a result of the response relative rotations have to the net angular velocity of the entire multibody system. That being the inertial and gyroscopic responses to net angular velocity relative to the inertial frame. Such responses are an extension of the fundamental rigid 6-DOF differential equation for angular motion from Eq:\ref{eq:states.d}
+The final non-trivial torque term to account for is as a result of the response relative rotations have to the net angular velocity of the entire multibody system. That being the inertial and gyroscopic responses to net angular velocity $\vec{\omega}_{b/I}$ relative to the inertial frame. Such responses are an extension of the fundamental rigid 6-DOF differential equation for angular motion from Eq:\ref{eq:states.d}
 \begin{subequations};
 \begin{equation}
 \dot{\vec{\omega}}_b=\big(J_b^{-1}\big)\Big(-\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_{\mu}\Big)~~~~[\text{rad.s}^{\text{-}s}],~\in\mathcal{F}^b
 \end{equation}
+Where $J_b$ in Eq:\ref{eq:states.d} is the entire rigid body's inertia and $\vec{\omega}_b$ is the body's angular velocity relative to the inertial frame. Again taking stock of all the bodies within a motor module and forming a Lagrangian of their motion relative to $\mathcal{F}^{I}$ but in the body frame $\mathcal{F}^{b}$. Fig:\ref{fig:response-body} shows the exploded view of all affected bodies; 
+
+
+Considering only a single motor module, similar to Eq:\ref{eq:alpha-lagrange-deriv} but with added $\vec{\omega}_{b/I}$ contributions:
+
+
+
 From inspection, drawing from both Eq:\ref{eq:torque-induced-middle} and Eq:\ref{eq:torque-induced-inner}, the relative rotations induce a response as a result of the net body angular velocity $\vec{\omega}_b$ is given by:
 \begin{equation}
 \vec{\tau}_b=\sum_{i=1}^4\vec{\omega}_b\times\big(J_r'''\big)\vec{\omega}_{r/b}+\vec{\omega}_b\times\big(J_{ir}'''\big)\vec{\omega}_{M_i/b}+\vec{\omega}_b\times\big(J_m''\big)\vec{\omega}_{M_i'/b}
