@@ -831,7 +831,15 @@ The final non-trivial torque term to account for is as a result of the response 
 \begin{equation}
 \dot{\vec{\omega}}_b=\big(J_b^{-1}\big)\Big(-\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_{\mu}\Big)~~~~[\text{rad.s}^{\text{-}s}],~\in\mathcal{F}^b
 \end{equation}
-Before continuing with a Lagrangian applied to the entire body it is worth first establishing a Lemma to add some clarity to the steps which follow. Consider the 
+Before continuing with a Lagrangian applied to the entire multibody system, it is worth first establishing a Lemma to add some clarity to the steps which follow. Consider the hypothetical, non-inertial, 2-D system illustrated in Fig:\ref{fig:lemma-1}. A massless rod of length $r$ connects a rotational body, with a mass $m_b$ at point $\mathbf{B}$, to a center point $\mathbf{O}$. The principle frame $\mathcal{F}^{1}$ has axes $\hat{X}_1$ and $\hat{Y}_1$ as illustrated. The arm has a rotational velocity $\dot{\phi}$, applied by some "motor". Attached to the end of the rod is a secondary frame $\mathcal{F}^2$ with an $\hat{X}_2$ axis co-linear to the rod and a perpendicular $\hat{Y}_2$. The rotational body, centered at $\mathbf{B}$, has a rotational inertia $J$ about the point (or axis) $\mathbf{B}$. That rotating body has a rotational velocity $\dot{\theta}$ from another "motor" relative to $\mathcal{F}^2$; the question is then how to find the net torque acting on the system in terms of angular accelerations $\ddot{\phi}$ and $\ddot{\theta}$?
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.4\textwidth]{figs/lemma-1}
+\caption{Rotating system}
+\label{fig:lemma-1}
+\end{figure} 
+\par
+a
 \par
 Separating the motor module from the entire body structure first (exploded bodies in Fig:\ref{fig:response-body}), and only considering the additional contribution $\vec{\omega}_b$ has on the net torque acting on the body, the Lagrangian  derivation for motion relative to the inertial frame then follows\ldots
 \begin{figure}[htbp]
