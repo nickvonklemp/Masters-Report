@@ -754,9 +754,9 @@ Finally the middle ring has an angular velocity $\vec{\omega}_{M_i'/M_i''}$ rela
 \end{equation}
 Using the relative path co-ordinate $\vec{\mathbf{v}}(t)$, the Lagrangian $\mathcal{L}_{M_i''}$ can be constructed for the combined motor module relative to the frame $\mathcal{F}^{M_i''}$ with kinetic energies of the rotor assembly, inner and middle ring structures respectively:
 \begin{equation}\label{eq:alpha-lagrange}
-\mathcal{L}_{M_i''}=\frac{1}{2}\vec{\omega}_{r/M_i''}^{\hspace{2pt}T}\big(J_{r}''\big)\vec{\omega}_{r/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{ir}''\big)\vec{\omega}_{M_i'/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{m}'\big)\vec{\omega}_{M_i'/M_i''}
+\mathcal{L}_{M_i''}=\frac{1}{2}\vec{\omega}_{r/M_i''}^{\hspace{2pt}T}\big(J_{r}''\big)\vec{\omega}_{r/M_i''}+\frac{1}{2}\vec{\omega}_{M_i/M_i''}^{\hspace{2pt}T}\big(J_{ir}''\big)\vec{\omega}_{M_i/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{m}'\big)\vec{\omega}_{M_i'/M_i''}
 \end{equation}
-Therefore the Langragian from Eq:\ref{eq:alpha-lagrange} expands to:
+Where Eq:\ref{eq:alpha-lagrange} again does not include any potential gravitational energies as such quantities were already accounted for in Eq:\ref{eq:grav-torque}. Therefore the Langragian from Eq:\ref{eq:alpha-lagrange} expands to:
 \begin{multline}\label{eq:alpha-lagrange-two}
 \therefore\mathcal{L}_{M_i''}=\frac{1}{2}\Big[R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}\Big]^T\big(J_r''\big)\Big[R_y(\alpha)R_x(\lambda)\vec{\Omega}_i+Ry(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]\\
 +\frac{1}{2}\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]^T\big(J_{ir}''\big)\Big[R_y(\alpha)\dot{\vec{\lambda}}_i+\dot{\vec{\alpha}}_i\Big]
@@ -831,37 +831,89 @@ The final non-trivial torque term to account for is as a result of the response 
 \begin{equation}
 \dot{\vec{\omega}}_b=\big(J_b^{-1}\big)\Big(-\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_{\mu}\Big)~~~~[\text{rad.s}^{\text{-}s}],~\in\mathcal{F}^b
 \end{equation}
-Before continuing with a Lagrangian applied to the entire multibody system, it is worth first establishing a Lemma to add some clarity to the steps which follow. Consider the hypothetical, non-inertial, 2-D system illustrated in Fig:\ref{fig:lemma-1}. A massless rod of length $r$ connects a rotational body, with a mass $m_b$ at point $\mathbf{B}$, to a center point $\mathbf{O}$. The principle frame $\mathcal{F}^{1}$ has axes $\hat{X}_1$ and $\hat{Y}_1$ as illustrated. The arm has a rotational velocity $\dot{\phi}$, applied by some "motor". Attached to the end of the rod is a secondary frame $\mathcal{F}^2$ with an $\hat{X}_2$ axis co-linear to the rod and a perpendicular $\hat{Y}_2$. The rotational body, centered at $\mathbf{B}$, has a rotational inertia $J$ about the point (or axis) $\mathbf{B}$. That rotating body has a rotational velocity $\dot{\theta}$ from another "motor" relative to $\mathcal{F}^2$; the question is then how to find the net torque acting on the system in terms of angular accelerations $\ddot{\phi}$ and $\ddot{\theta}$?
+\par
+Before continuing with a Lagrangian formulation applied to the entire multibody system; it is worth first establishing a Lemma to add some clarity to the steps which follow. Consider the hypothetical, non-inertial, 2-D system illustrated in Fig:\ref{fig:lemma-1}. A massless rod of length $r$ connects a rotational body, with a mass $m_b$ at point $\mathbf{B}$, to a center point $\mathbf{O}$. The principle frame $\mathcal{F}^{1}$ has axes $\hat{X}_1$ and $\hat{Y}_1$ as illustrated. The arm has a rotational velocity $\dot{\phi}$ relative to $\mathcal{F}^{1}$, applied by some "motor". Attached to the end of the rod is a secondary frame $\mathcal{F}^2$ with an $\hat{X}_2$ axis co-linear to the rod and a perpendicular $\hat{Y}_2$. The rotational body, centered at $\mathbf{B}$, has a rotational inertia $J_\mathbf{B}$ about the point (or axis) $\mathbf{B}$. That rotating body has a rotational velocity $\dot{\theta}$ from another "motor" relative to $\mathcal{F}^2$; the question is then how to find the net torque acting on the system in terms of angular accelerations $\ddot{\phi}$ and $\ddot{\theta}$?
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.4\textwidth]{figs/lemma-1}
 \caption{Rotating system}
 \label{fig:lemma-1}
+\vspace{-18pt}
 \end{figure} 
 \par
-Isolated free body diagrams for each body under consideration are illustrated in Fig:\ref{}. Starting with the rotational body, Fig:\ref{}, the torque acting at point $\mathbf{B}$ is simply an inertial response to combined angular accelerations $\ddot{\theta}$ and $\ddot{\alpha}$:
+Isolated free body diagrams for each body under consideration are illustrated in Fig:\ref{fig:lemma}. Starting with the rotational body, Fig:\ref{fig:lemma-a}, the torque acting about point $\mathbf{B}$ is simply an inertial response to combined angular accelerations $\ddot{\theta}$ and $\ddot{\alpha}$:
 \begin{equation}
-\tau_\mathbf{B}=-\tau_\theta=-J(\ddot{\theta}+\ddot{\phi})
+\tau_\mathbf{B}=-\tau_\theta=-J_b(\ddot{\theta}+\ddot{\phi})
 \end{equation}
 The net force is purely the gravitational force acting at point $\mathbf{B}$ as a result of the mass $m_b$:
 \begin{equation}
-F_\mathbf{b}=-G=-m_b\vec{g}
+F_\mathbf{B}=-G=-m_b\vec{g}
 \end{equation}
-That torque and force pair, $F_\mathbf{b}$ and $\tau_\mathbf{b}$, and transferred on the massless rod connecting point $\mathbf{b}$ to $\mathbf{O}$, Fig:\ref{}. The net torque acting around point $\mathbf{O}$ is then comprised of three components; inferred torque from $\tau_\mathbf{b}$, a torque arm from force $F_\mathbf{b}$ and an inertial torque reponse to the effective "point-mass" at point $\mathbf{b}$ relative to $\mathbf{O}$:
+That torque and force pair, $F_\mathbf{B}$ and $\tau_\mathbf{B}$, and transferred to the massless rod connecting point $\mathbf{B}$ to $\mathbf{O}$, Fig:\ref{fig:lemma-b}. The net torque acting around point $\mathbf{O}$ is then comprised of three components; inferred torque from $\tau_\mathbf{B}$, a torque arm from force $F_\mathbf{B}$ and an inertial torque response to the effective "point-mass" at point $\mathbf{B}$ relative to $\mathbf{O}$:
 \begin{equation}
-\tau_\mathbf{O}=-\tau_\phi=-\tau_b-F_br\cos{\phi}+m_br^2\ddot{\phi})
+\tau_\mathbf{O}=-\tau_\phi=-\tau_\mathbf{B}-F_\mathbf{B}r\cos{\phi}+m_br^2(\ddot{\phi})
 \end{equation}
-The reponse force $F_\mathbf{O}$ is of no consequence, however the response torque can now be quantified. The "motor" applies a torque $\tau_\phi$ to the rod to induce some angular acceleration, opposed to that is $\tau_\mathbf{O}$ which acts against that "motor". The torque $\tau_\phi$ acting on the system can then be simplified:
+\par
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/lemma-a}
+\caption{Rotational body}
+\label{fig:lemma-a}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figs/lemma-b}
+\caption{Massless rod}
+\label{fig:lemma-b}
+\end{subfigure}
+\caption{Free-body diagram for rotational system}
+\label{fig:lemma}
+\vspace{-10pt}
+\end{figure}
+The net response force acting at point $\mathbf{O}$, $F_\mathbf{O}$, is of no consequence to the calculation of net torques. The "motor" applies a torque $\tau_\phi$ to the rod to induce some angular acceleration $\ddot{\phi}$ on the whole system. Opposed to that angular acceleration is $\tau_\mathbf{O}$ which acts against that "motor". The torque $\tau_\phi$ acting on the system can then be simplified:
 \begin{equation}
 \tau_\phi=J(\ddot{\theta}+\ddot{\phi})+m_br^2(\ddot{\phi})-m_b\vec{g}r\cos\phi
 \end{equation}
- which leads to the lemma:
-\begin{lemma}
-Torque acting on a non-inertial system of a doubly rotating body can be found as the contribution of the principle rotational inertial response and the transformed inertial contribution of the secondary 
-\[\]
+That result would not be as obvious when inferred from an energy equation. The equivalent Lagrangian for net kinetic and potential energy of the system, $T$ and $U$ respectively, would be:
+\begin{subequations}
+\begin{equation}
+\mathcal{L}=T(\theta,\phi)-U(\theta,\phi)
+\end{equation}
+\vspace{-14pt}
+\begin{equation}\label{eq:lemma-lagrange}
+\mathcal{L}=\frac{1}{2}\vec{\omega}_\mathbf{B}^T\big(J_\mathbf{B}\big)\vec{\omega}_\mathbf{B}+\frac{1}{2}\vec{\omega}_\mathbf{O}^T\big(J_\mathbf{O}\big)\vec{\omega}_\mathbf{O}-m_b\vec{g}r\sin{\phi}
+\end{equation}
+Where $\vec{\omega}_\mathbf{B}$ and $\vec{\omega}_\mathbf{O}$ are net angular velocities of the rotational body and massless connection rod respectively. The important thing to consider is that $J_\mathbf{O}$, the net rotational inertia about the point $\mathbf{O}$, is simply the point mass inertia $m_br^2$ and \underline{\emph{NOT}} the expected parallel axis theorem $J_\mathbf{O}=J_\mathbf{B}'=J_\mathbf{B}+m_br^2$. Expanding Eq:\ref{eq:lemma-lagrange} and applying the Euler-Lagrange formulation yields:
+\begin{equation}
+\rightarrow\mathcal{L}=\frac{1}{2}\Big(\dot{\theta}+\dot{\phi}\Big)^T\big(J_\mathbf{B}\big)\Big(\dot{\theta}+\dot{\phi}\Big)+\Big(\dot{\phi}\Big)\big(m_br^2\big)\Big(\dot{\phi}\Big)-m_b(-g)r\sin\phi
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\therefore\text{Genealized forces}=\frac{d}{dt}\Big(\frac{\partial\mathcal{L}}{\partial\dot{\phi}}\Big)-\frac{\partial\mathcal{L}}{\partial\phi}=\vec{\tau}_\phi
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+=\frac{d}{dt}\bigg(\big(J_\mathbf{B}\big)\Big(\dot{\theta}+\dot{\phi}\Big)+\big(m_br^2\big)\Big(\dot{\phi}\Big)\bigg)-m_bgr\sin\phi
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+\therefore\tau_\phi=J_\mathbf{B}(\ddot{\theta}+\ddot{\phi})+m_br^2(\ddot{\phi})-m_bgr\sin\phi
+\end{equation}
+\vspace{-12pt}
+\begin{equation}\label{eq:lemma-torque}
+=J_b\ddot{\theta}+J_b'\ddot{\phi}+\tau_g
+\end{equation}
+\end{subequations}
+Where $J_b'$ is the parallel axis inertia and $\tau_g$ is the gravitational torque arm contribution. The above then leads to the corollary ascertained from the system in Fig:\ref{fig:lemma-1};
+\begin{lemma}\label{lem:1}
+A torque response opposed to angular acceleration of a doubly rotating body can be found as the contribution of the principle rotational inertia about the first axis of rotation with \underline{only} the first rotational acceleration and a parallel axis inertia about the second rotational axis with the second, independent rotational velocity.
+\par
+Or the same torque can be found as the inertial opposition to net angular acceleration (sum of both rotations) about the first axis and a point mass inertia opposed to the second rotation about its respective axis.
 \end{lemma}
 \par
-Separating the motor module from the entire body structure first (exploded bodies in Fig:\ref{fig:response-body}), and only considering the additional contribution $\vec{\omega}_b$ has on the net torque acting on the body, the Lagrangian  derivation for motion relative to the inertial frame then follows\ldots
+Returning then to the net multibody system and separating the motor module from the entire body structure first (exploded bodies for \emph{motor module 1} in Fig:\ref{fig:response-body}). Considering only the additional contribution $\vec{\omega}_b$ has on a singular motor module and later introducing the entire combined system; the Lagrangian derivation for motion relative to the inertial frame then follows\ldots
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{figs/response-body}
@@ -876,21 +928,21 @@ The relative $\hat{Z}_{M_i''}$ rotation is what differentiates the intermediate 
 \begin{equation}
 J_r'''=R_z(\sigma)\big(J_r''\big)R_z^{-1}(\sigma)=R_z(\sigma)R_y(\alpha)R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)R_y^{-1}(\alpha)R_z^{-1}(\sigma)
 \end{equation}
-\vspace{-12pt}
+\vspace{-10pt}
 \begin{equation}
 J_{ir}'''=R_z(\sigma)\big(J_{ir}''\big)R_z^{-1}(\sigma)=R_z(\sigma)R_y(\alpha)R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)R_y^{-1}(\alpha)R_z^{-1}(\sigma)
 \end{equation}
-\vspace{-12pt}
+\vspace{-10pt}
 \begin{equation}
 J_m''=R_z(\sigma)\big(J_m'\big)R_z^{-1}(\sigma)=R_z(\sigma)R_y(\alpha)\big(J_m\big)R_y^{-1}(\alpha)R_z^{-1}(\sigma)
 \end{equation}
 \end{subequations}
-Where $\sigma_i$ in Eq:\ref{eq:module-inertia-body} is the relative orthogonal $\hat{Z}_{M_i''}$ difference between frames $\mathcal{F}^{M_i''}$ and $\mathcal{F}^b$ defined previously in Eq:\ref{eq:motor-module-rotation} and illustrated previously in Fig:\ref{fig:body-frame}. Because $\sigma_i$ is constant for each $i\in[1:4]$, the inertial rates for each component of the motor module are simply transformations of $\dot{J}_r''$,$\dot{J}_{ir}''$ and $\dot{J}_m'$ previously in Eq:\ref{eq:rotor-inertia-rate},\ref{eq:inner-inertia-rate} and \ref{eq:middle-inertia-rate}. Or more generally, for some inertia $J$:
+Where $\sigma_i$ in Eq:\ref{eq:module-inertia-body} is the relative orthogonal $\hat{Z}_{M_i''}$ difference between frames $\mathcal{F}^{M_i''}$ and $\mathcal{F}^b$ defined before in Eq:\ref{eq:motor-module-rotation} and illustrated previously in Fig:\ref{fig:body-frame}. Because $\sigma_i$ is constant for each $i\in[1:4]$, the inertial rate for each component of the motor module is simply transformations of $\dot{J}_r''$,$\dot{J}_{ir}''$ and $\dot{J}_m'$ previously in Eq:\ref{eq:rotor-inertia-rate},\ref{eq:inner-inertia-rate} and \ref{eq:middle-inertia-rate}. Or more generally, for some inertia $J$:
 \begin{subequations}
 \begin{equation}
 \frac{d}{dt}\Big(R_z(\sigma)\big(J\big)R_z^{-1}(\sigma)\Big)=0
 \end{equation}
-So, dropping the $\sigma$ argument; $R_z(\sigma)\Rightarrow R_z$ is implied, the rotor, inner and middle inertial rates then follow:
+So, dropping the $\sigma$ argument, $R_z(\sigma)\Rightarrow R_z$ implied; the rotor, inner and middle inertial rates then follow respectively:
 \begin{equation}
 \dot{J}_r'''=R_z\big(\dot{J}_r''\big)R_z^{-1}
 \end{equation}
@@ -933,15 +985,39 @@ And lastly the middle ring structure has a relative angular velocity:
 =R_z\dot{\vec{\alpha}}_i+\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-
-
-
-The inner rings relative angular velocity:
+Then noting that Lemma:\ref{lem:1} and the parallel axis term in Eq:\ref{eq:lemma-torque} refer to the parallel axis difference between the \emph{center of mass} and the resultant rotational axis, the vector difference between the rotated center of mass for a motor module, $C.M_\text{p}'$, and the body frame origin $\vec{\mathbf{O}}_b$ is defined:
 \begin{subequations}
 \begin{equation}
-\vec{\omega}_{M_i/I}=\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_{b/I}
+C.M_\text{p}'=\frac{m_\text{n}C.M_\text{n}'+m_\text{m}C.M_\text{m}'}{m_\text{p}}
+\end{equation}
+With $C.M_\text{n}'$ and $C.M_\text{m}$ being rotated inner and middle ring centers of mass respectively from Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d}:
+\begin{equation}
+=\frac{m_\text{n}R_zR_y(\alpha)R_x(\lambda)C.M_\text{n}+m_\text{m}R_zR_y(\alpha)C.M_\text{m}}{m_\text{n}+m_\text{n}}
+\end{equation}
+Which leads to the vector difference $\Delta L_i$:
+\begin{equation}
+\Delta L_i=\vec{L}_i-C.M_\text{p}'
 \end{equation}
 \end{subequations}
+The Lagrangian for the energy of a single motor module, about the origin $\vec{\mathbf{O}}_b$, $\mathcal{L}_{p_i}$ can then be constructed. This time, including the gravitational potential energy component:
+\begin{multline}
+\mathcal{L}_{p_i}=\frac{1}{2}\vec{\omega}_{r/I}^T\big(J_r'''\big)\vec{\omega}_{r/I}+\frac{1}{2}\vec{\omega}_{M_i/I}^T\big(J_{ir}'''\big)\vec{\omega}_{M_i/I}+\frac{1}{2}\vec{\omega}_{M_i'/I}^T\big(J_m''\big)\vec{\omega}_{M_i'/I}
+\\
++\vec{\omega}_{b/I}^T\big(m_p\Big(\big(\Delta L_i \cdot \Delta L_i\big)\mathbb{I}_{3\times 3}-\Delta L_i \otimes \Delta L_i\Big)\big)\vec{\omega}_{b/I}-m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b
+\end{multline}
+Where the term $m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b$ is the vector analogue of gravitational potential energy $m\vec{g}h$ with $R_I^b(\eta)\vec{\mathcal{E}}$ being the inertial relative X-Y-Z position in the body frame $\mathcal{F}^b$ relative to the body origin $\vec{\mathbf{O}}_b$. Expanding $\mathcal{L}_{p_i}$ with terms defined previously:
+\begin{multline}
+\rightarrow\mathcal{L}_{p_i}=\Big[\vec{\Omega}_i'''+\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_r'''\big)\Big[\vec{\Omega}_i'''+\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i+\vec{\omega}_b\Big]+\Big[\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_{ir}'''\big)\Big[\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]
+\\
+\Big[\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_m''\big)\Big[\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]+\vec{\omega}_{b}^T\big(m_p\Big(\big(\Delta L_i \cdot \Delta L_i\big)\mathbb{I}_{3\times 3}-\Delta L_i \otimes \Delta L_i\Big)\big)\vec{\omega}_{b}-m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b
+\end{multline}
+
+
+
+
+
+
+
 Uncertainties associated with the above inertial models or their particular values can easily be compensated for as disturbances. More specifically uncertainties of the above equations system are modelled as plant dependent state uncertainties; and can be adaptively compensated for accordingly\ldots
 %====================================================
 \subsection{Induced response simulation and Tests}
