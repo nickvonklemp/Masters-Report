@@ -784,7 +784,7 @@ Then taking the Lagrangian's time derivative and using inertial rates Eq:\ref{eq
 +\Big[\big(\dot{J}_{ir}''\big)(\dot{\vec{\lambda}}_i\hspace{-2pt}'+\dot{\vec{\alpha}}_i)\Big]
 +\Big[\big(J_{ir}''\big)\ddot{\vec{\lambda}}_i\hspace{-2pt}'+\vec{\omega}_{M_i/M_i''}\times\big(J_{ir}''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_{ir}''\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times\big(J_{ir}''\big)\dot{\vec{\alpha}}_i\Big]
 \\
-+\Big[\big(\dot{J}_m'\big)\dot{\vec{\alpha}}_i\Big) +\Big(\big(J_m'\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times\big(J_m'\big)\dot{\vec{\alpha}}_i\Big]
++\Big[\big(\dot{J}_m'\big)\dot{\vec{\alpha}}_i\Big] +\Big[\big(J_m'\big)\ddot{\vec{\alpha}}_i+\vec{\omega}_{M_i'/M_i''}\times\big(J_m'\big)\dot{\vec{\alpha}}_i\Big]
 \end{multline}
 With relative frame angular velocities; $\vec{\omega}_{M_i/M_i''}$ of the inner ring relative to the intermediate frame, and $\vec{\omega}_{M_i'/M_i''}$ of the middle ring relative to the intermediate frame. Both are defined respectively as:
 \begin{equation}
@@ -839,7 +839,27 @@ Before continuing with a Lagrangian applied to the entire multibody system, it i
 \label{fig:lemma-1}
 \end{figure} 
 \par
-a
+Isolated free body diagrams for each body under consideration are illustrated in Fig:\ref{}. Starting with the rotational body, Fig:\ref{}, the torque acting at point $\mathbf{B}$ is simply an inertial response to combined angular accelerations $\ddot{\theta}$ and $\ddot{\alpha}$:
+\begin{equation}
+\tau_\mathbf{B}=-\tau_\theta=-J(\ddot{\theta}+\ddot{\phi})
+\end{equation}
+The net force is purely the gravitational force acting at point $\mathbf{B}$ as a result of the mass $m_b$:
+\begin{equation}
+F_\mathbf{b}=-G=-m_b\vec{g}
+\end{equation}
+That torque and force pair, $F_\mathbf{b}$ and $\tau_\mathbf{b}$, and transferred on the massless rod connecting point $\mathbf{b}$ to $\mathbf{O}$, Fig:\ref{}. The net torque acting around point $\mathbf{O}$ is then comprised of three components; inferred torque from $\tau_\mathbf{b}$, a torque arm from force $F_\mathbf{b}$ and an inertial torque reponse to the effective "point-mass" at point $\mathbf{b}$ relative to $\mathbf{O}$:
+\begin{equation}
+\tau_\mathbf{O}=-\tau_\phi=-\tau_b-F_br\cos{\phi}+m_br^2\ddot{\phi})
+\end{equation}
+The reponse force $F_\mathbf{O}$ is of no consequence, however the response torque can now be quantified. The "motor" applies a torque $\tau_\phi$ to the rod to induce some angular acceleration, opposed to that is $\tau_\mathbf{O}$ which acts against that "motor". The torque $\tau_\phi$ acting on the system can then be simplified:
+\begin{equation}
+\tau_\phi=J(\ddot{\theta}+\ddot{\phi})+m_br^2(\ddot{\phi})-m_b\vec{g}r\cos\phi
+\end{equation}
+ which leads to the lemma:
+\begin{lemma}
+Torque acting on a non-inertial system of a doubly rotating body can be found as the contribution of the principle rotational inertial response and the transformed inertial contribution of the secondary 
+\[\]
+\end{lemma}
 \par
 Separating the motor module from the entire body structure first (exploded bodies in Fig:\ref{fig:response-body}), and only considering the additional contribution $\vec{\omega}_b$ has on the net torque acting on the body, the Lagrangian  derivation for motion relative to the inertial frame then follows\ldots
 \begin{figure}[htbp]
