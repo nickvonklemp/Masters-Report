@@ -998,36 +998,40 @@ Which leads to the vector difference $\Delta L_i$:
 \begin{equation}
 \Delta L_i=\vec{L}_i-C.M_\text{p}'
 \end{equation}
-Where the time derivative of that module's moving center of gravity, $C.M_\text{p}$ relative to the origin $\vec{\mathbf{O}}_b$, is:
+The time derivative of that module's moving center of gravity, $C.M_\text{p}$ relative to the origin $\vec{\mathbf{O}}_b$, is:
 \begin{equation}
-\frac{d}{dt}\Delta L_i=-\frac{d}{dt}\dot{C.M}_p'
+\Delta \dot{L}_i=-\frac{d}{dt}C.M_\text{p}'
 \end{equation}
-\vspace{-12pt}
+\vspace{-10pt}
 \begin{equation}
-=-\frac{1}{m_\text{p}}\Big(m_\text{n}R_z\big([\dot{\vec{\alpha}}_i]_\times R_y(\alpha)R_x(\lambda)C.M_\text{n}+R_y(\alpha)[\dot{\vec{\lambda}}_i]_\times C.M_\text{n}\big)+m_\text{m}R_z[\dot{\vec{\alpha}}_i]_\times C.M_\text{m}\Big)
+=-\frac{1}{m_\text{p}}\Big(m_\text{n}\big(R_z\big([\dot{\vec{\alpha}}_i]_\times R_y(\alpha)R_x(\lambda)C.M_\text{n}+R_y(\alpha)[\dot{\vec{\lambda}}_i]_\times C.M_\text{n}\big)+m_\text{m}R_z[\dot{\vec{\alpha}}_i]_\times C.M_\text{m}\Big)
 \end{equation}
 \end{subequations}
 Then, extended from Lemma:\ref{lem:1}, the motor module's \emph{point-mass} inertia $J_H$ about the origin $\vec{\mathbf{O}}_b$ is defined, with $m_\text{p}=m_\text{n}+m_\text{m}$ masses from Eq:\ref{eq:body-net-inner.a} and Eq:\ref{eq:body-net-middle.a}:
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:module-point-mass}
 J_H\triangleq m_\text{p}\Big(\big(\Delta L_i \cdot \Delta L_i\big)\mathbb{I}_{3\times 3}-\Delta L_i \otimes \Delta L_i\Big)
 \end{equation}
 Or, using the definition or inner and outer products:
 \begin{equation}
-=m_p
+=m_\text{p}\Big(\big[\Delta L_i\big]^T\big[\Delta L_i\big]-\big[\Delta L_i\big]\big[\Delta L_i\big]^T\Big)
+\end{equation}
+Which leads to the that point mass inertial rate $\dot{J}_H$:
+\begin{equation}\label{eq:module-point-mass-rate}
+\dot{J}_H=m_\text{p}\Big(\big[\Delta \dot{L}_i\big]^T\big[\Delta L_i\big]+\big[\Delta L_i\big]^T\big[\Delta \dot{L}_i\big]-\big[\Delta \dot{L}_i\big]\big[\Delta L_i\big]^T-\big[\Delta L_i\big]\big[\Delta \dot{L}_i\big]^T\Big)
 \end{equation}
 \end{subequations}
-The Lagrangian for the energy of a single motor module, about the origin $\vec{\mathbf{O}}_b$, $\mathcal{L}_{p_i}$ can then be constructed. This time, including the gravitational potential energy component:
+Unfortunately that inertial rate, Eq:\ref{eq:module-point-mass-rate}, is not able to be simplified to a more concise form. The Lagrangian for the energy of a single motor module, about the origin $\vec{\mathbf{O}}_b$, $\mathcal{L}_{p_i}$ can then be constructed. This time, including the gravitational potential energy component:
 \begin{multline}
-\mathcal{L}_{p_i}=\frac{1}{2}\vec{\omega}_{r/I}^T\big(J_r'''\big)\vec{\omega}_{r/I}+\frac{1}{2}\vec{\omega}_{M_i/I}^T\big(J_{ir}'''\big)\vec{\omega}_{M_i/I}+\frac{1}{2}\vec{\omega}_{M_i'/I}^T\big(J_m''\big)\vec{\omega}_{M_i'/I}
-\\
-+\vec{\omega}_{b/I}^T\big(m_p\big)\vec{\omega}_{b/I}-m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b
+\mathcal{L}_{p_i}=\frac{1}{2}\vec{\omega}_{r/I}^T\big(J_r'''\big)\vec{\omega}_{r/I}+\frac{1}{2}\vec{\omega}_{M_i/I}^T\big(J_{ir}'''\big)\vec{\omega}_{M_i/I}+\frac{1}{2}\vec{\omega}_{M_i'/I}^T\big(J_m''\big)\vec{\omega}_{M_i'/I}+\vec{\omega}_{b/I}^T\big(J_H)\vec{\omega}_{b/I}\\-m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b
 \end{multline}
 Where the term $m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b$ is the vector analogue of gravitational potential energy $m\vec{g}h$ with $R_I^b(\eta)\vec{\mathcal{E}}$ being the inertial relative X-Y-Z position in the body frame $\mathcal{F}^b$ relative to the body origin $\vec{\mathbf{O}}_b$. Expanding $\mathcal{L}_{p_i}$ with terms defined previously:
 \begin{multline}
 \rightarrow\mathcal{L}_{p_i}=\Big[\vec{\Omega}_i'''+\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_r'''\big)\Big[\vec{\Omega}_i'''+\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i+\vec{\omega}_b\Big]+\Big[\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_{ir}'''\big)\Big[\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]
 \\
-\Big[\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_m''\big)\Big[\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]+\vec{\omega}_{b}^T\big(m_p\Big(\big(\Delta L_i \cdot \Delta L_i\big)\mathbb{I}_{3\times 3}-\Delta L_i \otimes \Delta L_i\Big)\big)\vec{\omega}_{b}-m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b
+\Big[\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]^T\big(J_m''\big)\Big[\dot{\vec{\alpha}}_i'+\vec{\omega}_b\Big]+\vec{\omega}_{b}^T\big(m_p\Big(\big[\Delta L_i\big]^T\big[\Delta L_i\big]-\big[\Delta L_i\big]\big[\Delta L_i\big]^T\Big)\big)\vec{\omega}_{b}
+\\
+-m_b\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)\cdot\vec{G}_b
 \end{multline}
 The response(s) to angular velocities $\vec{\omega}_b$ are then:
 \begin{equation}
