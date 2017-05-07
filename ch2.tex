@@ -785,7 +785,7 @@ The resultant gravitational torque about the origin $\vec{\mathbf{O}}_b$ in the 
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:grav-torque}
-\vec{\tau}_g=\Delta C.G\times\vec{G}_b~~~~[\text{N.m}],\tau_g\in\mathcal{F}^b
+\vec{\tau}_g=\Delta C.G\times m_b\vec{G}_b~~~~[\text{N.m}],\tau_g\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
 Inertia uncertainty, proven to be destabilizing and detrimental to control efforts in \cite{inertiafree,inertiaspin}, can indeed be incorporated into state dependent plant uncertainty like in \cite{intelligentbackstep}. Controllers with strong disturbance and uncertainty rejection, like a well designed $\text{H}_\infty$ controller, would be ideally suited to controlling an attitude plant without having to explicitly specify all of the above. However it is worth the effort given that Lagrange dynamics are applied to the servo actuator responses later in Sec:\ref{sec:dynamics.nonlinearities}. Such equations of motion will later need explicit terms for instantaneous transformed inertias.
