@@ -1087,7 +1087,7 @@ And recognizing that $(J_r'''+J_{ir}'''+J_m''+J_H)$ can be simplified to a paral
 =R_z\big(J_p\big)R_z^{-1}+m_p\Big(\big[\Delta L_i\big]^T\big[\Delta L_i\big]-\big[\Delta L_i\big]\big[\Delta L_i\big]^T\Big)=J_{\vec{\mathbf{M}}_i}'
 \end{equation}
 Moreover, the above can be applied to the associated inertia rates $\dot{J}_r'''$, $\dot{J}_{ir}'''$, $\dot{J}_m''$ and $\dot{J}_H$. Using Eq:\ref{eq:body-rotor-rate},\ref{eq:body-inner-rate},\ref{eq:body-middle-rate} and \ref{eq:module-point-mass-rate} it can be shown that:
-\begin{equation}
+\begin{equation}\label{eq:module-inertia-rates}
 \big(\dot{J}_r'''+\dot{J}_{ir}'''+\dot{J}_m''+\dot{J}_H\big)=\dot{J}_{\vec{\mathbf{M}}_i}'
 \end{equation}
 \end{subequations}
@@ -1113,7 +1113,26 @@ Recalling the net vehicles rotational inertia $J_b(u)$, calculated as a function
 \\
 +m_p\vec{G}_b\times\sum_{i=1}^{4}\Delta L_i
 \end{multline}
-The final sum of gravitational torque arms can be reduced to $\vec{\tau}_g$ from Eq:\ref{eq:grav-torque} which considers the \emph{net} resultant center of gravity.
+The final sum of gravitational torque arms can be reduced to $\vec{\tau}_g$ from Eq:\ref{eq:grav-torque} which considers the \emph{net} resultant center of gravity. Then, extending the angular differential equation Eq:\ref{eq:states.d} to incorporate the multibody responses derived above:
+\begin{subequations}
+\begin{equation}
+\vec{\tau}_\mu=\big(J_b\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\vec{\tau}_b+\vec{\tau}_g
+\end{equation}
+Using the net gravitational torque arm $\vec{\tau}_g$ from Eq:\ref{eq:grav-torque}:
+\begin{equation}
+\vec{\tau}_g\triangleq\Delta C.G\times m_b\vec{G}_b
+\end{equation}
+And defining a new response torque $\vec{\tau}_b$ which represents collective responses from internal rotations relative each body, $i^{\text{th}}$ arguments for motor modules are implied:
+\begin{equation}\label{eq:net-body-response}
+\vec{\tau}_b\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[R_z\vec{\tau}_\alpha(\lambda)+R_zR_y(\alpha)\vec{\tau}_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]
+\end{equation}
+\end{subequations}
+Nothing that $\dot{J}_b(u)$ is another introduced term which is the sum of all module inertia rates from Eq:\ref{eq:module-inertia-rates}, given that body structures inertia $J_y$ is constant:
+\begin{equation}
+\dot{J}_b(u)\triangleq \sum_{i=1}^4 \big(\dot{J}_{\vec{\mathbf{M}}_i}'\big)
+\end{equation}
+The torque $\vec{\tau}_b$ in Eq:\ref{eq:net-body-response} is the most important result here, however; definitions of $\vec{\tau}_\alpha(\lambda)$ and $\vec{\tau}_\lambda$ in Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively were necessary to simplify and isolate different components of Eq:\ref{eq:net-body-response}. Individual module terms relating to $\dot{\lambda}_i$ and $\dot{\alpha}_i$ could 
+
 The response(s) to angular velocities $\vec{\omega}_b$ are then:
 \begin{equation}
 1
