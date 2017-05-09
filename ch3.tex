@@ -1158,12 +1158,16 @@ Uncertainties associated with the above inertial models or their particular valu
 \subsection{Induced response simulation and Tests}
 \label{subsec:dynamics.nonlinearities.torque-tests}
 %====================================================
-In Ch:\ref{subsec:dynamics.nonlinearities.gyrotorques} the proposed Lagrangian equations for both $\Delta\lambda$ and $\Delta\alpha$ servo movements is presented. Reiterating those equations, the inner ring torque response from Eq:\ref{eq:lagrange-inner}:
+Previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques} the proposed Lagrangian energy functions for both $\Delta\lambda$ and $\Delta\alpha$ servo movements and responses to body angular velocities $\vec{\omega}_b$ were presented. Reiterating those servo response equations, the inner ring net (kinetic) energy Lagrangian from Eq:\ref{eq:lagrange-inner} is:
 \begin{subequations}
-\begin{equation}\label{eq:app-lagrange-inner}
+\begin{equation}\label{eq:sim-lagrange-inner}
 \mathcal{L}_{M_i'}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i/M_i'}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{M_i/M_i'}
 \end{equation}
-And for the middle ring response from Eq:\ref{eq:alpha-lagrange}
+\vspace{-14pt}
+\begin{equation}\label{eq:sim-lagrange-inner-expand}
+=\frac{1}{2}\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^{T}\Big(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\Big)\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\frac{1}{2}\big(\dot{\vec{\lambda}}_i\big)^T\Big(R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)\Big)\big(\dot{\vec{\lambda}}_i\big)
+\end{equation}
+And similarly for the middle ring's net (kinetic) energy from Eq:\ref{eq:alpha-lagrange}
 \begin{equation}\label{eq:app-lagrange-middle}
 \mathcal{L}_{M_i''}=\frac{1}{2}\vec{\omega}_{r/M_i''}^{\hspace{2pt}T}\big(J_{r}''\big)\vec{\omega}_{r/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{ir}''\big)\vec{\omega}_{M_i'/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{m}'\big)\vec{\omega}_{M_i'/M_i''}
 \end{equation}
