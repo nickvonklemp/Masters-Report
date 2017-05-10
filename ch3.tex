@@ -677,14 +677,12 @@ p_0 \\
 \vec{p}
 \end{bmatrix}
 \end{equation}
-\vspace{-5pt}
 \begin{equation}
 \triangleq\begin{bmatrix}
 q_0p_0-\vec{q}\cdot\vec{p}\\
 q_0\vec{p}+p_0\vec{q}+\vec{q}\times\vec{p}
 \end{bmatrix}
 \end{equation}
-\vspace{-5pt}
 \begin{equation}\label{eq:quaternion-product}
 =q_0 p_0 - \vec{q}\cdot \vec{p}+p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}
 \end{equation}
@@ -756,7 +754,7 @@ Using quaternions to represent attitudes negates the need for an Euler Matrix, $
 \begin{equation}
 \dot{\mathcal{E}}=R_b^I(-\eta)\vec{v}_b\underset{Q}{\iff}Q_b(-\eta)\otimes\vec{v}_b\otimes Q_b^*(-\eta)=Q_b^*\otimes \vec{v}_b \otimes Q_b~~~~\in\mathcal{F}^I
 \end{equation}
-\vspace{-14pt}
+\vspace{-6pt}
 \begin{equation}
 \dot{\eta}=\Phi(\eta)\vec{\omega}_b~~\in\mathcal{F}^{v2,v1,I}\underset{Q}{\iff}\dot{Q}_b=\frac{1}{2}Q_b\otimes Q_\omega~~\in\mathcal{F}^{I}
 \end{equation}
@@ -778,7 +776,9 @@ Quaternion attitude control and its stability goals are expanded upon subsequent
 \subsection{Quaternion Unwinding}
 \label{subsec:dynamics.rigidbody.unwinding}
 %====================================================
-Although quaternions are indeed better than Euler angles, lacking the associated singularity, they do contain one caveat. Becuase a quaternion $Q=[q_0~\vec{q}\hspace{2pt}]^T$ represents a body's attitude in $\mathbb{R}^3$ using $\mathbb{R}^4$ there is an infinite coverage of attitude states, \cite{unwinding}. Each unit quaternion, stemming from Euler-Rodriguez theorem, represents a single Euler-axis rotation of $\theta$ about a unit axis $\hat{u}$ such that:
+Although quaternions are indeed better than their Euler angle parameterized attitde counterpart(s) and lacking the associated singularity, they do contain one caveat. Becuase a quaternion $Q=[q_0~\vec{q}\hspace{2pt}]^T$ represents a body's attitude in $\mathbb{R}^3$ using $\mathbb{R}^4$ there is an infinite coverage of attitude states, \cite{unwinding}. 
+\par
+Each unit quaternion, stemming from Euler-Rodriguez theorem, represents a single Euler-axis rotation of $\theta$ about a unit axis $\hat{u}$ such that:
 \begin{equation}
 Q=\begin{bmatrix}
 q_0\\
@@ -815,7 +815,7 @@ sin(\pi - \theta/2)\hat{u}
 sin(\theta/2)\hat{u}
 \end{bmatrix}
 \end{equation}
-\vspace{-6pt}
+\vspace{-4pt}
 \begin{equation}\label{eq:euler-quaternion}
 \vec{\eta}\in\mathbb{R}^3\underset{Q}{\iff}\begin{bmatrix}
 \pm q_0\\
@@ -824,7 +824,7 @@ sin(\theta/2)\hat{u}
 \in\mathbb{R}^4
 \end{equation}
 \end{subequations}
-Eq:\ref{eq:euler-quaternion} asserts that for each attitude in $\mathbb{R}^3$ there are \emph{two} corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is that two possible error state trajectories exist for every attitude difference. Both a clockwise, $\theta$, and an anticlockwise, $2\pi-\theta$, rotations which point to the same quaternion attitude error state. This could lead to an erroneous and unnecessary "unwinding" of a complete counter revolution. So for attitude controllers the requirement is that for positive and negative scalars the control input is consistent:
+Eq:\ref{eq:euler-quaternion} asserts that for each attitude in $\mathbb{R}^3$ there are \emph{two} corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is that two possible error state trajectories exist for every attitude difference. Both a clockwise, $+\theta$, and an anticlockwise, $2\pi-\theta$, rotations which point to the same quaternion attitude error state. This could lead to an erroneous and unnecessary "unwinding" of a complete counter revolution. So for attitude controllers the requirement is that for positive and negative quaternion scalars the control input is consistent:
 \begin{equation}
 \vec{\nu}_d=h([q_0~\vec{q}\hspace{2pt}]^T,t)=h([-q_0~\vec{q}\hspace{2pt}]^T,t)
 \end{equation}
@@ -855,7 +855,7 @@ In \cite{intelligentbackstep}, the authors used a backstepping controller with a
 \section{Multibody Nonlinearities}
 \label{sec:dynamics.nonlinearities}
 %====================================================
-The unique component of the prototype's design which facilitates redirection of a propeller's thrust vector (Sec:\ref{subsec:proto.design.actuation}) is also what makes finding the complete equations of motion drastically more complex. The relative (rotary) motion within the multibody system results in torque responses opposed to those angular accelerations. Such induced responses, if left unmodelled, would almost definitely destabilize attitude plant, \cite{inertiaspin}. Typically multibody dynamics are solved (and simulated) as a series of interacting torque and force constraints. There are different schools of thought on the subject, each proposing methodologies for stepping through the systems dynamics; \emph{e.g} Implicit Euler integration\cite{physicallybased,multibodydynamics}\ldots
+The unique component of the prototype's design which facilitates redirection of a propeller's thrust vector (Sec:\ref{subsec:proto.design.actuation}) is also what makes finding the complete equations of motion drastically more complex. The relative (rotary) motion within the multibody system results in torque responses opposing those angular accelerations. Such induced responses, if left unmodelled, would almost definitely destabilize attitude plant, \cite{inertiaspin}. Typically multibody dynamics are solved (and simulated) as a series of interacting torque and force constraints. There are different schools of thought on the subject, each proposing methodologies for stepping through the systems dynamics; \emph{e.g} Implicit Euler integration\cite{physicallybased,multibodydynamics}\ldots
 \par
 The prototype investigated here is a multibody system connected with revolute joints, which permit a single degree of relative rotation between each connected rigid body. There are no translational degrees of freedom between each body. Opposed to the angular acceleration applied to a body are \emph{gyroscopic} and \emph{inertial} Newtonian torque responses. The responses from each body are solved independently and those excitation induced torque constraints are imposed onto the structure's sequential rotational joints. Those responses are now quantified and introduced to the dynamic model derived in Sec:\ref{subsec:dynamics.rigidbody.lagrange}. 
 \par
@@ -874,7 +874,7 @@ Alternatively the net dynamics could indeed be derived from a Lagrangian for the
 \par
 Each of the four motor modules are symmetrical and so the induced torque response characteristics from one module can be extrapolated simply through a $\hat{Z}_b$ reference frame rotation. Each motor module is positioned relative to the body frame center of motion $\vec{\mathbf{O}}_b$ as in Fig:\ref{fig:body-frame}. Because each relative rotation from the actuator set, $u\in\mathbb{U}$, is actuated separately and upon a different body, their responses are calculated independently too.
 \par
-Drawing again from Lagrangian theory and considering only the angular kinetic for the inner ring assembly $\mathcal{F}^{M_i}$. There is no relative translational motion between each body and so there can be no translational kinetic energy contribution. The translational kinetic energy for each module is an extension of body's net kinetic energy in Eq:\ref{eq:3.7a} and independent of any actuator positions. The motor module's translational motion is accounted for in Eq:\ref{eq:rigid-frame.a}. Considering the $i^{th}$ motor module\ldots
+Drawing again from Lagrangian theory and considering only the angular kinetic for the inner ring assembly attached to frame $\mathcal{F}^{M_i}$. There is no relative translational motion between each body and so there can be no translational kinetic energy contribution. The translational kinetic energy for each module is an extension of body's net kinetic energy in Eq:\ref{eq:3.7a} and independent of any actuator positions. The motor module's translational motion is accounted for in Eq:\ref{eq:rigid-frame.a}. Considering the $i^{th}$ motor module\ldots
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.65\textwidth]{figs/response-inner}
@@ -903,14 +903,16 @@ With the propeller's angular velocity vector; $\vec{\Omega}_i=\begin{bmatrix}0 &
 \begin{equation}\label{eq:angular-inner}
 \vec{\omega}_{M_i/M_i'}=\frac{d\lambda}{dt}(\vec{\lambda}_i)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
-The Lagrangian for the inner ring's energy $\mathcal{L}_{M_i'}$, relative to the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from angular velocities in Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. The relative potential energy as a result of the rotated center of motion for the inner ring is neglected here as it is already included in Eq:\ref{eq:grav-torque} and shown to simplify out later when considering the entire body system. Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed onto the middle ring frame $\mathcal{F}^{M_i'}$ from an $R_x(\lambda)$ rotation:
+The Lagrangian for the inner ring's energy $\mathcal{L}_{M_i'}$, relative to the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from angular velocities in Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. The relative potential energy as a result of the rotated center of motion for the inner ring is neglected here as it is already included in Eq:\ref{eq:grav-torque} and shown to simplify out later when considering the entire body system.
+\par
+Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed to align with the middle ring frame $\mathcal{F}^{M_i'}$ from an $R_x(\lambda)$ rotation:
 \begin{subequations}\label{eq:lagrange-inner}
 \begin{equation}\label{eq:lagrange-inner.a}
 \mathcal{L}_{M_i'}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i/M_i'}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{M_i/M_i'}
 \end{equation}
 With rotor and inner ring transformed inertias respectively aligned with $\mathcal{F}^{M_i'}$:
 \begin{equation}
-J_r'\triangleq R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)~~\text{and}~~J_{ir}'\triangleq R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)
+J_r'= R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)~~\text{and}~~J_{ir}'= R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)
 \end{equation}
 Then expanding the Lagrangian $\mathcal{L}_{M_i'}$ in Eq:\ref{eq:lagrange-inner.a}:
 \begin{multline}\label{eq:lagrange-inner.b}
@@ -921,7 +923,7 @@ Noting that the inner ring's inertia $J_{ir}$ is now an independent body from th
 \begin{equation}\label{eq:euler-lagrange-inner}
 \frac{d}{dt}\bigg(\frac{\partial \mathcal{L}_{M_i'}}{\partial \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial \mathcal{L}_{M_i'}}{\partial \vec{\mathbf{u}}} = \vec{\mathbf{U}} = \vec{\tau}_{\lambda}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
-From \cite{rotationlinearize} the partial derivative of a rotation matrix $R_x(\lambda)$ (and by extension the \emph{transformation matrix} $R_x(-\lambda)$) is linearized using Taylor series expansion. It follows that for some small perturbation $\partial\theta$ away from the nominal $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
+From \cite{rotationlinearize} the partial derivative of a rotation matrix $R_x(\lambda)$ (and by extension the \emph{transformation matrix} $R_x(-\lambda)$) is linearized using a Taylor series expansion. It follows that for some small perturbation $\partial\theta$ away from the nominal $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
 \begin{equation}\label{eq:rotation-linear}
 R_u(\bar{\theta}+\partial\theta)\approx\underbrace{\big(1-[\Psi_u(\bar{\theta})\partial\theta]_\times\big)}_{\text{infinitesimal rot}}R_u(\bar{\theta})
 \end{equation}
@@ -941,7 +943,7 @@ It follows that partial derivatives of the Lagrangian Eq:\ref{eq:lagrange-inner}
 \end{equation}
 Transformed inertial derivatives $\dot{J}_r'$ and $\dot{J}_{ir}'$ must first be defined before applying the Euler-Lagrange formulation Eq:\ref{eq:euler-lagrange-inner} to the simplified Lagrangian in Eq:\ref{eq:3.42b}. Those inertial derivatives cannot be separated by time scale from the remainder of Eq:\ref{eq:3.42b} given that $\dot{\lambda}_i$ determines both inertial rates $\dot{J}_r'$ and $\dot{J}_{ir}'$ but is also a component of the kinetic energy in Eq:\ref{eq:lagrange-inner.b}.
 \par
-Starting with the general case; for some transformed inertia $J$ to be aligned relative to a frame $\mathcal{F}^b$ where the inertia is original defined with respect to a frame $\mathcal{F}^a$. If the two frames differ by some rotation angle $\theta$ about an Euler axis $\hat{u}$, the generalized rotation matrix from frame $\mathcal{F}^a$ to $\mathcal{F}^b$ is given by $R_{\hat{u}}(\theta)$ calculated from Eq:\ref{eq:rotationoperator}. The transformed inertia is then calculated as:
+Starting with the general case; for some transformed inertia $J$ to be aligned relative to a frame $\mathcal{F}^b$ where the inertia is originally defined with respect to a frame $\mathcal{F}^a$. If the two frames differ by some rotation angle $\theta$ about an Euler axis $\hat{u}$, the generalized rotation matrix from frame $\mathcal{F}^a$ to $\mathcal{F}^b$ is given by $R_{\hat{u}}(\theta)$ calculated from Eq:\ref{eq:rotationoperator}. The transformed inertia is then calculated as:
 \begin{subequations}
 \begin{equation}
 J'=R_{\hat{u}}(\theta)\big(J\big)R_{\hat{u}}^{-1}(\theta)
@@ -965,7 +967,7 @@ Where $\dot{\vec{\theta}}=\dot{\theta}\cdot\hat{u}$ is the angular velocity vect
 =[\dot{\vec{\lambda}}_i]_\times R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)-R_x(\lambda)\big(J_r\big)[\dot{\vec{\lambda}}_i]_\times R_x^{-1}(\lambda)
 \end{equation}
 \end{subequations}
-Similarly for the inner ring's transformed inertial rate, $\dot{J}_{ir}'$, without the rotor's contribution:
+Similarly for the inner ring's transformed inertial rate $\dot{J}_{ir}'$, without the rotor's contribution, is:
 \begin{subequations}\label{eq:inner-deriv}
 \begin{equation}
 \rightarrow\dot{J}_{ir}'=\frac{d}{dt}\Big(R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)\Big)
@@ -993,7 +995,7 @@ Where $\vec{\Omega}_i\text{}\hspace{-2pt}'$ and $\dot{\vec{\Omega}}_i\text{}\hsp
 \dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'=\frac{d\vec{\Omega}}{dt}\big(R_x(\lambda)\vec{\Omega}_i\big)=R_x(\lambda)\dot{\vec{\Omega}}_i~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 \end{subequations}
-The net torque response from a $\Delta\lambda_i$ rotation, induced in the middle ring frame $\mathcal{F}^{M_i'}$, can be grouped into \emph{inertial rates}, second order \emph{inertial} and first order \emph{gyroscopic} components;
+The net torque response from an $\Delta\lambda_i$ rotation, induced in the middle ring frame $\mathcal{F}^{M_i'}$, can be grouped into \emph{inertial rates}, second order \emph{inertial} and first order \emph{gyroscopic} components;
 \begin{equation}\label{eq:torque-induced-inner}
 \vec{\tau}_\lambda=\underbrace{\big(\dot{J}_{r}'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\big(\dot{J}_{n}'\big)\dot{\vec{\lambda}}_i}_{Inertial~rates}+\underbrace{\big(J_r'\big)\dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'+\big(J_{n}'\big)\ddot{\vec{\lambda}}_i}_{Inertial}+\underbrace{\dot{\vec{\lambda}}_i\times \big(J_r'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\dot{\vec{\lambda}}_i\times \big(J_{n}'\big)\dot{\vec{\lambda}}_i}_{Gyroscopic}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
@@ -1174,7 +1176,7 @@ The net force is purely the gravitational force acting at point $\mathbf{B}$ as 
 \begin{equation}
 F_\mathbf{B}=-G=-m_b\vec{g}
 \end{equation}
-That torque and force pair, $F_\mathbf{B}$ and $\tau_\mathbf{B}$, and transferred to the massless rod connecting point $\mathbf{B}$ to $\mathbf{O}$, Fig:\ref{fig:lemma-b}. The net torque acting around point $\mathbf{O}$ is then comprised of three components; inferred torque from $\tau_\mathbf{B}$, a torque arm from force $F_\mathbf{B}$ and an inertial torque response to the effective "point-mass" at point $\mathbf{B}$ relative to $\mathbf{O}$:
+That torque and force pair, $F_\mathbf{B}$ and $\tau_\mathbf{B}$, are transferred to the massless rod connecting through point $\mathbf{B}$ to $\mathbf{O}$, Fig:\ref{fig:lemma-b}. The net torque acting around point $\mathbf{O}$ is then comprised of three components; inferred torque from $\tau_\mathbf{B}$, a torque arm from force $F_\mathbf{B}$ and an inertial torque response to the effective "point-mass" at point $\mathbf{B}$ relative to $\mathbf{O}$:
 \begin{equation}
 \tau_\mathbf{O}=-\tau_\phi=-\tau_\mathbf{B}-F_\mathbf{B}r\cos{\phi}+m_br^2(\ddot{\phi})
 \end{equation}
@@ -1220,18 +1222,18 @@ Where $\vec{\omega}_\mathbf{B}$ and $\vec{\omega}_\mathbf{O}$ are net angular ve
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-=\frac{d}{dt}\bigg(\big(J_\mathbf{B}\big)\Big(\dot{\theta}+\dot{\phi}\Big)+\big(m_br^2\big)\Big(\dot{\phi}\Big)\bigg)-m_bgr\sin\phi
+=\frac{d}{dt}\bigg(\big(J_\mathbf{B}\big)\Big(\dot{\theta}+\dot{\phi}\Big)+\big(m_br^2\big)\Big(\dot{\phi}\Big)\bigg)-m_bgr\cos\phi
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-\therefore\tau_\phi=J_\mathbf{B}(\ddot{\theta}+\ddot{\phi})+m_br^2(\ddot{\phi})-m_bgr\sin\phi
+\therefore\tau_\phi=J_\mathbf{B}(\ddot{\theta}+\ddot{\phi})+m_br^2(\ddot{\phi})-m_bgr\cos\phi
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:lemma-torque}
 =J_b\ddot{\theta}+J_b'\ddot{\phi}+\tau_g
 \end{equation}
 \end{subequations}
-Where $J_b'$ \underline{is} the parallel axis inertia and $\tau_g$ is the gravitational torque arm contribution. The above then leads to the corollary ascertained from the system in Fig:\ref{fig:lemma-1};
+Where $J_b'$ \underline{is the parallel axis} inertia and $\tau_g$ is the gravitational torque arm contribution. The above then leads to the corollary ascertained from the system in Fig:\ref{fig:lemma-1}:
 \begin{lemma}\label{lem:1}
 A torque response opposed to angular acceleration of a doubly rotating body can be found as the contribution of the principle rotational inertia about the first axis of rotation with \underline{only} the first rotational acceleration and a parallel axis inertia about the second rotational axis with the second, independent rotational velocity.
 \par
@@ -1267,7 +1269,7 @@ Where $\sigma_i$ in Eq:\ref{eq:module-inertia-body} is the relative orthogonal $
 \begin{equation}
 \frac{d}{dt}\Big(R_z(\sigma)\big(J\big)R_z^{-1}(\sigma)\Big)=0
 \end{equation}
-So, dropping the $\sigma$ argument, $R_z(\sigma)\Rightarrow R_z$ implied; the rotor, inner and middle inertial rates then follow respectively:
+So, dropping the $\sigma$ argument, here $R_z(\sigma)\Rightarrow R_z$ is implied; the rotor, inner and middle inertial rates then follow respectively:
 \begin{equation}\label{eq:body-rotor-rate}
 \dot{J}_r'''=R_z\big(\dot{J}_r''\big)R_z^{-1}
 \end{equation}
@@ -1285,7 +1287,7 @@ Similarly, the angular velocities for each separate body (rotor, inner and middl
 \begin{equation}
 \vec{\omega}_{r/I}=\vec{\Omega}_i'''+\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i\text{}\hspace{-2pt}'+\vec{\omega}_{b/I}
 \end{equation}
-\vspace{-14pt}
+\vspace{-16pt}
 \begin{equation}
 =R_zR_y(\alpha)R_x(\lambda)\vec{\Omega}+R_zR_y(\alpha)\dot{\vec{\lambda}}_i+R_z\dot{\vec{\alpha}}_i+\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
@@ -1295,7 +1297,7 @@ Extending that to the inner ring:
 \begin{equation}
 \vec{\omega}_{M_i/I}=\dot{\vec{\lambda}}_i''+\dot{\vec{\alpha}}_i\text{}\hspace{-2pt}'+\vec{\omega}_{b/I}
 \end{equation}
-\vspace{-14pt}
+\vspace{-16pt}
 \begin{equation}
 =R_zR_y(\alpha)\dot{\vec{\lambda}}_i+R_z\dot{\vec{\alpha}}_i+\vec{\omega}_{b/I}~~~~\in\mathcal{F}^b
 \end{equation}
@@ -1305,7 +1307,7 @@ And lastly the middle ring structure has a relative angular velocity:
 \begin{equation}
 \vec{\omega}_{M_i'/I}=\dot{\vec{\alpha}}_i\text{}\hspace{-2pt}'+\vec{\omega}_{b/I}
 \end{equation}
-\vspace{-14pt}
+\vspace{-16pt}
 \begin{equation}
 =R_z\dot{\vec{\alpha}}_i+\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
@@ -1315,15 +1317,24 @@ Noting that Lemma:\ref{lem:1} and the parallel axis term in Eq:\ref{eq:lemma-tor
 \begin{equation}
 C.M_\text{p}'=\frac{m_\text{n}C.M_\text{n}'+m_\text{m}C.M_\text{m}'}{m_\text{p}}
 \end{equation}
-With $C.M_\text{n}'$ and $C.M_\text{m}$ being rotated inner and middle ring centers of mass respectively from Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d}:
+With $C.M_\text{n}'$ and $C.M_\text{m}'$ being rotated inner and middle ring centers of mass respectively from Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d}:
 \begin{equation}
 \therefore C.M_\text{p}'=\frac{m_\text{n}R_zR_y(\alpha)R_x(\lambda)C.M_\text{n}+m_\text{m}R_zR_y(\alpha)C.M_\text{m}}{m_\text{n}+m_\text{n}}
 \end{equation}
-Which leads to the vector difference $\Delta L_i$:
+Which leads to the vector difference $\Delta L_i$, illustrated in Fig:\ref{fig:vector-diff}.
 \begin{equation}
 \Delta L_i=\vec{L}_i-C.M_\text{p}'
 \end{equation}
-The time derivative of that module's moving center of gravity, $C.M_\text{p}$ relative to the origin $\vec{\mathbf{O}}_b$, is:
+\begin{figure}[hbtp]
+\vspace{-20pt}
+\centering
+\includegraphics[width=0.55\textwidth]{figs/vector-diff}
+\caption{Illustration of rotated center of gravity $C.M_\text{p}'$}
+\label{fig:vector-diff}
+\vspace{-20pt}
+\end{figure}
+\par
+The time derivative of that module's moving center of gravity, $C.M_\text{p}'$ relative to the origin $\vec{\mathbf{O}}_b$, is:
 \begin{equation}
 \Delta \dot{L}_i=-\frac{d}{dt}\Big(C.M_\text{p}'\Big)
 \end{equation}
@@ -1341,12 +1352,12 @@ Or, using the definition of inner and outer products:
 \begin{equation}
 =m_\text{p}\Big(\big[\Delta L_i\big]^T\big[\Delta L_i\big]-\big[\Delta L_i\big]\big[\Delta L_i\big]^T\Big)
 \end{equation}
-Which leads to the that point mass's inertial rate $\dot{J}_H$:
+Which leads to the that point mass's inertial rate $d/dt\big({J}_H\big)$:
 \begin{equation}\label{eq:module-point-mass-rate}
 \dot{J}_H=m_\text{p}\Big(\big[\Delta \dot{L}_i\big]^T\big[\Delta L_i\big]+\big[\Delta L_i\big]^T\big[\Delta \dot{L}_i\big]-\big[\Delta \dot{L}_i\big]\big[\Delta L_i\big]^T-\big[\Delta L_i\big]\big[\Delta \dot{L}_i\big]^T\Big)
 \end{equation}
 \end{subequations}
-Unfortunately that inertial rate, Eq:\ref{eq:module-point-mass-rate}, cannot be simplified further to a more concise form. The Lagrangian for the energy of a single motor module, about the origin $\vec{\mathbf{O}}_b$, $\mathcal{L}_{p_i}$ can then be constructed. This time, \emph{including} the gravitational potential energy component:
+Unfortunately that inertial rate, $\dot{J}_H$ in Eq:\ref{eq:module-point-mass-rate}, cannot be simplified further to a more concise form. The Lagrangian for the energy of a single motor module, about the origin $\vec{\mathbf{O}}_b$, $\mathcal{L}_{p_i}$ can then be constructed. This time, \emph{including} the gravitational potential energy component:
 \begin{multline}
 \mathcal{L}_{p_i}=\frac{1}{2}\vec{\omega}_{r/I}^T\big(J_r'''\big)\vec{\omega}_{r/I}+\frac{1}{2}\vec{\omega}_{M_i/I}^T\big(J_{ir}'''\big)\vec{\omega}_{M_i/I}+\frac{1}{2}\vec{\omega}_{M_i'/I}^T\big(J_m''\big)\vec{\omega}_{M_i'/I}+\vec{\omega}_{b/I}^T\big(J_H)\vec{\omega}_{b/I}\\-m_p\vec{G}_b\cdot\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)
 \end{multline}
@@ -1420,11 +1431,11 @@ The generalized torque acting on a single motor module, $\vec{\tau}_M$ from Eq:\
 \begin{multline}\label{eq:module-response}
 \vec{\tau}_M=R_z\vec{\tau}_\alpha(\lambda)+R_zR_y(\alpha)\vec{\tau}_\lambda+\big(\dot{J}_{\vec{\mathbf{M}}_i}'\big)\vec{\omega}_b+\big(J_{\vec{\mathbf{M}}_i}'\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_{\vec{\mathbf{M}}_i}'\big)\vec{\omega}_b
 \\
-+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)+m_p\vec{G}_b\times\Delta{L}_i
++\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)+m_p\vec{G}_b\times\Delta{L}_i~~~~\in\mathcal{F}^b
 \end{multline}
 Considering the rigid body response for the body structure's motion, $J_y$. That structure's inertia $J_y$ is a constant which represents the vehicle's constant, rigid inertias which are not included in the motor module; defined previously in Eq:\ref{eq:inertia.body.c}.
 \begin{equation}\label{eq:structure-response}
-\vec{\tau}_y=\big(J_y\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_y\big)\vec{\omega}_b
+\vec{\tau}_y=\big(J_y\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_y\big)\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
 The net response for the \emph{entire} multibody system is then a sum of Eq:\ref{eq:module-response} for modules $i\in[1:4]$ and $\vec{\tau}_y$ in Eq:\ref{eq:structure-response}. By inspection, without constructing a complete Lagrangian for the entire system, the net torque acting on the body frame $\mathcal{F}^b$ is:
 \begin{equation}\label{eq:3.85}
@@ -1452,7 +1463,7 @@ And defining a new response torque $\vec{\tau}_b$ which represents collective re
 \vec{\tau}_b\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[R_z\vec{\tau}_\alpha(\lambda)+R_zR_y(\alpha)\vec{\tau}_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]
 \end{equation}
 \end{subequations}
-Nothing that $\dot{J}_b(u)$ is another introduced term which is the sum of all module inertia rates from Eq:\ref{eq:module-inertia-rates}, given that body structures inertia $J_y$ is constant:
+Noting that $\dot{J}_b(u)$ is another introduced term which is the sum of all module inertia rates from Eq:\ref{eq:module-inertia-rates}, given that body structures inertia $J_y$ is constant:
 \begin{equation}\label{eq:net-body-approx}
 \dot{J}_b(u)\triangleq \sum_{i=1}^4 \big(\dot{J}_{\vec{\mathbf{M}}_i}'\big)
 \end{equation}
@@ -1460,20 +1471,21 @@ The torque $\vec{\tau}_b$ in Eq:\ref{eq:net-body-response} is the most important
 \begin{equation}
 \hat{\tau}_b\triangleq\dot{J}_b(u)\vec{\omega}_b\approx\vec{\tau}_b\Big|_{\alpha,\lambda<<1}
 \end{equation}
-Moreover, that inertial rate for $\dot{J}_b$ could be further approximated simply by the difference of instantaneous calculations for $J_b(u)$ at some sample time $n$; if a constant sample rate or time difference $\Delta t$ is known:
-\begin{equation}
-\dot{J}_b(u)\approx \big(J_b(u_n)-J_b(u_{n-1})\big)/\Delta t
-\end{equation}
-The difference between an approximated torque $\hat{\tau}_b$ and the true body torque $\vec{\tau}_b$ for a typical flight envelope is plotted in Fig:\ref{fig:tau-body}. Using Eq:\ref{eq:net-body-approx} and Eq:\ref{eq:net-body-response} respectively for $\hat{\tau}_b$ and $\vec{\tau}_b$ 
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
-\includegraphics[width=0.5\textwidth]{graphs/tau-body}
+\includegraphics[width=0.45\textwidth]{graphs/tau-body}
 \caption{Approximated and true body torque responses}
 \vspace{-12pt}
 \label{fig:tau-body}
 \vspace{-6pt}
 \end{figure}
+\par
+Moreover, that inertial rate for $\dot{J}_b$ could be further approximated simply by the difference of instantaneous calculations for $J_b(u)$ at some sample time $n$; if a constant sample rate or time difference $\Delta t$ is known:
+\begin{equation}
+\dot{J}_b(u)\approx \big(J_b(u_n)-J_b(u_{n-1})\big)/\Delta t
+\end{equation}
+The difference between an approximated torque $\hat{\tau}_b$ and the true body torque $\vec{\tau}_b$ for a typical flight envelope is plotted in Fig:\ref{fig:tau-body}. Using Eq:\ref{eq:net-body-approx} and Eq:\ref{eq:net-body-response} respectively for $\hat{\tau}_b$ and $\vec{\tau}_b$ 
 \par
 Uncertainties associated with the above inertial models or their particular values can easily be compensated for as disturbances. More specifically uncertainties of the above equations system are modelled as plant dependent state uncertainties; and could be adaptively compensated for accordingly\ldots
 %====================================================
