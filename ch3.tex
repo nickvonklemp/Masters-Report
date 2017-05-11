@@ -1464,11 +1464,11 @@ And defining a new response torque $\vec{\tau}_b$ which represents collective re
 \end{equation}
 \end{subequations}
 Noting that $\dot{J}_b(u)$ is another introduced term which is the sum of all module inertia rates from Eq:\ref{eq:module-inertia-rates}, given that body structures inertia $J_y$ is constant:
-\begin{equation}\label{eq:net-body-approx}
+\begin{equation}
 \dot{J}_b(u)\triangleq \sum_{i=1}^4 \big(\dot{J}_{\vec{\mathbf{M}}_i}'\big)
 \end{equation}
 The torque $\vec{\tau}_b$ in Eq:\ref{eq:net-body-response} is the most important result here, however; definitions of $\vec{\tau}_\alpha(\lambda)$ and $\vec{\tau}_\lambda$ in Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively were necessary to simplify and isolate different components of Eq:\ref{eq:net-body-response}. Depending on the magnitude of $\dot{\lambda}_i$ and $\dot{\alpha}_i$; $\vec{\tau}_b$ could be further simplified to an approximation $\hat{\tau}_b$:
-\begin{equation}
+\begin{equation}\label{eq:net-body-approx}
 \hat{\tau}_b\triangleq\dot{J}_b(u)\vec{\omega}_b\approx\vec{\tau}_b\Big|_{\alpha,\lambda<<1}
 \end{equation}
 \begin{figure}[hbtp]
@@ -1481,7 +1481,7 @@ The torque $\vec{\tau}_b$ in Eq:\ref{eq:net-body-response} is the most important
 \vspace{-6pt}
 \end{figure}
 \par
-Moreover, that inertial rate for $\dot{J}_b$ could be further approximated simply by the difference of instantaneous calculations for $J_b(u)$ at some sample time $n$; if a constant sample rate or time difference $\Delta t$ is known:
+Moreover, that inertial rate for $\dot{J}_b$ could be further approximated simply as the difference of instantaneous calculations for $J_b(u)$ at some sample time $n$; if a constant sample rate or time difference $\Delta t$ is known:
 \begin{equation}
 \dot{J}_b(u)\approx \big(J_b(u_n)-J_b(u_{n-1})\big)/\Delta t
 \end{equation}
@@ -1489,10 +1489,10 @@ The difference between an approximated torque $\hat{\tau}_b$ and the true body t
 \par
 Uncertainties associated with the above inertial models or their particular values can easily be compensated for as disturbances. More specifically uncertainties of the above equations system are modelled as plant dependent state uncertainties; and could be adaptively compensated for accordingly\ldots
 %====================================================
-\subsection{Induced model simulation and verification}
+\subsection{Simulation and verification of induced model}
 \label{subsec:dynamics.nonlinearities.torque-tests}
 %====================================================
-\subsubsection{Simulation of model}
+\subsubsection{Linearization simulation and comparison}
 Previously, in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, the proposed Lagrangian energy functions for both $\Delta\lambda$ and $\Delta\alpha$ servo rotations and responses to body angular velocities $\vec{\omega}_b$ were derived. Reiterating those energy equations; the inner ring net (kinetic) energy Lagrangian from Eq:\ref{eq:lagrange-inner} is:
 \begin{subequations}
 \begin{equation}\label{eq:sim-lagrange-inner}
@@ -1515,40 +1515,50 @@ And similarly for the middle ring's net (kinetic) energy from Eq:\ref{eq:alpha-l
 +\frac{1}{2}\Big(\dot{\vec{\alpha}}_i\Big)^T\Big(R_y(\alpha)\big(J_m\big)R_y^{-1}(\alpha)\Big)\Big(\dot{\vec{\alpha}}_i\Big)
 \end{multline}
 \end{subequations}
-Solving for the generalized forces acting on each system requires application of Euler-Lagrange formulation, using partial derivatives relative to generalized path co-ordinates. Both the inner and middle ring systems were defined with relative co-ordinate paths for the angular servo position $\vec{\mathbf{u}}=[\lambda_i~0~0]^T$ and $\vec{\mathbf{v}}=[0~\alpha_i~0]^T$ respectively. The generalized forces for both systems are then:
+Solving for the generalized forces acting on each system requires application of Euler-Lagrange formulation, using partial derivatives relative to generalized path co-ordinates. Both the inner and middle ring systems were defined with relative co-ordinate paths for the angular servo position $\vec{\mathbf{u}}=[\lambda_i~0~0]^T$ and $\vec{\mathbf{v}}=[0~\alpha_i~0]^T$ respectively. The generalized forces for both systems are then, using the Euler-Lagrange formulation:
 \begin{equation}\label{eq:sim-lagranges}
 \frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\mathbf{U}}~~\text{and}~~\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i''}}{\partial\vec{\mathbf{v}}}=\vec{\mathbf{V}}
 \end{equation}
-The assumption in Eq:\ref{eq:rotation-linear}, presented in \cite{rotationlinearize}, is applied to linearize and simplify partial derivatives of the respective inner and middle ring Lagrangians in Eq:\ref{eq:sim-lagranges}. Those simplifications are such that Eq:\ref{eq:sim-lagranges} becomes:
-\begin{equation}
+The assumption in Eq:\ref{eq:rotation-linear}, presented in \cite{rotationlinearize}, is used to linearize and reduce partial derivatives of the respective inner and middle ring Lagrangians in Eq:\ref{eq:sim-lagranges}. Those simplifications are such that Eq:\ref{eq:sim-lagranges} becomes:
+\begin{equation}\label{eq:sim-lagranges-linear}
 \frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)=\vec{\mathbf{U}}~\Big|_{\big(\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}\big)\approx 0}~~\text{and}~~\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\bigg)=\vec{\mathbf{V}}\Big|_{\big(\partial\mathcal{L}_{M_i''}/\partial\vec{\mathbf{v}}\big)\approx 0}
 \end{equation}
 Considering first the case of the inner ring Lagrangian $\mathcal{L}_{M_i'}$ in Eq:\ref{eq:sim-lagrange-inner-expand}; the partial derivative with respect to path variable $\vec{\mathbf{u}}=\vec{\lambda}_i$ was simplified:
 \begin{equation}\label{eq:sim-lagrange-inner-simple}
 \frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\frac{\partial}{\partial\vec{\lambda}_i}\big(\mathcal{L}_{M_i'}\big)\approx 0
 \end{equation}
-Testing that assumption, presented in Eq:\ref{eq:rotation-linear}; the partial derivatives of the rotor's transformed inertia in Eq:\ref{eq:sim-lagrange-inner-expand}, with respect to $\vec{\lambda}_i$, are as per the product rule:
+Expanding Eq:\ref{eq:sim-lagrange-inner-simple} and finding the partial derivative of that Lagrangian, $\mathcal{L}_{M_i'}$ in Eq:\ref{eq:sim-lagrange-inner-expand}, with respect to $\vec{\mathbf{u}}=\vec{\lambda}_i$:
+\begin{multline}\label{eq:3.118}
+\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\lambda}_i}=\frac{1}{2}\bigg(\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\vec{\Omega}\Big)\bigg)^T\Big(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\Big)\Big(R_x(\lambda)\vec{\Omega}+\dot{\vec{\lambda}}_i\Big)
+\\
++\frac{1}{2}\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\bigg(\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\Big)\bigg(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)
+\\
++\frac{1}{2}\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\Big(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\Big)\bigg(\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\vec{\Omega}_i\Big)\bigg)
+\\
++\frac{1}{2}\Big(\dot{\vec{\lambda}}_i\Big)^T\bigg(\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)\Big)\bigg)\Big(\dot{\vec{\lambda}}_i\Big)
+\end{multline}
+Testing that assumption, presented in Eq:\ref{eq:rotation-linear}; the partial derivatives in Eq:\ref{eq:3.118} are expanded upon. First considering the rotor's transformed inertia $J_r'$ with a partial derivative as per the differential product rule:
 \begin{subequations}
 \begin{equation}
 \frac{\partial}{\partial\vec{\mathbf{u}}} J_r' = \frac{\partial}{\partial\vec{\lambda}_i}\bigg(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\bigg)
 \end{equation}
-\vspace{-14pt}
+\vspace{-8pt}
 \begin{equation}\label{eq:sim-inner-partial-rotor}
 =\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\Big)\big(J_r\big)R_x^{-1}(\lambda)+R_x(\lambda)\big(J_r\big)\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x^{-1}(\lambda)\Big)
 \end{equation}
-Similarly for the inner ring's contribution in Eq:\ref{eq:sim-lagrange-inner-expand} without the rotor body's inertia:
+Similarly for the inner ring's contribution $J_{ir}'$ in Eq:\ref{eq:sim-lagrange-inner-expand}, without the rotor body's inertia:
 \begin{equation}\label{eq:sim-inner-partial-inner}
 \frac{\partial}{\partial\vec{\mathbf{u}}}J_{ir}'=\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\Big)\big(J_{ir}\big)R_x^{-1}(\lambda)+R_x(\lambda)\big(J_{ir}\big)\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x^{-1}(\lambda)\Big)
 \end{equation}
 The final partial derivative to consider is that of the rotor's angular velocity $\vec{\Omega}_i$ but transformed into the inner middle ring frame $\mathcal{F}^{M_i'}$ which the Lagrangian Eq:\ref{eq:sim-lagrange-inner} is taken with respect to:
 \begin{equation}\label{eq:sim-inner-partial-angular}
-\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\Big)\vec{\Omega}_i
+\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\vec{\Omega}_i\Big)
 \end{equation}
 \end{subequations}
 The application of the rotation matrix linearization, from Eq:\ref{eq:rotation-linear}, to the partial derivative rotations in Eq:\ref{eq:sim-inner-partial-rotor}-\ref{eq:sim-inner-partial-rotor} is:
 \begin{subequations}
 \begin{equation}\label{eq:sim-rot-linear}
-R_x(\bar{\lambda}_i+\partial\lambda_i)\approx\big(1-[\Phi_x(\bar{\lambda}_i)\partial\lambda_i]_\times\big)R_x(\bar{\lambda}_i)
+R_x(\bar{\lambda}_i+\partial\lambda_i)\approx\Big(1-[\Phi_x(\bar{\lambda}_i)\partial\lambda_i]_\times\Big)R_x(\bar{\lambda}_i)
 \end{equation}
 Where $\Phi_x(\bar{\lambda}_i)$ is simply the partial derivative of the Euler matrix, $\Phi(\eta)$ from Eq:\ref{eq:angular-rates.f}, with respect to an $\hat{X}$ axis rotation. That being:
 \begin{equation}
@@ -1585,25 +1595,63 @@ That simplification then applies to Eq:\ref{eq:sim-inner-partial-rotor},\ref{eq:
 \frac{\partial}{\partial\vec{\lambda}_i}R_x(\lambda)\vec{\Omega}_i\approx 0
 \end{equation}
 \end{subequations}
-It can therefore be said that the assumption in Eq:\ref{eq:sim-lagrange-inner-simple} is fair, or that:
+It can therefore be said that the assumption in Eq:\ref{eq:sim-lagrange-inner-simple} is not without merit, or that:
 \begin{equation}
 \frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\approx 0\rightarrow\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\approx\frac{d}{dt}\Big(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\lambda}}_i}\Big)=\vec{\mathbf{U}}=\hat{\tau}_\lambda
 \end{equation}
-For a final test of those simplifications, a \textbf{Simulink} loop is made which applies a direct comparison of $\vec{\tau}_\lambda$, from Eq:\ref{eq:torque-induced-inner}, both with and without the rotation matrix linearization. Convention has it that an estimated or simulated values are denoted with a hat accent. Therefore a calculated inner ring torque response \emph{with linearized} partial derivatives as per Eq:\ref{eq:inner-ring-linearizations} is termed as $\hat{\tau}_\lambda$. The true representation of the induced torque response, $\vec{\tau}_\lambda$ is calculated from the following block model illustrated in Fig:\ref{fig:linear-block}.
-\par
-\begin{figure}[hbtp]
+For a final verification of those simplifications, a \textbf{Simulink} model is built that applies a direct comparison of $\vec{\tau}_\lambda$, originally from Eq:\ref{eq:torque-induced-inner}, both \emph{with} and \emph{without} the rotation matrix linearization. Convention has it that an estimated or simulated values are denoted with a hat accent. Therefore a calculated inner ring torque response \emph{with linearized} partial derivatives as per Eq:\ref{eq:inner-ring-linearizations} is termed as $\hat{\tau}_\lambda$. The true representation of the induced torque response, $\vec{\tau}_\lambda$, is calculated from the block model detailed in Fig:\ref{fig:linear-block}.
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{figs/linear-block}
 \caption{Simulink Lagrangian block}
 \label{fig:linear-block}
+\vspace{-15pt}
 \end{figure}
-Where the block $u(t)$ generates a commanded change in actuator position, $\Delta u$, which affects the actuator dynamics $P(s)$ detailed in Sec:\ref{subsec:proto.design.transfer}. That argument $u$ is then used to calculate the full Lagrangian:
+\par
+Where the block $u(t)$ represents some commanded change in actuator positions, $\Delta u$. That actuator change affects the actuator dynamics, grouped together here as the block $P(s)$ but detailed previously in Sec:\ref{subsec:proto.design.transfer}. That argument $u$ then leads to a servo position for $\lambda_i$ which can then be used to calculate the complete Euler-Lagrangian equation:
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\tau}_\lambda
 \end{equation}
-Fig:\ref{fig:tau-lamba-hat} shows plots for both estimated $\hat{\tau}_\lambda$ and simulated $\vec{\tau}_\lambda$. Various steps up from a starting constant $\lambda(0)$ to set points are shown in Fig:\ref{fig:tau-lamba-hat-up} whilst Fig:\ref{fig:tau-lmabda-hat-down} shows steps down from starting points to $\lambda(0)$. The variation from $\hat{\tau}_\lambda$ to $\vec{\tau}_\lambda$ is an order of magnitude smaller than the peak of either signals. 
-
-an down from a starting $\lambda_i(0)$.
+Fig:\ref{fig:tau-lambda-hat} shows plots for both estimated $\hat{\tau}_\lambda$ and simulated $\vec{\tau}_\lambda$ with a constant angular propeller speed $\vec{\Omega}_i=6500~[\text{RPM}]$. Steps up from a starting constant $\lambda(0)$ to various set points are shown in Fig:\ref{fig:tau-lambda-hat-up} whilst Fig:\ref{fig:tau-lambda-hat-down} shows steps down from various starting points to a constant $\lambda(0)$. 
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat-up}
+\caption{$\hat{\tau}_\lambda$ steps up}
+\label{fig:tau-lambda-hat-up}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat-down}
+\caption{$\hat{\tau}_\lambda$ steps down}
+\label{fig:tau-lambda-hat-down}
+\end{subfigure}
+\caption{Inner ring induced torque simulations for $\vec{\tau}_\lambda$}
+\label{fig:tau-lambda-hat}
+\end{figure}
+\par
+The difference between $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. That difference, when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-4}~~[\text{Nm}]$ whilst both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ are an order of magnitude greater than that; $\times 10^{-3}~~[\text{Nm}]$. 
+\par
+Following the same process applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, yields results plotted collectively in Fig:\ref{fig:tau-alpha-hat}. The same constant propeller speed $\vec{\Omega}_i=6500~~[\text{RPM}]$ was used together with a constant $\lambda_i=\pi/5~~[\text{rad}]$ position for the inner ring's servo.
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat-up}
+\caption{$\hat{\tau}_\alpha$ steps up}
+\label{fig:tau-alpha-hat-up}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat-down}
+\caption{$\hat{\tau}_\alpha$ steps down}
+\label{fig:tau-alpha-hat-down}
+\end{subfigure}
+\caption{Middle ring induced torque simulations for $\vec{\tau}_\alpha$}
+\label{fig:tau-alpha-hat}
+\end{figure}
+\par
+From plots in both Fig:\ref{fig:tau-lambda-hat} and Fig:\ref{fig:tau-alpha-hat}; it is shown that assumptions for linearizing rotation matrices in the calculations for generalized forces in Eq:\ref{eq:sim-lagranges} is not an unreasonable simplification. The linearization(s) proposed in Eq:\ref{eq:sim-lagranges-linear} hold true so long as the step size for $\Delta\lambda_i$ or $\Delta\alpha_i$ are small enough, which is always the case for the control loop. It reduces the overhead required for calculating torque responses to actuator changes. 
 \subsubsection{Dynamic model verification}
 extended to partial derivatives 
 
