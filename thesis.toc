@@ -36,57 +36,59 @@
 \contentsline {section}{\numberline {3.3}Multibody Nonlinearities}{58}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Relative Rotational Gyroscopic \& Inertial Torques}{58}{subsection.3.3.1}
 \contentsline {subsection}{\numberline {3.3.2}Induced model simulation and verification}{72}{subsection.3.3.2}
-\contentsline {section}{\numberline {3.4}Consolidated Model}{74}{section.3.4}
-\contentsline {chapter}{\numberline {4}Controller Development}{76}{chapter.4}
-\contentsline {section}{\numberline {4.1}Stability}{76}{section.4.1}
-\contentsline {section}{\numberline {4.2}Control Loop}{76}{section.4.2}
-\contentsline {section}{\numberline {4.3}Control Plant Inputs}{78}{section.4.3}
-\contentsline {section}{\numberline {4.4}Lyapunov Stability Theorem}{80}{section.4.4}
-\contentsline {section}{\numberline {4.5}Attitude Control}{81}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}The Attitude Control Problem}{81}{subsection.4.5.1}
-\contentsline {subsection}{\numberline {4.5.2}Linear Controllers}{81}{subsection.4.5.2}
-\contentsline {subsubsection}{PD Controller}{81}{subsection.4.5.2}
-\contentsline {subsubsection}{Auxiliary Plant Controller}{83}{equation.4.5.29}
-\contentsline {subsection}{\numberline {4.5.3}Non-linear Controllers}{86}{subsection.4.5.3}
-\contentsline {subsubsection}{Ideal Backstepping Controller}{86}{subsection.4.5.3}
-\contentsline {subsubsection}{Adaptive Backstepping Controller}{88}{equation.4.5.2}
-\contentsline {section}{\numberline {4.6}Position Control}{89}{section.4.6}
-\contentsline {subsection}{\numberline {4.6.1}PD Controller}{90}{subsection.4.6.1}
-\contentsline {subsection}{\numberline {4.6.2}Adaptive Backstepping Controller}{91}{subsection.4.6.2}
-\contentsline {section}{\numberline {4.7}Controller Allocation}{93}{section.4.7}
-\contentsline {subsection}{\numberline {4.7.1}Pseudo Inverse Allocator}{96}{subsection.4.7.1}
-\contentsline {subsection}{\numberline {4.7.2}Weighted Pseudo Inverse Allocator}{98}{subsection.4.7.2}
-\contentsline {subsection}{\numberline {4.7.3}Priority Norm Inverse Allocator}{99}{subsection.4.7.3}
-\contentsline {subsection}{\numberline {4.7.4}Non-linear Plant Control Allocation}{101}{subsection.4.7.4}
-\contentsline {subsection}{\numberline {4.7.5}Online Optimized Secondary Goal Allocator}{101}{subsection.4.7.5}
-\contentsline {chapter}{\numberline {5}Simulations \& Results}{102}{chapter.5}
-\contentsline {section}{\numberline {5.1}Controller Tuning}{103}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{103}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{103}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{103}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{103}{subsection.5.1.4}
-\contentsline {subsection}{\numberline {5.1.5}PD}{103}{subsection.5.1.5}
-\contentsline {subsection}{\numberline {5.1.6}XPD}{103}{subsection.5.1.6}
-\contentsline {subsection}{\numberline {5.1.7}IBC}{103}{subsection.5.1.7}
-\contentsline {subsection}{\numberline {5.1.8}ABC}{103}{subsection.5.1.8}
-\contentsline {section}{\numberline {5.2}Allocator Optimization}{103}{section.5.2}
-\contentsline {section}{\numberline {5.3}Simulation Block}{103}{section.5.3}
-\contentsline {section}{\numberline {5.4}Optimized Controller Results}{103}{section.5.4}
-\contentsline {subsection}{\numberline {5.4.1}Attitude Control}{103}{subsection.5.4.1}
-\contentsline {subsection}{\numberline {5.4.2}Position Control}{103}{subsection.5.4.2}
-\contentsline {subsection}{\numberline {5.4.3}Allocator Performance}{103}{subsection.5.4.3}
-\contentsline {section}{\numberline {5.5}State Estimation}{103}{section.5.5}
-\contentsline {subsection}{\numberline {5.5.1}Attitude Control Results}{103}{subsection.5.5.1}
-\contentsline {subsection}{\numberline {5.5.2}Autopilot Outcome}{103}{subsection.5.5.2}
-\contentsline {chapter}{\numberline {6}Prototype Flight Results}{104}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{105}{chapter.7}
-\contentsline {chapter}{\numberline {A}Expanded Equations}{106}{appendix.A}
-\contentsline {section}{\numberline {A.1}Standard Quadrotor Dynamics}{106}{section.A.1}
-\contentsline {section}{\numberline {A.2}Blade-Element Momentum Expansion}{108}{section.A.2}
-\contentsline {section}{\numberline {A.3}Euler-Angles from Quaternions}{108}{section.A.3}
-\contentsline {chapter}{\numberline {B}Design Bill of Materials}{109}{appendix.B}
-\contentsline {section}{\numberline {B.1}Parts List}{109}{section.B.1}
-\contentsline {section}{\numberline {B.2}F3 Deluxe Schematic Diagram}{114}{section.B.2}
-\contentsline {chapter}{\numberline {C}System ID Test Data}{115}{appendix.C}
-\contentsline {section}{\numberline {C.1}Thrust and Torque Test Data}{115}{section.C.1}
-\contentsline {section}{\numberline {C.2}Cobra CM2208-200KV Thrust Data}{116}{section.C.2}
+\contentsline {subsubsection}{Simulation of model}{72}{subsection.3.3.2}
+\contentsline {subsubsection}{Dynamic model verification}{74}{equation.3.3.122}
+\contentsline {section}{\numberline {3.4}Consolidated Model}{75}{section.3.4}
+\contentsline {chapter}{\numberline {4}Controller Development}{77}{chapter.4}
+\contentsline {section}{\numberline {4.1}Stability}{77}{section.4.1}
+\contentsline {section}{\numberline {4.2}Control Loop}{77}{section.4.2}
+\contentsline {section}{\numberline {4.3}Control Plant Inputs}{79}{section.4.3}
+\contentsline {section}{\numberline {4.4}Lyapunov Stability Theorem}{81}{section.4.4}
+\contentsline {section}{\numberline {4.5}Attitude Control}{82}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}The Attitude Control Problem}{82}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Linear Controllers}{82}{subsection.4.5.2}
+\contentsline {subsubsection}{PD Controller}{82}{subsection.4.5.2}
+\contentsline {subsubsection}{Auxiliary Plant Controller}{84}{equation.4.5.29}
+\contentsline {subsection}{\numberline {4.5.3}Non-linear Controllers}{87}{subsection.4.5.3}
+\contentsline {subsubsection}{Ideal Backstepping Controller}{87}{subsection.4.5.3}
+\contentsline {subsubsection}{Adaptive Backstepping Controller}{89}{equation.4.5.2}
+\contentsline {section}{\numberline {4.6}Position Control}{90}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}PD Controller}{91}{subsection.4.6.1}
+\contentsline {subsection}{\numberline {4.6.2}Adaptive Backstepping Controller}{92}{subsection.4.6.2}
+\contentsline {section}{\numberline {4.7}Controller Allocation}{94}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Pseudo Inverse Allocator}{97}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}Weighted Pseudo Inverse Allocator}{99}{subsection.4.7.2}
+\contentsline {subsection}{\numberline {4.7.3}Priority Norm Inverse Allocator}{100}{subsection.4.7.3}
+\contentsline {subsection}{\numberline {4.7.4}Non-linear Plant Control Allocation}{102}{subsection.4.7.4}
+\contentsline {subsection}{\numberline {4.7.5}Online Optimized Secondary Goal Allocator}{102}{subsection.4.7.5}
+\contentsline {chapter}{\numberline {5}Simulations \& Results}{103}{chapter.5}
+\contentsline {section}{\numberline {5.1}Controller Tuning}{104}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Partical Swarm Based Optimization}{104}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Performance Metric}{104}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Global \& Local Minima}{104}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Fmincon Differences}{104}{subsection.5.1.4}
+\contentsline {subsection}{\numberline {5.1.5}PD}{104}{subsection.5.1.5}
+\contentsline {subsection}{\numberline {5.1.6}XPD}{104}{subsection.5.1.6}
+\contentsline {subsection}{\numberline {5.1.7}IBC}{104}{subsection.5.1.7}
+\contentsline {subsection}{\numberline {5.1.8}ABC}{104}{subsection.5.1.8}
+\contentsline {section}{\numberline {5.2}Allocator Optimization}{104}{section.5.2}
+\contentsline {section}{\numberline {5.3}Simulation Block}{104}{section.5.3}
+\contentsline {section}{\numberline {5.4}Optimized Controller Results}{104}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Attitude Control}{104}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Position Control}{104}{subsection.5.4.2}
+\contentsline {subsection}{\numberline {5.4.3}Allocator Performance}{104}{subsection.5.4.3}
+\contentsline {section}{\numberline {5.5}State Estimation}{104}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Attitude Control Results}{104}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Autopilot Outcome}{104}{subsection.5.5.2}
+\contentsline {chapter}{\numberline {6}Prototype Flight Results}{105}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{106}{chapter.7}
+\contentsline {chapter}{\numberline {A}Expanded Equations}{107}{appendix.A}
+\contentsline {section}{\numberline {A.1}Standard Quadrotor Dynamics}{107}{section.A.1}
+\contentsline {section}{\numberline {A.2}Blade-Element Momentum Expansion}{109}{section.A.2}
+\contentsline {section}{\numberline {A.3}Euler-Angles from Quaternions}{109}{section.A.3}
+\contentsline {chapter}{\numberline {B}Design Bill of Materials}{110}{appendix.B}
+\contentsline {section}{\numberline {B.1}Parts List}{110}{section.B.1}
+\contentsline {section}{\numberline {B.2}F3 Deluxe Schematic Diagram}{115}{section.B.2}
+\contentsline {chapter}{\numberline {C}System ID Test Data}{116}{appendix.C}
+\contentsline {section}{\numberline {C.1}Thrust and Torque Test Data}{116}{section.C.1}
+\contentsline {section}{\numberline {C.2}Cobra CM2208-200KV Thrust Data}{117}{section.C.2}

@@ -163,6 +163,7 @@
 \newlabel{eq:lagrange-inner.b}{{3.66c}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.3}{}}
 \newlabel{eq:euler-lagrange-inner}{{3.67}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.67}{}}
 \newlabel{eq:rotation-linear}{{3.68}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.68}{}}
+\newlabel{eq:rot-linearization}{{3.69}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.69}{}}
 \newlabel{eq:3.42b}{{3.70}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.70}{}}
 \newlabel{eq:rotor-deriv}{{3.72}{61}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.72}{}}
 \newlabel{eq:inner-deriv}{{3.73}{61}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.73}{}}
@@ -222,35 +223,45 @@
 \citation{rotationlinearize}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Induced model simulation and verification}{72}{subsection.3.3.2}}
 \newlabel{subsec:dynamics.nonlinearities.torque-tests}{{3.3.2}{72}{Induced model simulation and verification}{subsection.3.3.2}{}}
-\newlabel{eq:sim-lagrange-inner}{{3.114a}{72}{Induced model simulation and verification}{equation.3.3.1}{}}
-\newlabel{eq:sim-lagrange-inner-expand}{{3.114b}{72}{Induced model simulation and verification}{equation.3.3.2}{}}
-\newlabel{eq:sim-lagrange-middle}{{3.114c}{72}{Induced model simulation and verification}{equation.3.3.3}{}}
-\newlabel{eq:sim-lagrange-middle-expand}{{3.114d}{72}{Induced model simulation and verification}{equation.3.3.4}{}}
-\newlabel{eq:sim-lagranges}{{3.115}{72}{Induced model simulation and verification}{equation.3.3.115}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Simulation of model}{72}{subsection.3.3.2}}
+\newlabel{eq:sim-lagrange-inner}{{3.114a}{72}{Simulation of model}{equation.3.3.1}{}}
+\newlabel{eq:sim-lagrange-inner-expand}{{3.114b}{72}{Simulation of model}{equation.3.3.2}{}}
+\newlabel{eq:sim-lagrange-middle}{{3.114c}{72}{Simulation of model}{equation.3.3.3}{}}
+\newlabel{eq:sim-lagrange-middle-expand}{{3.114d}{72}{Simulation of model}{equation.3.3.4}{}}
+\newlabel{eq:sim-lagranges}{{3.115}{72}{Simulation of model}{equation.3.3.115}{}}
+\newlabel{eq:sim-lagrange-inner-simple}{{3.117}{72}{Simulation of model}{equation.3.3.117}{}}
+\newlabel{eq:sim-inner-partial-rotor}{{3.118b}{73}{Simulation of model}{equation.3.3.2}{}}
+\newlabel{eq:sim-inner-partial-inner}{{3.118c}{73}{Simulation of model}{equation.3.3.3}{}}
+\newlabel{eq:sim-inner-partial-angular}{{3.118d}{73}{Simulation of model}{equation.3.3.4}{}}
+\newlabel{eq:sim-rot-linear}{{3.119a}{73}{Simulation of model}{equation.3.3.1}{}}
+\newlabel{eq:inner-ring-linearizations}{{3.120}{73}{Simulation of model}{equation.3.3.120}{}}
 \citation{rotationlinearize}
 \citation{physicallybased,multibodydynamics}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces Torque response rig\relax }}{73}{figure.caption.62}}
-\newlabel{fig:torque-response}{{3.18}{73}{Torque response rig\relax }{figure.caption.62}{}}
-\newlabel{fig:tau-lambda}{{3.19a}{74}{$\tau _\lambda $ variations with propeller speeds $\Omega _i$\relax }{figure.caption.63}{}}
-\newlabel{sub@fig:tau-lambda}{{a}{74}{$\tau _\lambda $ variations with propeller speeds $\Omega _i$\relax }{figure.caption.63}{}}
-\newlabel{fig:tau-alpha}{{3.19b}{74}{$\tau _\alpha $ variations with changing $\mathbb {I}_\alpha (\lambda _i)$\relax }{figure.caption.63}{}}
-\newlabel{sub@fig:tau-alpha}{{b}{74}{$\tau _\alpha $ variations with changing $\mathbb {I}_\alpha (\lambda _i)$\relax }{figure.caption.63}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Torque responses for inner and middle rings\relax }}{74}{figure.caption.63}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Consolidated Model}{74}{section.3.4}}
-\newlabel{sec:dynamics.model}{{3.4}{74}{Consolidated Model}{section.3.4}{}}
-\newlabel{eq:quaternion-states}{{3.119}{74}{Consolidated Model}{equation.3.4.119}{}}
-\newlabel{eq:quaternion-states-velocity}{{3.119a}{74}{Consolidated Model}{equation.3.4.1}{}}
-\newlabel{eq:quaternion-states-acceleration}{{3.119b}{74}{Consolidated Model}{equation.3.4.2}{}}
-\newlabel{eq:quaternion-states-quaternion}{{3.119c}{74}{Consolidated Model}{equation.3.4.3}{}}
-\newlabel{eq:quaternion-states-angular}{{3.119d}{74}{Consolidated Model}{equation.3.4.4}{}}
-\newlabel{eq:quaternion-inputs}{{3.120}{74}{Consolidated Model}{equation.3.4.120}{}}
-\newlabel{eq:aerodynamic-thrust}{{3.121a}{74}{Consolidated Model}{equation.3.4.1}{}}
-\newlabel{eq:aerodynamic-torque}{{3.121b}{74}{Consolidated Model}{equation.3.4.2}{}}
-\newlabel{eq:actuator-torque}{{3.122}{74}{Consolidated Model}{equation.3.4.122}{}}
-\newlabel{eq:consolidated-grav-torque}{{3.123}{75}{Consolidated Model}{equation.3.4.123}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces Simulink Lagrangian block\relax }}{74}{figure.caption.62}}
+\newlabel{fig:linear-block}{{3.18}{74}{Simulink Lagrangian block\relax }{figure.caption.62}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Dynamic model verification}{74}{equation.3.3.122}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Torque response rig\relax }}{75}{figure.caption.63}}
+\newlabel{fig:torque-response}{{3.19}{75}{Torque response rig\relax }{figure.caption.63}{}}
+\newlabel{fig:tau-lambda}{{3.20a}{75}{$\tau _\lambda $ variations with propeller speeds $\Omega _i$\relax }{figure.caption.64}{}}
+\newlabel{sub@fig:tau-lambda}{{a}{75}{$\tau _\lambda $ variations with propeller speeds $\Omega _i$\relax }{figure.caption.64}{}}
+\newlabel{fig:tau-alpha}{{3.20b}{75}{$\tau _\alpha $ variations with changing $\mathbb {I}_\alpha (\lambda _i)$\relax }{figure.caption.64}{}}
+\newlabel{sub@fig:tau-alpha}{{b}{75}{$\tau _\alpha $ variations with changing $\mathbb {I}_\alpha (\lambda _i)$\relax }{figure.caption.64}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces Torque responses for inner and middle rings\relax }}{75}{figure.caption.64}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Consolidated Model}{75}{section.3.4}}
+\newlabel{sec:dynamics.model}{{3.4}{75}{Consolidated Model}{section.3.4}{}}
+\newlabel{eq:quaternion-states}{{3.124}{75}{Consolidated Model}{equation.3.4.124}{}}
+\newlabel{eq:quaternion-states-velocity}{{3.124a}{75}{Consolidated Model}{equation.3.4.1}{}}
+\newlabel{eq:quaternion-states-acceleration}{{3.124b}{75}{Consolidated Model}{equation.3.4.2}{}}
+\newlabel{eq:quaternion-states-quaternion}{{3.124c}{75}{Consolidated Model}{equation.3.4.3}{}}
+\newlabel{eq:quaternion-states-angular}{{3.124d}{75}{Consolidated Model}{equation.3.4.4}{}}
+\newlabel{eq:quaternion-inputs}{{3.125}{76}{Consolidated Model}{equation.3.4.125}{}}
+\newlabel{eq:aerodynamic-thrust}{{3.126a}{76}{Consolidated Model}{equation.3.4.1}{}}
+\newlabel{eq:aerodynamic-torque}{{3.126b}{76}{Consolidated Model}{equation.3.4.2}{}}
+\newlabel{eq:actuator-torque}{{3.127}{76}{Consolidated Model}{equation.3.4.127}{}}
+\newlabel{eq:consolidated-grav-torque}{{3.128}{76}{Consolidated Model}{equation.3.4.128}{}}
 \@setckpt{ch3}{
-\setcounter{page}{76}
-\setcounter{equation}{124}
+\setcounter{page}{77}
+\setcounter{equation}{129}
 \setcounter{enumi}{2}
 \setcounter{enumii}{4}
 \setcounter{enumiii}{0}
@@ -264,7 +275,7 @@
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{19}
+\setcounter{figure}{20}
 \setcounter{table}{0}
 \setcounter{r@tfl@t}{0}
 \setcounter{Item}{6}
@@ -285,7 +296,7 @@
 \setcounter{tikztimingrows}{0}
 \setcounter{tikztimingtrans}{0}
 \setcounter{tikztimingtranspos}{0}
-\setcounter{parentequation}{121}
+\setcounter{parentequation}{126}
 \setcounter{theorem}{0}
 \setcounter{corollary}{0}
 \setcounter{section@level}{0}

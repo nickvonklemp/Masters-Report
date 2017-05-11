@@ -925,10 +925,10 @@ Noting that the inner ring's inertia $J_{ir}$ is now an independent body from th
 \end{equation}
 From \cite{rotationlinearize} the partial derivative of a rotation matrix $R_x(\lambda)$ (and by extension the \emph{transformation matrix} $R_x(-\lambda)$) is linearized using a Taylor series expansion. It follows that for some small perturbation $\partial\theta$ away from the nominal $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
 \begin{equation}\label{eq:rotation-linear}
-R_u(\bar{\theta}+\partial\theta)\approx\underbrace{\big(1-[\Psi_u(\bar{\theta})\partial\theta]_\times\big)}_{\text{infinitesimal rot}}R_u(\bar{\theta})
+R_u(\bar{\theta}+\partial\theta)\approx\underbrace{\big(1-[\Phi_u(\bar{\theta})\partial\theta]_\times\big)}_{\text{infinitesimal rot}}R_u(\bar{\theta})
 \end{equation}
-Where $\Psi_u(\theta)$ is a generalized Euler matrix derivative analogous to Eq:\ref{eq:angular-rates.c}. The consequence of Eq:\ref{eq:rotation-linear} is that, for the transformed rotational inertias in Eq:\ref{eq:lagrange-inner}, both $R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)$ and $R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)$ can be approximated using their instantaneous transformation with no partial derivatives.
-\begin{subequations}
+Where $\Phi_u(\theta)$ is a generalized Euler matrix derivative analogous to Eq:\ref{eq:angular-rates.f}. The consequence of Eq:\ref{eq:rotation-linear} is that, for the transformed rotational inertias in Eq:\ref{eq:lagrange-inner}, both $R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)$ and $R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)$ can be approximated using their instantaneous transformation with no partial derivatives.
+\begin{subequations}\label{eq:rot-linearization}
 \begin{equation}
 R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)=J_r'\rightarrow \frac{\partial}{\partial\vec{\mathbf{u}}} J_r' = \frac{\partial}{\partial\vec{\lambda}_i}J_r'\approx 0
 \end{equation}
@@ -937,7 +937,7 @@ Similarly for the inner ring without the rotor body's contribution:
 R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)=J_{ir}'\rightarrow \frac{\partial}{\partial\vec{\mathbf{u}}} J_{ir}' = \frac{\partial}{\partial\vec{\lambda}_i}J_{ir}'\approx 0
 \end{equation}
 \end{subequations}
-It follows that partial derivatives of the Lagrangian Eq:\ref{eq:lagrange-inner} with respect to $\vec{\mathbf{u}}$ are negligible; $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}=0$. Only the partial derivative with respect to the path rate $\dot{\vec{\mathbf{u}}}$ remain. That partial derivative is then:
+Simplifications in Eq:\ref{eq:rot-linearization} are expanded and shown to be reasonable assumptions next in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests}. It follows that partial derivatives of the Lagrangian Eq:\ref{eq:lagrange-inner} with respect to $\vec{\mathbf{u}}$ are negligible; $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}=0$. Only the partial derivative with respect to the path rate $\dot{\vec{\mathbf{u}}}$ remain. That partial derivative is then:
 \begin{equation}\label{eq:3.42b}
 \therefore\frac{\partial \mathcal{L}_{M_i'}}{\partial \dot{\vec{\mathbf{u}}}}=\big(J_{r}'\big)\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\big(J_{ir}'\big)\dot{\vec{\lambda}}_i
 \end{equation}
@@ -1492,7 +1492,8 @@ Uncertainties associated with the above inertial models or their particular valu
 \subsection{Induced model simulation and verification}
 \label{subsec:dynamics.nonlinearities.torque-tests}
 %====================================================
-Previously, in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, the proposed Lagrangian energy functions for both $\Delta\lambda$ and $\Delta\alpha$ servo rotations and responses to body angular velocities $\vec{\omega}_b$ were presented. Reiterating those servo response equations; the inner ring net (kinetic) energy Lagrangian from Eq:\ref{eq:lagrange-inner} is:
+\subsubsection{Simulation of model}
+Previously, in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, the proposed Lagrangian energy functions for both $\Delta\lambda$ and $\Delta\alpha$ servo rotations and responses to body angular velocities $\vec{\omega}_b$ were derived. Reiterating those energy equations; the inner ring net (kinetic) energy Lagrangian from Eq:\ref{eq:lagrange-inner} is:
 \begin{subequations}
 \begin{equation}\label{eq:sim-lagrange-inner}
 \mathcal{L}_{M_i'}=\frac{1}{2}\vec{\omega}_{r/M_i'}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/M_i'}+\frac{1}{2}\vec{\omega}_{M_i/M_i'}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{M_i/M_i'}
@@ -1514,26 +1515,96 @@ And similarly for the middle ring's net (kinetic) energy from Eq:\ref{eq:alpha-l
 +\frac{1}{2}\Big(\dot{\vec{\alpha}}_i\Big)^T\Big(R_y(\alpha)\big(J_m\big)R_y^{-1}(\alpha)\Big)\Big(\dot{\vec{\alpha}}_i\Big)
 \end{multline}
 \end{subequations}
-Solving for the generalized energy acting on each system requires application of Euler-Lagrange formulation, using partial derivatives relative to generalized path co-ordinates. Both the inner and middle ring systems were defined with relative co-ordinate paths for the angular servo position $\vec{\mathbf{u}}=[\lambda_i~0~0]^T$ and $\vec{\mathbf{v}}=[0~\alpha_i~0]^T$ respectively. The generalized forces for both systems are then:
+Solving for the generalized forces acting on each system requires application of Euler-Lagrange formulation, using partial derivatives relative to generalized path co-ordinates. Both the inner and middle ring systems were defined with relative co-ordinate paths for the angular servo position $\vec{\mathbf{u}}=[\lambda_i~0~0]^T$ and $\vec{\mathbf{v}}=[0~\alpha_i~0]^T$ respectively. The generalized forces for both systems are then:
 \begin{equation}\label{eq:sim-lagranges}
 \frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\mathbf{U}}~~\text{and}~~\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i''}}{\partial\vec{\mathbf{v}}}=\vec{\mathbf{V}}
 \end{equation}
-The assumption in Eq:\ref{eq:rotation-linear}, presented in \cite{rotationlinearize}, is applied to linearize and simplify partial derivatives of the respective inner and middle ring Lagrangians in Eq:\ref{eq:sim-lagranges}. More specifically, in the case of the inner ring Lagrangian $\mathcal{L}_{M_i'}$, the partial derivative with respect to $\vec{\mathbf{u}}$ simplifies:
+The assumption in Eq:\ref{eq:rotation-linear}, presented in \cite{rotationlinearize}, is applied to linearize and simplify partial derivatives of the respective inner and middle ring Lagrangians in Eq:\ref{eq:sim-lagranges}. Those simplifications are such that Eq:\ref{eq:sim-lagranges} becomes:
 \begin{equation}
-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\lambda}_i}\approx 0
+\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)=\vec{\mathbf{U}}~\Big|_{\big(\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}\big)\approx 0}~~\text{and}~~\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\bigg)=\vec{\mathbf{V}}\Big|_{\big(\partial\mathcal{L}_{M_i''}/\partial\vec{\mathbf{v}}\big)\approx 0}
 \end{equation}
-Under the assumption that, owing to Eq:\ref{eq:rotation-linear}, the partial derivatives of rotation matrices with respect to $\vec{\lambda}_i$ are:
+Considering first the case of the inner ring Lagrangian $\mathcal{L}_{M_i'}$ in Eq:\ref{eq:sim-lagrange-inner-expand}; the partial derivative with respect to path variable $\vec{\mathbf{u}}=\vec{\lambda}_i$ was simplified:
+\begin{equation}\label{eq:sim-lagrange-inner-simple}
+\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\frac{\partial}{\partial\vec{\lambda}_i}\big(\mathcal{L}_{M_i'}\big)\approx 0
+\end{equation}
+Testing that assumption, presented in Eq:\ref{eq:rotation-linear}; the partial derivatives of the rotor's transformed inertia in Eq:\ref{eq:sim-lagrange-inner-expand}, with respect to $\vec{\lambda}_i$, are as per the product rule:
 \begin{subequations}
 \begin{equation}
-\frac{\partial}{\partial\vec{\mathbf{u}}} J_r' = \frac{\partial}{\partial\vec{\lambda}_i}\bigg(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\bigg)=\approx 0
+\frac{\partial}{\partial\vec{\mathbf{u}}} J_r' = \frac{\partial}{\partial\vec{\lambda}_i}\bigg(R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)\bigg)
 \end{equation}
-Similarly for the inner ring without the rotor body's contribution:
-\begin{equation}
-R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)=J_{ir}'\rightarrow \frac{\partial}{\partial\vec{\mathbf{u}}} J_{ir}' = \frac{\partial}{\partial\vec{\lambda}_i}J_{ir}'\approx 0
+\vspace{-14pt}
+\begin{equation}\label{eq:sim-inner-partial-rotor}
+=\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\Big)\big(J_r\big)R_x^{-1}(\lambda)+R_x(\lambda)\big(J_r\big)\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x^{-1}(\lambda)\Big)
+\end{equation}
+Similarly for the inner ring's contribution in Eq:\ref{eq:sim-lagrange-inner-expand} without the rotor body's inertia:
+\begin{equation}\label{eq:sim-inner-partial-inner}
+\frac{\partial}{\partial\vec{\mathbf{u}}}J_{ir}'=\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\Big)\big(J_{ir}\big)R_x^{-1}(\lambda)+R_x(\lambda)\big(J_{ir}\big)\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x^{-1}(\lambda)\Big)
+\end{equation}
+The final partial derivative to consider is that of the rotor's angular velocity $\vec{\Omega}_i$ but transformed into the inner middle ring frame $\mathcal{F}^{M_i'}$ which the Lagrangian Eq:\ref{eq:sim-lagrange-inner} is taken with respect to:
+\begin{equation}\label{eq:sim-inner-partial-angular}
+\frac{\partial}{\partial\vec{\lambda}_i}\Big(R_x(\lambda)\Big)\vec{\Omega}_i
 \end{equation}
 \end{subequations}
+The application of the rotation matrix linearization, from Eq:\ref{eq:rotation-linear}, to the partial derivative rotations in Eq:\ref{eq:sim-inner-partial-rotor}-\ref{eq:sim-inner-partial-rotor} is:
+\begin{subequations}
+\begin{equation}\label{eq:sim-rot-linear}
+R_x(\bar{\lambda}_i+\partial\lambda_i)\approx\big(1-[\Phi_x(\bar{\lambda}_i)\partial\lambda_i]_\times\big)R_x(\bar{\lambda}_i)
+\end{equation}
+Where $\Phi_x(\bar{\lambda}_i)$ is simply the partial derivative of the Euler matrix, $\Phi(\eta)$ from Eq:\ref{eq:angular-rates.f}, with respect to an $\hat{X}$ axis rotation. That being:
+\begin{equation}
+\Phi_x(\bar{\lambda}_i)=\begin{bmatrix}
+0 & 0 & 0\\
+0 & \sin{\bar{\lambda}}_i & \cos{\bar{\lambda}}_i\\
+0 & -\cos{\bar{\lambda}}_i & \sin{\bar{\lambda}}_i
+\end{bmatrix}
+\end{equation}
+So then, for some nominal $\bar{\lambda}_i$ perturbed by some small deviation $\partial\lambda_i$, Eq:\ref{eq:sim-rot-linear} expands to:
+\begin{equation}
+\therefore R_x(\bar{\lambda}_i+\partial\lambda_i)\approx R_x(\bar{\lambda}_i)-\begin{bmatrix}
+0 & 0 & 0\\
+0 & \big(c^2\bar{\lambda}_i-s^2\bar{\lambda}_i\big) & \big(-c\bar{\lambda}_is\bar{\lambda}_i-s\bar{\lambda}_ic\bar{\lambda}_i\big)\\
+0 & \big(s\bar{\lambda}_ic\bar{\lambda}_i+c\bar{\lambda}_is\bar{\lambda}_i\big) & \big(c^2\bar{\lambda}_i-s^2\bar{\lambda}_i\big)
+\end{bmatrix}\partial\lambda_i
+\end{equation}
+Which, obviously, when the perturbations $\partial\lambda_i$ away from a nominal $\bar{\lambda}_i$ are small, it follows that:
+\begin{equation}
+\rightarrow R_x(\bar{\lambda}_i+\partial\lambda_i)\approx R_x(\bar{\lambda}_i)\Big|_{\partial\lambda_i<<1}
+\end{equation}
+\end{subequations}
+That simplification then applies to Eq:\ref{eq:sim-inner-partial-rotor},\ref{eq:sim-inner-partial-inner} and \ref{eq:sim-inner-partial-angular}, for a small $\partial\lambda_i$:
+\begin{subequations}\label{eq:inner-ring-linearizations}
+\begin{equation}
+\frac{\partial}{\partial\vec{\lambda}_i}J_r'\approx 0
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+\frac{\partial}{\partial\vec{\lambda}_i}J_{ir}'\approx 0
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+\frac{\partial}{\partial\vec{\lambda}_i}R_x(\lambda)\vec{\Omega}_i\approx 0
+\end{equation}
+\end{subequations}
+It can therefore be said that the assumption in Eq:\ref{eq:sim-lagrange-inner-simple} is fair, or that:
+\begin{equation}
+\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\approx 0\rightarrow\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\approx\frac{d}{dt}\Big(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\lambda}}_i}\Big)=\vec{\mathbf{U}}=\hat{\tau}_\lambda
+\end{equation}
+For a final test of those simplifications, a \textbf{Simulink} loop is made which applies a direct comparison of $\vec{\tau}_\lambda$, from Eq:\ref{eq:torque-induced-inner}, both with and without the rotation matrix linearization. Convention has it that an estimated or simulated values are denoted with a hat accent. Therefore a calculated inner ring torque response \emph{with linearized} partial derivatives as per Eq:\ref{eq:inner-ring-linearizations} is termed as $\hat{\tau}_\lambda$. The true representation of the induced torque response, $\vec{\tau}_\lambda$ is calculated from the following block model illustrated in Fig:\ref{fig:linear-block}.
+\par
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/linear-block}
+\caption{Simulink Lagrangian block}
+\label{fig:linear-block}
+\end{figure}
+Where the block $u(t)$ generates a commanded change in actuator position, $\Delta u$, which affects the actuator dynamics $P(s)$ detailed in Sec:\ref{subsec:proto.design.transfer}. That argument $u$ is then used to calculate the full Lagrangian:
+\begin{equation}
+\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\tau}_\lambda
+\end{equation}
+Fig:\ref{fig:tau-lamba-hat} shows plots for both estimated $\hat{\tau}_\lambda$ and simulated $\vec{\tau}_\lambda$. Various steps up from a starting constant $\lambda(0)$ to set points are shown in Fig:\ref{fig:tau-lamba-hat-up} whilst Fig:\ref{fig:tau-lmabda-hat-down} shows steps down from starting points to $\lambda(0)$. The variation from $\hat{\tau}_\lambda$ to $\vec{\tau}_\lambda$ is an order of magnitude smaller than the peak of either signals. 
 
-
+an down from a starting $\lambda_i(0)$.
+\subsubsection{Dynamic model verification}
 extended to partial derivatives 
 
 
