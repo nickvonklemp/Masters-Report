@@ -1315,7 +1315,7 @@ And lastly the middle ring structure has a relative angular velocity:
 Noting that Lemma:\ref{lem:1} and the parallel axis term in Eq:\ref{eq:lemma-torque} refer to the parallel axis difference between the \emph{center of mass} and the resultant rotational axis, the vector difference between the rotated center of mass for a motor module, $C.M_\text{p}'$, and the body frame origin $\vec{\mathbf{O}}_b$ is defined:
 \begin{subequations}
 \begin{equation}
-C.M_\text{p}'=\frac{m_\text{n}C.M_\text{n}'+m_\text{m}C.M_\text{m}'}{m_\text{p}}
+C.M_\text{p}'=\frac{m_\text{n}C.M_\text{n}''+m_\text{m}C.M_\text{m}'}{m_\text{p}}
 \end{equation}
 With $C.M_\text{n}'$ and $C.M_\text{m}'$ being rotated inner and middle ring centers of mass respectively from Eq:\ref{eq:body-net-inner.d} and Eq:\ref{eq:body-net-middle.d}:
 \begin{equation}
@@ -1653,7 +1653,9 @@ Following the same process applied to the middle ring Lagrangian, $\mathcal{L}_{
 \par
 From plots in both Fig:\ref{fig:tau-lambda-hat} and Fig:\ref{fig:tau-alpha-hat}; it is shown that assumptions for linearizing rotation matrices in the calculations for generalized forces in Eq:\ref{eq:sim-lagranges} is not an unreasonable simplification. The linearization(s) proposed in Eq:\ref{eq:sim-lagranges-linear} hold true so long as the step size for $\Delta\lambda_i$ or $\Delta\alpha_i$ are small enough, which is always the case for the control loop. It reduces the overhead required for calculating torque responses to actuator changes. 
 \subsubsection{Dynamic model verification}
-In spite of the rigorous mathematics applied to the multibody system, physical corroboration of the proposed model(s) is needed. The systems described in Eq:\ref{eq:torque-induced-inner} for $\hat{\tau}_\lambda$, Eq:\ref{eq:torque-induced-middle} for $\hat{\tau}_\alpha$ and Eq:\ref{eq:torque-response} for $\hat{\tau}_b$ require further verification before a structured and accurate simulation can be constructed based upon them. Two test rigs were designed and constructed to physically measure the induced torques in question. The net body response, $\hat{\tau}_b$ relating to net angular body velocity $\vec{\omega}_b$, is harder to recreate on an isolated test rig. Such results are only discussed in the context of simulation and a MatLab SimScape model (see App:\ref{app:simscape}), the latter is introduced subsequently\ldots
+In spite of the rigorous mathematics applied to the multibody system, physical corroboration of the proposed model(s) is needed. The systems described in Eq:\ref{eq:torque-induced-inner} for $\hat{\tau}_\lambda$, Eq:\ref{eq:torque-induced-middle} for $\hat{\tau}_\alpha$ and Eq:\ref{eq:torque-response} for $\hat{\tau}_b$ require further verification before a structured and accurate simulation can be constructed based upon them. 
+\par
+Two rigs were designed and constructed (Fig:\ref{fig:torque-inner} and Fig\ref{fig:torque-middle}) to physically measure the induced torques in question. The first test rig recreates the relative motion of the inner ring actuated by $\lambda_i$. Similarly the second test platform mimics the middle ring's motion driven by the outer $\alpha_i$ servo. The net body response, $\hat{\tau}_b$ relating to net angular body velocity $\vec{\omega}_b$, is harder to recreate on an isolated test rig. Such results are only discussed in the context of simulation and a MatLab SimScape model (see App:\ref{app:simscape}), the latter is introduced subsequently\ldots
 \par
 Considering first the inner most ring assembly, Fig:\ref{fig:torque-inner} shows the test rig used to isolate and measure $\vec{\tau}_\lambda$ responses to $\Delta\lambda$ rotations. The inner ring is supported by two bearing assemblies; an extended shaft in the $-\hat{X}_{M_i}$ direction connects the inner ring to the driving servo block. Rotational torque $\vec{\tau}_\lambda$ is transferred through the shaft extension from the servo to the inner ring. The servo block is secured only by a vertically aligned (and calibrated) strain gauge. The deflection of the strain gauge is then proportional to the torque applied by the servo to rotate the inner ring structure.
 \newpage
@@ -1662,32 +1664,62 @@ Considering first the inner most ring assembly, Fig:\ref{fig:torque-inner} shows
 \includegraphics[width=0.8\textwidth]{figs/torque-inner}
 \caption{Inner ring torque test rig}
 \label{fig:torque-inner}
-\vspace{-12pt}
+\vspace{-8pt}
 \end{figure}
 \par
 It is important to mention that whilst the bearing assembly accommodates for the transfer of the servo's rotational torque, the assembly isolates only the $\hat{X}_{M_i}$ component of the induced torque. If $\vec{\tau}_{\lambda}\text{}\hspace{-2pt}'$ is the deflection measured, its relationship with the induced torque vector $\vec{\tau}_{\lambda}$ is given by:
 \begin{equation}
 \vec{\tau}_{\lambda}\text{}\hspace{-2pt}'=\vec{\tau}_{\lambda}\cdot\hat{X}_{M_i}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-One final thing to consider is that the equations for $\hat{\tau}_\lambda$ in Eq:\ref{eq:torque-induced-inner} \emph{does not} take into account the gravitational torque arm as a result of an eccentric center of gravity relative to the center of rotation. The net gravitational torque for a resultant effective center of gravity $\vec{\tau}_g$ was later incorporated into Eq:\ref{eq:3.110a}. The torque response opposed to angular accelerations of $\ddot{\lambda}_i$ induced by the servo is then, from Eq:\ref{eq:torque-induced-inner} with an introduction of a gravitational component:
+One final thing to consider is that the equations for $\hat{\tau}_\lambda$ in Eq:\ref{eq:torque-induced-inner} \underline{\emph{does not}} account for the gravitational torque arm as a result of an eccentric center of gravity relative to the center of rotation. For the derivations presented previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, net gravitational torque for a resultant effective center of gravity $\vec{\tau}_g$ was later incorporated into Eq:\ref{eq:3.110a}. The torque response opposed to angular accelerations of $\ddot{\lambda}_i$ induced by the servo is then, from Eq:\ref{eq:torque-induced-inner}, with an introduced gravitational component:
 \begin{multline}\label{eq:model-inner}
 \vec{\tau}_\lambda=\big(\dot{J}_{r}'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\big(\dot{J}_{n}'\big)\dot{\vec{\lambda}}_i+\big(J_r'\big)\dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'+\big(J_{n}'\big)\ddot{\vec{\lambda}}_i+\dot{\vec{\lambda}}_i\times \big(J_r'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\dot{\vec{\lambda}}_i\times \big(J_{n}'\big)\dot{\vec{\lambda}}_i
 \\
 +m_\text{n}C.M'_{\text{n}}\times\vec{G}_{M_i}~~~~\in\mathcal{F}^{M_i'}
 \end{multline}
-The term $m_\text{n}C.M'_{\text{n}}\times\vec{G}_{M_i}$ is the gravitational torque arm from a rotated center of mass, $C.M_{\text{n}}'$, defined in Eq:\ref{eq:body-net-inner.d}. Its the contribution of a single inner ring to the torque $\vec{\tau}_g$ from Eq:\ref{eq:net-body-gravity}.
+The term $m_\text{n}C.M'_{\text{n}}\times\vec{G}_{M_i}$ is the gravitational torque arm from a rotated center of mass, $C.M_{\text{n}}'$; first defined in Eq:\ref{eq:body-net-inner.d}. It is the effective torque contribution of a single inner ring to the net gravitational torque $\vec{\tau}_g$ from Eq:\ref{eq:net-body-gravity}. Note the strain gauge measured response encountered will be $-\hat{\tau}_\lambda$.
 \par
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.55\textwidth]{graphs/tau-lambda}
-\caption{Tests for $\vec{\tau}_\lambda$}
+\vspace{-10pt}
+\caption{}
 \label{fig:tau-lambda}
 \vspace{-15pt}
 \end{figure}
 \par
-The plot in Fig:\ref{fig:tau-lambda} shows simulated values of $\hat{\tau}_\lambda$ at varying propeller rotational speeds $\Omega_i$. As per convection, in the plot Fig:\ref{fig:tau-lambda}, $\vec{\tau}_\lambda$ represents the physically measured torque on the test rig detailed in Fig:\ref{fig:torque-inner}. Lastly $\tilde{\tau}_\lambda$ is a torque simulated in \textbf{MathWorks} SimScape. App:\ref{app:simscape} details how the SimScape simulation was constructed from a SolidWorks model to match the physical system.
+The plot in Fig:\ref{fig:tau-lambda} shows simulated values of $\hat{\tau}_\lambda$ at increments of propeller rotational speeds $\Omega_i$. The torque peak changes with increased rotation rates of $\Omega_i$, motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-'), illustrating the gyroscopic torque effect from the propeller's rotation. A postitive, clockwise rotational sense was used in the above tests. As per convention, in the plot Fig:\ref{fig:tau-lambda}, $\vec{\tau}_\lambda$ represents the physically measured torque on the test rig illustrated in Fig:\ref{fig:torque-inner}. Lastly $\tilde{\tau}_\lambda$ is a torque simulated in \textbf{MathWorks} SimScape. App:\ref{app:simscape} details how the SimScape simulation was constructed from a SolidWorks model to match the physical system.
 \par
-The torque response equations where tested using the rig in Fig:\ref{fig:torque-response}. The first plot in Fig:\ref{fig:tau-lambda} shows the induced torque for $\tau_\lambda$ measured purely about the $\hat{X}_{M_i}$ axis. The plot changes with increased rotation rates of $\Omega_i$, motors 1 \& 3 have clockwise rotations ('+'), motors 2 \& 4 are counter-clockwise ('-'), illustrating the gyroscopic torque effect from the propeller's rotation. Plotted against measured values are $\hat{\tau}_\lambda$ estimates from Eq:\ref{eq:torque-induced-inner}. Similarly the second plot in Fig:\ref{fig:tau-alpha} shows the middle ring induced torque, $\tau_\alpha\in\mathcal{F}^{M_i'}$. Detailing variations with respect to changing $\lambda_i$ positions. The changes in $\mathbb{I}_\alpha(\lambda_i)$ alter the magnitude of torque responses inline with estimates of $\hat{\tau}_\alpha$.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{figs/torque-middle}
+\caption{Middle ring torque test rig}
+\label{fig:torque-middle}
+\vspace{-6pt}
+\end{figure}
+Similarly the middle ring test structure (Fig:\ref{fig:torque-middle}) contains inner and middle ring assemblies representing the entire motor module. The inner ring servo $\lambda_i$ is held at constant values to represent varying inertias for the net module $J_\text{p}$ described in Eq:\ref{eq:inertia.middle.b}. The outer servo $\alpha_i$ applies an accelerating torque $\vec{\tau}_\alpha$ with an opposing $-\vec{\tau}_\lambda$ response. Only the $\hat{Y}_{M_i'}$ component deflects the strain gauge and as such the torque measured by the strain gauge is:
+\begin{equation}
+\vec{\tau}_\alpha\text{}\hspace{-2pt}'(\lambda)=\vec{\tau}_\alpha(\lambda)\cdot\hat{Y}_{M_i'}~~~~\in\mathcal{F}^{M_i'}
+\end{equation}
+Reiterating the equation for the expected simulated torque $\hat{\tau}_\alpha(\lambda)$ from Eq:\ref{eq:torque-induced-middle} with an included gravitational component and induced torque as a result of the inner ring's rotation:
+\begin{multline} \label{eq:model-middle}
+\hat{\tau}_\alpha(\lambda_i)=R_x(\lambda)\vec{\tau}_\lambda+\big(\dot{J}_p'\big)\dot{\vec{\alpha}}_i+\Big(\dot{J}_n''-R_y(\alpha)\big(\dot{J}_n'\big)R_y^{-1}(\alpha)\Big)\dot{\vec{\lambda}}_i'+\Big(\dot{J}_r''-R_y(\alpha)\big(\dot{J}_r'\big)R_y^{-1}(\alpha)\Big)\vec{\Omega}_i''
+\\
++\big(J_\text{p}'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \Big(\big(J_p'\big)\dot{\vec{\alpha}}_i+\big(J_n''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''\Big)+m_\text{p}C.M'_{\text{p}}\times\vec{G}_{M_i}~~~~\in\mathcal{F}^{M_i''}
+\end{multline}
+Where the term $C.M_{\text{p}}''$ is the net rotated center of gravity for the entire motor module:
+\begin{equation}
+C.M_\text{p}'=\frac{m_\text{n}R_y(\alpha)R_x(\lambda)C.M_\text{n}+m_\text{m}R_y(\alpha)C.M_\text{m}}{m_\text{n}+m_\text{n}}
+\end{equation}
+Moreover, the included torque term $\hat{\tau}_\lambda$ is going to be zero for the case where the propeller's rotational speed and the inner ring's servo speed are both constant; $\dot{\vec{\Omega}}_i=0$ and $\dot{\vec{lambda}}_i=0$. Plotted in Fig:\ref{fig:tau-alpha} shows results for measured torques $\vec{\tau}_\alpha\text{}\hspace{-2pt}'(\lambda)$, expected simulated torque values $\hat{\tau}_\alpha(\lambda)$ and resultant SimScape simulation values for $\tilde{\tau}_\alpha(\lambda)$. Tests are conducted with a constant propeller rotational velocity $\vec{\Omega}_i=6500~~[\text{RPM}]$ but differing rotational positions for the inner ring servo $\lambda_i$. That angular position affects the net encountered rotational inertial $J_\text{p}(\lambda)$.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\textwidth]{graphs/tau-alpha}
+\caption{Tests for $\vec{\tau}_\lambda$}
+\label{fig:tau-alpha}
+\end{figure}
+\par
+The final simulated module is that of $\hat{\tau}_b$
 \par
 \emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
 %====================================================
