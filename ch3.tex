@@ -983,7 +983,7 @@ Inserting those transformed inertial derivatives into Eq:\ref{eq:3.42b} and usin
 \begin{multline}
 \rightarrow \frac{d}{dt} \bigg(\frac{\partial \mathcal{L}_{M_i'}}{\partial \dot{\vec{\mathbf{u}}}}\bigg)=\Big[\big(\dot{J}_r'\big)\big(R_x(\lambda)\vec{\Omega}_i + \dot{\vec{\lambda}}_i\big)+\big(J_{r}'\big)R_x(\lambda)\dot{\vec{\Omega}}_i+\vec{\omega}_{M_i/M_i'}\times \big(J_{r}'\big)R_x(\lambda)\vec{\Omega}_i+\big(J_{r}'\big)\ddot{\vec{\lambda}}_i\\+\vec{\omega}_{M_i/M_i'}\times \big(J_{r}'\big)\dot{\vec{\lambda}}_i\Big]+\Big[\big(\dot{J}_{ir}'\big)\dot{\vec{\lambda}}_i+\big(J_{ir}'\big)\ddot{\vec{\lambda}}_i+\vec{\omega}_{M_i/M_i'}\times \big(J_{ir}'\big)\dot{\vec{\lambda}}_i\Big]=\vec{\mathbf{U}}
 \end{multline}
-Recombining inertial contributions with the same angular velocity ($J_{r}'+J_{ir}'=J_{n}'$) and recognizing that, from Eq:\ref{eq:angular-inner}, $\vec{\omega}_{M_i/M_i'}=\dot{\vec{\lambda}}$; the generalized net torque encountered by a rotation of $\lambda$ is:
+Recombining inertial bodies with the same angular velocity ($J_{r}'+J_{ir}'=J_{n}'$) and recognizing that, from Eq:\ref{eq:angular-inner}, $\vec{\omega}_{M_i/M_i'}=\dot{\vec{\lambda}}$; the generalized net torque encountered by a rotation of $\lambda$ is:
 \begin{subequations}
 \begin{equation}
 \therefore\vec{\mathbf{U}}=\big(\dot{J}_r'\big)\vec{\Omega}_i'+\big(J_{r}'\big)\dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'+\dot{\vec{\lambda}}_i\times \big(J_{r}'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\big(\dot{J}_{n}'\big)\dot{\vec{\lambda}}_i+\big(J_{n}'\big)\ddot{\vec{\lambda}}_i+\dot{\vec{\lambda}}_i\times \big(J_{n}'\big)\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
@@ -1620,12 +1620,12 @@ Fig:\ref{fig:tau-lambda-hat} shows plots for both estimated $\hat{\tau}_\lambda$
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat-up}
+\includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat}
 \caption{$\hat{\tau}_\lambda$ steps up}
 \label{fig:tau-lambda-hat-up}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
-\includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat-down}
+\includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat-r}
 \caption{$\hat{\tau}_\lambda$ steps down}
 \label{fig:tau-lambda-hat-down}
 \end{subfigure}
@@ -1633,9 +1633,9 @@ Fig:\ref{fig:tau-lambda-hat} shows plots for both estimated $\hat{\tau}_\lambda$
 \label{fig:tau-lambda-hat}
 \end{figure}
 \par
-The difference between $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. That difference, when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-4}~~[\text{Nm}]$ whilst both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ are an order of magnitude greater than that; $\times 10^{-3}~~[\text{Nm}]$. 
+The difference between $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. That difference, when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-6}~~[\text{Nm}]$ whilst both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ are three orders of magnitude greater; $\times 10^{-3}~~[\text{Nm}]$. 
 \par
-Following the same process applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, yields results plotted collectively in Fig:\ref{fig:tau-alpha-hat}. The same constant propeller speed $\vec{\Omega}_i=6500~~[\text{RPM}]$ was used together with a constant $\lambda_i=\pi/5~~[\text{rad}]$ position for the inner ring's servo.
+Following the same process applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, yields results plotted collectively in Fig:\ref{fig:tau-alpha-hat}. Note $\vec{\tau}_\alpha$ is plotted, not the generalized energy $\vec{\mathbf{V}}$. The same constant propeller speed $\vec{\Omega}_i=6500~~[\text{RPM}]$ was used together with a constant $\lambda_i=\pi/5~~[\text{rad}]$ position for the inner ring's servo.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
