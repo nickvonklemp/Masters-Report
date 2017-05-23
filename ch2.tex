@@ -997,7 +997,7 @@ y(x)=
 \end{array}
 \end{cases}
 \end{equation}\par
-In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400$ RPS with a dead time of $t_d\approx 1.2~[\text{ms}]$ and a (\emph{negligible}) mechanical deadband of $4~[\mu\text{s}]$. Each servo has an approximate (\emph{critically damped}) second order transfer function
+In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15s$ or $400$ degrees per second with a dead time of $t_d\approx 1.2~[\text{ms}]$ and a (\emph{negligible}) mechanical deadband of $4~[\mu\text{s}]$. Each servo has an approximate (\emph{critically damped}) second order transfer function
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
 G_{servo}(s)=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
