@@ -1602,7 +1602,7 @@ It can therefore be said that the assumption in Eq:\ref{eq:sim-lagrange-inner-si
 \begin{equation}
 \frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\approx 0\rightarrow\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\approx\frac{d}{dt}\Big(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\lambda}}_i}\Big)=\vec{\mathbf{U}}=\hat{\tau}_\lambda
 \end{equation}
-For a final verification of those simplifications, a \textbf{Simulink} model is built that applies a direct comparison of $\vec{\tau}_\lambda$, originally from Eq:\ref{eq:torque-induced-inner}, both \emph{with} and \emph{without} the rotation matrix linearization. Convention has it that an estimated or simulated values are denoted with a hat accent. Therefore a calculated inner ring torque response \emph{with linearized} partial derivatives as per Eq:\ref{eq:inner-ring-linearizations} is termed as $\hat{\tau}_\lambda$. The true representation of the induced torque response, $\vec{\tau}_\lambda$, is calculated from the block model detailed in Fig:\ref{fig:linear-block}.
+A final verification of suggest simplifications is done in a \textbf{Simulink} model. The model applies a direct comparison of $\vec{\tau}_\lambda$, originally from Eq:\ref{eq:torque-induced-inner}, both \emph{with} and \emph{without} the rotation matrix linearization. Convention has it that an estimated or simulated value is denoted with an hat accent. Therefore a calculated inner ring torque response \emph{with linearized} partial derivatives as per Eq:\ref{eq:inner-ring-linearizations} is termed as $\hat{\tau}_\lambda$. The true representation of the induced torque response, $\tilde{\tau}_\lambda$, is calculated from the block model detailed in Fig:\ref{fig:linear-block}. The simulated $\tilde{\tau}_\lambda$ applies no partial derivative simplifications or linearizations, calculating the full Euler-Lagrange formulation from Eq:\ref{eq:sim-lagranges}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{figs/linear-block}
@@ -1611,48 +1611,54 @@ For a final verification of those simplifications, a \textbf{Simulink} model is 
 \vspace{-15pt}
 \end{figure}
 \par
-Where the block $u(t)$ represents some commanded change in actuator positions, $\Delta u$. That actuator change affects the actuator dynamics, grouped together here as the block $P(s)$ but detailed previously in Sec:\ref{subsec:proto.design.transfer}. That argument $u$ then leads to a servo position for $\lambda_i$ which can then be used to calculate the complete Euler-Lagrangian equation:
-\begin{equation}
+The block $u(t)$ in Fig:\ref{fig:linear-block} represents some commanded change in actuator position, with the actuator space $u\in\mathbb{U}$ consisting of propeller speeds $\Omega_i$ and servo positions $\lambda_i$ and $\alpha_i$ for $i\in[1:4]$; defined in Eq:\ref{eq:actuator-space}. Each actuator has its own transfer function, driven by the dynamic block $P(s)$ which is expanded on in Sec:\ref{subsec:proto.design.transfer}. That argument $u(t)$ then leads to some inner ring servo position $\lambda_i(t)$ which can then be used to calculate the complete Euler-Lagrangian equation:
+\begin{equation}\label{eq:sim-lagrange-torque-inner}
 \frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\tau}_\lambda
 \end{equation}
-Fig:\ref{fig:tau-lambda-hat} shows plots for both estimated $\hat{\tau}_\lambda$ and simulated $\vec{\tau}_\lambda$ with a constant angular propeller speed $\vec{\Omega}_i=6500~[\text{RPM}]$. Steps up from a starting constant $\lambda(0)$ to various set points are shown in Fig:\ref{fig:tau-lambda-hat-up} whilst Fig:\ref{fig:tau-lambda-hat-down} shows steps down from various starting points to a constant $\lambda(0)$. 
+Seeing that Eq:\ref{eq:sim-lagrange-torque-inner} produces a three dimensional vector result and not a scalar; vector magnitudes $\norm{\hat{\tau}_\lambda}$ and $\norm{\tilde{\tau}_\lambda}$ are considered. The plot in Fig:\ref{fig:tau-lambda-hat} shows both estimated $\norm{\hat{\tau}_\lambda}$ and simulated $\norm{\tilde{\tau}_\lambda}$ torques, calculated with a nominal constant angular propeller speed $\vec{\Omega}_i=6000~[\text{RPM}]$. Increasing step sizes for changes in $\Delta\lambda$ are shown, resulting in larger torque responses.  
 \begin{figure}[hbtp]
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat}
-\caption{$\hat{\tau}_\lambda$ steps up}
-\label{fig:tau-lambda-hat-up}
+\caption{$\norm{\hat{\tau}_\lambda}$ and $\norm{\tilde{\tau}_\lambda}$ steps}
+\label{fig:tau-lambda-hat}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \includegraphics[width=0.95\textwidth]{graphs/tau-lambda-hat-r}
-\caption{$\hat{\tau}_\lambda$ steps down}
-\label{fig:tau-lambda-hat-down}
+\caption{$R^2_\lambda$ error}
+\label{fig:tau-lambda-hat-r}
 \end{subfigure}
 \caption{Inner ring induced torque simulations for $\vec{\tau}_\lambda$}
-\label{fig:tau-lambda-hat}
+\vspace{6pt}
+\label{fig:tau-lambda-sim}
+\vspace{-16pt}
 \end{figure}
 \par
-The difference between $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. That difference, when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-6}~~[\text{Nm}]$ whilst both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ are three orders of magnitude greater; $\times 10^{-3}~~[\text{Nm}]$. 
+The regressive deviation $R^{2}_\lambda$ between $\hat{\tau}_\lambda$ and $\tilde{\tau}_\lambda$ is shown in Fig:\ref{fig:tau-lambda-hat-r}. The difference between $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. However the plot for $R^2_\lambda$ suffered from simulation tolerance errors due to the small deviations which were being calculated. However despite that, the difference when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-5}~~[\text{Nm}]$ for small steps in $\Delta\lambda$. Both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ were three orders of magnitude greater; torques in the order of $\times 10^{-2}~~[\text{Nm}]$.
 \par
-Following the same process applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, yields results plotted collectively in Fig:\ref{fig:tau-alpha-hat}. Note $\vec{\tau}_\alpha$ is plotted, not the generalized energy $\vec{\mathbf{V}}$. The same constant propeller speed $\vec{\Omega}_i=6500~~[\text{RPM}]$ was used together with a constant $\lambda_i=\pi/5~~[\text{rad}]$ position for the inner ring's servo.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat-up}
-\caption{$\hat{\tau}_\alpha$ steps up}
-\label{fig:tau-alpha-hat-up}
+\includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat}
+\caption{$\norm{\hat{\tau}_\alpha}$ and $\norm{\tilde{\tau}_\alpha}$ steps}
+\label{fig:tau-alpha-hat}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat-down}
+\includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat-r}
 \caption{$\hat{\tau}_\alpha$ steps down}
-\label{fig:tau-alpha-hat-down}
+\label{fig:tau-alpha-hat-r}
 \end{subfigure}
 \caption{Middle ring induced torque simulations for $\vec{\tau}_\alpha$}
-\label{fig:tau-alpha-hat}
+\label{fig:tau-alpha-sim}
 \end{figure}
+The same process is then applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, to evaluate $\hat{\tau}_\alpha(\lambda)$. Those results are plotted collectively in Fig:\ref{fig:tau-alpha-sim}. Note that both $\norm{\hat{\tau}_\alpha}$ and $\norm{\hat{\tau}_\alpha}$ are plotted, \underline{not the generalized forces} $\vec{\mathbf{V}}$ acting on the system. The generalized force response $\vec{\mathbf{V}}$ from Eq:\ref{eq:sim-lagranges} and expanded in Eq:\ref{eq:3.86g} \underline{include the inner ring energy component} $\vec{\mathbf{U}}$ or $\vec{\tau}_\lambda$ whereas $\hat{\tau}_\alpha$ and $\tilde{\tau}_\alpha$ do not. Moreover only constant values for $\lambda_i$ are used. The same constant propeller speed $\vec{\Omega}_i=6000~~[\text{RPM}]$ was used together with a constant $\lambda_i=0~~[\text{rad}]$ position for the inner ring's servo.
+\par
+The initial torque spike for $\tau_\alpha$ shown in Fig:\ref{fig:tau-alpha-hat} is as a result of the larger rotational inertia $J_{p}$ encountered by the second order angular acceleration $\ddot{\alpha}$. The response is depreciated in the case of the inner ring for $\tau_\lambda$ because of how much smaller that rotational inertia $J_n$ is. As per power calculations from the servo; the angular acceleration is rate limited to $472~[\text{rad.s}^{\text{-}2}]$, but neither tests come close to reaching saturation.
+\par
+The second torque peak which begins to manifest in the inner ring response for $\tau_\lambda$ shown in Fig:\ref{fig:tau-lambda-hat} are as a result of the angular velocity rate limit being encountered. The same limit is encountered for the middle ring response $\tau_\alpha$ in Fig:\ref{fig:tau-alpha-hat} but is far less significant in relation to the initial torque peak. The devitation between $\hat{\tau}_\alpha$ and $\tilde{\tau}_\alpha$ is only of the order of $10^{-4}~[\text{N.m}]$ whilst typical induced torque values are again three orders of magnitude greater, or of the order $10^{-1}~[\text{N.m}]$. Only at large angular changes for both $\Delta\lambda_i$ and $\Delta\alpha_i$ does the simplification proposed begin to deteriorate.
 \par
 From plots in both Fig:\ref{fig:tau-lambda-hat} and Fig:\ref{fig:tau-alpha-hat}; it is shown that assumptions for linearizing rotation matrices in the calculations for generalized forces in Eq:\ref{eq:sim-lagranges} is not an unreasonable simplification. The linearization(s) proposed in Eq:\ref{eq:sim-lagranges-linear} hold true so long as the step size for $\Delta\lambda_i$ or $\Delta\alpha_i$ are small enough, which is always the case for the control loop. It reduces the overhead required for calculating torque responses to actuator changes. 
 \subsubsection{Dynamic model verification}

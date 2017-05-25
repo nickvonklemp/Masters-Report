@@ -397,7 +397,7 @@ R_z=\begin{bmatrix}
 \end{subequations}
 \\
 The actuator space, including propeller speed $\Omega_i~\text{[RPS]}$, is then $\in\mathbb{R}^{12}$, or rather $\mathbb{U}\in\mathbb{R}^{12}$, in contrast with $\mathbb{U}\in\mathbb{R}^4$ for a standard quadrotor. The actuator input set $u \in \mathbb{U}$ is then structured as:
-\begin{equation}
+\begin{equation}\label{eq:actuator-space}
 \underset{\in\mathbb{U}}{u}=\begin{bmatrix}
 \Omega_1^+ & \lambda_1 & \alpha_1 & \ldots & \Omega_4^- & \lambda_4 & \alpha_4
 \end{bmatrix}^T~~~~\in\mathbb{R}^{12}
