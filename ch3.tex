@@ -1625,7 +1625,7 @@ Seeing that Eq:\ref{eq:sim-lagrange-torque-inner} produces a 3-Dimensional vecto
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-lambda-hat}
-\caption{$\norm{\hat{\tau}_\lambda}$ and $\norm{\tilde{\tau}_\lambda}$ steps}
+\caption{$\norm{\hat{\tau}_\lambda}$ and $\norm{\tilde{\tau}_\lambda}$ response to steps}
 \label{fig:tau-lambda-hat}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
@@ -1633,30 +1633,30 @@ Seeing that Eq:\ref{eq:sim-lagrange-torque-inner} produces a 3-Dimensional vecto
 \caption{$R^2_\lambda$ error}
 \label{fig:tau-lambda-hat-r}
 \end{subfigure}
-\caption{Inner ring induced torque simulations for $\vec{\tau}_\lambda$}
+\caption{Inner ring induced torque responses for $\Delta\lambda$}
 \vspace{-6pt}
 \label{fig:tau-lambda-sim}
 \vspace{-10pt}
 \end{figure}
 \par
-The regressive deviation $R^{2}_\lambda$ between $\hat{\tau}_\lambda$ and $\tilde{\tau}_\lambda$ is shown in Fig:\ref{fig:tau-lambda-hat-r}. The difference between $\hat{\tau}_\lambda$ and $\widetilde{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. However the plot for $R^2_\lambda$ suffered from simulation tolerance errors due to the small deviations which were being calculated. However despite that, the difference when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-5}~~[\text{Nm}]$ for small steps in $\Delta\lambda$. Both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ were three orders of magnitude greater; torques in the range of $\times 10^{-2}~~[\text{Nm}]$.
+The regressive deviation $R^{2}_\lambda$ bet ween $\hat{\tau}_\lambda$ and $\tilde{\tau}_\lambda$ is shown in Fig:\ref{fig:tau-lambda-hat-r}. The difference between $\hat{\tau}_\lambda$ and $\widetilde{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. However the plot for $R^2_\lambda$ suffered from simulation tolerance errors due to the small deviations which were being calculated. However despite that, the difference when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-5}~~[\text{Nm}]$ for small steps in $\Delta\lambda$. Both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ were three orders of magnitude greater; torques in the range of $\times 10^{-2}~~[\text{Nm}]$.
 \par
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat}
-\caption{$\norm{\hat{\tau}_\alpha}$ and $\norm{\tilde{\tau}_\alpha}$ steps}
+\caption{$\norm{\hat{\tau}_\alpha}$ and $\norm{\tilde{\tau}_\alpha}$ response to steps}
 \label{fig:tau-alpha-hat}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=0.95\textwidth]{graphs/tau-alpha-hat-r}
-\caption{$\hat{\tau}_\alpha$ steps down}
+\caption{$R^2_\alpha$ error}
 \label{fig:tau-alpha-hat-r}
 \end{subfigure}
 \vspace{-6pt}
-\caption{Middle ring induced torque simulations for $\vec{\tau}_\alpha$}
+\caption{Middle ring induced torque responses for $\Delta_\alpha$}
 \label{fig:tau-alpha-sim}
 \vspace{-10pt}
 \end{figure}
