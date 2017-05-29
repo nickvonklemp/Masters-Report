@@ -1617,7 +1617,7 @@ A final verification of the suggested simplifications is done with a \textbf{Sim
 \par
 The block $u(t)$ in Fig:\ref{fig:linear-block} represents some commanded change in actuator position, within the actuator space $u\in\mathbb{U}$. That space consists of propeller speeds $\Omega_i$ and servo positions $\lambda_i$ and $\alpha_i$ for $i\in[1:4]$; as detailed in Eq:\ref{eq:actuator-space}. Each actuator has its own transfer function, driven by the dynamic block $P(s)$, such transfer characteristics were empirically determined in Sec:\ref{subsec:proto.design.transfer}. That actuator argument $u(t)$ then leads to some time varying inner ring servo position $\lambda_i(t)$, with a rate $\dot{\lambda}_i$. Both of which are then be used to calculate the complete Euler-Lagrangian equation:
 \begin{equation}\label{eq:sim-lagrange-torque-inner}
-\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\tau}_\lambda
+\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\widetilde{\tau}_\lambda
 \end{equation}
 Seeing that Eq:\ref{eq:sim-lagrange-torque-inner} produces a 3-Dimensional vector result and not a scalar; vector magnitudes $\norm{\hat{\tau}_\lambda}$ and $\norm{\tilde{\tau}_\lambda}$ are discussed. The objective here is to quantify the effect a rotation matrix linearization has on the estimated generalized torque calculations detailed above. Plotted in Fig:\ref{fig:tau-lambda-hat} are both estimated $\norm{\hat{\tau}_\lambda}$ and simulated $\norm{\tilde{\tau}_\lambda}$ torques, calculated with a nominal constant angular propeller speed $\vec{\Omega}_i=6000~[\text{RPM}]$. Increasing positive and negative step sizes for changes in $\Delta\lambda$ are shown, resulting in larger torque responses.  
 \begin{figure}[hbtp]
@@ -1639,7 +1639,23 @@ Seeing that Eq:\ref{eq:sim-lagrange-torque-inner} produces a 3-Dimensional vecto
 \vspace{-10pt}
 \end{figure}
 \par
-The regressive deviation $R^{2}_\lambda$ bet ween $\hat{\tau}_\lambda$ and $\tilde{\tau}_\lambda$ is shown in Fig:\ref{fig:tau-lambda-hat-r}. The difference between $\hat{\tau}_\lambda$ and $\widetilde{\tau}_\lambda$ is exactly the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. However the plot for $R^2_\lambda$ suffered from simulation tolerance errors due to the small deviations which were being calculated. However despite that, the difference when using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, is typically in the order $\times 10^{-5}~~[\text{Nm}]$ for small steps in $\Delta\lambda$. Both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ were three orders of magnitude greater; torques in the range of $\times 10^{-2}~~[\text{Nm}]$.
+The regressive $R^{2}_\lambda$ error between $\hat{\tau}_\lambda$ and $\tilde{\tau}_\lambda$ is plotted in Fig:\ref{fig:tau-lambda-hat-r}. That difference between $\hat{\tau}_\lambda$ and $\widetilde{\tau}_\lambda$ is precisely the partial derivative contribution $\partial\mathcal{L}_{M_i'}/\partial\vec{\mathbf{u}}$. Or rather that, mathematically:
+\begin{subequations}\label{eq:error-tau-r}
+\begin{equation}
+R^2_\lambda=\norm{\hat{\tau}_\lambda}-\norm{\widetilde{\tau}_\lambda}
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+=\Bigg(\frac{d}{dt}\Big(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\Bigg)=\Bigg(\frac{d}{dt}\Big(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\Big)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}\Bigg)
+\end{equation}
+\vspace{-6pt}
+\begin{equation}
+\therefore R^2_\lambda=\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}
+\end{equation}
+\end{subequations}
+However the simulation for $R^2_\lambda$ suffered from tolerance errors in the integral approximator, this was as a result of the small deviations which were being calculated. Despite that; the differences, using the inertial matrices and dimensions defined for the prototype in Sec:\ref{sec:proto.inertia}, were typically in the order $\times 10^{-5}~~[\text{Nm}]$ for small steps in $\Delta\lambda$. 
+\par
+Only for large angular changes in $\Delta\lambda$ does the approximation begin to deteriorate. Mostly both $\hat{\tau}_\lambda$ and $\vec{\tau}_\lambda$ were three orders of magnitude greater than their errors; torques were in the range of $\times 10^{-2}~~[\text{Nm}]$. The error for $\lambda=pi/2$ was not included in Fig:\ref{fig:tau-alpha-hat-r} because it was the only error which did not fit on the $\times 10^{-5}~[\text{N.m}]$ scale.
 \par
 \begin{figure}[htbp]
 \centering
@@ -1658,9 +1674,12 @@ The regressive deviation $R^{2}_\lambda$ bet ween $\hat{\tau}_\lambda$ and $\til
 \vspace{-6pt}
 \caption{Middle ring induced torque responses for $\Delta_\alpha$}
 \label{fig:tau-alpha-sim}
-\vspace{-10pt}
 \end{figure}
-The same process is then applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, to evaluate $\hat{\tau}_\alpha(\lambda)$. Those results are plotted collectively in Fig:\ref{fig:tau-alpha-sim}. Note that both $\norm{\hat{\tau}_\alpha}$ and $\norm{\hat{\tau}_\alpha}$ are plotted, \underline{not the generalized torques} $\vec{\mathbf{V}}$ acting on the system. The generalized torque response $\vec{\mathbf{V}}$ from Eq:\ref{eq:sim-lagranges} and expanded in Eq:\ref{eq:3.86g} \underline{include the inner ring energy component} $\vec{\mathbf{U}}$ or $\vec{\tau}_\lambda$ whereas $\hat{\tau}_\alpha$ and $\tilde{\tau}_\alpha$ do not. Moreover only a constant value for $\lambda_i$ Was used. The same constant propeller speed $\vec{\Omega}_i=6000~~[\text{RPM}]$ was used together with a constant $\lambda_i=0~~[\text{rad}]$ origin position for the inner ring's servo.
+The same process was then applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, to evaluate $\hat{\tau}_\alpha(\lambda)$. Those results are plotted collectively in Fig:\ref{fig:tau-alpha-sim}. Note that both $\norm{\hat{\tau}_\alpha}$ and $\norm{\widetilde{\tau}_\alpha}$ are plotted, \underline{not the generalized torques} $\vec{\mathbf{V}}$ acting on the system. The generalized torque response $\vec{\mathbf{V}}$ from Eq:\ref{eq:sim-lagranges} and expanded in Eq:\ref{eq:3.86g} \underline{include the inner ring energy component} $\vec{\mathbf{U}}$ or $\vec{\tau}_\lambda$ whereas $\hat{\tau}_\alpha$ and $\tilde{\tau}_\alpha$ do not. From Eq:\ref{eq:torque-induced-middle}, $\hat{\tau}_\alpha$ is defined as a function of $\vec{\mathbf{V}}$ and $\vec{\mathbf{U}}$:
+\begin{equation}
+\hat{\tau}_\alpha(\lambda)\triangleq \vec{\mathbf{V}}(\alpha,\lambda)-R_y(\lambda)\vec{\mathbf{U}}(\lambda)
+\end{equation}
+Plots for the net generalized torque response $\vec{\mathbf{V}}(\alpha,\lambda)$ acting on the system with combined changes in $\Delta\alpha$ and $\Delta\lambda$ are included in App:\ref{app:tau-comb}. Moreover only a constant value for $\lambda_i$ Was used. The same constant propeller speed $\vec{\Omega}_i=6000~~[\text{RPM}]$ was used together with a constant $\lambda_i=0~~[\text{rad}]$ origin position for the inner ring's servo.
 \par
 The initial torque spike for $\tau_\alpha(\lambda)$ shown in Fig:\ref{fig:tau-alpha-hat} is as a result of the significantly larger rotational inertia, $J_{p}$ for the entire motor module, encountered by a second order angular acceleration $\ddot{\alpha}$. The response is depreciated in the case of the inner ring for $\tau_\lambda$ because of how much smaller that rotational inertia, $J_n$ for the inner ring only, physically is. As per power calculations from the servo; the angular acceleration is rate limited to $472~[\text{rad.s}^{\text{-}2}]$, but neither tests come close to reaching saturation.
 \par
