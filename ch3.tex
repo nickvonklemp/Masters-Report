@@ -1671,17 +1671,18 @@ Only for large angular changes in $\Delta\lambda$ does the approximation begin t
 \caption{$R^2_\alpha$ error}
 \label{fig:tau-alpha-hat-r}
 \end{subfigure}
-\vspace{-6pt}
+\vspace{-4pt}
 \caption{Middle ring induced torque responses for $\Delta_\alpha$}
 \label{fig:tau-alpha-sim}
+\vspace{-2pt}
 \end{figure}
 The same process was then applied to the middle ring Lagrangian, $\mathcal{L}_{M_i''}$ from Eq:\ref{eq:sim-lagrange-middle-expand}, to evaluate $\hat{\tau}_\alpha(\lambda)$. Those results are plotted collectively in Fig:\ref{fig:tau-alpha-sim}. Note that both $\norm{\hat{\tau}_\alpha}$ and $\norm{\widetilde{\tau}_\alpha}$ are plotted, \underline{not the generalized torques} $\vec{\mathbf{V}}$ acting on the system. The generalized torque response $\vec{\mathbf{V}}$ from Eq:\ref{eq:sim-lagranges} and expanded in Eq:\ref{eq:3.86g} \underline{include the inner ring energy component} $\vec{\mathbf{U}}$ or $\vec{\tau}_\lambda$ whereas $\hat{\tau}_\alpha$ and $\tilde{\tau}_\alpha$ do not. From Eq:\ref{eq:torque-induced-middle}, $\hat{\tau}_\alpha$ is defined as a function of $\vec{\mathbf{V}}$ and $\vec{\mathbf{U}}$:
 \begin{equation}
 \hat{\tau}_\alpha(\lambda)\triangleq \vec{\mathbf{V}}(\alpha,\lambda)-R_y(\lambda)\vec{\mathbf{U}}(\lambda)
 \end{equation}
-Plots for the net generalized torque response $\vec{\mathbf{V}}(\alpha,\lambda)$ acting on the system with combined changes in $\Delta\alpha$ and $\Delta\lambda$ are included in App:\ref{app:tau-comb}. Moreover only a constant value for $\lambda_i$ Was used. The same constant propeller speed $\vec{\Omega}_i=6000~~[\text{RPM}]$ was used together with a constant $\lambda_i=0~~[\text{rad}]$ origin position for the inner ring's servo.
+Plots for the net generalized torque response $\vec{\mathbf{V}}(\alpha,\lambda)$ acting on the system with combined changes for $\Delta\alpha$ and $\Delta\lambda$ are included in App:\ref{app:tau-comb}. Moreover only a constant value for $\lambda_i=0$ was used for the tests in Fig:\ref{fig:tau-alpha-sim}. The same constant propeller speed $\vec{\Omega}_i=6000~~[\text{RPM}]$ was used together with a constant $\lambda_i=0~~[\text{rad}]$ origin position for the inner ring's servo.
 \par
-The initial torque spike for $\tau_\alpha(\lambda)$ shown in Fig:\ref{fig:tau-alpha-hat} is as a result of the significantly larger rotational inertia, $J_{p}$ for the entire motor module, encountered by a second order angular acceleration $\ddot{\alpha}$. The response is depreciated in the case of the inner ring for $\tau_\lambda$ because of how much smaller that rotational inertia, $J_n$ for the inner ring only, physically is. As per power calculations from the servo; the angular acceleration is rate limited to $472~[\text{rad.s}^{\text{-}2}]$, but neither tests come close to reaching saturation.
+The initial torque spike for $\tau_\alpha(\lambda)$ shown in Fig:\ref{fig:tau-alpha-hat} is as a result of the significantly larger rotational inertia, $J_{p}$ for the entire motor module, encountered by a second order angular acceleration $\ddot{\alpha}$. That response is depreciated in the case of the inner ring for $\tau_\lambda$ because of how much smaller that rotational inertia, $J_n$ for the inner ring only, physically is. As per power calculations from the servo; the angular acceleration is rate limited to $472~[\text{rad.s}^{\text{-}2}]$, but neither tests come close to reaching saturation.
 \par
 The second torque peak which begins to manifest in the inner ring response for $\tau_\lambda$ shown in Fig:\ref{fig:tau-lambda-hat} are as a result of the angular velocity rate, $\dot{\lambda}_{max}=7.4799~[\text{rad.s}^{\text{-}1}]$, limit being encountered. The same limit is encountered for the middle ring response $\tau_\alpha$ in Fig:\ref{fig:tau-alpha-hat} but is far less significant in relation to the initial second order acceleration torque peak. The deviation between $\hat{\tau}_\alpha$ and $\tilde{\tau}_\alpha$ is only of the order of $10^{-4}~[\text{N.m}]$ whilst typical induced torque values are again three orders of magnitude greater, or of the order $10^{-1}~[\text{N.m}]$. Only at large angular changes for both $\Delta\lambda_i$ and $\Delta\alpha_i$ do the simplifications proposed begin to deteriorate.
 \par
