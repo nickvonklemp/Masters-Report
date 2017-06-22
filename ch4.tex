@@ -7,21 +7,101 @@
 \section{Stability}
 \label{sec:control.stability}
 %====================================================
-Stables
-%====================================================
-\section{Control Loop}
-%====================================================
-The control problem for this dissertation is, as outlined in Chater:\ref{ch:intro}; to achieve dynamic (\emph{attitude}) set point tracking on a quadrotor by solving the problem of its inherent underactuation. For the purposes of the subsequent controller development, the plant is described in the following non-linear state space form:
+Before the control plant can be derived, definitions of what the control plant aims to achieve are needed. The system's control loop aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model}. Each block within the control loop is expanded upon subsequently in Sec:\ref{sec:control.loop} but first, stability in the context of trajectory tracking must be defined. Stability definitions for a generealized plant trajectory is not uncommon in the context of energy equations control proofs (see Sec:\ref{sec:control.lyapunov}) and are discussed in most control texts. Only stability definitions pertinent to Lyapunov Stability Theorem are briefly presented here; adapted from \cite{bojelayupanov,lyapunovstabilitytheorem}. 
+\par
+In general for some autonomous trajectory $\vec{\mathbf{x}}(t)$, an equilibrium point $\vec{\mathbf{x}}(t_0)$ is said to be stable (\textbf{S}) if and only if, \emph{iff}, the following is true;
+\begin{subequations}\label{eq:basic-stability}
+\begin{equation}
+\forall\epsilon>0,~\exists\delta(t_0,\epsilon):~\norm{\vec{\mathbf{x}}(t_0)}<\delta(t_0,\epsilon)
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+\Rightarrow\norm{\vec{\mathbf{x}}(t)}<\epsilon~~\forall t\geq0
+\end{equation}
+\end{subequations}
+The implication of which is that if, for some initial condition $\vec{\mathbf{x}}(t_0)$ whose magnitude is bound by the manifold $\delta(t_0,\epsilon)$, the entire subsequent trajectory of $\vec{\mathbf{x}}(t)$ is bound from above by some other manifold $\epsilon$. Such a trajectory is illustrated in Fig:\ref{fig:basic-stability}
+\begin{figure}[hbtp]
+\vspace{-10pt}
+\centering
+\includegraphics[width=0.5\textwidth]{figs/basic-stability}
+\caption{Basic equilibrium stability}
+\label{fig:basic-stability}
+\vspace{-18pt}
+\end{figure}
+\par
+An equilibrium point is further said to be uniformly stable (\textbf{US}) \emph{iff} for the time line $t\in[t_0,\infty)$ the following holds true:
+\begin{subequations}\label{eq:uniform-stability}
+\begin{equation}
+\forall\epsilon>0,~\exists\delta(\epsilon)>0:~\norm{\vec{\mathbf{x}}(t_1)}<\delta(\epsilon),~~t_1>t_0
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+\Rightarrow\norm{\vec{\mathbf{x}}(t)}<\epsilon~~\forall
+t\geq t_1
+\end{equation}
+\end{subequations}
+\textbf{US} similarly bounds a trajectory from above by $\epsilon$ if such a trajectory originates from within $\delta(\epsilon)$. The difference is that the conditional manifold $\delta(\epsilon)$ is dependent of $t_0$ in the case of uniform stability. In other words the two surfaces are non-concentric; illustrated in Fig:\ref{fig:uniform-stability}. 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/uniform-stability}
+\caption{Uniform stability equilibrium trajectory}
+\label{fig:uniform-stability}
+\end{figure}
+\par
+Uniform stability is a subset of general stability, $\mathbf{\text{US}}\subset\mathbf{\text{S}}$, however the converse is not true. Furthermore uniform stability is a stronger assertion of stability. An equilibrium point is said to be asymptotically stable (\textbf{AS}) \emph{iff} conditions for \textbf{S} are met (Eq:\ref{eq:basic-stability}) and that the following holds true:
 \begin{subequations}
 \begin{equation}
-\dot{\mathbf{x}}=f(\mathbf{x},t)+g(\mathbf{x},\vec{\nu},t)
+\exists\delta_1(t_0) >0:~\norm{\vec{\mathbf{x}}(t_0)}<\delta_1(t_0)
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+\Rightarrow \lim_{t\rightarrow\infty}\norm{\vec{\mathbf{x}}(t)}\rightarrow 0
+\end{equation}
+\end{subequations}
+This implies that for trajectories originating from some finer region $\delta_1(t_0)$, typically a subset of $\delta(t_0)$, the trajectory tends to and \emph{asymptotically} settles at the origin. This means that in the case of \textbf{S} the origin is both \underline{stable} and \underline{attractive} (Fig:\ref{fig:asymptotic-stability}).
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/asymptotic-stability}
+\caption{Asymptotic stability}
+\label{fig:asymptotic-stability}
+\vspace{-12pt}
+\end{figure}
+\par
+Uniform asymptotic stability (\textbf{UAS}), an extension of uniform stability, occurs when the asymptotically stable bound region $\delta(\epsilon)$ is independent of the principle starting $t_0$. An equilibrium point is \textbf{UAS} \emph{iff} conditions for \textbf{S} are met and that:
+\begin{subequations}
+\begin{equation}
+\exists\delta_1>0:~\norm{\vec{\mathbf{x}}(t_1)}<\delta_1,~~t_1\geq t_0
+\end{equation} 
+\vspace{-12pt}
+\begin{equation}
+\Rightarrow \lim_{t\rightarrow\infty}\norm{\vec{\mathbf{x}}(t)}\rightarrow 0
+\end{equation}
+\end{subequations}
+A uniformly asymptotic equilibrium point implies stability from a non-concentric ball of attraction; settling to the origin (illustrated in Fig:\ref{fig:uniform-asymptotic-stability}).
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/uniform-asymptotic-stability}
+\caption{Uniform asymptotic stability}
+\label{fig:uniform-asymptotic-stability}
+\end{figure}
+%====================================================
+\section{Control Loop}
+\label{sec:control.loop}
+%====================================================
+The control problem for this dissertation is, as outlined in Ch:\ref{ch:intro}; to achieve dynamic (\emph{attitude and position}) set point tracking on a quadrotor by solving the problem of its inherent under-actuation through over-actuation. For the purposes of the subsequent controller development, the plant is described in the following typical non-linear state space form:
+\begin{subequations}
+\begin{equation}
+\frac{d}{dt}{\vec{\mathbf{x}}}=f(\vec{\mathbf{x}},t)+g(\vec{\mathbf{x}},\vec{\nu},t)
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-y = c(\mathbf{x},t)+d(\mathbf{x},\vec{\nu},t)
+\vec{y} = c(\vec{\mathbf{x}},t)+d(\vec{\mathbf{x}},\vec{\nu},t)
 \end{equation}
 \end{subequations}
-Where the plant dynamics are governed by $f(\mathbf{x},t)$ and the plant's input response by $g(\mathbf{x},\vec{\nu},t)$, for a given control input $\vec{\nu}$. The latter is not necessarily a function based relationship and could take the multiplicative form; $g(\mathbf{x},t)\vec{\nu}$. The objective for setpoint tracking is for the output to track the state; namely $y = c(\mathbf{x},t)=\mathbf{x}$. As such, the control problem is to design a stabilizing control law for an error state $\mathbf{x}_e$\footnote{Ignoring how the state error is formulated for the time being\ldots}:
+Where the internal plant dynamics are governed by $f(\vec{\mathbf{x}},t)$ and the plant's input response by $g(\vec{\mathbf{x}},\vec{\nu},t)$, for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\mathbf{x},t)\vec{\nu}$. Setpoint tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)=\vec{\mathbf{x}}$. As such, the control problem is to design a stabilizing control law for some error state $\mathbf{x}_e$:
+%============================================================
+% Up to here
+%============================================================
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)
 \end{equation}
