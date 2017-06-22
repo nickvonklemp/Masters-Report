@@ -7,19 +7,19 @@
 \section{Stability}
 \label{sec:control.stability}
 %====================================================
-Before the control plant can be derived, definitions of what the control plant aims to achieve are needed. The system's control loop aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model}. Each block within the control loop is expanded upon subsequently in Sec:\ref{sec:control.loop} but first, stability in the context of trajectory tracking must be defined. Stability definitions for a generealized plant trajectory is not uncommon in the context of energy equations control proofs (see Sec:\ref{sec:control.lyapunov}) and are discussed in most control texts. Only stability definitions pertinent to Lyapunov Stability Theorem are briefly presented here; adapted from \cite{bojelayupanov,lyapunovstabilitytheorem}. 
+Before the control plant can be derived, definitions of what the control plant aims to achieve are needed. The system's control loop aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model}. Each block within the control loop is expanded upon subsequently in Sec:\ref{sec:control.loop} but first, stability in the context of trajectory tracking must be defined. Stability definitions for a generealized plant trajectory is not uncommon in the context of energy equations control proofs (see Sec:\ref{sec:control.lyapunov}) and are discussed in most control texts. Only stability definitions pertinent to Lyapunov Stability Theorem are briefly presented here; the following is adapted from \cite{bojelayupanov,lyapunovstabilitytheorem}. 
 \par
-In general for some autonomous trajectory $\vec{\mathbf{x}}(t)$, an equilibrium point $\vec{\mathbf{x}}(t_0)$ is said to be stable (\textbf{S}) if and only if, \emph{iff}, the following is true;
+In general for some autonomous trajectory $\vec{\mathbf{x}}(t)$, an equilibrium point $\vec{\mathbf{x}}(t_0)$ is said to be stable (\textbf{S}) if and only if (\emph{iff}) the following is true;
 \begin{subequations}\label{eq:basic-stability}
 \begin{equation}
-\forall\epsilon>0,~\exists\delta(t_0,\epsilon):~\norm{\vec{\mathbf{x}}(t_0)}<\delta(t_0,\epsilon)
+\forall\varepsilon>0,~\exists\delta(t_0,\varepsilon):~\norm{\vec{\mathbf{x}}(t_0)}<\delta(t_0,\varepsilon)
 \end{equation}
-\vspace{-12pt}
+\vspace{-14pt}
 \begin{equation}
-\Rightarrow\norm{\vec{\mathbf{x}}(t)}<\epsilon~~\forall t\geq0
+\Rightarrow\norm{\vec{\mathbf{x}}(t)}<\varepsilon~~\forall t\geq t_0
 \end{equation}
 \end{subequations}
-The implication of which is that if, for some initial condition $\vec{\mathbf{x}}(t_0)$ whose magnitude is bound by the manifold $\delta(t_0,\epsilon)$, the entire subsequent trajectory of $\vec{\mathbf{x}}(t)$ is bound from above by some other manifold $\epsilon$. Such a trajectory is illustrated in Fig:\ref{fig:basic-stability}
+The implication of which is that if, for some initial condition $\vec{\mathbf{x}}(t_0)$ whose magnitude is bound by the manifold $\delta(t_0,\epsilon)$, the entire subsequent trajectory of $\vec{\mathbf{x}}(t)$ is bound from above by some other manifold $\varepsilon$. Such a trajectory is illustrated in Fig:\ref{fig:basic-stability}
 \begin{figure}[hbtp]
 \vspace{-10pt}
 \centering
@@ -40,7 +40,7 @@ An equilibrium point is further said to be uniformly stable (\textbf{US}) \emph{
 t\geq t_1
 \end{equation}
 \end{subequations}
-\textbf{US} similarly bounds a trajectory from above by $\epsilon$ if such a trajectory originates from within $\delta(\epsilon)$. The difference is that the conditional manifold $\delta(\epsilon)$ is dependent of $t_0$ in the case of uniform stability. In other words the two surfaces are non-concentric; illustrated in Fig:\ref{fig:uniform-stability}. 
+\textbf{US} similarly bounds a trajectory from above by $\varepsilon$ if such a trajectory originates from within $\delta(\varepsilon)$. The difference is that the conditional manifold $\delta(\varepsilon)$ is independent of $t_0$ in the case of uniform stability. In other words the two surfaces are non-concentric; illustrated in Fig:\ref{fig:uniform-stability}. 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.5\textwidth]{figs/uniform-stability}
@@ -48,7 +48,7 @@ t\geq t_1
 \label{fig:uniform-stability}
 \end{figure}
 \par
-Uniform stability is a subset of general stability, $\mathbf{\text{US}}\subset\mathbf{\text{S}}$, however the converse is not true. Furthermore uniform stability is a stronger assertion of stability. An equilibrium point is said to be asymptotically stable (\textbf{AS}) \emph{iff} conditions for \textbf{S} are met (Eq:\ref{eq:basic-stability}) and that the following holds true:
+Uniform stability is a subset of general stability, $\mathbf{\text{US}}\subset\mathbf{\text{S}}$, however the converse is not true. Furthermore \textbf{US} is a stronger assertion of stability. Extending stability definitions to settling; an equilibrium point is said to be asymptotically stable (\textbf{AS}) \emph{iff} conditions for \textbf{S} are met (Eq:\ref{eq:basic-stability}) and that the following holds true:
 \begin{subequations}
 \begin{equation}
 \exists\delta_1(t_0) >0:~\norm{\vec{\mathbf{x}}(t_0)}<\delta_1(t_0)
@@ -58,7 +58,7 @@ Uniform stability is a subset of general stability, $\mathbf{\text{US}}\subset\m
 \Rightarrow \lim_{t\rightarrow\infty}\norm{\vec{\mathbf{x}}(t)}\rightarrow 0
 \end{equation}
 \end{subequations}
-This implies that for trajectories originating from some finer region $\delta_1(t_0)$, typically a subset of $\delta(t_0)$, the trajectory tends to and \emph{asymptotically} settles at the origin. This means that in the case of \textbf{S} the origin is both \underline{stable} and \underline{attractive} (Fig:\ref{fig:asymptotic-stability}).
+This implies that for trajectories originating from some finer region $\delta_1(t_0)$, typically a subset of $\delta(\varepsilon,t_0)$, the trajectory tends to and \emph{asymptotically} settles at the origin. This means that in the case of \textbf{AS} the origin is both \underline{stable} and \underline{attractive} (Fig:\ref{fig:asymptotic-stability}). Asymptotic stability is typically the first requirement for controllers, being a stronger stability than both \textbf{US} and \textbf{S}\ldots
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.5\textwidth]{figs/asymptotic-stability}
@@ -84,6 +84,34 @@ A uniformly asymptotic equilibrium point implies stability from a non-concentric
 \caption{Uniform asymptotic stability}
 \label{fig:uniform-asymptotic-stability}
 \end{figure}
+\par
+An equilibrium point is regarded as exponentially stable (\textbf{UES}) if conditions for \textbf{UAS} are met and that there exist $\exists a,b,r$ that bound the settling of the trajectory such that:
+\begin{equation}\label{eq:exponential-stability}
+\norm{\vec{\mathbf{x}}(t,t_0,\vec{\mathbf{x}}_0)}\leq a\norm{\vec{\mathbf{x}}_0}e^{-bt}~~\forall\norm{\vec{\mathbf{x}}_0}\leq r
+\end{equation}
+The term $a\norm{\vec{\mathbf{x}}_0}e^{-bt}$ bounds the rate at which the trajectory settles to the origin, illustrated in Fig:\ref{fig:exponential-stability}. The initial point of the trajectory, $\vec{\mathbf{x}}_0$ is bound from above by $r$. Uniform stability is implied with exponential stability\ldots
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/exponential-stability}
+\caption{Exponential stability}
+\label{fig:exponential-stability}
+\end{figure}
+\par
+The above definitions of stability are only locally defined, and so the stabilities hold true only for local trajectories. Extending \textbf{UAS} to global uniform asymptotic stability (\textbf{GUAS}); the origin's equilibrium point is \textbf{GUAS} \emph{iff} conditions for \textbf{UAS} are first met, the origin is only the equilibrium point and the asymptotic approach can be extended such that:
+\begin{subequations}
+\begin{equation}
+\exists\delta_1>0:~\norm{\vec{\mathbf{x}}(t_1)}<\delta_1,~~t_1\geq t_0
+\end{equation}
+\vspace{-16pt}
+\begin{equation}
+\Rightarrow \lim_{t\rightarrow\infty}\norm{\vec{\mathbf{x}}(t)}~~\forall \vec{\mathbf{x}}(t_0)
+\end{equation}
+\end{subequations}
+Exponential stability can similarly be extended to the global case \emph{iff} \textbf{UES} conditions are first met, the origin is similarly the only equilibrium point and that conditions from Eq:\ref{eq:exponential-stability} are extended:
+\begin{equation}\label{eq:global-exponential-stability}
+\norm{\vec{\mathbf{x}}(t,t_0)}\leq a\norm{\vec{\mathbf{x}}_0}e^{-bt}~~\forall\norm{\vec{\mathbf{x}}_0}
+\end{equation}
+The conditions for the intial trajectory starting point are dropped in Eq:\ref{eq:global-exponential-stability}; this means that irrespective of the starting point for the trajectory, the system \underline{always} settles to the origin. \textbf{GUES} is the strongest sense of stability and further provides insight into the rate at which the trajectory stabilizes. The most effective control design outcome is a controller which applies globally uniform exponential stability to a plant.
 %====================================================
 \section{Control Loop}
 \label{sec:control.loop}
