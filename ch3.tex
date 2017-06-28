@@ -1328,7 +1328,7 @@ With $C.M_\text{n}'$ and $C.M_\text{m}'$ being rotated inner and middle ring cen
 \end{equation}
 Which leads to the vector difference $\Delta L_i$, illustrated in Fig:\ref{fig:vector-diff}.
 \begin{equation}
-\Delta L_i=\vec{L}_i-C.M_\text{p}'
+\Delta L_i=\vec{L}_i+C.M_\text{p}'
 \end{equation}
 \begin{figure}[hbtp]
 \centering
@@ -1339,11 +1339,11 @@ Which leads to the vector difference $\Delta L_i$, illustrated in Fig:\ref{fig:v
 \end{figure}
 The time derivative of that module's moving center of gravity, $C.M_\text{p}'$ relative to the origin $\vec{\mathbf{O}}_b$, is:
 \begin{equation}
-\Delta \dot{L}_i=-\frac{d}{dt}\Big(C.M_\text{p}'\Big)
+\Delta \dot{L}_i=\frac{d}{dt}\Big(C.M_\text{p}'\Big)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-\frac{1}{m_\text{p}}\Big(m_\text{n}\big(R_z\big([\dot{\vec{\alpha}}_i]_\times R_y(\alpha)R_x(\lambda)C.M_\text{n}+R_y(\alpha)[\dot{\vec{\lambda}}_i]_\times C.M_\text{n}\big)+m_\text{m}R_z[\dot{\vec{\alpha}}_i]_\times C.M_\text{m}\Big)
+=\frac{1}{m_\text{p}}\Big(m_\text{n}\big(R_z\big([\dot{\vec{\alpha}}_i]_\times R_y(\alpha)R_x(\lambda)C.M_\text{n}+R_y(\alpha)[\dot{\vec{\lambda}}_i]_\times C.M_\text{n}\big)+m_\text{m}R_z[\dot{\vec{\alpha}}_i]_\times C.M_\text{m}\Big)
 \end{equation}
 \end{subequations}
 Then, extended from Lemma:\ref{lem:1}, the motor module's \emph{point-mass} inertia $J_H$ about the origin $\vec{\mathbf{O}}_b$ is defined, with motor module mass $m_\text{p}=m_\text{n}+m_\text{m}$, using masses $m_\text{n}$ and $m_\text{m}$ from Eq:\ref{eq:body-net-inner.a} and Eq:\ref{eq:body-net-middle.a}:
