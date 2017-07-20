@@ -165,6 +165,7 @@
 \newlabel{eq:rotation-linear}{{3.68}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.68}{}}
 \newlabel{eq:rot-linearization}{{3.69}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.69}{}}
 \newlabel{eq:3.42b}{{3.70}{60}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.70}{}}
+\newlabel{eq:inertial-rate-def}{{3.71d}{61}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.4}{}}
 \newlabel{eq:rotor-deriv}{{3.72}{61}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.72}{}}
 \newlabel{eq:inner-deriv}{{3.73}{61}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.73}{}}
 \newlabel{eq:generalized-inner}{{3.75a}{61}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.1}{}}
@@ -222,7 +223,7 @@
 \newlabel{eq:3.110a}{{3.110a}{71}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.1}{}}
 \newlabel{eq:net-body-response}{{3.110b}{71}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.2}{}}
 \newlabel{eq:net-body-gravity}{{3.110c}{71}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.3}{}}
-\newlabel{eq:net-body-approx}{{3.112}{72}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.112}{}}
+\newlabel{eq:discrete-inertia-approximation}{{3.112}{72}{Relative Rotational Gyroscopic \& Inertial Torques}{equation.3.3.112}{}}
 \newlabel{fig:tau-body}{{3.17a}{72}{Approximated and true body torque responses\relax }{figure.caption.61}{}}
 \newlabel{sub@fig:tau-body}{{a}{72}{Approximated and true body torque responses\relax }{figure.caption.61}{}}
 \newlabel{fig:tau-body-r}{{3.17b}{72}{Errors for both body torque responses\relax }{figure.caption.61}{}}
@@ -233,68 +234,68 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Simulation and verification of induced model}{73}{subsection.3.3.2}}
 \newlabel{subsec:dynamics.nonlinearities.torque-tests}{{3.3.2}{73}{Simulation and verification of induced model}{subsection.3.3.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Linearization simulation and comparison}{73}{subsection.3.3.2}}
-\newlabel{eq:sim-lagrange-inner}{{3.115a}{73}{Linearization simulation and comparison}{equation.3.3.1}{}}
-\newlabel{eq:sim-lagrange-inner-expand}{{3.115b}{73}{Linearization simulation and comparison}{equation.3.3.2}{}}
-\newlabel{eq:sim-lagrange-middle}{{3.115c}{73}{Linearization simulation and comparison}{equation.3.3.3}{}}
-\newlabel{eq:sim-lagrange-middle-expand}{{3.115d}{73}{Linearization simulation and comparison}{equation.3.3.4}{}}
-\newlabel{eq:sim-lagranges}{{3.116}{73}{Linearization simulation and comparison}{equation.3.3.116}{}}
-\newlabel{eq:sim-lagranges-linear}{{3.117}{73}{Linearization simulation and comparison}{equation.3.3.117}{}}
-\newlabel{eq:sim-lagrange-inner-simple}{{3.118}{73}{Linearization simulation and comparison}{equation.3.3.118}{}}
-\newlabel{eq:3.118}{{3.119}{73}{Linearization simulation and comparison}{equation.3.3.119}{}}
-\newlabel{eq:sim-inner-partial-rotor}{{3.120b}{74}{Linearization simulation and comparison}{equation.3.3.2}{}}
-\newlabel{eq:sim-inner-partial-inner}{{3.120c}{74}{Linearization simulation and comparison}{equation.3.3.3}{}}
-\newlabel{eq:sim-inner-partial-angular}{{3.120d}{74}{Linearization simulation and comparison}{equation.3.3.4}{}}
-\newlabel{eq:sim-rot-linear}{{3.121a}{74}{Linearization simulation and comparison}{equation.3.3.1}{}}
-\newlabel{eq:inner-ring-linearizations}{{3.122}{74}{Linearization simulation and comparison}{equation.3.3.122}{}}
+\newlabel{eq:sim-lagrange-inner}{{3.113a}{73}{Linearization simulation and comparison}{equation.3.3.1}{}}
+\newlabel{eq:sim-lagrange-inner-expand}{{3.113b}{73}{Linearization simulation and comparison}{equation.3.3.2}{}}
+\newlabel{eq:sim-lagrange-middle}{{3.113c}{73}{Linearization simulation and comparison}{equation.3.3.3}{}}
+\newlabel{eq:sim-lagrange-middle-expand}{{3.113d}{73}{Linearization simulation and comparison}{equation.3.3.4}{}}
+\newlabel{eq:sim-lagranges}{{3.114}{73}{Linearization simulation and comparison}{equation.3.3.114}{}}
+\newlabel{eq:sim-lagranges-linear}{{3.115}{73}{Linearization simulation and comparison}{equation.3.3.115}{}}
+\newlabel{eq:sim-lagrange-inner-simple}{{3.116}{73}{Linearization simulation and comparison}{equation.3.3.116}{}}
+\newlabel{eq:3.118}{{3.117}{74}{Linearization simulation and comparison}{equation.3.3.117}{}}
+\newlabel{eq:sim-inner-partial-rotor}{{3.118b}{74}{Linearization simulation and comparison}{equation.3.3.2}{}}
+\newlabel{eq:sim-inner-partial-inner}{{3.118c}{74}{Linearization simulation and comparison}{equation.3.3.3}{}}
+\newlabel{eq:sim-inner-partial-angular}{{3.118d}{74}{Linearization simulation and comparison}{equation.3.3.4}{}}
+\newlabel{eq:sim-rot-linear}{{3.119a}{74}{Linearization simulation and comparison}{equation.3.3.1}{}}
+\newlabel{eq:inner-ring-linearizations}{{3.120}{74}{Linearization simulation and comparison}{equation.3.3.120}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces Simulink Lagrangian block\relax }}{75}{figure.caption.62}}
 \newlabel{fig:linear-block}{{3.18}{75}{Simulink Lagrangian block\relax }{figure.caption.62}{}}
-\newlabel{eq:sim-lagrange-torque-inner}{{3.124}{75}{Linearization simulation and comparison}{equation.3.3.124}{}}
-\newlabel{fig:tau-lambda-hat}{{3.19a}{75}{$\norm {\hat {\tau }_\lambda }$ and $\norm {\tilde {\tau }_\lambda }$ response to steps\relax }{figure.caption.63}{}}
-\newlabel{sub@fig:tau-lambda-hat}{{a}{75}{$\norm {\hat {\tau }_\lambda }$ and $\norm {\tilde {\tau }_\lambda }$ response to steps\relax }{figure.caption.63}{}}
-\newlabel{fig:tau-lambda-hat-r}{{3.19b}{75}{$R^2_\lambda $ error\relax }{figure.caption.63}{}}
-\newlabel{sub@fig:tau-lambda-hat-r}{{b}{75}{$R^2_\lambda $ error\relax }{figure.caption.63}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Inner ring induced torque responses for $\Delta \lambda $\relax }}{75}{figure.caption.63}}
-\newlabel{fig:tau-lambda-sim}{{3.19}{75}{Inner ring induced torque responses for $\Delta \lambda $\relax }{figure.caption.63}{}}
-\newlabel{eq:error-tau-r}{{3.125}{75}{Linearization simulation and comparison}{equation.3.3.125}{}}
+\newlabel{eq:sim-lagrange-torque-inner}{{3.122}{75}{Linearization simulation and comparison}{equation.3.3.122}{}}
+\newlabel{eq:error-tau-r}{{3.123}{75}{Linearization simulation and comparison}{equation.3.3.123}{}}
+\newlabel{fig:tau-lambda-hat}{{3.19a}{76}{$\norm {\hat {\tau }_\lambda }$ and $\norm {\tilde {\tau }_\lambda }$ response to steps\relax }{figure.caption.63}{}}
+\newlabel{sub@fig:tau-lambda-hat}{{a}{76}{$\norm {\hat {\tau }_\lambda }$ and $\norm {\tilde {\tau }_\lambda }$ response to steps\relax }{figure.caption.63}{}}
+\newlabel{fig:tau-lambda-hat-r}{{3.19b}{76}{$R^2_\lambda $ error\relax }{figure.caption.63}{}}
+\newlabel{sub@fig:tau-lambda-hat-r}{{b}{76}{$R^2_\lambda $ error\relax }{figure.caption.63}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Inner ring induced torque responses for $\Delta \lambda $\relax }}{76}{figure.caption.63}}
+\newlabel{fig:tau-lambda-sim}{{3.19}{76}{Inner ring induced torque responses for $\Delta \lambda $\relax }{figure.caption.63}{}}
 \newlabel{fig:tau-alpha-hat}{{3.20a}{76}{$\norm {\hat {\tau }_\alpha }$ and $\norm {\tilde {\tau }_\alpha }$ response to steps\relax }{figure.caption.64}{}}
 \newlabel{sub@fig:tau-alpha-hat}{{a}{76}{$\norm {\hat {\tau }_\alpha }$ and $\norm {\tilde {\tau }_\alpha }$ response to steps\relax }{figure.caption.64}{}}
 \newlabel{fig:tau-alpha-hat-r}{{3.20b}{76}{$R^2_\alpha $ error\relax }{figure.caption.64}{}}
 \newlabel{sub@fig:tau-alpha-hat-r}{{b}{76}{$R^2_\alpha $ error\relax }{figure.caption.64}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces Middle ring induced torque responses for $\Delta _\alpha $\relax }}{76}{figure.caption.64}}
 \newlabel{fig:tau-alpha-sim}{{3.20}{76}{Middle ring induced torque responses for $\Delta _\alpha $\relax }{figure.caption.64}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Dynamic model verification}{77}{equation.3.3.126}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.21}{\ignorespaces Inner ring torque test rig\relax }}{77}{figure.caption.65}}
-\newlabel{fig:torque-inner}{{3.21}{77}{Inner ring torque test rig\relax }{figure.caption.65}{}}
-\newlabel{eq:model-inner}{{3.128}{78}{Dynamic model verification}{equation.3.3.128}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Dynamic model verification}{77}{equation.3.3.124}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.21}{\ignorespaces Inner ring torque test rig\relax }}{78}{figure.caption.65}}
+\newlabel{fig:torque-inner}{{3.21}{78}{Inner ring torque test rig\relax }{figure.caption.65}{}}
+\newlabel{eq:model-inner}{{3.126}{78}{Dynamic model verification}{equation.3.3.126}{}}
 \newlabel{fig:tau-lambda}{{3.22a}{78}{Test rig results for $\hat {\tau }_\lambda $\relax }{figure.caption.66}{}}
 \newlabel{sub@fig:tau-lambda}{{a}{78}{Test rig results for $\hat {\tau }_\lambda $\relax }{figure.caption.66}{}}
 \newlabel{fig:tau-lambda-r}{{3.22b}{78}{Errors for $R^2_{\hat {\tau }_\lambda }$\relax }{figure.caption.66}{}}
 \newlabel{sub@fig:tau-lambda-r}{{b}{78}{Errors for $R^2_{\hat {\tau }_\lambda }$\relax }{figure.caption.66}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.22}{\ignorespaces Inner ring response\relax }}{78}{figure.caption.66}}
-\newlabel{eq:model-middle}{{3.129}{78}{Dynamic model verification}{equation.3.3.129}{}}
 \citation{physicallybased,multibodydynamics}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.23}{\ignorespaces Middle ring torque test rig\relax }}{79}{figure.caption.67}}
-\newlabel{fig:torque-middle}{{3.23}{79}{Middle ring torque test rig\relax }{figure.caption.67}{}}
+\newlabel{eq:model-middle}{{3.127}{79}{Dynamic model verification}{equation.3.3.127}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.23}{\ignorespaces Middle ring torque test rig\relax }}{80}{figure.caption.67}}
+\newlabel{fig:torque-middle}{{3.23}{80}{Middle ring torque test rig\relax }{figure.caption.67}{}}
 \newlabel{fig:tau-alpha}{{3.24a}{80}{Test rig results for $\hat {\tau }_\alpha (\lambda )$\relax }{figure.caption.68}{}}
 \newlabel{sub@fig:tau-alpha}{{a}{80}{Test rig results for $\hat {\tau }_\alpha (\lambda )$\relax }{figure.caption.68}{}}
 \newlabel{fig:tau-alpha-r}{{3.24b}{80}{Errors for $R^2_{\hat {\tau }_\alpha (\lambda )}$\relax }{figure.caption.68}{}}
 \newlabel{sub@fig:tau-alpha-r}{{b}{80}{Errors for $R^2_{\hat {\tau }_\alpha (\lambda )}$\relax }{figure.caption.68}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.24}{\ignorespaces •\relax }}{80}{figure.caption.68}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Consolidated Model}{80}{section.3.4}}
-\newlabel{sec:dynamics.model}{{3.4}{80}{Consolidated Model}{section.3.4}{}}
-\newlabel{eq:quaternion-states}{{3.132}{80}{Consolidated Model}{equation.3.4.132}{}}
-\newlabel{eq:quaternion-states-velocity}{{3.132a}{80}{Consolidated Model}{equation.3.4.1}{}}
-\newlabel{eq:quaternion-states-acceleration}{{3.132b}{80}{Consolidated Model}{equation.3.4.2}{}}
-\newlabel{eq:quaternion-states-quaternion}{{3.132c}{80}{Consolidated Model}{equation.3.4.3}{}}
-\newlabel{eq:quaternion-states-angular}{{3.132d}{80}{Consolidated Model}{equation.3.4.4}{}}
-\newlabel{eq:quaternion-inputs}{{3.133}{80}{Consolidated Model}{equation.3.4.133}{}}
-\newlabel{eq:aerodynamic-thrust}{{3.134a}{80}{Consolidated Model}{equation.3.4.1}{}}
-\newlabel{eq:aerodynamic-torque}{{3.134b}{81}{Consolidated Model}{equation.3.4.2}{}}
-\newlabel{eq:actuator-torque}{{3.135}{81}{Consolidated Model}{equation.3.4.135}{}}
-\newlabel{eq:consolidated-grav-torque}{{3.136}{81}{Consolidated Model}{equation.3.4.136}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Consolidated Model}{81}{section.3.4}}
+\newlabel{sec:dynamics.model}{{3.4}{81}{Consolidated Model}{section.3.4}{}}
+\newlabel{eq:quaternion-states}{{3.130}{81}{Consolidated Model}{equation.3.4.130}{}}
+\newlabel{eq:quaternion-states-velocity}{{3.130a}{81}{Consolidated Model}{equation.3.4.1}{}}
+\newlabel{eq:quaternion-states-acceleration}{{3.130b}{81}{Consolidated Model}{equation.3.4.2}{}}
+\newlabel{eq:quaternion-states-quaternion}{{3.130c}{81}{Consolidated Model}{equation.3.4.3}{}}
+\newlabel{eq:quaternion-states-angular}{{3.130d}{81}{Consolidated Model}{equation.3.4.4}{}}
+\newlabel{eq:quaternion-inputs}{{3.131}{81}{Consolidated Model}{equation.3.4.131}{}}
+\newlabel{eq:aerodynamic-thrust}{{3.132a}{81}{Consolidated Model}{equation.3.4.1}{}}
+\newlabel{eq:aerodynamic-torque}{{3.132b}{81}{Consolidated Model}{equation.3.4.2}{}}
+\newlabel{eq:actuator-torque}{{3.133}{81}{Consolidated Model}{equation.3.4.133}{}}
+\newlabel{eq:consolidated-grav-torque}{{3.134}{81}{Consolidated Model}{equation.3.4.134}{}}
 \@setckpt{ch3}{
 \setcounter{page}{82}
-\setcounter{equation}{137}
+\setcounter{equation}{135}
 \setcounter{enumi}{2}
 \setcounter{enumii}{4}
 \setcounter{enumiii}{0}
@@ -329,7 +330,7 @@
 \setcounter{tikztimingrows}{0}
 \setcounter{tikztimingtrans}{0}
 \setcounter{tikztimingtranspos}{0}
-\setcounter{parentequation}{134}
+\setcounter{parentequation}{132}
 \setcounter{theorem}{0}
 \setcounter{corollary}{0}
 \setcounter{section@level}{0}

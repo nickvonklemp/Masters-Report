@@ -7,7 +7,7 @@
 \section{Stability}
 \label{sec:control.stability}
 %====================================================
-Before embarking on control plant derivations, it is worth outlining definitions of what the control objectives are. The research question is posed as dynamic set-point tracking, the system's control loop then aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model} whilst tracking particular trajectories for attitude and position. 
+Before embarking on control plant derivations, it is worth outlining definitions of what the control objectives are. The research question is posed as dynamic set-point tracking, the system's control loop then aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model} whilst tracking particular trajectories for attitude and position, or tracking a state set-point $\mathbf{x}_d=[\vec{\mathcal{E}}_d~Q_d]^T$. 
 \par
 Each control block within the loop is expanded upon subsequently in Sec:\ref{sec:control.loop} but first; stability in the context of trajectory tracking must be defined. Stability definitions for a generealized plant trajectory are not uncommon in the context of energy equation control proofs (see Sec:\ref{sec:control.lyapunov}) and are discussed in most control texts. Only stability definitions pertinent to Lyapunov's stability theorem are briefly presented here; the following is adapted from \cite{bojelayupanov,lyapunovstabilitytheorem}. In general for some autonomous trajectory $\vec{\mathbf{x}}(t)$, an equilibrium point $\vec{\mathbf{x}}(t_0)$ is said to be stable (\textbf{S}) if and only if (\emph{iff}) the following is true:
 \begin{subequations}\label{eq:basic-stability}
