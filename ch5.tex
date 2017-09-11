@@ -268,7 +268,7 @@ atan2(T_x\text{}^2,~||\vec{T}_i||\sqrt{||\vec{T}_i||\text{}^2-T_x\text{}^2})\\
 Further simplifications could be drawn from the definitions of each element included in Eq:\ref{eq:allocator-inersion}, but it would just be superfluous as each servo angle can be solved for. At this stage the only remaining undefined component of the entire control block is the abstracted allocation algorithms, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$, which are now addressed\ldots
 %====================================================
 \subsection{Pseudo Inverse Allocator}
-\label{subsec:control.allocation.inverse}
+\label{subsec:allocation.inverse}
 %====================================================
 Conceptually the simplest control allocation solutions to Eq:\ref{eq:allocation-problem} stems from what are categorized as "inversion" based cost optimizations (the first three proposed allocators in Sec:\ref{subsec:control.allocation.inverse},\ref{subsec:control.allocation.weightedinverse} \& \ref{subsec:control.allocation.norminverse}). As alluded to previously, the requirements for inversion based allocation is that the effectiveness function $B(\mathbf{x},u,t)$ is a linear relationship which can be abstracted to $B(\mathbf{x},t)u$. The objective of inversion is that for the control problem $\vec{\nu}_c=B(\mathbf{x},t)u$ to find some matrix $B^\dagger(\mathbf{x},t)$ such that for some $\vec{\nu}_d$:
 \begin{subequations}
