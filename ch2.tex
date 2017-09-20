@@ -380,9 +380,9 @@ Each motor is displaced from the body frame origin by the distance $L_{arm}=195.
 0 & \frac{\pi}{2} & \pi & \frac{2\pi}{3}
 \end{bmatrix}
 \end{equation}
-If the propeller's rotation produces some thrust force $T(\Omega_i)$ in the motor module frame (Fig:\ref{fig:force-redirect}) which acts through the center of rotation $\vec{\mathbf{M}}_i$; that force is similarly transformed to the body frame through Eq:\ref{eq:motor-module-rotation.a}. A thrust vector $\vec{T}(\Omega_i)$ in the body frame $\mathcal{F}^b$ is calculated:
+If the propeller's rotation produces some thrust force $T(\Omega_i)$ in the motor module frame (Fig:\ref{fig:force-redirect}) which acts through the center of rotation $\vec{\mathbf{M}}_i$; that force is similarly transformed to the body frame through Eq:\ref{eq:motor-module-rotation.a}. A thrust vector for $\vec{T}(\Omega_i)\in\mathcal{F}^{M_i}$ in the body frame $\mathcal{F}^b$ is calculated:
 \begin{equation}
-\vec{T}(\Omega_i)=R_z(-\sigma_i)R_y(-\alpha_i)R_x(-\lambda_i)\begin{bmatrix}0 & 0 & T(\Omega_i)\end{bmatrix}^T~~~~\in\mathcal{F}^{M_i}
+\vec{T}(\Omega_i)=R_z(-\sigma_i)R_y(-\alpha_i)R_x(-\lambda_i)\begin{bmatrix}0 & 0 & T(\Omega_i)\end{bmatrix}^T~~~~\in\mathcal{F}^{b}
 \end{equation}
 The constant orthogonal $\sigma_i$ rotations about $\hat{Z}_{M_i''}$ are independent of actuator positions, $\sigma_i$ is determined by the motor module's location. The rotation matrices $R_z(\sigma_i)$ for $\sigma_i=(i-1)\pi/2$ are:
 \begin{equation}\label{eq:motor-module-rotation.b}
