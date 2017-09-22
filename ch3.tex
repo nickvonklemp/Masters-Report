@@ -221,12 +221,12 @@ Similarly net torque $\vec{\tau}_{net}$ is the sum of all \emph{differential} to
 \vec{\tau}_{net} = \sum_{i=1}^4 \vec{L}_i \times \vec{T}(\Omega_i)~~~~[\text{N.m}],~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is a function of the $i^{th}$ motor's rotational velocity $\Omega_i$, fixed in the $\hat{Z}_b$ direction. Each thrust vectors could potentially be $\in\mathbb{R}^3$ like the redirected vector in Eq:\ref{eq:motor-module-force-redirect}. The displacement $\vec{l}_i$ is that thrust vector's perpendicular distance from the origin $\mathbf{O}_b$. All of the above equations are still applicable to any 6 DOF body, common simplifications applied to the system(s) for quadrotor control are explored in App:\ref{app:equations.standard}. Aerodynamic components pertinent for thrust and torque generation relative to Eq:\ref{eq:generalized-net-forces} are now introduced; obviously the contextual focus is on quadrotor and tilting quadrotor platforms\ldots
+In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is a function of the $i^{th}$ motor's rotational velocity $\Omega_i$, fixed in the $\hat{Z}_b$ direction. Each thrust vector could potentially be $\in\mathbb{R}^3$ such as the redirected vector from Eq:\ref{eq:motor-module-force-redirect}. The displacement $\vec{l}_i$ is that thrust vector's perpendicular distance from the origin $\mathbf{O}_b$. All of the above equations are still applicable to any 6 DOF body; common simplifications applied to the system(s) for quadrotor control are explored in App:\ref{app:equations.standard}. Aerodynamic components pertinent for thrust and torque generation relative to Eq:\ref{eq:generalized-net-forces} are now introduced; obviously the contextual focus is on quadrotor and tilting quadrotor platforms\ldots
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-The relationship between a propeller's rotational speed, $\Omega_i$ in $[\text{RPS}]$, and its perpendicular thrust vector, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers suggest (e.g \cite{x4flyer,modelingquadcopter} etc\ldots). The thrust produced is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the component of the body velocity normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag (and hence torque). 
+Aerodynamic effects described here and subsequent non-linear responses in Sec:\ref{sec:dynamics.nonlinearities} affect the net forces and torques acting on the body. The relationship between a propeller's rotational speed, $\Omega_i$ in $[\text{RPS}]$, and its perpendicular thrust vector, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers assume (e.g \cite{x4flyer,modelingquadcopter} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the component of the body velocity normal to that propeller. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag (and hence torque). 
 \par
 The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum (\emph{disc actuator}) theories equate an integral term generated across the propeller's length with the produced thrust or torque. A schedule of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories; vortex ring state and parasitic drag effects are not included as they will be approximately negligible given the aircraft's proposed flight envelope with low translational velocities.
 %====================================================
@@ -264,7 +264,8 @@ Where $\Delta v$ is the net change in fluid velocity caused by the propeller bla
 \par
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{figs/bem-flow}
+\includegraphics[width=0.85\textwidth]{figs/bem-flow}
+\vspace{-8pt}
 \caption{Disc Actuator Propeller Planar Flow}
 \label{fig:bem-flow}
 \vspace{-15pt}
@@ -273,11 +274,11 @@ It is shown in \cite{bladesforquadrotors} that, using Bernoulli's pressure theor
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
-Stemming from classical disc actuator (fluid \emph{momentum}) theory, \cite{fluidmomentum}, the \underline{scalar} force $T(\Omega)$ acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity (or \emph{pressure differential}):
+Stemming from classical disc actuator (fluid \emph{momentum}) theory \cite{fluidmomentum}, the \underline{scalar} force $T(\Omega)$ acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity (or \emph{pressure differential}):
 \begin{equation}\label{eq:prop-mass}
 T=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
-Where $R_b$ is the disc (propeller) radius in $[\text{m}]$ for the fluid stream under consideration, $A_b$ is the area of that propeller disc. The fluid density of that stream, $\rho$, is typically $1.225~[\text{ kg.m}^{-3}]$ at standard temperature and pressure (\emph{stp}). However, the desired form of thrust generated is as a function of propeller rotational velocity $T(\Omega_i)$ in $[\text{RPM}]$ or $[\text{rad.s}^{\text{-}1}]$, so Eq:\ref{eq:prop-mass} is not satisfactory. 
+Where $R_b$ is the disc (propeller) radius in $[\text{m}]$ for the fluid stream under consideration, $A_b$ is the area of that propeller disc. The fluid density of that stream, $\rho$, is typically $1.225~[\text{ kg.m}^{-3}]$ at standard temperature and pressure (\emph{stp}). However, the desired form of thrust generated is as a function of propeller rotational velocity $T(\Omega_i)$ in $[\text{RPS}]$ or $[\text{rad.s}^{\text{-}1}]$, so Eq:\ref{eq:prop-mass} is not satisfactory. 
 \par
 Eq:\ref{eq:prop-mass} can be solved as a function of the aerodynamic propulsive power expended, $\Delta P=T\Delta v$. Rotational kinetic energy of a propeller and its transferred propulsive power is difficult to quantify, with compound parasitic losses deteriorating the efficiency of the propeller. Furthermore, the local fluid velocity through the propeller is not purely normal to the propeller plane but is in fact a vector. 
 \par
@@ -375,7 +376,7 @@ Firstly the lift coefficient curve gradient $a_L$ is shown in \cite{aerodynamics
 \begin{equation}\label{eq:lift-curve-gradient}
 C_L=2\pi(\theta-\phi)
 \end{equation}
-Secondly assuming tangentially induced velocities, $v_\theta$, are small when compared to the propeller's speed translational speed at radius $r$, $v(r)=\Omega r$. The tangential induction factor $a'$ is then the ratio:
+Secondly assuming tangentially induced velocities, $v_\theta$, are small when compared to the propeller's translational speed at radius $r$, $v(r)=\Omega r$. The tangential induction factor $a'$ is then the ratio:
 \begin{equation}
 a'=\frac{v_\theta}{\Omega r}<<1
 \end{equation}
@@ -388,7 +389,7 @@ T=\int_{r=0}^R \frac{1}{2} a_L b c \rho (\Omega r)^2 \bigg[\theta-\frac{v_\infty
 P=\int_{r=0}^R \frac{1}{2}a_L b c \rho (\Omega r)^3\bigg[\big(\theta-\frac{v_\infty+v_i}{\Omega r}\big)\big(\frac{v_\infty+v_i}{\Omega r}\big) + C_d\bigg].dr
 \end{equation}
 \end{subequations}
-Where $b$ is the number of blades the propeller has. In practice knowing exact pitch and chord values as a function of $r/R$ is difficult and calculating integrals at each process step is cumbersome. Both Eq:\ref{eq:bem-thrust} and Eq:\ref{eq:bem-power} can be solved by equating element and momentum terms (a full expansion is given in Appendix:\ref{app:equations.bem}). Often dimensionless thrust, torque and power coefficients are defined across the entire blade's length:
+Where $b$ is the number of blades the propeller has. In practice knowing exact pitch and chord values as a function of $r/R$ is difficult and calculating integrals at each process step is cumbersome. Both Eq:\ref{eq:bem-thrust} and Eq:\ref{eq:bem-power} can be solved by equating element and momentum terms (a full solution is given in Appendix:\ref{app:equations.bem}). Often dimensionless thrust, torque and power coefficients are defined across the entire blade's length:
 \begin{subequations}\label{eq:coefficients}
 \begin{equation}\label{eq:thrust-coefficient}
 C_T(J)=\frac{T}{\rho \Omega^2 D^4}
@@ -402,11 +403,11 @@ Where $\Omega$ is the propeller's rotational speed in \underline{revolutions per
 \begin{equation}\label{eq:advance}
 J = \frac{v_\infty}{\Omega R}
 \end{equation}
-Typically the net upstream velocity $v_\infty$ is simply the perpendicular component (projected onto the plane's normal vector $\hat{n}$, Eq:\ref{eq:normal-fluid}) of the vehicle's translational velocity in the body frame, $\vec{v}_b\perp\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values.
+Typically the net upstream velocity $v_\infty$ in Eq:\ref{eq:advance} is simply the perpendicular component (projected onto the plane's normal vector $\hat{n}$, shown later in Eq:\ref{eq:normal-fluid}) of the vehicle's translational velocity in the body frame; $\vec{v}_b\perp\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values.
 \par
 Propeller databases like \cite{UIUC} provide comprehensive coefficient values for a range of small and medium diameter propeller types at different advance ratios. Included in the database are blade profiles, pitch and chord lengths; all the results are outcomes of the investigation \cite{lowreynolds}. 
 \par
-The introduction of those coefficients drastically reduces the thrust estimation process. For a typical $6\times 4.5$ inch propeller, the coefficients used were linearly interpolated from similar pitched database results in \cite{UIUC} to match subsequent physical test values. The static thrust and power coefficients are respectively:
+The introduction of those coefficients drastically reduces thrust estimation complexity. For a typical $6\times 4.5$ inch propeller the following coefficients were linearly interpolated from similar pitched database results in \cite{UIUC} to match subsequent physical test values. Static thrust and power coefficients are respectively:
 \begin{subequations}
 \begin{equation}
 {\color{blue}C_{T0}}=0.191
@@ -416,12 +417,12 @@ The introduction of those coefficients drastically reduces the thrust estimation
 {\color{red}C_{P0}}=0.0877
 \end{equation}
 \end{subequations}
-Fig:\ref{fig:coeffs-plot} shows plots coefficients for thrust, {$\color{Blue}C_{T}$}, and power, {$\color{Red}C_{P}$}, as a function of the advance ratio $J$. As the incident upstream fluid velocity, $v_\infty$, increases, the thrust coefficient decreases. So too does the power coefficient and hence the aerodynamic torque. The thrust and power coefficients can be assumed constant for low advance ratios, or in the case considered here, translational velocities.
+Fig:\ref{fig:coeffs-plot} plots coefficients for thrust, {$\color{Blue}C_{T}$}, and power, {$\color{Red}C_{P}$}, as a function of the advance ratio $J$. As the incident upstream fluid velocity, $v_\infty$, increases, the thrust coefficient decreases. So too does the power coefficient and hence the aerodynamic torque. The thrust and power coefficients can be assumed constant for low advance ratios, or in the case considered here, translational velocities.
 \begin{figure}[htpb]
-\vspace{-12pt}
+\vspace{-8pt}
 \centering
 \includegraphics[width=0.7\textwidth]{graphs/coeffs-plot}
-\vspace{-12pt}
+\vspace{-8pt}
 \caption{Power \& thrust coefficients}
 \vspace{-16pt}
 \label{fig:coeffs-plot}
