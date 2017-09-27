@@ -1462,11 +1462,11 @@ Recalling the net vehicles rotational inertia $J_b(u)$, calculated as a function
 The external torque $\hat{\tau}_{\mu}$ acting on the vehicle is as a result of produced control action by the attitude controller, detailed next in Ch:\ref{ch:control}. The final sum of gravitational torque contributions can be simplified to $\vec{\tau}_g$ from Eq:\ref{eq:grav-torque} which considers the \emph{net} resultant center of gravity. Then, extending the angular differential equation Eq:\ref{eq:states.d} to incorporate the multibody responses derived above:
 \begin{subequations}
 \begin{equation}\label{eq:3.110a}
-\hat{\tau}_\mu=\big(J_b\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\hat{\tau}_b-\vec{\tau}_g
+\hat{\tau}_\mu=\big(J_b\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g
 \end{equation}
 Defining a new response torque $\hat{\tau}_b$ which represents collective responses from internal rotations relative each body. It can be considered a  non-linear extension of the gyroscopic component of the torque $\vec{\omega}_b\times (J_b)\vec{\omega}_b$ acting on the system. That non-linear body torque is defined then as follows:
 \begin{equation}\label{eq:net-body-response}
-\hat{\tau}_b\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[R_z\hat{\tau}_\alpha(\lambda_i)+R_zR_y(\alpha_i)\hat{\tau}_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]
+\hat{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[R_z\hat{\tau}_\alpha(\lambda_i)+R_zR_y(\alpha_i)\hat{\tau}_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]
 \end{equation}
 And using the net gravitational torque arm $\vec{\tau}_g$ defined earlier in Eq:\ref{eq:grav-torque}:
 \begin{equation}\label{eq:net-body-gravity}
@@ -1712,9 +1712,9 @@ The net body response, $\hat{\tau}_b(\vec{\omega}_b,u)$ relating to net angular 
 \par
 Considering first the inner most ring assembly; Fig:\ref{fig:torque-inner} shows the test rig used to isolate and measure $\hat{\tau}_\lambda(\lambda_i)$ responses to $\Delta\lambda$ rotations. The inner ring is supported by two bearing assemblies; an extended shaft in the $-\hat{X}_{M_i}$ direction connects the inner ring to the driving servo block. Rotational torque $\hat{\tau}_\lambda(\lambda_i)$ is transferred through the shaft extension from the servo to the inner ring. The servo block is secured only by a vertically aligned (and calibrated, see App:\ref{app:strain}) strain gauge. The deflection of the strain gauge is then proportional to the torque applied by the servo to rotate the inner ring structure.
 \par
-It is important to mention that, whilst the bearing assembly facilitates the transfer of the servo's rotational torque, the assembly isolates only the $\hat{X}_{M_i}$ component of the induced torque. If $\vec{\tau}_{\lambda}\text{}\hspace{-2pt}'$ is the deflection torque measured; its relationship with the induced torque vector $\hat{\tau}_{\lambda}(\lambda_i)$ is given by:
+It is important to mention that, whilst the bearing assembly facilitates the transfer of the servo's rotational torque, the assembly isolates only the $\hat{X}_{M_i'}$ component of the induced torque. If $\vec{\tau}_{\lambda}\text{}\hspace{-2pt}'$ is the deflection torque measured; its relationship with the induced torque vector $\hat{\tau}_{\lambda}(\lambda_i)$ is given by:
 \begin{equation}\label{eq:tau-lambda-prime}
-\hat{\tau}_{\lambda}\text{}\hspace{-2pt}'=\hat{\tau}_{\lambda}(\lambda_i)\cdot\hat{X}_{M_i}~~~~\in\mathcal{F}^{M_i}
+\hat{\tau}_{\lambda}\text{}\hspace{-2pt}'=\hat{\tau}_{\lambda}(\lambda_i)\cdot\hat{X}_{M_i'}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 One final thing to consider is that the equation for $\hat{\tau}_\lambda(\lambda_i)$, previously in Eq:\ref{eq:torque-induced-inner}, \underline{\emph{does not}} account for the gravitational torque from an eccentric center of gravity (Fig:\ref{fig:inertia-inner}) or induced aerodynamic torque about the propellers hub (Fig:\ref{fig:torques} and Eq:\ref{eq:bem-power}). The derivations earlier in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques} introduce net gravitational torque for an effective center of gravity $\vec{\tau}_g$ into Eq:\ref{eq:3.110a}. Moreover aerodynamic torque $\vec{Q}(\Omega_i)$ about the propeller's rotational axis is to be included as an additive term.
 \par
@@ -1726,13 +1726,13 @@ One final thing to consider is that the equation for $\hat{\tau}_\lambda(\lambda
 \vspace{-14pt}
 \end{figure}
 \par
-The torque response opposed to angular steps of $\Delta\lambda_i$, and hence its acceleration $\ddot{\lambda}_i$, induced by the servo is then; from Eq:\ref{eq:torque-induced-inner} with an introduced gravitational component relative to the middle ring frame $\mathcal{F}^{M_i'}$:
+The torque response opposed to angular steps of $\Delta\lambda_i$, and hence its acceleration $\ddot{\lambda}_i$, induced by the servo is then; from Eq:\ref{eq:torque-induced-inner} with introduced gravitational and aerodynamic torque components relative to $\mathcal{F}^{M_i'}$:
 \begin{multline}\label{eq:model-inner}
 \hat{\tau}_\lambda(\lambda_i)=\big(\dot{J}_{r}'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\big(\dot{J}_{n}'\big)\dot{\vec{\lambda}}_i+\big(J_r'\big)\dot{\vec{\Omega}}_i\text{}\hspace{-2pt}'+\big(J_{n}'\big)\ddot{\vec{\lambda}}_i+\dot{\vec{\lambda}}_i\times \big(J_r'\big)\vec{\Omega}_i\text{}\hspace{-2pt}'+\dot{\vec{\lambda}}_i\times \big(J_{n}'\big)\dot{\vec{\lambda}}_i
 \\
-+m_\text{n}C.M'_{\text{n}}\times\vec{G}_{M_i}~~~~\in\mathcal{F}^{M_i'}
+R_x(\lambda)\big(Q(\Omega_i)\cdot\hat{Z}_{M_i}\big)+m_\text{n}\big(R_x(\lambda)C.M_{\text{n}}\big)\times\vec{G}_{M_i}~~~~\in\mathcal{F}^{M_i'}
 \end{multline}
-The term $m_\text{n}C.M'_{\text{n}}\times\vec{G}_{M_i}$ is the gravitational torque from the rotated center of mass, $C.M_{\text{n}}'$; first defined in Eq:\ref{eq:body-net-inner.d}. It is the effective torque contribution of a single inner ring to the net gravitational torque $\vec{\tau}_g$ from Eq:\ref{eq:net-body-gravity}. Note the strain gauge's measured response encountered will be the negative torque response $-\hat{\tau}_\lambda(\lambda_i)$.
+The term $m_\text{n}\big(R_x(\lambda)C.M_{\text{n}}\big)\times\vec{G}_{M_i}$ is the gravitational torque from the rotated center of mass, $C.M_{\text{n}}$; first defined in Eq:\ref{eq:body-net-inner.d}. The torque $Q(\Omega_i)\cdot\hat{Z}_{M_i}$ is the scalar projection of aerodynamic torque from Fig:\ref{fig:torque-plot} onto the propeller's $\hat{Z}_{M_i}$ axis, rotated onto the middle ring $\mathcal{F}^{M_i'}$ frame. Note the strain gauge's measured response encountered will be the negative torque response $-\hat{\tau}_\lambda(\lambda_i)$.
 \par
 \begin{figure}[hbtp]
 \vspace{-10pt}
@@ -1754,17 +1754,19 @@ The term $m_\text{n}C.M'_{\text{n}}\times\vec{G}_{M_i}$ is the gravitational tor
 \vspace{-10pt}
 \end{figure}
 \par
-The plot illustrated in Fig:\ref{fig:tau-lambda} shows tests for the inner ring torque response at increments of relative servo step sizes: $\Delta\lambda=\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$. A constant propeller rotational speed $\Omega_i=+6000~[\text{RPM}]$ was used. Step changes in the propeller's speed manifest as a gyroscopic cross products and won't affect the projected $\hat{X}_{M_i}$ term $\hat{\tau}_\lambda'$ from Eq:\ref{eq:tau-lambda-prime}. As per convention, in the plot Fig:\ref{fig:tau-lambda}, $\vec{\tau}_\lambda\text{}\hspace{-2pt}'$ represents the \underline{physically measured} torque on the test rig illustrated in Fig:\ref{fig:torque-inner} and $\hat{\tau}_\lambda\text{}\hspace{-2pt}'$ is the \underline{simulated torque} calculated from Eq:\ref{eq:model-inner}. Both torques are the projected $\hat{X}_{M_i}$ components of the induced torque vector. 
+The plot illustrated in Fig:\ref{fig:tau-lambda} shows tests for the inner ring torque response at increments of relative servo step sizes: $\Delta\lambda=\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$. A constant propeller rotational speed $\Omega_i=+6000~[\text{RPM}]$ was used. Step changes in the propeller's speed manifest as a gyroscopic cross products and won't affect the projected $\hat{X}_{M_i'}$ term $\hat{\tau}_\lambda'$ from Eq:\ref{eq:tau-lambda-prime}. As per convention, in the plot Fig:\ref{fig:tau-lambda}, $\vec{\tau}_\lambda\text{}\hspace{-2pt}'$ represents the \underline{physically measured} torque on the test rig illustrated in Fig:\ref{fig:torque-inner} and $\hat{\tau}_\lambda\text{}\hspace{-2pt}'$ is the \underline{simulated torque} calculated from Eq:\ref{eq:model-inner}. Both torques are the projected $\hat{X}_{M_i'}$ components of the induced torque vector. 
 \par
 Error deviation between the physically measured and simulated values is also shown in Fig:\ref{fig:tau-lambda-r}. The torque peak increased with greater step sizes in $\Delta\lambda_i$. The co-axial support bearings, despite being de-greased and cleaned, still damped faster elements of the transient torque response, moreover the magnitude of the signal measured left it susceptible to noise from vibrations induced by the propellers rotation. There is, however, a clear correlation between the simulated and physically measured signal. Within a margin of error and considering the test setup used, the step changes verify the proposed inner ring model in Eq:\ref{eq:model-inner}.
 \par
-Corroborating the dynamics for the middle ring response requires more in-depth discussion. Unlike the inner rings response, described in Eq:\ref{eq:model-inner}; the middle ring's torque $\hat{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-middle} is \underline{not equivalent} to the generalized torque response acting on the middle ring system $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$, Eq:\ref{eq:3.86g}. As mentioned previously, $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ includes a transformed component of the inner ring's generalized response, $R_x(\lambda)\vec{\mathbf{U}}(\lambda_i)$ from Eq:\ref{eq:generalized-inner}, whilst the \underline{servo response torque} $\hat{\tau}_\alpha(\lambda_i,\alpha_i)$ \underline{does not}\ldots 
+Corroborating the dynamics for the middle ring response requires more in-depth discussion. Unlike the inner rings response, described in Eq:\ref{eq:model-inner}; the middle ring's torque $\hat{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-middle} is \underline{not equivalent} to the generalized torque response acting on the middle ring system $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$, Eq:\ref{eq:3.86g}. As mentioned previously, $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ includes a transformed component of the inner ring's generalized response, $R_y(\alpha)\vec{\mathbf{U}}(\lambda_i)$ from Eq:\ref{eq:generalized-inner}, whilst the \underline{servo response torque} $\hat{\tau}_\alpha(\lambda_i,\alpha_i)$ \underline{does not}\ldots 
 \par
-To differentiate the servo's response torque $\hat{\tau}_\alpha(\lambda_i,\alpha_i)$ and the physical (generalized) torque being considered here, $\hat{\Gamma}_\alpha(\lambda_i\alpha_i)$ is used to indicate the induced torque response from the middle ring assembly's rotation. That torque is the measured component of the middle ring response and equivalent to the generalized torque response. Reiterating the equation for the expected generalized torque $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ from Eq:\ref{eq:3.86g}, now with an included gravitational component and induced torque as a result of the inner ring's rotation:
+To differentiate the servo's response torque $\hat{\tau}_\alpha(\lambda_i,\alpha_i)$ and the physical (generalized) torque being considered here, $\hat{\Gamma}_\alpha(\lambda_i\alpha_i)$ is used to indicate the induced torque response from the middle ring assembly's rotation. That torque is the measured component of the middle ring response and equivalent to the generalized torque response. Reiterating the equation for the expected generalized torque $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ from Eq:\ref{eq:3.86g}, now with an included gravitational and aerodynamic torque components and induced torques as a result of the inner ring's rotation:
 \begin{multline} \label{eq:model-middle}
-\hat{\Gamma}_\alpha(\lambda_i,\alpha_i)=R_x(\lambda)\vec{\mathbf{U}}(\lambda_i)+\big(\dot{J}_p'\big)\dot{\vec{\alpha}}_i+\Big(\dot{J}_n''-R_y(\alpha)\big(\dot{J}_n'\big)R_y^{-1}(\alpha)\Big)\dot{\vec{\lambda}}_i'+\Big(\dot{J}_r''-R_y(\alpha)\big(\dot{J}_r'\big)R_y^{-1}(\alpha)\Big)\vec{\Omega}_i''
+\hat{\Gamma}_\alpha(\lambda_i,\alpha_i)=R_y(\alpha)\vec{\mathbf{U}}(\lambda_i)+\big(\dot{J}_p'\big)\dot{\vec{\alpha}}_i+\Big(\dot{J}_n''-R_y(\alpha)\big(\dot{J}_n'\big)R_y^{-1}(\alpha)\Big)\dot{\vec{\lambda}}_i'+\Big(\dot{J}_r''-R_y(\alpha)\big(\dot{J}_r'\big)R_y^{-1}(\alpha)\Big)\vec{\Omega}_i''
 \\
-+\big(J_\text{p}'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \Big(\big(J_p'\big)\dot{\vec{\alpha}}_i+\big(J_n''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''\Big)+m_\text{p}C.M'_{\text{p}}(\alpha,\lambda)\times\vec{G}_{M_i}=\vec{\mathbf{V}}(\lambda_i,\alpha_i)~~~~\in\mathcal{F}^{M_i''}
++\big(J_\text{p}'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \Big(\big(J_p'\big)\dot{\vec{\alpha}}_i+\big(J_n''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''\Big)+R_y(\alpha)R_x(\lambda)\big(Q(\Omega_i)\cdot\hat{Z}_{M_i}\big)+m_\text{p}C.M'_{\text{p}}(\alpha_i,\lambda_i)\times\vec{G}_{M_i}
+\\
+=\vec{\mathbf{V}}(\lambda_i,\alpha_i)~~~~\in\mathcal{F}^{M_i''}
 \end{multline}
 Where the term $C.M_{\text{p}}'(\alpha_i,\lambda_i)$ is the net rotated center of gravity for the entire motor module as a function of both servo positions:
 \begin{equation}
@@ -1775,6 +1777,7 @@ With $m_\text{m}$ and $m_\text{n}$ being inner and middle ring structure's respe
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.90\textwidth]{figs/torque-middle}
+\vspace{-10pt}
 \caption{Middle ring torque test rig}
 \label{fig:torque-middle}
 \vspace{-6pt}
@@ -1782,12 +1785,12 @@ With $m_\text{m}$ and $m_\text{n}$ being inner and middle ring structure's respe
 \par
 Fig:\ref{fig:torque-middle} shows the test rig used to measure torque responses for the motor module assembly, containing both inner and middle ring assemblies. 
 \par
-%====================
-The inner ring servo $\lambda_i$ is held at constant intervals to represent varying inertias for the net module $J_p(u_i)$ described in Eq:\ref{eq:inertia.middle.b}. The middle ring servo $\alpha_i$ applies an accelerating torque $\hat{\Gamma}_\alpha(\lambda)$ to the body, the rig isolates only the $\hat{Y}_{M_i''}$ component of that torque, as such the strain gauge deflection represents only:
+%===========Up to here=========
+The inner ring servo $\lambda_i$ is held at constant intervals to represent varying inertias for the net module $J_p(u\cdot i)$ described in Eq:\ref{eq:inertia.middle.b}. The middle ring servo $\alpha_i$ applies an accelerating torque $\hat{\Gamma}_\alpha(\lambda)$ to the body, the rig isolates only the $\hat{Y}_{M_i''}$ component of that torque, as such the strain gauge deflection represents only:
 \begin{equation}
 \hat{\Gamma}_\alpha\text{}\hspace{-2pt}'(\lambda)=\hat{\Gamma}_\alpha(\lambda)\cdot\hat{Y}_{M_i''}
 \end{equation}
-Furthermore, the included inner torque term $R_x(\lambda)\hat{\tau}_\lambda=R_x(\lambda)\vec{\mathbf{U}}(\lambda)$ is going to be zero for any case where the propeller's rotational speed and the inner ring's servo speed are both constant; $\dot{\vec{\Omega}}_i=0$ and $\dot{\vec{\lambda}}_i=0$. So the distinction made in Eq:\ref{eq:model-middle} between $\hat{\Gamma}_\alpha(\lambda)$ and $\hat{\tau}_\alpha(\lambda)$ is not entirely necessary but included for completeness.
+Furthermore, the included inner torque term $R_y(\alpha)\hat{\tau}_\lambda=R_y(\alpha)\vec{\mathbf{U}}(\lambda_i)$ is going to be small for any case where the propeller's rotational speed and the inner ring's servo speed are both constant; $\dot{\vec{\Omega}}_i=0$ and $\dot{\vec{\lambda}}_i=0$. With no inner ring step contribution, only the inner ring's gravitational torque affects Eq:\ref{eq:model-middle}.
 \par
 Plotted in Fig:\ref{fig:tau-alpha} shows results for measured torques $\vec{\tau}_\alpha\text{}\hspace{-2pt}'(\lambda)$, expected simulated torque values $\hat{\tau}_\alpha(\lambda)$ and resultant SimScape simulation values for $\tilde{\tau}_\alpha(\lambda)$. Tests are conducted with a constant propeller rotational velocity $\vec{\Omega}_i=6500~~[\text{RPM}]$ but differing rotational positions for the inner ring servo $\lambda_i$. That angular position affects the net encountered rotational inertial $J_\text{p}(\lambda)$.
 \begin{figure}[htbp]
@@ -1816,59 +1819,60 @@ The final simulated module is that of $\hat{\tau}_b$
 \section{Consolidated Model}
 \label{sec:dynamics.model}
 %====================================================
-Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial and gyroscopic responses to induced perturbations, $\vec{\tau}_\lambda$ and $\vec{\tau}_\alpha$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Finally replacing net \emph{virtual} plant inputs, $\vec{\tau}_\mu$ and $\vec{F}_\mu$, with higher fidelity thrust models. The exact effectiveness actuator relationships are explored in Section:\ref{sec:control.inputs}. The following are state differential equations then used for subsequent control system development and simulation\ldots
-\\
+Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial and gyroscopic responses to induced perturbations, $\hat{\tau}_\lambda$ and $\hat{\tau}_\alpha(\lambda_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}$ and $\vec{\tau}_{\mu}$ are control inputs to be designed by a higher level set-point tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation rules are explored thereafter in Ch:\ref{ch:allocation}.
+\par
+The vehicle's inertial position and \emph{body frame} velocity differential equations are:
 \begin{subequations}\label{eq:quaternion-states}
 \begin{equation}\label{eq:quaternion-states-velocity}
-\dot{\mathcal{E}}=Q_b^*\otimes\vec{v}_b\otimes Q_b~~~~\in\mathcal{F}^I
+\dot{\mathcal{E}}=Q_b^*\otimes\vec{v}_b\otimes Q_b~~~~[\text{m.s}^{-1}],~\in\mathcal{F}^I
 \end{equation}
-\vspace{-10pt}
+\vspace{-16pt}
 \begin{equation}\label{eq:quaternion-states-acceleration}
-\dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b\otimes m\vec{G}_I\otimes Q_b^*-\vec{D}_{net}(\vec{v}_b)+\vec{F}_\mu(u)\big)~~~~\in\mathcal{F}^b
+\dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b\otimes m\vec{G}_I\otimes Q_b^*-\vec{D}_{net}(\vec{v}_b)+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~\in\mathcal{F}^b
 \end{equation}
-\vspace{-8pt}
+Similarly the vehicle's attitude quaternion velocity and angular acceleration are respectively:
 \begin{equation}\label{eq:quaternion-states-quaternion}
 \dot{Q}_b=\frac{1}{2}Q_b\otimes \vec{\omega}_b ~~~~\in\mathcal{F}^I
 \end{equation}
-\vspace{-8pt}
+\vspace{-22pt}
 \begin{equation}\label{eq:quaternion-states-angular}
-\dot{\vec{\omega}}_b=\mathbb{I}_b(u)^{-1}\big(-\vec{\omega}_b \times \mathbb{I}_b(u)\vec{\omega}_b-\vec{\tau}_Q(u)+\vec{\tau}_g(u)+\sum_{i=1}^4 \vec{Q}(\Omega,\lambda,\alpha)+\mu\vec{\tau}(u)\big)~~~~\in\mathcal{F}^b
+\dot{\vec{\omega}}_b=J_b(u)^{-1}\big(-\vec{\omega}_b \times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\sum_{i=1}^4 \vec{Q}(\Omega_i,\lambda_i,\alpha_i)+\vec{\tau}_{\mu}(u)\big)~~~~[\text{rad.s}^{-2}],~\in\mathcal{F}^b
 \end{equation}
-\vspace{-10pt}
+And an actuator space as per Eq:\ref{eq:actuator-space}, each with their own transfer function described in Sec:\ref{subsec:proto.design.transfer}:
 \begin{equation}
 u=\big[\Omega_1^+,~\lambda_1,~\alpha_1,~\ldots~\Omega_4^-,~\lambda_4,~\alpha_4 \big]~~~~\in\mathbb{U}\in\mathbb{R}^{12}
 \end{equation}
 \end{subequations}
-With net force and torque control plant inputs, $\vec{F}_\mu$ and $\vec{\tau}_\mu$ respectively. Both are later abstracted to virtual control inputs next in Ch:\ref{ch:control}, motor number subscripts $i\in[1:4]$ are implied in the following.
+Control force and torque plant inputs, $\vec{F}_\mu$ and $\vec{\tau}_\mu$ respectively, are a combination of Eq:\ref{eq:generalized-net-forces} with three dimensional thrust vectors $\vec{T}(\Omega_i)$ as per the quaternion analogue of Eq:\ref{eq:motor-module-force-redirect}. Both are later abstracted to virtual control inputs next in the control allocation design Ch:\ref{ch:allocation}.
 \begin{subequations}\label{eq:quaternion-inputs}
 \begin{equation}
-\vec{F}_\mu(u)=\sum_{i=1}^4 \vec{T}(\Omega,\lambda,\alpha)=\sum_{i=1}^4 Q_{M_i}^*\otimes T(\Omega)\otimes Q_{M_i}~~~~\in\mathcal{F}^b
+\vec{F}_\mu(u)=\sum_{i=1}^4 \vec{T}(\Omega_i,\lambda_i,\alpha_i)=\sum_{i=1}^4 Q_{M_i}^*\otimes T(\Omega_i)\otimes Q_{M_i}~~~~[\text{N}],~\in\mathcal{F}^b
 \end{equation}
-\vspace{-6pt}
+\vspace{-12pt}
 \begin{equation}
-\vec{\tau}_\mu(u)=\sum_{i=1}^4 \vec{l}\times\vec{T}(\Omega,\lambda,\alpha)=\sum_{i=1}^4 \vec{l}\times\big(Q_{M_i}^*\otimes T(\Omega)\otimes Q_{M_i}\big)~~~~\in\mathcal{F}^b
+\vec{\tau}_\mu(u)=\sum_{i=1}^4 \vec{L}_i\times\vec{T}(\Omega_i,\lambda_i,\alpha_i)=\sum_{i=1}^4 \vec{L}_i\times\big(Q_{M_i}^*\otimes T(\Omega_i)\otimes Q_{M_i}\big)~~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Scalar thrust $T(\Omega)$ is a function of the propeller's rotational velocity whereas $\vec{T}(\Omega,\lambda,\alpha)$ is a vector in $\mathbb{R}^3$. The thrust vector is redirected similarly to Eq:\ref{eq:motor-module-rotation.a} and transformed to the frame $\mathcal{F}^b$. Equivalently $Q(\Omega)$ is the scalar aerodynamic torque in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}$-axis, $\vec{Q}(\Omega,\lambda,\alpha)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic propeller torque terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
+Scalar thrust $T(\Omega_i)$ is a function of the propeller's rotational velocity whereas $\vec{T}(\Omega_i,\lambda_i,\alpha_i)$ is that thrusts three dimensional counterpart in $\mathcal{F}^b$. Equivalently $Q(\Omega_i)$ is the scalar aerodynamic torque in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}_{M_i}$-axis, whereas $\vec{Q}(\Omega_i,\lambda_i,\alpha_i)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic torque terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
 \begin{subequations}
 \begin{equation}\label{eq:aerodynamic-thrust}
-T(\Omega)= C_T(J)\rho\Omega^2D^4~~~~[\text{N}]
+T(\Omega_i)= C_T(J)\rho\Omega_i^2D^4~~~~[\text{N}]
 \end{equation}
-\vspace{-15pt}
+\vspace{-10pt}
 \begin{equation}\label{eq:aerodynamic-torque}
-Q(\Omega)= C_P(J)\rho\Omega^3D^5 \big(1/R\Omega\big)~~~~[\text{Nm}]
+Q(\Omega_i)= C_P(J)\rho\Omega_i^3D^5 \big(1/R\Omega\big)~~~~[\text{Nm}]
 \end{equation}
 \end{subequations}
-Noting that $\Omega$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. Inertial torque responses from actuator input rates from Eq:\ref{eq:torque-response} are introduced as feedback compensation terms;
+Recalling that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The non-linear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as feedback compensation terms;
 \begin{equation}\label{eq:actuator-torque}
-\tau_Q(u)=\sum_{i=1}^4 -Q_{M_i}\otimes \tau_{\lambda_i}(u)\otimes Q_{M_i}^*-Q_{M_i'}\otimes \tau_{\alpha_i}(u) \otimes Q_{M_i'}^*~~~\in\mathcal{F}^b
+\hat{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[\hat{\tau}'_\alpha(\lambda_i)+\hat{\tau}''_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
-Then including variable gravitational torque arm from Eq:\ref{eq:grav-torque}, dependent on net actuator positions $u$:
+With $\hat{\tau}'_\alpha(\lambda_i)$ and $\hat{\tau}'_\lambda$ both transformed to the body frame $\mathcal{F}^b$. Then including variable gravitational torque as a result of an eccentric center of gravity from Eq:\ref{eq:mass-center.b}; also dependent on the vehicles configuration:
 \begin{equation}\label{eq:consolidated-grav-torque}
-\vec{\tau}_g(u)=\Delta C.G \times\vec{G}_b~~~~\in\mathcal{F}^b
+\vec{\tau}_g=\Delta C.G \times\vec{G}_b=\big(\vec{\mathbf{O}}_b-C.M_\text{b}(u)\big)\times\vec{G}_b~~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
-And finally, the entire vehicles instantaneous inertia, taken from Eq:\ref{eq:body-net}, is given as:
+And finally the vehicles net rotational inertia, aligned and centred with the body frame. That inertia is calculated as a function of all actuator positions; taken from Eq:\ref{eq:body-net-2} and given as:
 \begin{equation}
-\underset{u\in\mathbb{U}}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J_{y}'}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_{n}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_{m}}
+\underset{\vec{\mathbf{O}}_b}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}(u\cdot i)}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}(u\cdot i)}~~~~[\text{Kg.m}^{-2}],~u\in\mathbb{U}
 \end{equation}
-It is possible to bundle both attitude states (either euler angles $\vec{\eta}$ or quaternions $Q_b$) together with the linear translational position $\vec{\mathcal{E}}$ into a single state $\vec{\mathbf{x}}$. Which then has its own combined control law. This could potentially exploit the cross-product coupling terms between angular and linear displacements for control benefits.
+Both attitude (euler angles $\vec{\eta}$ or quaternions $Q_b$) and translational position states $\vec{\mathcal{E}}$ could indeed be combined into a single state $\vec{\mathbf{x}}_b$. That could then be used for a complete state feedback control law which could potentially exploit or linearize the cross-coupling between the angular and translational plants. Such an approach would, however, dramatically increase the complexity in tuning actual control parameters (see Sec:\ref{sec:simulation.tuning}). Controllers for attitude and position loops are designed and optimized independently\ldots
