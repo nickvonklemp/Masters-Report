@@ -225,7 +225,7 @@ R_I^b=\big(R_b^I\big)^{-1}=\big(R_b^I\big)^T
 The relationship in Eq:\ref{eq:inertialbodytransformation.e} is an inversion property (\emph{transpose}) of the rotation matrix. A rotation matrix's inverse can be used interchangeably with its negative counterpart to maintain a positive sense of the argument angle. To ensure clarity throughout this dissertation's mathematics, a negative angular sense implies a \emph{transformation} to a different reference frame. Where applicable, the order of rotation will indicate the sequence direction whilst the angular sign differentiates the rotation or transformation operations.
 \par
 The body frame's angular velocity is taken relative to the inertial frame, represented by $\vec{\omega}_{b/I}$ mostly just simplified to $\vec{\omega}_b~~[\text{rad.s}^{\text{-}1}]$. Seeing that each Euler angle is measured with respect to an intermediary frame, a distinction must then be made between $d\vec{\eta}/dt$ and $\vec{\omega}_b$. All three Euler angles need to be transformed to a common frame to define the relationship between Euler and angular rates. Exploiting vehicle frames 1 \& 2, or rather $\mathcal{F}^{v1}$ \& $\mathcal{F}^{v2}$, as intermediary frames to describe respectively frames after $R_x(\phi)$ and $R_y(\theta)$ operations and using the rotation matrix derivative from Eq:\ref{eq:rotation-matrix-derivative}. The angular velocity $\vec{\omega}_b$ is the time derivative of Euler angles in the body frame:
-\begin{subequations}
+\begin{subequations}\label{eq:angular-rates-eq}
 \begin{equation}\label{eq:angular-rates.a}
 \vec{\omega}_b=\begin{bmatrix}
 p & q & r

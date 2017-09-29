@@ -55,7 +55,7 @@ Coefficients $k_1$ \& $k_2$ are typically determined from physical thrust tests.
 \end{equation}
 \end{subequations}
 \par
-Then expanding the linear translational position and attitude differentials, Eq:\ref{eq:app-position} \& Eq:\ref{eq:app-attitude}, to their component forms:
+Then expanding the translational position and attitude state differentials, Eq:\ref{eq:app-position} \& Eq:\ref{eq:app-attitude}, to their component forms (assuming the vehicle's inertial matrix $J_b$ is diagonal):
 \begin{subequations}\label{eq:app-states}
 \begin{equation}
 \begin{pmatrix}
@@ -91,19 +91,19 @@ T
 \dot{r}
 \end{pmatrix}
 =\begin{pmatrix}
-\frac{\mathbb{I}_y-\mathbb{I}_z}{\mathbb{I}_x}qr\\
-\frac{\mathbb{I}_z-\mathbb{I}_x}{\mathbb{I}_y}pr\\
-\frac{\mathbb{I}_x-\mathbb{I}_y}{\mathbb{I}_z}pq
+\frac{J_{yy}-J_{zz}}{J_{xx}}qr\\
+\frac{J_{zz}-J_{xx}}{J_{yy}}pr\\
+\frac{J_{xx}-J_{yy}}{J_{zz}}pq
 \end{pmatrix}
 +
-\mathbb{I}_b^{-1}\begin{pmatrix}
+J_b^{-1}\begin{pmatrix}
 \tau_\phi\\
 \tau_\theta\\
 \tau_\psi
 \end{pmatrix}~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Considering the size of the average angular velocity $\omega_b\approx\vec{0}$, the gyroscopic and Coriolis effects on the body (namely both cross product terms) are depreciated and can be regarded as negligible. Assuming too that the body has a (\emph{roughly}) diagonal inertial matrix. Then:
+Considering the size of a typical angular rate, $\vec{\omega}_b\approx\vec{0}$; the gyroscopic and Coriolis effects on the body (namely both cross product terms) are sufficiently small enough to be regarded as negligible. Assuming too that the body has a (\emph{roughly}) diagonal inertial matrix. Then the following holds true around the origin when $\vec{\omega}_b\approx\vec{0}$:
 \begin{equation}
 \begin{pmatrix}
 rv-qw\\
@@ -113,15 +113,15 @@ qu-pv
 \approx
 \vec{0}
 ~~~\text{and}~~~
-\begin{pmatrix}
-\frac{\mathbb{I}_y-\mathbb{I}_z}{\mathbb{I}_x}qr\\
-\frac{\mathbb{I}_z-\mathbb{I}_x}{\mathbb{I}_y}pr\\
-\frac{\mathbb{I}_x-\mathbb{I}_y}{\mathbb{I}_z}pq
+=\begin{pmatrix}
+\frac{J_{yy}-J_{zz}}{J_{xx}}qr\\
+\frac{J_{zz}-J_{xx}}{J_{yy}}pr\\
+\frac{J_{xx}-J_{yy}}{J_{zz}}pq
 \end{pmatrix}
 \approx
 \vec{0}
 \end{equation}
-As a result, equations from Eq:\ref{eq:app-states} then simplify to:
+As a result, state differentials in Eq:\ref{eq:app-states} can then reduce to the following:
 \begin{equation}
 \begin{pmatrix}
 \dot{u}\\
@@ -153,21 +153,17 @@ T
 \frac{1}{\mathbb{I}_z}\tau_\psi
 \end{pmatrix}
 \end{equation}
-Similarly, around the origin and at hovering conditions, $\Psi(\eta)\approx\vec{1}$ for $\eta\approx\vec{0}$ and so from Eq:\ref{eq:app-euler}, then $\dot{\eta}\approx\omega_b$. Or in component form:
+Similarly, at an attitude near to the origin and at hovering conditions the following simplification applies to the Euler matrix $\Phi(\eta)$:
 \begin{equation}
-\begin{pmatrix}
-\dot{p}\\
-\dot{q}\\
-\dot{r}
-\end{pmatrix}
-\approx
-\begin{pmatrix}
-\ddot{\phi}\\
-\ddot{\theta}\\
-\ddot{\psi}
-\end{pmatrix}
+\Phi(\eta)\approx\vec{1}~~\text{for}~~\eta\approx\vec{0}
 \end{equation}
-As such, the differential equations Eq:\ref{eq:app-states} are then simplified to the following six SISO controllable plants:
+And so from Eq:\ref{eq:app-euler} the body's \emph{Euler rates} are approximately equivalent to its angular velocity:
+\begin{equation}\label{eq:app-euler-approx}
+\begin{pmatrix}\dot{p}&\dot{q}&\dot{r}\end{pmatrix}^T\approx\begin{pmatrix}\ddot{\phi}&\ddot{\theta}&\ddot{\psi}\end{pmatrix}^T
+\Rightarrow
+\dot{\eta}\approx\omega_b
+\end{equation}
+The above Eq:\ref{eq:app-euler-approx} is not an insignificant result. The difficulty with Euler angle parameterization for body attitude is that each Euler angle is defined with respect to a sequential reference frame, Eq:\ref{eq:angular-rates-eq}. As such, the state equations for Eq:\ref{eq:app-states} then reduce to the following six SISO controllable plants when the vehicle's angular velocity is small:
 \begin{subequations}\label{eq:app-simplified}
 \begin{equation}
 \ddot{x}=(-cos(\phi)sin(\theta)cos(\psi)-sin(\phi)sin(\psi)\frac{1}{m}T
@@ -182,34 +178,34 @@ As such, the differential equations Eq:\ref{eq:app-states} are then simplified t
 \end{equation}
 \vspace{-7pt}
 \begin{equation}
-\ddot{\phi}=\frac{1}{\mathbb{I}_x}\tau_\phi
+\ddot{\phi}=\frac{1}{J_{xx}}\tau_\phi
 \end{equation}
 \vspace{-7pt}
 \begin{equation}
-\ddot{\theta}=\frac{1}{\mathbb{I}_y}\tau_\theta
+\ddot{\theta}=\frac{1}{J_{yy}}\tau_\theta
 \end{equation}
 \vspace{-7pt}
 \begin{equation}
-\ddot{\psi}=\frac{1}{\mathbb{I}_z}\tau_\psi
+\ddot{\psi}=\frac{1}{J_{zz}}\tau_\psi
 \end{equation}
 \end{subequations}
-Typically, the simplified states in Eq:\ref{eq:app-simplified} are abstracted to what is termed as an "augmented pilot control system". As such the controllable inputs are abstracted to $T,~\ddot{\phi},~\ddot{\theta},~\ddot{\psi}$. Wherein the pilot can dictate the attitude and net heave thrust of the quadrotor, mostly with various flavours of PID control.
+Typically, the simplified Eq:\ref{eq:app-simplified} is abstracted to an "augmented pilot control system". In such a case the controllable inputs are abstracted to $T,~\ddot{\phi},~\ddot{\theta},~\ddot{\psi}$. Wherein the pilot dictates the attitude torques and net heave thrust for the quadrotor, mostly with various flavours of PD control for each channel.
 \newpage
 %-----------------------------------------------------
 \section{Blade-Element Momentum Expansion}
 \label{app:equations.bem} 
 %-----------------------------------------------------
-Expanding on the Blade-Element Momentum equations from Eq:\ref{eq:moment-thrust-element} \& Eq:\ref{eq:bem-thrust}. Reiterating the equations, they are:
+Expanding on the Blade-Element Momentum equations from Eq:\ref{eq:moment-thrust-element} and Eq:\ref{eq:bem-thrust}. Reiterating the integral equations, they are:
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:app-bem-thrust}
 dT=\rho 4\pi r v_\infty(1+a)a.dr
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:app-bem-torque}
 dT = \frac{1}{2} a_L b c \rho (\Omega r)^2\big(\theta-\frac{v_\infty+v_i}{\Omega r}\big).dr
 \end{equation}
 \end{subequations}
-Equating the two and defining an inflow ratio term $\lambda=\frac{v_\infty+v_i}{\Omega r}=\frac{v_\infty(1+a)}{\Omega r}$ yields the following quadratic equation:
+Both Eq:\ref{eq:app-bem-thrust}-\ref{eq:app-bem-torque} are integrals taken accross the length of the propeller blade. Equating the two and defining an inflow ratio term $\lambda=\frac{v_\infty+v_i}{\Omega r}=\frac{v_\infty(1+a)}{\Omega r}$ yields the following quadratic equation:
 \begin{equation}\label{eq:app-bem-quadratic}
 \lambda^2+\bigg(\frac{\sigma a_L}{8}+\lambda_c\bigg)\lambda-\frac{\sigma a_L}{8}\theta\frac{r}{R}=0
 \end{equation}
@@ -492,8 +488,6 @@ Parts: H.1, H.2, Corona Servo \& Fasteners, 80g Damping Balls, Servo Mount Dampi
 \captionof{figure}{Strain gauge full bridge amplifier}
 }
 \restoregeometry
-\par
-Strain gauge explanation
 %-----------------------------------------------------
 \newpage
 %-----------------------------------------------------
@@ -509,14 +503,19 @@ Strain gauge explanation
 \centering
 \includegraphics[width=\textwidth]{graphs/thrust-rotation}
 \caption{Thrust tests}
+\label{app:thrust-test}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/torque-rotation}
 \caption{Torque tests}
+\label{app:torque-test}
 \end{subfigure}
 \caption{Clockwise and counterclockwise rotation tests}
 \end{figure}
+Thrust tests in Fig:\ref{app:thrust-test} causes lateral deflection of the strain gauge thrust test rig illustrated in Fig:\ref{fig:thrust-rig}. The deflection is in the direction of the propeller's rotational sense, as a result of the torque applied to the propeller. Clockwise and counter-clockwise tests where summed together and averaged to produce the thrust tests plotted in Fig:\ref{fig:thrusts}.
+\par
+Torque tests in Fig:\ref{app:torque-test} shows thrust deflection in the rotational torque test rig in Fig:\ref{fig:torque-rig}. Upward thrust still resulted in some small deflection in the resultant measurements so opposing clockwise and counter-clockwise results were subtracted and averaged out to produce the torque tests plotted in Fig:\ref{fig:torques}.
 \newpage
 %-----------------------------------------------------
 \newgeometry{left=1cm,right=1cm,top=2cm,bottom=1cm}
@@ -539,57 +538,57 @@ Strain gauge explanation
 \section{Combined Simulated Torque Responses}
 \label{app:tau-comb}
 %-----------------------------------------------------
-The process in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} applied simulation tests to the generalized torque responses developed in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Previous simulations only considered separate singular perturbations in either $\lambda_i$ or $\alpha_i$ rotational positions separately. The generalized torque response $\vec{\mathbf{V}}(\alpha,\lambda)$, from Eq:\ref{eq:3.86g}, acts as a response to \emph{net motor module} rotations of both inner and middle ring servos $\lambda_i$ and $\alpha_i$ respectively.
+The process in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} applied simulation tests to the generalized torque responses derived in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Previous simulations only considered separate singular perturbations in either $\lambda_i$ or $\alpha_i$ rotational positions alone. The generalized torque response $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$, from Eq:\ref{eq:3.86g}, acts as a response to \emph{net motor module} rotations of both inner and middle ring servos $\lambda_i$ and $\alpha_i$ respectively.
 \par
-Fig:\ref{fig:tau-com-lambda} plots varying steps for $\Delta\lambda$ with a constant $\Delta\alpha=\pi/4$ step. The error between an estimate value $\hat{V}(\alpha,\lambda)$, with a linearized rotation partial derivative, and the true $\widetilde{V}(\alpha,\lambda)$ is shown in Fig:\ref{fig:tau-comb-lam-r}. That error is mostly of the order $\times 10^{-4}~[\text{N.m}]$; whilst both $\hat{V}(\alpha,\lambda)$ and $\widetilde{V}(\alpha,\lambda)$ are in the order of $\times 10^{-1}~[\text{N.m}]$.
+The plot in Fig:\ref{fig:tau-com-lambda} shows varying steps for $\Delta\lambda_i$ with a constant $\Delta\alpha_i=\pi/4$ step. The error between an estimated value $\hat{V}(\alpha_i,\lambda)$, with a linearized rotation partial derivative, and the true $\widetilde{V}(\alpha,\lambda)$ is shown in Fig:\ref{fig:tau-comb-lam-r}. That error is mostly of the order $\times 10^{-4}~[\text{N.m}]$; whilst both $\hat{V}(\alpha_i,\lambda_i)$ and $\widetilde{V}(\alpha_i,\lambda_i)$ are in the order of $\times 10^{-1}~[\text{N.m}]$.
 \begin{figure}[htbp]
 \vspace{-10pt}
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-comb-lam}
-\caption{Torque response $\vec{\mathbf{V}}(\alpha,\lambda)$ to steps in $\Delta\lambda$ only}
+\caption{Torque response $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ to steps in $\Delta\lambda_i$ only}
 \label{fig:tau-comb-lam}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-comb-lam-r}
-\caption{Error for $\vec{\mathbf{V}}(\alpha,\lambda)$ for steps in $\Delta\lambda$ only}
+\caption{Error for $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ for steps in $\Delta\lambda_i$ only}
 \label{fig:tau-comb-lam-r}
 \end{subfigure}
 \vspace{-6pt}
-\caption{Step changes in $\Delta\lambda$ with constant $\Delta\alpha=\pi/4$}
+\caption{Step changes in $\Delta\lambda_i$ with constant $\Delta\alpha_i=\pi/4$}
 \label{fig:tau-com-lambda}
 \vspace{-16pt}
 \end{figure}
 \par
-Similarly, Fig:\ref{fig:tau-comb-alph} shows the same tests run for varying step sizes of $\Delta\alpha$ with a constant step size for $\Delta\lambda=\pi/4$. Again, the plot Fig:\ref{fig:tau-comb-alph-r} shows the error which, on average, is in the order of $\times 10^{-4}~[\text{N.m}]$. The error between a reduced complexity $\hat{V}(\alpha,\lambda)$ and the true $\widetilde{V}(\alpha,\lambda)$ only becomes significant as the step size $\Delta\alpha$ tends to $\pi/2$.
+Similarly, Fig:\ref{fig:tau-comb-alph} shows the same tests run for varying step sizes of $\Delta\alpha_i$ with a constant step size for $\Delta\lambda_i=\pi/4$. Again, the plot Fig:\ref{fig:tau-comb-alph-r} shows the error which, on average, is in the order of $\times 10^{-4}~[\text{N.m}]$. The error between a simplified $\hat{V}(\alpha_i,\lambda_i)$ and the true $\widetilde{V}(\alpha_i,\lambda_i)$ only becomes significant as the step size $\Delta\alpha_i$ tends to $\pi/2$.
 \begin{figure}[htbp]
 \vspace{-10pt}
 \centering
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-comb-alph}
-\caption{Torque response $\vec{\mathbf{V}}(\alpha,\lambda)$ to steps in $\Delta\alpha$ only}
+\caption{Torque response $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ to steps in $\Delta\alpha_i$ only}
 \label{fig:tau-comb-alph}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-comb-alph-r}
-\caption{Error for $\vec{\mathbf{V}}(\alpha,\lambda)$ for steps in $\Delta\alpha$ only}
+\caption{Error for $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ for steps in $\Delta\alpha_i$ only}
 \label{fig:tau-comb-alph-r}
 \end{subfigure}
 \vspace{-6pt}
-\caption{Step changes in $\Delta\alpha$ with constant $\Delta\lambda=\pi/4$}
+\caption{Step changes in $\Delta\alpha_i$ with constant $\Delta\lambda_i=\pi/4$}
 \label{fig:tau-comb-alpha}
 \vspace{-16pt}
 \end{figure}
 \par
-It is interesting to note that positive and negative step directions are not symmetrical in their responses for Fig:\ref{fig:tau-comb-lam} and Fig:\ref{fig:tau-comb-alph}. This is as a result of the gyroscopic cross product in the calculations for $\hat{V}(\alpha,\lambda)$. Both tests shown in Fig:\ref{fig:tau-com-lambda} and Fig:\ref{fig:tau-comb-alpha} further corroborate the model proposed previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}.
+It is interesting to note that positive and negative step directions are not symmetrical in their responses for Fig:\ref{fig:tau-comb-lam} and Fig:\ref{fig:tau-comb-alph}. This is as a result of the gyroscopic cross product in the calculations for $\hat{V}(\alpha_i,\lambda_i)$. Both tests shown in Fig:\ref{fig:tau-com-lambda} and Fig:\ref{fig:tau-comb-alpha} further corroborate the model proposed previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}.
 \newpage
 %-----------------------------------------------------
-\section{SimScape Modelling}
-\label{app:simscape}
+\section{Combined Torque Response Tests}
+\label{app:tau-comb-test}
 %-----------------------------------------------------
 %-----------------------------------------------------
 %-----------------------------------------------------
