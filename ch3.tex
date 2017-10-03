@@ -1871,7 +1871,7 @@ Control force and torque plant inputs, $\vec{F}_\mu$ and $\vec{\tau}_\mu$ respec
 \end{equation}
 \end{subequations}
 Scalar thrust $T(\Omega_i)$ is a function of the propeller's rotational velocity whereas $\vec{T}(\Omega_i,\lambda_i,\alpha_i)$ is that thrusts three dimensional counterpart in $\mathcal{F}^b$. Equivalently $Q(\Omega_i)$ is the scalar aerodynamic torque in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}_{M_i}$-axis, whereas $\vec{Q}(\Omega_i,\lambda_i,\alpha_i)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic torque terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
-\begin{subequations}
+\begin{subequations}\label{eq:dynamic-plant-inputs}
 \begin{equation}\label{eq:aerodynamic-thrust}
 T(\Omega_i)= C_T(J)\rho\Omega_i^2D^4~~~~[\text{N}]
 \end{equation}
