@@ -769,9 +769,49 @@ J_b(\vec{0})=\begin{bmatrix}
 \end{bmatrix}\times 10^{-7}\bigg|_{u=\vec{0}}~~~~[\text{kg.m}^2],~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Unless otherwise specified; any inertia $J_b(u)$ indicates an instantaneous calculated solution to Eq:\ref{eq:body-net-2} given a particular $u(t)\in\mathbb{U}$. The purpose of the derivations for rotated centers of mass in Eq:\ref{eq:body-net-inner} and Eq:\ref{eq:body-net-middle} is twofold; highlighting both the inertial contributions \emph{and} the variable center of masses for each sub-body.
+The maximal variation of the body's net inertia is determined by the maximum determinant of the inertial matrix in Eq:\ref{eq:body-net-2} for some actuator state $max(det|J_b(u_\Lambda)|)~,u_\Lambda\in\mathbb{U})$. A maximum $J_b(u_\Lambda)$, with a determinant $det|J_b(u_\Lambda)|=1017.93\times 10^{-7}$, is:
+\begin{subequations}\label{eq:inertia-max}
+\begin{equation}
+J_b(u_\Lambda)=\begin{bmatrix}
+384695.4 & 0.4 & -14.5\\
+0.4 & 384717.9 & 6.5\\
+-14.5 & 6.5 & 687970.7
+\end{bmatrix}\times 10^{-7}\bigg|_{u_\Lambda}~~~~[\text{kg.m}^2],~\in\mathcal{F}^b
+\end{equation}
+With an actuator matrix, independent of propeller speeds $\Omega_{1\rightarrow 4}$, as follows:
+\begin{equation}
+u_\Lambda=\begin{bmatrix*}[l]
+\Omega_1, & \lambda_1=178\text{\textdegree},&\alpha_1=260\text{\textdegree}\ldots\\
+\Omega_2, & \lambda_2=178\text{\textdegree},&\alpha_2=260\text{\textdegree}\ldots\\
+\Omega_3, & \lambda_3=178\text{\textdegree},&\alpha_3=~~~0\text{\textdegree}\ldots\\
+\Omega_4, & \lambda_4=~~~0\text{\textdegree}, & \alpha_4=~~~0\text{\textdegree}
+\end{bmatrix*}
+\end{equation}
+\end{subequations}
+Conversely, the minimum net inertia for the body is determined from the smallest determinant of Eq:\ref{eq:body-net-2}, for the actuator state $min(det|J_b(u_\Upsilon)|),~u_\Upsilon\in\mathbb{U}$. A minimum $J_b(u_\Upsilon)$, with a determinant $det|J_b(u_\Upsilon)|=633.48\times 10^{-7}$, is:
+\begin{subequations}\label{eq:inertia-min}
+\begin{equation}
+J_b(u_\Upsilon)=\begin{bmatrix}
+317469.0 & 0.4 & -1219.0\\
+0.4 & 317591.5 & 1195.3\\
+-1219.0 & 1195.3 & 628298.1
+\end{bmatrix}\times 10^{-7}\bigg|_{u_\Upsilon}~~~~[\text{kg.m}^2],~\in\mathcal{F}^b
+\end{equation}
+When an actuator matrix for that minimum inertia is:
+\begin{equation}
+u_\Upsilon=\begin{bmatrix*}[l]
+\Omega_1, & \lambda_1=178\text{\textdegree},&\alpha_1=~~~0\text{\textdegree}\ldots\\
+\Omega_2, & \lambda_2=~~~0\text{\textdegree},&\alpha_2=260\text{\textdegree}\ldots\\
+\Omega_3, & \lambda_3=~~~0\text{\textdegree},&\alpha_3=~~~0\text{\textdegree}\ldots\\
+\Omega_4, & \lambda_4=~~~0\text{\textdegree}, & \alpha_4=~~~0\text{\textdegree}
+\end{bmatrix*}
+\end{equation}
+\end{subequations}
+The inclusion of Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min} is used for maximum and minimum Eigen values of the body's inertial matrix at a later stage in the control derivation, Sec:\ref{sec:control.attitude}. It is interesting to note that both extremes of $J_b(u)$ are still symmetrical, and \emph{roughly} diagonal. Actuator positions hardly affect the skew products of inertia in $J_b(u)$ but can vary the diagonal moments of inertia by almost $20\%$ of their principle value.
 \par
-Seeing that the origin of motion $\vec{\mathbf{O}}_b$ in the body frame $\mathcal{F}^b$ and the net body's center of mass $C.M_\text{b}$ are not coincidental, it is important to indicate the net center of mass varies with actuator positions $u\in\mathbb{U}$. In the general case for a collection of $n$ bodies, with each body's center of mass at some position $\vec{X}_i$ and each having a mass $m_i$, resultant center of mass is:
+Unless otherwise specified; any inertia $J_b(u)$ indicates an instantaneous calculated solution to Eq:\ref{eq:body-net-2} given a particular $u(t)\in\mathbb{U}$. The purpose of the derivations for rotated centers of mass in Eq:\ref{eq:body-net-inner} and Eq:\ref{eq:body-net-middle} is twofold; highlighting both the inertial contributions \emph{and} the variable center of masses for each sub-body. Seeing that the origin of motion $\vec{\mathbf{O}}_b$ in the body frame $\mathcal{F}^b$ and the body's effective center of mass $C.M_\text{b}$ are not coincidental, it is important to quantify the net center of mass's variation with actuator positions $u\in\mathbb{U}$. 
+\par
+In the general case for a collection of $n$ bodies, with each body's center of mass at some position $\vec{X}_i$ and each having a mass $m_i$, resultant center of mass is:
 \begin{subequations}\label{eq:mass-center}
 \begin{equation}\label{eq:mass-center.a}
 C.M = \frac{\sum_{i=1}^{n} m_i.\vec{X}_i}{\sum_{i=1}^{n} m_i}

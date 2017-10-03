@@ -1836,7 +1836,7 @@ The final simulated module is that of $\hat{\tau}_b$
 \section{Consolidated Model}
 \label{sec:dynamics.model}
 %====================================================
-Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{R}^4$ space with the use of quaternions. Also introducing the non-linear inertial and gyroscopic responses to induced perturbations, $\hat{\tau}_\lambda$ and $\hat{\tau}_\alpha(\lambda_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}$ and $\vec{\tau}_{\mu}$ are control inputs to be designed by a higher level set-point tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation rules are explored thereafter in Ch:\ref{ch:allocation}.
+Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ space using quaternions. Also introducing the non-linear inertial and gyroscopic responses to induced perturbations, $\hat{\tau}_\lambda$ and $\hat{\tau}_\alpha(\lambda_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}$ and $\vec{\tau}_{\mu}$ are control inputs to be designed by a higher level set-point tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation rules are explored thereafter in Ch:\ref{ch:allocation}.
 \par
 The vehicle's inertial position and \emph{body frame} velocity differential equations are:
 \begin{subequations}\label{eq:quaternion-states}
@@ -1847,7 +1847,7 @@ The vehicle's inertial position and \emph{body frame} velocity differential equa
 \begin{equation}\label{eq:quaternion-states-acceleration}
 \dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b\otimes m\vec{G}_I\otimes Q_b^*-\vec{D}_{net}(\vec{v}_b)+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~\in\mathcal{F}^b
 \end{equation}
-Similarly the vehicle's attitude quaternion velocity and angular acceleration are respectively:
+Similarly the vehicle's attitude quaternion rate and angular acceleration are respectively:
 \begin{equation}\label{eq:quaternion-states-quaternion}
 \dot{Q}_b=\frac{1}{2}Q_b\otimes \vec{\omega}_b ~~~~\in\mathcal{F}^I
 \end{equation}
@@ -1860,7 +1860,7 @@ And an actuator space as per Eq:\ref{eq:actuator-space}, each with their own tra
 u=\big[\Omega_1^+,~\lambda_1,~\alpha_1,~\ldots~\Omega_4^-,~\lambda_4,~\alpha_4 \big]~~~~\in\mathbb{U}\in\mathbb{R}^{12}
 \end{equation}
 \end{subequations}
-Control force and torque plant inputs, $\vec{F}_\mu$ and $\vec{\tau}_\mu$ respectively, are a combination of Eq:\ref{eq:generalized-net-forces} with three dimensional thrust vectors $\vec{T}(\Omega_i)$ as per the quaternion analogue of Eq:\ref{eq:motor-module-force-redirect}. Both are later abstracted to virtual control inputs next in the control allocation design Ch:\ref{ch:allocation}.
+Control force and torque plant inputs, $\vec{F}_\mu(u)$ and $\vec{\tau}_\mu(u)$ respectively, are a combination of Eq:\ref{eq:generalized-net-forces} with three dimensional thrust vectors $\vec{T}(\Omega_i)$ as per the quaternion analogue of Eq:\ref{eq:motor-module-force-redirect}. Both are later abstracted to virtual control inputs later in the control allocation design Ch:\ref{ch:allocation}.
 \begin{subequations}\label{eq:quaternion-inputs}
 \begin{equation}
 \vec{F}_\mu(u)=\sum_{i=1}^4 \vec{T}(\Omega_i,\lambda_i,\alpha_i)=\sum_{i=1}^4 Q_{M_i}^*\otimes T(\Omega_i)\otimes Q_{M_i}~~~~[\text{N}],~\in\mathcal{F}^b
@@ -1870,7 +1870,7 @@ Control force and torque plant inputs, $\vec{F}_\mu$ and $\vec{\tau}_\mu$ respec
 \vec{\tau}_\mu(u)=\sum_{i=1}^4 \vec{L}_i\times\vec{T}(\Omega_i,\lambda_i,\alpha_i)=\sum_{i=1}^4 \vec{L}_i\times\big(Q_{M_i}^*\otimes T(\Omega_i)\otimes Q_{M_i}\big)~~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Scalar thrust $T(\Omega_i)$ is a function of the propeller's rotational velocity whereas $\vec{T}(\Omega_i,\lambda_i,\alpha_i)$ is that thrusts three dimensional counterpart in $\mathcal{F}^b$. Equivalently $Q(\Omega_i)$ is the scalar aerodynamic torque in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}_{M_i}$-axis, whereas $\vec{Q}(\Omega_i,\lambda_i,\alpha_i)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic torque terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
+Scalar thrust $T(\Omega_i)$ is a function of the propeller's rotational velocity whereas $\vec{T}(\Omega_i,\lambda_i,\alpha_i)$ is that thrust's three dimensional counterpart in $\mathcal{F}^b$. Equivalently $Q(\Omega_i)$ is the scalar aerodynamic torque in $\mathcal{F}^{M_i}$ about each motor's rotor $\hat{Z}_{M_i}$-axis, whereas $\vec{Q}(\Omega_i,\lambda_i,\alpha_i)$ is the torque vector counterpart in $\mathcal{F}^b$. Both thrust and aerodynamic torque terms are calculated from their respective coefficients (plotted in Fig:\ref{fig:coeffs-plot}):
 \begin{subequations}\label{eq:dynamic-plant-inputs}
 \begin{equation}\label{eq:aerodynamic-thrust}
 T(\Omega_i)= C_T(J)\rho\Omega_i^2D^4~~~~[\text{N}]
@@ -1880,16 +1880,16 @@ T(\Omega_i)= C_T(J)\rho\Omega_i^2D^4~~~~[\text{N}]
 Q(\Omega_i)= C_P(J)\rho\Omega_i^3D^5 \big(1/R\Omega\big)~~~~[\text{Nm}]
 \end{equation}
 \end{subequations}
-Recalling that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The non-linear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as feedback compensation terms;
+Reiterating that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The non-linear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as feedback compensation terms;
 \begin{equation}\label{eq:actuator-torque}
 \hat{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[\hat{\tau}'_\alpha(\lambda_i)+\hat{\tau}''_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
-With $\hat{\tau}'_\alpha(\lambda_i)$ and $\hat{\tau}'_\lambda$ both transformed to the body frame $\mathcal{F}^b$. Then including variable gravitational torque as a result of an eccentric center of gravity from Eq:\ref{eq:mass-center.b}; also dependent on the vehicles configuration:
+With $\hat{\tau}'_\alpha(\lambda_i)$ and $\hat{\tau}''_\lambda$ both transformed to the body frame $\mathcal{F}^b$. Then including variable gravitational torque as a result of an eccentric center of gravity from Eq:\ref{eq:mass-center.b}; also dependent on the vehicles configuration:
 \begin{equation}\label{eq:consolidated-grav-torque}
 \vec{\tau}_g=\Delta C.G \times\vec{G}_b=\big(\vec{\mathbf{O}}_b-C.M_\text{b}(u)\big)\times\vec{G}_b~~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
 And finally the vehicles net rotational inertia, aligned and centred with the body frame. That inertia is calculated as a function of all actuator positions; taken from Eq:\ref{eq:body-net-2} and given as:
 \begin{equation}
-\underset{\vec{\mathbf{O}}_b}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}(u\cdot i)}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}(u\cdot i)}~~~~[\text{Kg.m}^{-2}],~u\in\mathbb{U}
+\underset{\vec{\mathbf{O}}_b}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}(u\cdot i)}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}(u\cdot i)}~~~~[\text{kg.m}^{-2}],~u\in\mathbb{U}
 \end{equation}
 Both attitude (euler angles $\vec{\eta}$ or quaternions $Q_b$) and translational position states $\vec{\mathcal{E}}$ could indeed be combined into a single state $\vec{\mathbf{x}}_b$. That could then be used for a complete state feedback control law which could potentially exploit or linearize the cross-coupling between the angular and translational plants. Such an approach would, however, dramatically increase the complexity in tuning actual control parameters (see Sec:\ref{sec:simulation.tuning}). Controllers for attitude and position loops are designed and optimized independently\ldots
