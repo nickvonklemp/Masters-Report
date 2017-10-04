@@ -642,55 +642,63 @@ And considering a vector cross product with itself has a zero resultant, $\vec{q
 However, that backstepping input $\gamma_d$ has its own associated error. A stabilizing law $z_1$ needs to control that error:
 \begin{subequations}
 \begin{equation}
-z_1\triangleq\vec{\omega}_b-\gamma_d=\vec{\omega}_b-\Gamma_1\vec{q}_e\Big|_{\gamma_d=\Gamma_1\vec{q}_e}
+z_1\triangleq\gamma_d-\vec{\omega}_b=\Gamma_1\vec{q}_e-\vec{\omega}_b\Big|_{\gamma_d=\Gamma_1\vec{q}_e}
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-\rightarrow\vec{\omega}_b=z_1+\Gamma_1\vec{q}_e
+\rightarrow\vec{\omega}_b=\Gamma_1\vec{q}_e-z_1
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\therefore\dot{V}_1=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e-\vec{q}_e\text{}^{T}z_1
+\therefore\dot{V}_1=-\vec{q}_e\text{}^{T}\vec{\omega}_b=-\vec{q}_e\text{}^{T}\big(\Gamma_1\vec{q}_e-z_1\big)\Big|_{\vec{\omega}_b\Rightarrow\gamma_d}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+\vec{q}_e\text{}^{T}z_1
 \end{equation}
 \end{subequations}
 Introducing that error $z_1$ into a second LCF, which expands the first proposed $V_1$. And exploiting the fact that $\Gamma_1$ is symmetrical:
 \begin{subequations}
 \begin{equation}
-V_2(\vec{q}_e,z_1)=V_1(\vec{q}_e)+\frac{1}{2}z_1\text{}^T\Gamma_1^{-1}z_1
+V_2(\vec{q}_e,z_1)=V_1(\vec{q}_e)+\frac{1}{2}z_1\text{}^Tz_1
 \end{equation}
 \vspace{-6pt}
 \begin{equation}
-=\vec{q}_e\text{}^T\vec{q}_e+(|q_0|-1)^2+\frac{1}{2}z_1\text{}^T\Gamma_1^{-1}z_1
+=\vec{q}_e\text{}^T\vec{q}_e+(|q_0|-1)^2+\frac{1}{2}z_1\text{}^Tz_1
 \end{equation}
 \end{subequations}
 That first error $z_1$ has its own time derivative, and recalling the body's angular acceleration $\dot{\vec{\omega}}_b$ from earlier with an undefined input $\vec{\tau}_{IBC}$, which still has plant dependency compensation.
 \begin{subequations}
 \begin{equation}
-\dot{z}_1=\dot{\vec{\omega}}_b-\Gamma_1\dot{\vec{q}}_e
+\dot{z}_1=\Gamma_1\dot{\vec{q}}_e-\dot{\vec{\omega}}_b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-=\dot{\vec{\omega}}_b-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e
+=\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-\dot{\vec{\omega}}_b
 \end{equation}
 \vspace{-10pt}
+\begin{equation}
+=-\dot{\vec{\omega}}_b-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
+\end{equation}
+\vspace{-4pt}
 \begin{equation}\label{eq:z-deriv}
-=J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
+=-J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
 \end{equation}
 \end{subequations}
-So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$ with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e+z_1)$:
+So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$ with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)$:
 \begin{subequations}\label{eq:ibc-deriv}
 \begin{multline}
-\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e+z_1\big)+z_1\text{}^T\Gamma_1^{-1}\bigg(J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
+\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)-z_1\text{}^T\bigg(J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
 \end{multline}
 \vspace{-25pt}
 \begin{multline}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\Gamma_1^{-1}\bigg(J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\-\Gamma_1\vec{q}_e+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\bigg(J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\-\vec{q}_e+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
 \end{multline}
 \end{subequations}
-So then proposing the compensated stabilizing backstepping control law:
+So then proposing the exactly matched stabilizing backstepping control law:
 \begin{subequations}\label{eq:control-ibc}
 \begin{equation}
-\vec{\tau}_{_{IBC}}=J_b(u)\Gamma_1\vec{q}_e-\frac{J_b(u)\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b-J_b(u)\Gamma_2z_1+\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q
+\vec{\tau}_{_{IBC}}=J_b(u)\vec{q}_e-\frac{J_b(u)\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b+J_b(u)\Gamma_2z_1+\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q
 \end{equation}
 Noting that $z_1=\vec{\omega}_b-\Gamma_1\vec{q}_e$, the torque law simplifies:
 \begin{multline}
@@ -699,8 +707,7 @@ Noting that $z_1=\vec{\omega}_b-\Gamma_1\vec{q}_e$, the torque law simplifies:
 +\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{Compenstation}~~~~\in\mathcal{F}^{b}
 \end{multline}
 \end{subequations}
-%============================================================================================
-With $\Gamma_2$ being another positive definite symmetric coefficient matrix. Then with the control law $\vec{\tau}_{_{IBC}}$ introduced into the LCF derivative $\dot{V}_2$ simplifies to negative definite:
+With $\Gamma_2$ being another positive semi-definite symmetric coefficient matrix. Then with the control law $\vec{\tau}_{_{IBC}}$ introduced into the LCF derivative $\dot{V}_2$ simplifies to negative definite:
 \begin{equation}
 \dot{V}_2=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1< 0~~~~\forall~(\vec{q}_e,z_1)
 \end{equation}
