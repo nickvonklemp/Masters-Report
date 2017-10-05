@@ -621,7 +621,7 @@ Simplifying and then substituting $\vec{\omega}_e=\vec{\omega}_d-\vec{\omega}_b=
 =-\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\omega}_b-\vec{q}_e\text{}^T\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \end{subequations}
-Then choosing the first virtual backstepping control input $\gamma_d$. Note that $\gamma_d$ is used here to \emph{differentiate the backstepping design value} from the trajectory commanded $\vec{\omega}_d$, Eq:\ref{eq:angular-error}. Choosing $\gamma_d$ such that the first LFC Eq:\ref{eq:ibc-lfc-1} is negative definite, $\dot{V}_1<0$:
+Then choosing the first virtual backstepping control input $\gamma_d$. Note that $\gamma_d$ is used here to \emph{differentiate the backstepping design} variable from the trajectory commanded $\vec{\omega}_d$, Eq:\ref{eq:angular-error}. Choosing $\gamma_d$ such that the first LFC Eq:\ref{eq:ibc-lfc-1} is negative definite, $\dot{V}_1<0$:
 \begin{equation}
 \vec{\omega}_b\Rightarrow\gamma_d=\Gamma_1\vec{q}_e
 \end{equation}
@@ -678,21 +678,21 @@ That first error $z_1$ has its own time derivative, and recalling the body's ang
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-\dot{\vec{\omega}}_b-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
+=-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-\dot{\vec{\omega}}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \vspace{-4pt}
 \begin{equation}\label{eq:z-deriv}
-=-J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
+=-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)
 \end{equation}
 \end{subequations}
 So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$ with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)$:
 \begin{subequations}\label{eq:ibc-deriv}
 \begin{multline}
-\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)-z_1\text{}^T\bigg(J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
+\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)+z_1\text{}^T\bigg(-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
 \end{multline}
 \vspace{-25pt}
 \begin{multline}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\bigg(J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\-\vec{q}_e+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\+\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
 \end{multline}
 \end{subequations}
 So then proposing the exactly matched stabilizing backstepping control law:
@@ -700,25 +700,38 @@ So then proposing the exactly matched stabilizing backstepping control law:
 \begin{equation}
 \vec{\tau}_{_{IBC}}=J_b(u)\vec{q}_e-\frac{J_b(u)\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b+J_b(u)\Gamma_2z_1+\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q
 \end{equation}
-Noting that $z_1=\vec{\omega}_b-\Gamma_1\vec{q}_e$, the torque law simplifies:
-\begin{multline}
-=\underbrace{J_b(u)\Bigg(\Gamma_1(1+\Gamma_2)\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b-\Gamma_2\vec{\omega}_b\Bigg)}_{Ideal backstepping}
-\\
+Noting that $z_1=\Gamma_1\vec{q}_e-\vec{\omega}_b$, the torque law simplifies:
+\begin{equation}
+=\underbrace{J_b(u)\big((\Gamma_1\Gamma_2+1)\vec{q}_e-\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e \big)}_{Ideal backstepping}
 +\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{Compenstation}~~~~\in\mathcal{F}^{b}
-\end{multline}
+\end{equation}
 \end{subequations}
 With $\Gamma_2$ being another positive semi-definite symmetric coefficient matrix. Then with the control law $\vec{\tau}_{_{IBC}}$ introduced into the LCF derivative $\dot{V}_2$ simplifies to negative definite:
-\begin{equation}
-\dot{V}_2=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1< 0~~~~\forall~(\vec{q}_e,z_1)
-\end{equation}
-As such $\vec{q}_e\rightarrow 0$ \& $q_0\rightarrow 1$ as $t\rightarrow\infty$. Similarly $z_1\rightarrow 0$, which leads to the limit:
-\begin{equation}
-\underset{t\rightarrow\infty}{\lim}(\vec{\omega}_b-\Gamma_1\vec{q}_e)=0
-\end{equation} 
-Because the quaternion error vector already tends to $0$; $\vec{q}_e\rightarrow 0$, it follows that $\vec{\omega}_b\rightarrow 0$. It can also be said that, from the definition of $\vec{\omega}_e$, that the angular velocity error stabilizes too. There is a distinct similarity in the structure of $\mu\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc} and that of the auxiliary PD controller presented in Eq:\ref{eq:control-aux-pd}. Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof then follows:
 \begin{subequations}
 \begin{equation}
-V_{_{IBC}}\leq V_2=2\norm{\vec{q}_e}\text{}^2+\frac{\Gamma_1^{-1}}{2}\norm{z_1}\text{}^2
+\dot{V}_2=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(-J_b^{-1}(u)\big(J_b(u)(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(u)\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e\big)-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b\bigg)
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\big(\Gamma_1\Gamma_2\vec{q}_e-\Gamma_2\vec{\omega}_b\big)
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\therefore\dot{V}_2=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1< 0~~~~\forall~(\vec{q}_e,z_1)
+\end{equation}
+\end{subequations}
+As such $\vec{q}_e\rightarrow 0$ \& $q_0\rightarrow 1$ as $t\rightarrow\infty$. Similarly $z_1\rightarrow 0$, which leads to the limit:
+\begin{equation}
+\underset{t\rightarrow\infty}{\lim}(\Gamma_1\vec{q}_e-\vec{\omega}_b)=\vec{0}
+\end{equation} 
+Because the quaternion error vector already tends to $0$;$~\vec{q}_e\rightarrow \vec{0}$, it follows that $\vec{\omega}_b\rightarrow \vec{0}$ as well. It can also be said that, from the definition of $\vec{\omega}_e$, that the angular velocity error stabilizes too. There is a distinct similarity in the structure of $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc} and that of the auxiliary PD controller presented in Eq:\ref{eq:control-aux-pd}. Expanding $\vec{\tau}_{_{XPD}}$ into state terms using the definitions of each auxiliary plant, $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$:
+\begin{equation}
+\vec{\tau}_{_{XPD}}=\Gamma_2\vec{\omega}_b-\Gamma_1\Gamma_2\vec{q}_e-\Gamma_3\vec{q}_e+\frac{J_b(u)}{2}([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3})\vec{\omega}_b
+\end{equation}
+Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof then follows:
+\begin{subequations}
+\begin{equation}
+V_{_{IBC}}\leq V_2=2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\norm{z_1}\text{}^2
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
@@ -728,7 +741,7 @@ V_{_{IBC}}\leq V_2=2\norm{\vec{q}_e}\text{}^2+\frac{\Gamma_1^{-1}}{2}\norm{z_1}\
 Then both the energy function and its derivative are bound respectively by:
 \begin{subequations}
 \begin{equation}
-V_{_{IBC}}\leq max\bigg\{2,~\frac{\lambda_{max}(\Gamma_1\text{}^{-1})}{2}\bigg\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
+V_{_{IBC}}\leq \bigg\{2,~\frac{1}{2}\bigg\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
