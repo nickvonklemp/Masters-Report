@@ -1845,7 +1845,7 @@ The vehicle's inertial position and \emph{body frame} velocity differential equa
 \end{equation}
 \vspace{-16pt}
 \begin{equation}\label{eq:quaternion-states-acceleration}
-\dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+Q_b\otimes m\vec{G}_I\otimes Q_b^*-\vec{D}_{net}(\vec{v}_b)+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~\in\mathcal{F}^b
+\dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+Q_b\otimes m_b\vec{G}_I\otimes Q_b^*+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~\in\mathcal{F}^b
 \end{equation}
 Similarly the vehicle's attitude quaternion rate and angular acceleration are respectively:
 \begin{equation}\label{eq:quaternion-states-quaternion}
