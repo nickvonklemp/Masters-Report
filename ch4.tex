@@ -441,9 +441,9 @@ Note that the inverse qualifier of $K_p^{-1}$ in the above is redundant given th
 \subsubsection{Auxiliary Plant Controller}
 \label{subsubsec:control.attitude.controllers.auxpd}
 %====================================================
-Expanding on what has, in practice (Table:\ref{tab:controllers}, Sec:\ref{subsec:intro.lit.related}), proven to be a popular and effective controller for attitude stabilization, \cite{attitudestabilization} proposed an auxiliary plant term to a P-D attitude controller. Most significantly, the altered PD controller adds auxiliary terms proportional to the quaternion rate error (Eq:\ref{eq:quaternion-deriv}). Moreover part of the auxiliary plant is proportional to the \emph{quaternion scalar} $q_0$, a term that is otherwise neglected in the previous PD control law (Sec:\ref{subsubsec:control.attitude.controllers.pd}) and prevents unwinding if incorporated. The \emph{auxilliarly} PD control torque is a function of errors states:
+Expanding on what has, in practice (Table:\ref{tab:controllers} from Sec:\ref{subsec:intro.lit.related}), proven to be a popular and effective controller for attitude stabilization, \cite{attitudestabilization} proposed an auxiliary plant term to a P-D attitude controller. Most significantly, the altered PD controller adds auxiliary terms proportional to the quaternion rate error (Eq:\ref{eq:quaternion-deriv}). Moreover part of the auxiliary plant is proportional to the \emph{quaternion scalar} $q_0$, a term that is otherwise neglected in the previous PD control law (Sec:\ref{subsubsec:control.attitude.controllers.pd}) and prevents unwinding if incorporated. The \emph{auxilliarly} PD control torque is a function of errors states:
 \begin{equation}\label{eq:control-aux-pd}
-\vec{\tau}_{_{XPD}}=\underbrace{-\Gamma_2{\widetilde{\Omega}}-\Gamma_3\vec{q}_e+J_b(u)\dot{\bar{\Omega}}}_{Independent}+\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b-\vec{\tau}_g-\vec{\tau}_Q}_{Compensation}
+\vec{\tau}_{_{XPD}}=\underbrace{\Gamma_2{\widetilde{\Omega}}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}}_{Independent}+\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{Compensation}
 \end{equation}
 Wherein the coefficients $\Gamma_2$ and $\Gamma_3$ are both diagonal positive definite coefficient matrices whilst $\Gamma_1$, used next in Eq:\ref{eq:aux-pd-1}, is a symmetrical matrix. Each coefficient matrix is explicitly determined later. Auxiliary plants $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$ are defined as follows. The first auxiliary plant $\bar{\Omega}$ is proportional to the quaternion error and hence its derivative $\dot{\bar{\Omega}}$ is a quaternion rate:
 \begin{subequations}\label{eq:aux-pd-1}
@@ -452,11 +452,11 @@ Wherein the coefficients $\Gamma_2$ and $\Gamma_3$ are both diagonal positive de
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-\rightarrow\dot{\bar{\Omega}}=-\frac{1}{2}\Gamma_1\big(q_0\mathbb{I}_{3X3}+[\vec{q}_e]_{\times}\big)\vec{\omega}_e
+\rightarrow\dot{\bar{\Omega}}=-\frac{1}{2}\Gamma_1\big([\vec{q}_e]_{\times}+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=\frac{1}{2}\Gamma_1\big(q_0\mathbb{I}_{3X3}+[\vec{q}_e]_{\times}\big)\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
+=\frac{1}{2}\Gamma_1\big([\vec{q}_e]_{\times}+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \end{subequations}
 The second auxiliary plant, $\widetilde{\Omega}$, is proportional to both quaternion vector and angular velocity errors.
@@ -471,28 +471,28 @@ The second auxiliary plant, $\widetilde{\Omega}$, is proportional to both quater
 \end{subequations}
 Using an LFC similar to the basic $V_{_{PD}}$ function candidate from Eq:\ref{eq:lyapunov-pd}, but substituting an auxiliary term $\widetilde{\Omega}$ for the body's angular velocity $\vec{\omega}_b$ into the LFC $V_{_{XPD}}$:
 \begin{equation}\label{eq:lyapunov-xpd}
-V_{_{XPD}}\big(\vec{q}_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(|q_0|-1\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}
+V_{_{XPD}}\big(\vec{q}_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}
 \end{equation}
 Again using the simplification from a quaternion's inherent properties in Eq:\ref{eq:4.17}, the LFC from Eq:\ref{eq:lyapunov-xpd} then simplifies with the following derivative:
 \begin{subequations}
 \vspace{-5pt}
 \begin{equation}
-V_{_{XPD}}=2(1-|q_0|)+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}
+V_{_{XPD}}=2(1-q_0)+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}
 \end{equation}
 \vspace{-11pt}
 \begin{equation}
-\dot{V}_{_{XPD}}=2\frac{1}{2}\vec{q}_e\text{}^T\vec{\omega}_e+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\dot{\widetilde{\Omega}}
+\dot{V}_{_{XPD}}=2\frac{1}{2}\vec{q}_e\text{}^T\vec{\omega}_e+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}
 \end{equation}
 \vspace{-8pt}
 \begin{equation}\label{eq:4.34c}
-\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\dot{\widetilde{\Omega}}\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
+\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \end{subequations}
 It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, the auxiliary plant's derivative $\dot{\widetilde{\Omega}}$ is:
 \begin{subequations}
 \vspace{-6pt}
 \begin{equation}
-\dot{\widetilde{\Omega}}=-\dot{\vec{\omega}}_b+\Gamma_1\dot{\bar{\Omega}}
+\dot{\widetilde{\Omega}}=-\dot{\vec{\omega}}_b+\Gamma_1\dot{q_e}=-\vec{\omega}_b-\dot{\bar{\Omega}}
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
@@ -500,37 +500,37 @@ It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, 
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\therefore\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{_{XPD}}\big)-\Gamma_1\dot{\bar{\Omega}}
+\therefore\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{_{XPD}}\big)-\dot{\bar{\Omega}}
 \end{equation}
 Substituting the auxiliary PD control law, $\vec{\tau}_{_{XPD}}$ from Eq:\ref{eq:control-aux-pd}, into the auxiliary derivative $\dot{\widetilde{\Omega}}$:
 \begin{equation}
-\rightarrow\dot{\widetilde{\Omega}}=J_b^{-1}(u)\big(J_b(u)\dot{\bar{\Omega}}-\Gamma_2\widetilde{\Omega}-\Gamma_3\vec{q}_e\big)-\dot{\bar{\Omega}}
+\rightarrow\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\Big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}\Big)-\dot{\bar{\Omega}}
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-=J_b^{-1}(u)\big(-\Gamma_2\widetilde{\Omega}-\Gamma_3\vec{q}_e\big)
+=J_b^{-1}(u)\Big(-\Gamma_2\widetilde{\Omega}-\Gamma_3\vec{q}_e\Big)
 \end{equation}
 \end{subequations}
-From the \emph{approximately} diagonal inertial matrix $J_b(u)$ and the positive symmetric (or \emph{diagonal}) properties of the coefficient matrices $\Gamma_1$,$\Gamma_2$ and $\Gamma_3$; the auxiliary plant $\dot{\widetilde{\Omega}}$ has a transpose:
+From the \emph{approximately} diagonal inertial matrix $J_b(u)$ (Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min}) and the positive symmetric (or \emph{diagonal}) properties of the coefficient matrices $\Gamma_1$,$\Gamma_2$ and $\Gamma_3$; the auxiliary plant $\dot{\widetilde{\Omega}}$ has a transpose:
 \begin{equation}
-\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}=J_b^{-1}\big(-\Gamma_2\widetilde{\Omega}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\big)
+\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}=J_b^{-1}\Big(-\Gamma_2\widetilde{\Omega}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)
 \end{equation}
 The PD auxiliary plant component(s) in the LFC derivative $\dot{V}_{_{XPD}}$ in Eq:\ref{eq:lyapunov-xpd} simplifies:
 \begin{subequations}
 \begin{equation}
-\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}=\frac{1}{2}\big(-\Gamma_2\widetilde{\Omega}\text{}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\big)\Gamma_3^{-1}\widetilde{\Omega}
+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\Gamma_2\widetilde{\Omega}\text{}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)\Gamma_3^{-1}\widetilde{\Omega}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:4.48b}
-=\frac{1}{2}\big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}-\vec{q}_e\text{}^{T}\widetilde{\Omega}\big)
+=\frac{1}{2}\Big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}-\vec{q}_e\text{}^{T}\widetilde{\Omega}\Big)
 \end{equation}
 Substituting Eq:\ref{eq:aux-pd-2} for $\vec{q}_e\text{}^T\widetilde{\Omega}$ into Eq:\ref{eq:4.48b}:
 \begin{equation}\label{eq:4.48c}
-\rightarrow\frac{1}{2}\dot{\widetilde{\Omega}}^T\big(\Gamma_3^{-}J_b(u)\big)\widetilde{\Omega}=\frac{1}{2}\big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}+\vec{q}_e\text{}^T\vec{\omega}_b-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e\big)\Big|_{\vec{q}_e\text{}^{T}\widetilde{\Omega}=-\vec{q}_e\text{}^{T}\vec{\omega}_b+\Gamma_1\vec{q}_e\text{}^{T}}
+\rightarrow\frac{1}{2}\dot{\widetilde{\Omega}}^T\Big(\Gamma_3^{-}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}+\vec{q}_e\text{}^T\vec{\omega}_b-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e\Big)\Big|_{\vec{q}_e\text{}^{T}\widetilde{\Omega}=-\vec{q}_e\text{}^{T}\vec{\omega}_b+\Gamma_1\vec{q}_e\text{}^{T}}
 \end{equation}
 Similarly, for the transposed counterpart of Eq:\ref{eq:4.48c} in Eq:\ref{eq:4.34c}:
 \begin{equation}
-\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\dot{\widetilde{\Omega}}=\frac{1}{2}\big(-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}+\vec{q}_e\vec{\omega}_b\text{}^T-\vec{q}_e\Gamma_1\vec{q}_e\text{}^T\big)
+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}=\frac{1}{2}\Big(-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}+\vec{q}_e\vec{\omega}_b\text{}^T-\vec{q}_e\Gamma_1\vec{q}_e\text{}^T\Big)
 \end{equation}
 Which, when substituted back into Eq:\ref{eq:4.34c}, then simplifies the LFC derivative to negative definite:
 \end{subequations}
@@ -551,10 +551,10 @@ Whilst global asymptotic stability is indeed satisfactory, faster exponential st
 \begin{equation}\label{eq:4.34}
 1-|q_0|\leq 1-q_0^2=\norm{\vec{q}_e}^2
 \end{equation}
-Exponential stability is a maximum boundedness proof; the relationship Eq:\ref{eq:4.34} can then replace the quaternion scalar term $2(1-|q_0|)$ in $V_{_{XPD}}$ as an upper bound. The LFC is then rewritten in terms of its component's norm(s) to produce a bounding inequality:
+Exponential stability is a maximum boundedness proof; the relationship Eq:\ref{eq:4.34} can then replace the quaternion scalar term $2(1-q_0)$ in $V_{_{XPD}}$ as an upper bound. The LFC is then rewritten in terms of its component's norm(s) to produce a bounding inequality:
 \begin{subequations}\label{eq:xpd-ibc}
 \begin{equation}
-V_{_{XPD}}=\vec{q}_e\text{}^T\vec{q}_e+(|q_0|-1)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}
+V_{_{XPD}}=\vec{q}_e\text{}^T\vec{q}_e+(q_0-1)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -585,38 +585,40 @@ The bounding exponential coefficient $\alpha$ can be found using maximum Eigen v
 \par
 \emph{\color{Gray}The above stability proof for the auxiliary attitude controller was expanded upon and derived from \cite{attitudestabilization}, adapted to fit attitude setpoint tracking. Introduction of the quaternion error, which is dependent on the quaternion scalar, dramatically improves controller performance. The exponential stability notably improves settling times and overshoot errors, demonstrated in Sec:\ref{subsec:simulation.attitude.xpd}.}
 \newpage
-Interestingly a previously \cite{robustattitude} was the precursor for PD based attitude plants with asymptotic exponential stability. That proposed control law first did not make use of any defined \emph{auxiliary plants}, unlike Eq:\ref{eq:control-aux-pd}; however equivalent terms were effectively incorporated. The control law was developed for spacecraft attitude tracking and proposed a very similar exponentially stabilizing control scheme to that of $\vec{\tau}_{_{XPD}}$. That controller, when changed to the notational convention used above, designs body torque as:
+Interestingly a previously \cite{robustattitude} was the precursor for PD based attitude plants with asymptotic exponential stability. That proposed control law first did not make use of any defined \emph{auxiliary plants}, unlike Eq:\ref{eq:control-aux-pd}; however equivalent terms were effectively incorporated. The control law was developed for spacecraft attitude tracking and proposed a very similar exponentially stabilizing control scheme to that of $\vec{\tau}_{_{XPD}}$. That controller, when changed to the notational convention used here, designs body torque as:
 \begin{equation}\label{eq:control-auxp-pd}
 \vec{\tau}^{\hspace{3pt}'}_{_{XPD}}=-\frac{1}{2}\Big[\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\Gamma_1+\alpha\big(1-q_0\mathbb{I}_{3\times 3}\big)\Big]\vec{q}_e-\Gamma_2\vec{\omega}_b\in\mathcal{F}^b
 \end{equation} 
-Eq:\ref{eq:control-auxp-pd} could easily incorporate plant dependent compensation to accomodate for unwanted non-linear dynamics. Both exponentially stabilizing PD controllers, from Eq:\ref{eq:control-aux-pd} and above Eq:\ref{eq:control-auxp-pd}, bear a striking similarity to the ideal backstepping controllers derived next in Eq:\ref{eq:control-ibc}. 
+Eq:\ref{eq:control-auxp-pd} could easily incorporate plant dependent compensation to accomodate for unwanted non-linear dynamics. Both exponentially stabilizing PD controllers, from Eq:\ref{eq:control-aux-pd} and above Eq:\ref{eq:control-auxp-pd}, bear a striking similarity to the ideal backstepping controllers derived in the sequel, Eq:\ref{eq:control-ibc}. 
 %====================================================
 \subsection{Non-linear Controllers}
 \label{subsec:control.attitude.nonlinear}
 %====================================================
-Backstepping controllers(\cite{satellitebackstepping,intelligentbackstep,backstepslidingmode},etc\ldots) are a popular choice for non-linear attitude control plants. The process, through iterative design, enforces Lyapunov stability criteria to ensure asymptotic stability. A report, \cite{backstepping}, surveys the fundamentals of backstepping procedure. Ideal backstepping control (\emph{IBC}) is a precise control solution which requires exact plant matching, something that is difficult to achieve in practice. Considering that some state estimate, $\hat{\mathbf{x}}(t)$ is used for feedback control. The caveat of IBC control is poor robust stability performance; being especially susceptible to state dependent uncertainty. Unmodelled disturbances could easily drive the energy function away from stability conditions. The ideal backstepping algorithm can then be extended to incorporate such uncertainties. Adatively including disturbance and \emph{estimate} uncertainty into the LFC energy function improves the stability's robustness (Adaptive backstepping control, \emph{ABC}). By Lyapunov's theorem the respective estimation error terms are stabilized.
+Backstepping controllers(\cite{satellitebackstepping,intelligentbackstep,backstepslidingmode},etc\ldots) are a popular choice for non-linear attitude control plants. The process, through iterative design, enforces Lyapunov stability criteria to ensure asymptotic stability. A report \cite{backstepping} surveys the fundamentals of backstepping procedure. Ideal backstepping control (\emph{IBC}) is a precise control solution which requires exact plant matching, something that is difficult to achieve in practice. Considering that some state estimate, $\hat{\mathbf{x}}(t)$ is used for feedback control. 
+\par
+The caveat of IBC control is poor robust stability performance; being especially susceptible to state dependent uncertainty. Unmodelled disturbances could easily drive the energy function away from stability conditions. The ideal backstepping algorithm can then be extended to incorporate such uncertainties. Adatively including disturbance and \emph{estimate} uncertainty into the LFC energy function improves the stability's robustness (Adaptive backstepping control, \emph{ABC}). By Lyapunov's theorem the respective estimation error terms are stabilized.
 %====================================================
 \subsubsection{Ideal Backstepping Controller}
 \label{subsubsec:control.attitude.nonlinear.idealbackstep}
 %====================================================
-Starting with the ideal case for the first proposed backstepping controller, similar to \cite{satellitebackstepping}; it is assumed the attitude plant described in Eq:\ref{eq:quaternion-states-angular} from the consolidated model in Sec:\ref{sec:dynamics.model} exactly matches the dynamics of the physical prototype. The ideal backstepping controller aims to compensate for the plant's dynamic response to trajectory inputs perfectly. Neglecting uncertainties associated with the dynamic model, the aim here is to apply a stabilizing torque design. Recalling the quaternion tracking error from Eq:\ref{eq:quaternion-error}; $Q_e=Q_b^*\otimes Q_e$, considering the first LFC proposal:
+Starting with the ideal case for the first proposed backstepping controller, similar to \cite{satellitebackstepping}; it is assumed the attitude plant described in Eq:\ref{eq:quaternion-states-angular} from the consolidated model in Sec:\ref{sec:dynamics.model} exactly matches the dynamics of the physical prototype. The ideal backstepping controller aims to compensate for the plant's dynamic response to trajectory inputs perfectly. Neglecting uncertainties associated with the dynamic model, the aim here is to apply a stabilizing torque design. Recalling the quaternion tracking error from Eq:\ref{eq:quaternion-error}; $Q_e=Q_b^*\otimes Q_e$, consider the first LFC proposal for a quaternion error $Q_e$:
 \begin{equation}\label{eq:ibc-lfc-1}
-V_1(\vec{q}_e)=\vec{q}_e\text{}^T\vec{q}_e+(|q_0|-1)^2
+V_1(\vec{q}_e)=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2
 \end{equation}
-The absolute $|q_0|$ quaternion scalar is applied to ensure global stability. After substituting in the quaternion derivatives and \emph{without} using the quaternion simplification in Eq:\ref{eq:4.18}, has a Lie derivative:
+After substituting in the quaternion rates but \emph{without} using the quaternion reduction proposed in Eq:\ref{eq:4.18}, $V_1(\vec{q}_e)$ has a Lie derivative:
 \begin{subequations}
 \begin{equation}
-\dot{V}_1=2\vec{q}_e\text{}^T\frac{1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-2\big(q_0-1\big)\frac{1}{2}\vec{q}_e\text{}^T\vec{\omega}_e
+\dot{V}_1=2\vec{q}_e\text{}^T\frac{1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-2\big(1-q_0\big)\dot{q}_0
 \end{equation}
 \vspace{-5pt}
 \begin{equation}
-=\vec{q}_e\text{}^T\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-q_0\vec{q}_e\text{}^T\vec{\omega}_e+\vec{q}_e\text{}^T\vec{\omega}_e
+=\vec{q}_e\text{}^T\Big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\Big)\vec{\omega}_e+\big(1-q_0\big)\vec{q}_e\text{}^T\vec{\omega}_e
 \end{equation}
-Simplifying and then substituting $\vec{\omega}_e=\vec{\omega}_d-\vec{\omega}_b=\vec{0}-\vec{\omega}-b$:
+Simplifying further and then substituting the angular velocity set point; $\vec{\omega}_e=\vec{\omega}_d-\vec{\omega}_b=\vec{0}-\vec{\omega}=-\vec{\omega}_b$:
 \begin{equation}
 =\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\omega}_e+\vec{q}_e\text{}^T\vec{\omega}_e
 \end{equation}
-\vspace{-10pt}
+\vspace{-5pt}
 \begin{equation}
 =-\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\omega}_b-\vec{q}_e\text{}^T\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
@@ -630,7 +632,7 @@ Where $\Gamma_1$ is the first symmetric positive definite gain matrix, a fact th
 \begin{equation}
 \dot{V}_1=-\vec{q}_e\text{}^T[\vec{q}_e]_\times\gamma_d-\vec{q}_e\text{}^T\gamma_d
 \end{equation}
-\vspace{-14pt}
+\vspace{-10pt}
 \begin{equation}
 =-\vec{q}_e\text{}^T[\vec{q}_e]_\times\Gamma_1\vec{q}_e-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e
 \end{equation}
@@ -659,12 +661,12 @@ z_1\triangleq\gamma_d-\vec{\omega}_b=\Gamma_1\vec{q}_e-\vec{\omega}_b\Big|_{\gam
 \end{subequations}
 Introducing that error $z_1$ into a second LCF, which expands the first proposed $V_1$. And exploiting the fact that $\Gamma_1$ is symmetrical:
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:ibc-lfc}
 V_2(\vec{q}_e,z_1)=V_1(\vec{q}_e)+\frac{1}{2}z_1\text{}^Tz_1
 \end{equation}
 \vspace{-6pt}
 \begin{equation}
-=\vec{q}_e\text{}^T\vec{q}_e+(|q_0|-1)^2+\frac{1}{2}z_1\text{}^Tz_1
+=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1
 \end{equation}
 \end{subequations}
 That first error $z_1$ has its own time derivative, and recalling the body's angular acceleration $\dot{\vec{\omega}}_b$ from earlier with an undefined input $\vec{\tau}_{IBC}$, which still has plant dependency compensation.
@@ -688,11 +690,16 @@ That first error $z_1$ has its own time derivative, and recalling the body's ang
 So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$ with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)$:
 \begin{subequations}\label{eq:ibc-deriv}
 \begin{multline}
-\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)+z_1\text{}^T\bigg(-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
+\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)+z_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
+\\
+-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\bigg)
 \end{multline}
 \vspace{-25pt}
 \begin{multline}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)\\+\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
+\\
+-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)
+\bigg)
 \end{multline}
 \end{subequations}
 So then proposing the exactly matched stabilizing backstepping control law:
@@ -700,24 +707,26 @@ So then proposing the exactly matched stabilizing backstepping control law:
 \begin{equation}
 \vec{\tau}_{_{IBC}}=J_b(u)\vec{q}_e-\frac{J_b(u)\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b+J_b(u)\Gamma_2z_1+\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q
 \end{equation}
-Noting that $z_1=\Gamma_1\vec{q}_e-\vec{\omega}_b$, the torque law simplifies:
+Noting that $z_1=\Gamma_1\vec{q}_e-\vec{\omega}_b$ and using the quaternion rate's vector definition, Eq:\ref{eq:quat-derivative}, the IBC torque law reduces:
 \begin{equation}
-=\underbrace{J_b(u)\big((\Gamma_1\Gamma_2+1)\vec{q}_e-\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e \big)}_{Ideal backstepping}
-+\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{Compenstation}~~~~\in\mathcal{F}^{b}
+=\underbrace{J_b(u)\Big((\Gamma_1\Gamma_2+1)\vec{q}_e-\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e \Big)}_{\text{Ideal backstepping}}
++\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{\text{Compenstation}}~~~~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-With $\Gamma_2$ being another positive semi-definite symmetric coefficient matrix. Then with the control law $\vec{\tau}_{_{IBC}}$ introduced into the LCF derivative $\dot{V}_2$ simplifies to negative definite:
+With $\Gamma_2$ being another positive-definite symmetric coefficient matrix. Then with the control law $\vec{\tau}_{_{IBC}}$ introduced into the LCF derivative, $\dot{V}_2$ simplifies to negative definite:
 \begin{subequations}
-\begin{equation}
-\dot{V}_2=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(-J_b^{-1}(u)\big(J_b(u)(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(u)\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e\big)-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b\bigg)
-\end{equation}
+\begin{multline}
+\dot{V}_2=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
+\\
+-J_b^{-1}(u)\big(J_b(u)(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(u)\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e\big)\bigg)
+\end{multline}
 \vspace{-12pt}
 \begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\big(\Gamma_1\Gamma_2\vec{q}_e-\Gamma_2\vec{\omega}_b\big)
+\therefore\dot{V}_2=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\big(\Gamma_1\Gamma_2\vec{q}_e-\Gamma_2\vec{\omega}_b\big)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\therefore\dot{V}_2=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1< 0~~~~\forall~(\vec{q}_e,z_1)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1< 0~~~~\forall~(\vec{q}_e,z_1)
 \end{equation}
 \end{subequations}
 As such $\vec{q}_e\rightarrow 0$ \& $q_0\rightarrow 1$ as $t\rightarrow\infty$. Similarly $z_1\rightarrow 0$, which leads to the limit:
@@ -726,13 +735,14 @@ As such $\vec{q}_e\rightarrow 0$ \& $q_0\rightarrow 1$ as $t\rightarrow\infty$. 
 \end{equation} 
 Because the quaternion error vector already tends to $0$;$~\vec{q}_e\rightarrow \vec{0}$, it follows that $\vec{\omega}_b\rightarrow \vec{0}$ as well. It can also be said that, from the definition of $\vec{\omega}_e$, that the angular velocity error stabilizes too. There is a distinct similarity in the structure of $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc} and that of the auxiliary PD controller presented in Eq:\ref{eq:control-aux-pd}. Expanding $\vec{\tau}_{_{XPD}}$ into state terms using the definitions of each auxiliary plant, $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$:
 \begin{equation}
-\vec{\tau}_{_{XPD}}=\big(\Gamma_1\Gamma_2-\Gamma_3\big)\vec{q}_e-\Gamma_2\vec{\omega}_b-\frac{\Gamma_1J_b(u)}{2}([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3})\vec{\omega}_b
+\vec{\tau}_{_{XPD}}=\big(\Gamma_1\Gamma_2+\Gamma_3\big)\vec{q}_e-\Gamma_2\vec{\omega}_b-\frac{\Gamma_1J_b(u)}{2}([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3})\vec{\omega}_b
 \end{equation}
 Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof is proposed in the sequel. Recalling Eq:\ref{eq:4.34}:
 \begin{subequations}
 \begin{equation}
-|q_0|-1
+|q_0|-1\leq 1 - q_0^{2} = \norm{\vec{q_e}}^2
 \end{equation}
+\vspace{-15pt}
 \begin{equation}
 V_{_{IBC}}\leq V_2=2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\norm{z_1}\text{}^2
 \end{equation}
@@ -741,121 +751,125 @@ V_{_{IBC}}\leq V_2=2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\norm{z_1}\text{}^2
 \dot{V}_{_{IBC}}\leq\dot{V}_2=-\Gamma_1\norm{\vec{q}_e}\text{}^2-\Gamma_2\norm{z_1}\text{}^2
 \end{equation}
 \end{subequations}
-Then both the energy function and its derivative are bound respectively by:
+Then both the energy function and its derivative are bounded respectively by the following Eigen value limits:
 \begin{subequations}
 \begin{equation}
 V_{_{IBC}}\leq \bigg\{2,~\frac{1}{2}\bigg\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\dot{V}_{_{IBC}}\leq min\big\{\lambda_{min}(\Gamma_1),~\lambda_{min}(\Gamma_2)\big\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
+\dot{V}_{_{IBC}}\leq -min\big\{\lambda_{min}(\Gamma_1),~\lambda_{min}(\Gamma_2)\big\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
 \end{equation}
 \end{subequations}
 Which then leads to a similar exponential stability trajectory boundedness such that:
 \begin{subequations}
 \begin{equation}
-\dot{V}_{_{IBC}} \leq \alpha V_{_{IBC}}
+\dot{V}_{_{IBC}} \leq -\alpha V_{_{IBC}}
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-\therefore \big(\norm{\vec{q}_e(t)},\norm{z_1(t)}\big)\leq Me^{-\alpha t/2}\big(\norm{\vec{q}_e(0)},\norm{z_1(0)}\big)
+\therefore V\big(\norm{\vec{q}_e(t)},\norm{z_1(t)}\big)\leq Me^{-\alpha t/2}V\big(\norm{\vec{q}_e(0)},\norm{z_1(0)}\big)
 \end{equation}
 \end{subequations}
+Whilst stabilizing, the IBC controller is not globaly stable. The plant conditions require exact plant matching and account for no unmodelled disturbances or measurement uncertainty. In practice the introduction of some disturbance torque $\vec{L}$ could easily drive Eq:\ref{eq:ibc-deriv} away from negative-definite such that stability is lost.
 %====================================================
 \subsubsection{Adaptive Backstepping Controller}
 \label{subsubsec:control.attitude.nonlinear.adaptivebackstep}
 %====================================================
-As effective as the control law defined above in Section:\ref{subsubsec:control.attitude.nonlinear.idealbackstep} may be, it lacks suitable disturbance rejection properties. Any plant uncertainties or disturbances encountered would adversely affect the controller in a dramatic manner (Sec:\ref{sec:simulation.comparison}). Introducing a term for lumped uncertainty/disturbance torques, $\vec{L}$, into the dynamic equations leads to:
+Considering only a lumped uncertainty/disturbance term for the adaptive case and assuming state dependent uncertainty can be included in such a term. Adding that term, a lumped $\vec{L}$, into the angular acceleration dynamics:
 \begin{equation}
-\dot{\vec{\omega}}_b=\mathbb{I}_b\text{}^{-1}\big(-\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b+\vec{\tau}_Q+\vec{\tau}_g+\vec{Q}+\vec{L}+\mu\vec{\tau}\big)
+\dot{\vec{\omega}}_b=\mathbb{I}_b\text{}^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}+\vec{\tau}_{_{ABC}}\big)
 \end{equation}
-It would obviously be easy to simply introduce a compensation term for $-\vec{L}$ into the control law. In practice, however, it is very difficult to approximate a disturbance term without \emph{apriori} knowledge about any of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth which that noise occurs in, the same cannot be said for wind disturbances and the like.
+An unmoderated disturbance acts as an external torque on Eq:\ref{eq:newton}. Obviously estimation errors and disturbances could simply be compensated for in the control law; $-\vec{L}$. However, it is difficult to approximate disturbances without any \emph{apriori} knowledge about of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth which that noise occurs in, the same cannot be said for wind disturbances or payload variations\ldots
 \par
-An approximate estimation term $\hat{L}$ has to be used for that disturbance compensation in the designed control torque $\mu\vec{\tau}$. That estimate term is then going to have its own error from the physical disturbance affecting the system:
+An approximate disturbance estimation, $\hat{L}$, is used for that compensation in the designed control torque $\vec{\tau}_{_{ABC}}$. Each estimate will have its own error deviation from a true $\vec{L}$ acting on the body:
 \begin{equation}\label{eq:estimate-error}
-\widetilde{L}=\vec{L}-\hat{L}
+\Delta L=\vec{L}-\hat{L}
 \end{equation}
-The purpose of adaptive backstepping is to introduce that estimate error term into an LCF and develop a derivative term for $\dot{\hat{L}}$, or a disturbance update law, such that even the estimate error asymptotically stabilizes. Typically, that disturbance update rule is the contribution of satellite and general attitude control papers. Similar terms can be introduced for plant uncertainty which can similarly be adapted for but are not included here\ldots
+Adaptive backstepping control aims to introduce that estimate error into an LFC and develop a derivative term for $\dot{\hat{L}}$, or a \emph{disturbance update law}, to asymptotically stabilize the estimate error. Typically, disturbance update rules are the primary contribution for satellite and generalized attitude control research papers.
 \par
-The estimate error is then introduced into the LCF from an ideal backstepping control, in order for it to be dissipated as per Lyapunov theorem.
+The estimate error is introduced to an LFC extended from the IBC case in Eq:\ref{eq:ibc-lfc}:
 \begin{subequations}
 \begin{equation}
-V_{_{ABC}}(\vec{q}_e,z_1,\widetilde{L})=V_{_{IBC}}(\vec{q}_e,z_1)+\frac{1}{2}\widetilde{L}\text{}^T \Gamma_L^{-1}\widetilde{L}
+V_{_{ABC}}(\vec{q}_e,z_1,\Delta L)=V_{_{IBC}}(\vec{q}_e,z_1)+\frac{1}{2}\Delta L^T \Gamma_L^{-1}\Delta L
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=\vec{q}_e\text{}^T\vec{q}_e+(q_0-1)^2+\frac{1}{2}z_1\text{}^T\Gamma_1^{-1}z_1+\frac{1}{2}\widetilde{L}\text{}^T\Gamma_L^{-1}\widetilde{L}
+=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^T\Gamma_1^{-1}z_1+\frac{1}{2}\Delta L^T\Gamma_L^{-1}\Delta L
 \end{equation}
 \end{subequations}
-Where the positive symmetric matrix $\Gamma_L\geq 0\in\mathbb{R}^{3X3}$ is termed as the adaptation gain coefficient matrix. Those particular coefficients determine how responsive the system is to disturbances and the rate at which it adapts to compensate for them. Then, to prove stability one starts with the Lie derivative $\dot{V}_{_{ABC}}$:
+Where the $3\times 3$ positive symmetric coefficient matrix $\Gamma_L$ is an adaptation gain matrix. Those particular coefficients determine rate at which the system \emph{adapts} to disturbances. To prove stability one starts with the LFC derivative $\dot{V}_{_{ABC}}$:
 \begin{equation}
-\dot{V}_{_{ABC}}(\vec{q}_e,~z_1,~\widetilde{L})=\dot{V}_{_{IBC}}(\vec{q}_e,~z_1)+\frac{1}{2}\dot{\widetilde{L}}\text{}^T\Gamma_L\text{}^{-1}\widetilde{L}+\frac{1}{2}\widetilde{L}\text{}^T\Gamma_L\text{}^{-1}\dot{\widetilde{L}}
+\dot{V}_{_{ABC}}(\vec{q}_e,z_1,\Delta L)=\dot{V}_{_{IBC}}(\vec{q}_e,~z_1)+\frac{1}{2}\Delta\dot{L}^T\Gamma_L^{-1}\Delta L+\frac{1}{2}\Delta L^T\Gamma_L^{-1}\Delta\dot{L}
 \end{equation}
-Recalling the definition of $\widetilde{L}$ from Eq:\ref{eq:estimate-error}. For its derivative $\dot{\widetilde{L}}$ it's reasonable to assume the dynamics of the physical disturbance $\vec{L}$ are far slower than the time constant of the control system, or that $\dot{\vec{L}}<<\dot{\hat{L}}$. Then it follows:
+Recalling the definition of $\Delta L$ from Eq:\ref{eq:estimate-error}. For its derivative $\Delta \dot{L}$ it is reasonable to assume the dynamics of the physical disturbance $\vec{L}$ are far slower than that of the control system, or that $\dot{\vec{L}}<<\dot{\hat{L}}$. Then it follows:
 \begin{equation}
-\dot{\widetilde{L}}=\dot{\vec{L}}-\dot{\hat{L}}\approx\vec{0}-\dot{\hat{L}}=-\dot{\hat{L}}
+\Delta\dot{L}=\dot{\vec{L}}-\dot{\hat{L}}\approx\vec{0}-\dot{\hat{L}}=-\dot{\hat{L}}
 \end{equation}
-Substituting that estimation error rate back into the derivative $\dot{V}_{_{ABC}}$, which expands upon Eq:\ref{eq:ibc-deriv}, yields:
+Substituting that estimation error rate back into the derivative $\dot{V}_{_{ABC}}$ yields:
 \begin{subequations}
-\begin{multline}
-\dot{V}_{_{ABC}}(\vec{q}_e,z_1,\widetilde{L})=\vec{q}_e\text{}^T(z_1-\Gamma_1\vec{q}_e)+z_1\text{}^T\Gamma_1^{-1}\bigg(\mathbb{I}_b^{-1}\big(-\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b+\vec{\tau}_Q+\vec{\tau}_g+\vec{Q}+\vec{L}+\mu\vec{\tau}\big)\\
-+\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b\bigg)-\widetilde{L}\text{}^T\Gamma_L^{-1}\dot{\hat{L}}
+\begin{multline}\label{eq:abc-lfc-deriv}
+\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)+z_1\text{}^T\Gamma_1^{-1}\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
+\\
+-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}+\vec{\tau}_{_{ABC}}\big)\bigg)-\Delta L^T\Gamma_L^{-1}\dot{\hat{L}}
 \end{multline}
-\end{subequations}
-And using a similar control law to $\mu\vec{\tau}_{_{IBC}}$, which has a disturbance estimate compensation term:
-\begin{subequations}
+Note that the physical disturbance term, $\vec{L}$, is included in  Eq:\ref{eq:abc-lfc-deriv}. Extending the ideal back stepping control law, $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc}, to include a disturbance estimate term:
+\begin{multline}
+\vec{\tau}_{_{ABC}}=J_b(u)\Big(\big(\Gamma_1\Gamma_2+1\big)\vec{q}_e-\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e\Big)+\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q-\hat{L}~~~~\in\mathcal{F}^b
+\end{multline}
+Torque disturbances, $\vec{L}$, act in the body frame and require no reference frame transformation. Further note that the control law compensates for disturbances with an estimate term. The energy function's derivative, $\dot{V}_{_{ABC}}$, then reduces to:
 \begin{equation}
-\mu\vec{\tau}_{_{ABC}}=\vec{\omega}_b\times\mathbb{I}_b\vec{\omega}_b-\vec{\tau}_Q-\vec{\tau}_g-\vec{Q}-\hat{L}-\mathbb{I}_b\Gamma_1\vec{q}_e-\frac{\Gamma_1\mathbb{I}_b}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b-\mathbb{I}_b\Gamma_2z_1
-\end{equation}
-Which reduces the energy function's derivative to:
-\begin{equation}
-\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1+z_1\text{}^T\Gamma_1^{-1}\bigg(\mathbb{I}_b^{-1}\big(\vec{L}-\hat{L}\big)\bigg)-\widetilde{L}\text{}^T\Gamma_L\text{}^{-1}\dot{\hat{L}}
+\dot{V}_{_{ABC}}=\dot{V}_{_{IBC}}-z_1\text{}^TJ_b^{-1}(u)\Big(\vec{L}-\hat{L}\Big)-\Delta L^T\Gamma_L^{-1}\dot{\hat{L}}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1+z_1\text{}^T\big(\Gamma_1^{-1}\mathbb{I}_b^{-1}\big)\widetilde{L}-\widetilde{L}\text{}^T\Gamma_L^{-1}\dot{\hat{L}}
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-z_1\text{}^TJ_b^{-1}(u)\Delta L-\Delta L^T\Gamma_L^{-1}\dot{\hat{L}}
 \end{equation}
-\vspace{-10pt}
+\vspace{-6pt}
 \begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1+\widetilde{L}\text{}^T\Gamma_L^{-1}\big(\Gamma_1^{-1}\Gamma_L\mathbb{I}_b^{-1}z_1-\dot{\hat{L}}\big)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-
+\Delta L^T\Gamma_L^{-1}\Big(\dot{\hat{L}}+\Gamma_LJ_b^{-1}(u)z_1\Big)
 \end{equation}
 \end{subequations}
-The decision then needs to be made as to how the disturbance estimate is going to be updated, or what $\dot{\hat{L}}$ is defined as. The clear choice would be to compensate for the final term in the LCF, making it purely negative definite:
-\begin{equation}
-\dot{\hat{L}}=\Gamma_1^{-1}\Gamma_L\mathbb{I}_b^{-1}z_1=\Gamma_1^{-1}\Gamma_L\mathbb{I}_b^{-1}\vec{\omega}_b-\Gamma_L\mathbb{I}_b^{-1}\vec{q}_e
+The decision then needs to be made as to how the disturbance estimate is going to be updated such that asymptotic stability is assured; $\dot{V}_{_{ABC}}<0$. The obvious choice for $\dot{\hat{L}}$ would be to compensate for $\Gamma_LJ_b^{-1}(u)z_1$ in the LFC:
+\begin{equation}\label{eq:asymptotic-disturbance}
+\dot{\hat{L}}\triangleq\Gamma_L J_b^{-1}(u)z_1=\Gamma_L J_b^{-1}(u)\big(\Gamma_1\vec{q}_e-\vec{\omega_b}\big)\Big|_{z_1=\Gamma_1\vec{q}_e-\vec{\omega}_b}
 \end{equation}
 The disturbance is therefore compensated for and the estimate error is ensured to have asymptotic stability seeing that $V_{_{ABC}}$ is positive definite.
-\begin{equation}
+\begin{equation}\label{eq:abc-asymptotic}
 \dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1<\vec{0}~~~~\forall~(\vec{q}_e,z_1,\widetilde{L})
 \end{equation}
-\par
-Exponential stability for the plant however cannot be proven with the above control and disturbance laws, there is no non-zero estimate error coefficient in the LCF derivative. A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a non-linear control system to the influence of unwanted disturbances. An interesting approach would be to use the previous disturbance estimate, $\vec{L}=\hat{L}_{n-1}$, such that:
+Typical stabilizing limits exists from Eq:\ref{eq:abc-asymptotic} but, most importantly $\lim_{t\rightarrow\infty}\Delta L\rightarrow \vec{0}$. But no further conclusions can be drawn about that stability in Eq:\ref{eq:abc-asymptotic}. A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a non-linear control system to the influence of unwanted disturbances, \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Alternatively, the previous disturbance estimate $\vec{L}=\hat{L}_{n-1}$ could be used, such that:
 \begin{subequations}
 \begin{equation}
-\widetilde{L}'=\vec{L}-\hat{L}=(\hat{L}_{n-1}-\hat{L}_n)
+\Delta L'\triangleq\vec{L}-\hat{L}=(\hat{L}_{n-1}-\hat{L}_n)
 \end{equation}
-\vspace{-15pt}
+Then proposing a $1^{\text{st}}$ order approximation update rule for $\dot{\hat{L}}$ to replace Eq:\ref{eq:asymptotic-disturbance}:
 \begin{equation}
-\dot{\hat{L}}=\Gamma_1^{-1}\Gamma_L\mathbb{I}_b^{-1}z_1+\widetilde{L}'
+\dot{\hat{L}}=\Gamma_LJ_b^{-1}z_1+\Delta L'
 \end{equation}
-\vspace{-10pt}
+\vspace{-12pt}
 \begin{equation}
-\dot{\hat{L}}=\Gamma_1\text{}^{-1}\Gamma_L\mathbb{I}_b^{-1}\vec{\omega}_b-\Gamma_L\mathbb{I}_b^{-1}\vec{q}_e+(\hat{L}_{n-1}-\hat{L}_n)
+=\Gamma_L\Gamma_1J_b^{-1}(u)\vec{q}_e-\Gamma_LJ_b^{-1}(u)\vec{\omega}_b+(\hat{L}_{n-1}-\hat{L}_n)
 \end{equation}
-\vspace{-10pt}
+With that rule substituted into the LFC from Eq:\ref{eq:abc-lfc-deriv} yields:
 \begin{equation}
-\therefore\dot{V}_{_{ABC}}'=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\widetilde{L}\text{}^T\Gamma_L^{-1}\widetilde{L}'
+\therefore\dot{V}_{_{ABC}}'=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\Delta L\text{}^T\Gamma_L^{-1}\big(\hat{L}_{n-1}-\hat{L}_n\big)
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\Delta L\Gamma_L^{-1}\Delta L'
 \end{equation}
 \end{subequations}
-Given that the starting estimate $\hat{L}_0=\vec{0}$ and that the change of disturbance over a single control cycle is going to be small once the approximator has settled, its fair to assume the following:
+Given that the starting estimate $\hat{L}_0=\vec{0}$ and that the change of disturbance over a single control cycle is going to be small once the approximator has settled; its fair to assume the following:
 \begin{equation}\label{eq:estimator-assumption}
-\underset{t\rightarrow\infty}{\lim}\widetilde{L}'=\big(\hat{L}_{n-1}-\hat{L}_n\big)\rightarrow\widetilde{L}
+\underset{t\rightarrow\infty}{\lim}\Delta L'=\big(\hat{L}_{n-1}-\hat{L}_n\big)\rightarrow\Delta L
 \end{equation}
-Then, it leads to the following LCF derivative which can then prove exponential stability. It clear that a coefficient $\dot{V}_{_{ABC}}\leq\alpha V_{_{ABC}}$ exists and can be found:
+Then, it leads to the following LFC derivative which can then prove exponential stability. It clear that a coefficient $\dot{V}_{_{ABC}}\leq-\alpha V_{_{ABC}}$ exists and can be found:
 \begin{equation}
-\dot{V}_{_{ABC}}(\vec{q}_e,z_1,\widetilde{L})=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\widetilde{L}\text{}^T\Gamma_L^{-1}\widetilde{L}
+\dot{V}_{_{ABC}}(\vec{q}_e,z_1,\widetilde{L})=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\Delta L^T\Gamma_L^{-1}\Delta L
 \end{equation}
-The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested in simulation later in Chapter:\ref{ch:simulation}; the adaptive gain matrix $\Gamma_L$ is something that will similarly need to be designed. For control coefficients a separate optimization loop will be run, later disturbance will be introduced and the adaptive gain will independently be attained and optimized.
+The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested in simulation later in Ch:\ref{ch:simulation}; the adaptive gain matrix $\Gamma_L$ is something that will similarly need to be designed. For control coefficients a separate optimization loop will be run, later disturbance will be introduced and the adaptive gain will independently be attained and optimized.
 %====================================================
 \section{Position Control}
 \label{sec:control.position}
