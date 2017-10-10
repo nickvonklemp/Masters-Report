@@ -17,4 +17,5 @@
 - Model for $\tau_b$, Eq:\ref{} from Ch:\ref{}, is made such that an alternative model could easily be incorporated.
 - Probably should've used principle axes for inertias, would have made calculating derivatives easier but there are just too many bodies to keep track of, making the inertia transformations an easier choice...
 -Model assumes no downwash effects
+- ABC disturbance approximator applies too aggressive compensation, considering IBC isn't as good at tracking $Q_e$ as XPD. Less measured than a regular proportional term, saturates the actuators and causes instability.
 %****************************************************

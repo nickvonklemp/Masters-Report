@@ -778,7 +778,7 @@ Whilst stabilizing, the IBC controller is not globaly stable. The plant conditio
 %====================================================
 Considering only a lumped uncertainty/disturbance term for the adaptive case and assuming state dependent uncertainty can be included in such a term. Adding that term, a lumped $\vec{L}$, into the angular acceleration dynamics:
 \begin{equation}
-\dot{\vec{\omega}}_b=J_b\text{}^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}+\vec{\tau}_{_{ABC}}\big)
+\dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}+\vec{\tau}_{_{ABC}}\big)
 \end{equation}
 An unmoderated disturbance acts as an external torque on Eq:\ref{eq:newton}. Obviously estimation errors and disturbances could simply be compensated for in the control law; $-\vec{L}$. However, it is difficult to approximate disturbances without any \emph{apriori} knowledge about of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth which that noise occurs in, the same cannot be said for wind disturbances or payload variations\ldots
 \par
@@ -882,88 +882,104 @@ With $\vec{G}_b$ being the gravitational acceleration vector in the body frame. 
 \par
 The translational velocity, $\vec{v}_b$, defined in the body frame is related to the inertial frame position rates through a quaternion transformation:
 \begin{equation}
-\dot{\mathcal{E}}=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~[\text{m.s}^{-1}],~~\in\mathcal{F}^I
+\dot{\vec{\mathcal{E}}}=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~[\text{m.s}^{-1}],~~\in\mathcal{F}^I
 \end{equation}
 The difference in reference frames is an important distinction between the position and attitude control loops. Position error is calculated purely as a subtractive term:
 \begin{equation}
-\mathcal{E}_e=\mathcal{E}_d-\mathcal{E}_b~~~~[\text{m}],~~\in\mathcal{F}^I
+\vec{\mathcal{E}}_e=\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b~~~~[\text{m}],~~\in\mathcal{F}^I
 \end{equation}
-With $\mathcal{E}_d(t)$ being some desired position designed by the trajectory generation block. The translational velocity error can be similarly calculated but, in the same way that the angular velocity setpoint is $\vec{\omega}_d=\vec{0}$, the desired translational velocity is zero.
+With $\vec{\mathcal{E}}_d(t)$ being some position setpoint from the trajectory generation block. The translational velocity error can be similarly calculated but, in the same way that the angular velocity setpoint is $\vec{\omega}_d=\vec{0}$, the desired translational velocity is zero.
 \begin{equation}
-\dot{\mathcal{E}}_e=\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b=-\dot{\mathcal{E}}_b(t)\Big|_{\dot{\mathcal{E}}_d=\vec{0}}
+\dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b=-\dot{\vec{\mathcal{E}}}_b(t)\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
 \end{equation}
 The objective for position setpoint tracking is analogous to that of the attitude setpoint tracking. In particular the aim is to produce a stabilizing control law that ensures the position tracking error asymptotically tends to $\vec{0}$:
 \begin{subequations}
 \begin{equation}
-\vec{F}_\mu(u)=g(\mathcal{E}_d,\dot{\mathcal{E}}_d,\mathcal{E}_b(t),\dot{\mathcal{E}}_b(t)=g(\mathcal{E}_e,\dot{\mathcal{E}}_e)~~~~[\text{N}],~~\in\mathcal{F}^b
+\vec{F}_\mu(u)=g\Big(\vec{\mathcal{E}}_d,\dot{\vec{\mathcal{E}}}_d,\vec{\mathcal{E}}_b(t),\dot{\vec{\mathcal{E}}}_b(t)\Big)=g(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e)~~~~[\text{N}],~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-\text{Such that:}~~\underset{t\rightarrow\infty}{\lim}\mathcal{E}_e\rightarrow\vec{0}
+\text{Such that:}~~\underset{t\rightarrow\infty}{\lim}\vec{\mathcal{E}}_e\rightarrow\vec{0}
 \end{equation}
 \end{subequations}
 %====================================================
 \subsection{PD Controller}
 \label{subsec:control.position.pd}
 %==================================================== 
-Starting with a simple PD structure to use as a reference case. A plant dependent controller designs the net force proportional to both the position error and the first derivative velocity error\footnote{The same P and D coefficient symbols are used for continuity.}.
-\begin{equation}\label{eq:position-pd}
-\mu\vec{F}_{_{PD}}=K\dot{\mathcal{E}}_e+\alpha\mathcal{E}_e+\vec{\omega}_b\times m\vec{v}_b-m\vec{G}_b~~~~\in\mathcal{F}^b
+Starting with a simple PD structure to use for reference. The plant dependent controller designs the net force proportional to both the position error and the first derivative velocity error\begin{subequations}\label{eq:position-pd}
+\begin{equation}
+\vec{F}_{_{PD}}=K_p\vec{\mathcal{E}}_e+K_d\dot{\vec{\mathcal{E}}}_e+\vec{\omega}_b\times m_b\vec{v}_b-m\vec{G}_b~~~~\in\mathcal{F}^b
 \end{equation}
-For the stability proof the error states must be transformed to the body frame $\mathcal{F}^b$ such that the control input and error states all act in a common frame. So defining an error state in the body frame $X_e$:
+\vspace{-12pt}
+\begin{equation}
+=K_p\big(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b\big)-K_d\big(\dot{\vec{\mathcal{E}}}_b\big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b\Big|_{\dot{\vec{\mathcal{E}}}_e=-\dot{\vec{\mathcal{E}}}_b}
+\end{equation}
+\end{subequations}
+The stability proof requires that error states are transformed to the body frame $\mathcal{F}^b$, such that the control input and error states all act in a common frame. Defining an error state in the body frame $X_e$:
 \begin{subequations}
 \begin{equation}\label{eq:4.80a}
-X_e=Q_b^*\otimes(\mathcal{E}_d-\mathcal{E}_b)\otimes Q_b=X_d-X_b
+\vec{X}_e\triangleq Q_b\otimes(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b)\otimes Q_b^*=\vec{X}_d-\vec{X}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
-\vspace{-10pt}
-\begin{equation}
-\dot{X}_e=Q_b^*\otimes(\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b)\otimes Q_b=-Q_b^*\otimes\dot{\mathcal{E}}_b\otimes Q_b = -\vec{v}_b\Big|_{\dot{\mathcal{E}}_d=\vec{0}}
-\end{equation}
-\end{subequations}
-As such the control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ has arguments $\mathcal{E},\dot{\mathcal{E}}\in\mathcal{F}^I$, which must similarly transform to:
-\begin{subequations}
-\begin{equation}
-\mu\vec{F}_{PD}=K\dot{X}_e+\alpha X_e+\vec{\omega}_b\times m\vec{v}_b-m\vec{G}_b
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
-=-K\vec{v}_b+\alpha X_e+\vec{\omega}\times m\vec{v}_b-m\vec{G}_b
+Recalling the difference between translational rates and velocity in Eq:\ref{eq:quaternion-states-velocity}, translational position rates are then:
+\begin{equation}\label{eq:4.80b}
+\dot{\vec{X}}_e\triangleq Q_b\otimes(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b)\otimes Q_b^*=-Q_b\otimes\dot{\vec{\mathcal{E}}}_b\otimes Q_b^* = -\vec{v}_b\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
 \end{equation}
 \end{subequations}
-Then using a p.d Lyapunov candidate function:
-\begin{equation}
-V_{_{PD}}(X_e,\dot{X}_e)=\frac{\alpha}{2}X_e\text{}^TX_e+\frac{m}{2}\dot{X}_e\text{}^T\dot{X}_e=\frac{\alpha}{2}X_e\text{}^TX_e+\frac{m}{2}\vec{v}_b\text{}^T\vec{v}_b
-\end{equation}
-Then calculating the LCF derivative with the PD control law substituted:
+The control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ has arguments $\vec{\mathcal{E}},\dot{\vec{\mathcal{E}}}\in\mathcal{F}^I$, which are transformed:
 \begin{subequations}
 \begin{equation}
-\dot{V}_{_{PD}}=\alpha X_e\text{}^T\dot{X}_e+\vec{v}_b\text{}^Tm\dot{\vec{v}}_b=-\alpha X_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^Tm\dot{\vec{v}}_b
+\vec{F}_{PD}=K_p\vec{X}_e + K_d\dot{\vec{X}}_e + \vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b
 \end{equation}
-\vspace{-10pt}
+\vspace{-15pt}
 \begin{equation}
-=-\alpha X_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^T\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\mu\vec{F}_{PD}\big)
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
-=-\alpha X_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^T\big(-K\vec{v}_b+\alpha X_e\big)
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
-\Rightarrow \dot{V}_{_{PD}}=-K\vec{v}_b\text{}^T\vec{v}_b<\vec{0}~~~~\forall~(X_e,\dot{X}_e)
+=K_p\vec{X}_e-K_d\vec{v}_b+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b
 \end{equation}
 \end{subequations}
-It then follows that the following global asymptotically\footnote{Not exponentially stabilizing however.} stabilizing limits exist:
+Then proposing a Lyapunov function candidate:
 \begin{subequations}
 \begin{equation}
-\underset{t\rightarrow\infty}{\lim}X_e=Q_b^*\otimes(\mathcal{E}_d-\mathcal{E}_b)\otimes Q_b=\vec{0}
+V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\dot{\vec{X}}_e\text{}^Tm\dot{\vec{X}}_e~~>0,~\forall(\vec{X}_e,\dot{\vec{X}}_e)
 \end{equation}
-\vspace{-14pt}
+\vspace{-12pt}
 \begin{equation}
-\therefore\underset{t\rightarrow\infty}{\lim}\mathcal{E}_b=\mathcal{E}_d
+=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\vec{v}_b\text{}^Tm\vec{v}_b\Big|_{\dot{\vec{X}}_e=-\vec{v}_b}
+\end{equation}
+\end{subequations}
+Then calculating the LFC derivative with the PD control law substituted:
+\begin{subequations}
+\begin{equation}
+\dot{V}_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=K_p \vec{X}_e\text{}^T\dot{\vec{X}}_e+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\underset{t\rightarrow\infty}{\lim}\dot{X}_e=Q_b^*\otimes(\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b)\otimes Q_b=-\vec{v}_b\Big|_{\dot{\mathcal{E}}_e=0}=0
+=-K_p \vec{X}_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+=-K_p \vec{X}_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^T\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_{_{PD}}\big)
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+=-K_p \vec{X}_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^T\big(K_p \vec{X}_e-K_d\vec{v}_b\big)
+\end{equation}
+\vspace{-8pt}
+\begin{equation}\label{eq:position-pd-stability}
+\therefore\dot{V}_{_{PD}}=-K_d\vec{v}_b\text{}^T\vec{v}_b<0~~~~\forall~(\vec{X}_e,\dot{\vec{X}}_e)
+\end{equation}
+\end{subequations}
+The global stability asserted in Eq:\ref{eq:position-pd-stability} holds for $\forall(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e)$, irrespective of the transformation applied in Eq:\ref{eq:4.80a} and Eq:\ref{eq:4.80b}. It then follows that the following global asymptotically stabilizing limits exist:
+\begin{subequations}
+\begin{equation}
+\underset{t\rightarrow\infty}{\lim}\vec{X}_e=Q_b\otimes(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b)\otimes Q_b^*\rightarrow\vec{0}
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\therefore\underset{t\rightarrow\infty}{\lim}\vec{\mathcal{E}}_b\rightarrow\vec{\mathcal{E}}_d
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+\underset{t\rightarrow\infty}{\lim}\dot{X}_e=Q_b^*\otimes(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b)\otimes Q_b=-\vec{v}_b\Big|_{\dot{\vec{\mathcal{E}}}_e=0}
+\rightarrow\vec{0}
 \end{equation}
 \end{subequations}
 %====================================================
