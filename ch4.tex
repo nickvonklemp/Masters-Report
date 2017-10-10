@@ -874,23 +874,23 @@ The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested
 \section{Position Control}
 \label{sec:control.position}
 %====================================================
-Only two control laws for position control are presented here, the primary focus is on attitude controllers derived in the antecedent. From the Coriolis cross-coupling attitudes are stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) the converse is, however, not true. A simple Proportional-Derivative control structure is presented as the reference case. thereafter an adaptive backstepping control algorithm is proposed. The dynamics for position control, Eq:\ref{eq:quaternion-states-acceleration}, include a coupled angular velocity component.
+Only two control laws for position control are presented here, the main focus is on attitude controllers derived in the antecedent. The attitude control loop cab be stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but due to Coriolis cross-coupling the position loop requires a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented as the reference case. Thereafter an adaptive backstepping controller is derived. Dynamics for the position control loop, Eq:\ref{eq:quaternion-states-acceleration}, includes a coupled angular velocity component.
 \begin{equation}\label{eq:position-deriv}
 \dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~~\in\mathcal{F}^b
 \end{equation}
-With $\vec{G}_b$ being the gravitational acceleration vector in the body frame. Given the standard operating conditions of a quadrotor (App:\ref{app:equations.standard}) it is assumed that $\vec{\omega}_b\approx\vec{0}$ or that inherent angular velocity coupled dynamics are negligible; $\vec{\omega}_b\times m\vec{v}_b\approx 0$. If the plant model is known or atleast approximated with a relative degree of certainty, it is easy to compensate for those dynamics rather than making assumptions about their influence on the system. That plant dependency can be compensated in the control force $\vec{F}_\mu(u)$. 
+Where $\vec{G}_b$ is the gravitational acceleration in the body frame. Given the standard operating conditions of a quadrotor (App:\ref{app:equations.standard}) it is typically assumed that $\vec{\omega}_b\approx\vec{0}$ or that inherent angular velocity coupled dynamics are negligible; $\vec{\omega}_b\times m\vec{v}_b\approx 0$. If the plant model is known or atleast approximated with a relative degree of certainty, it is easy to compensate for those dynamics rather than making assumptions about their influence on the system. That plant dependency can be compensated for in the designed control force $\vec{F}_\mu(u)$. 
 \par
-The translational velocity, $\vec{v}_b$, defined in the body frame is related to the inertial frame position rates through a quaternion transformation:
+The translational velocity, $\vec{v}_b$, defined in the body frame is related to the inertial position rates through a quaternion transformation:
 \begin{equation}
-\dot{\vec{\mathcal{E}}}=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~[\text{m.s}^{-1}],~~\in\mathcal{F}^I
+\dot{\vec{\mathcal{E}}}_b=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~[\text{m.s}^{-1}],~~\in\mathcal{F}^I
 \end{equation}
 The difference in reference frames is an important distinction between the position and attitude control loops. Position error is calculated purely as a subtractive term:
 \begin{equation}
-\vec{\mathcal{E}}_e=\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b~~~~[\text{m}],~~\in\mathcal{F}^I
+\vec{\mathcal{E}}_e=\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b(t)~~~~[\text{m}],~~\in\mathcal{F}^I
 \end{equation}
-With $\vec{\mathcal{E}}_d(t)$ being some position setpoint from the trajectory generation block. The translational velocity error can be similarly calculated but, in the same way that the angular velocity setpoint is $\vec{\omega}_d=\vec{0}$, the desired translational velocity is zero.
+With $\vec{\mathcal{E}}_d$ being some position setpoint from the trajectory generation block. The translational velocity error can be similarly calculated but, in the same way that the angular velocity setpoint is $\vec{\omega}_d=\vec{0}$, the desired translational velocity is zero.
 \begin{equation}
-\dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b=-\dot{\vec{\mathcal{E}}}_b(t)\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
+\dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b(t)=-\dot{\vec{\mathcal{E}}}_b(t)\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
 \end{equation}
 The objective for position setpoint tracking is analogous to that of the attitude setpoint tracking. In particular the aim is to produce a stabilizing control law that ensures the position tracking error asymptotically tends to $\vec{0}$:
 \begin{subequations}
@@ -906,7 +906,8 @@ The objective for position setpoint tracking is analogous to that of the attitud
 \subsection{PD Controller}
 \label{subsec:control.position.pd}
 %==================================================== 
-Starting with a simple PD structure to use for reference. The plant dependent controller designs the net force proportional to both the position error and the first derivative velocity error\begin{subequations}\label{eq:position-pd}
+Starting with a simple PD structure to use for reference. The plant dependent controller designs the net force proportional to both the position error and the first derivative velocity error:
+\begin{subequations}\label{eq:position-pd}
 \begin{equation}
 \vec{F}_{_{PD}}=K_p\vec{\mathcal{E}}_e+K_d\dot{\vec{\mathcal{E}}}_e+\vec{\omega}_b\times m_b\vec{v}_b-m\vec{G}_b~~~~\in\mathcal{F}^b
 \end{equation}
@@ -915,12 +916,12 @@ Starting with a simple PD structure to use for reference. The plant dependent co
 =K_p\big(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b\big)-K_d\big(\dot{\vec{\mathcal{E}}}_b\big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b\Big|_{\dot{\vec{\mathcal{E}}}_e=-\dot{\vec{\mathcal{E}}}_b}
 \end{equation}
 \end{subequations}
-The stability proof requires that error states are transformed to the body frame $\mathcal{F}^b$, such that the control input and error states all act in a common frame. Defining an error state in the body frame $X_e$:
+The stability proof requires that error states are transformed to the body frame $\mathcal{F}^b$, such that the control input and error states all act in a common frame. Defining an error state $\vec{X}_e$:
 \begin{subequations}
 \begin{equation}\label{eq:4.80a}
 \vec{X}_e\triangleq Q_b\otimes(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b)\otimes Q_b^*=\vec{X}_d-\vec{X}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
-Recalling the difference between translational rates and velocity in Eq:\ref{eq:quaternion-states-velocity}, translational position rates are then:
+Recalling the difference between position rates and translational velocity in Eq:\ref{eq:quaternion-states-velocity}, position rates are then:
 \begin{equation}\label{eq:4.80b}
 \dot{\vec{X}}_e\triangleq Q_b\otimes(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b)\otimes Q_b^*=-Q_b\otimes\dot{\vec{\mathcal{E}}}_b\otimes Q_b^* = -\vec{v}_b\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
 \end{equation}
@@ -928,7 +929,7 @@ Recalling the difference between translational rates and velocity in Eq:\ref{eq:
 The control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ has arguments $\vec{\mathcal{E}},\dot{\vec{\mathcal{E}}}\in\mathcal{F}^I$, which are transformed:
 \begin{subequations}
 \begin{equation}
-\vec{F}_{PD}=K_p\vec{X}_e + K_d\dot{\vec{X}}_e + \vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b
+\vec{F}_{_{PD}}=K_p\vec{X}_e + K_d\dot{\vec{X}}_e + \vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
@@ -938,36 +939,36 @@ The control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ h
 Then proposing a Lyapunov function candidate:
 \begin{subequations}
 \begin{equation}
-V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\dot{\vec{X}}_e\text{}^Tm\dot{\vec{X}}_e~~>0,~\forall(\vec{X}_e,\dot{\vec{X}}_e)
+V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\dot{\vec{X}}_e\text{}^Tm_b\dot{\vec{X}}_e~~>0,~\forall(\vec{X}_e,\dot{\vec{X}}_e)
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\vec{v}_b\text{}^Tm\vec{v}_b\Big|_{\dot{\vec{X}}_e=-\vec{v}_b}
+=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\vec{v}_b\text{}^Tm_b\vec{v}_b\Big|_{\dot{\vec{X}}_e=-\vec{v}_b}
 \end{equation}
 \end{subequations}
 Then calculating the LFC derivative with the PD control law substituted:
 \begin{subequations}
 \begin{equation}
-\dot{V}_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=K_p \vec{X}_e\text{}^T\dot{\vec{X}}_e+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
+\dot{V}_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\vec{X}_e\text{}^TK_p\dot{\vec{X}}_e+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-K_p \vec{X}_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
+=-\vec{X}_e\text{}^TK_p\vec{v}_b+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-=-K_p \vec{X}_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^T\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_{_{PD}}\big)
+=-\vec{X}_e\text{}^TK_p\vec{v}_b+\vec{v}_b\text{}^T\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_{_{PD}}\big)
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-=-K_p \vec{X}_e\text{}^T\vec{v}_b+\vec{v}_b\text{}^T\big(K_p \vec{X}_e-K_d\vec{v}_b\big)
+=-\vec{X}_e\text{}^TK_p \vec{v}_b+\vec{v}_b\text{}^T\big(K_p \vec{X}_e-K_d\vec{v}_b\big)
 \end{equation}
 \vspace{-8pt}
 \begin{equation}\label{eq:position-pd-stability}
-\therefore\dot{V}_{_{PD}}=-K_d\vec{v}_b\text{}^T\vec{v}_b<0~~~~\forall~(\vec{X}_e,\dot{\vec{X}}_e)
+\therefore\dot{V}_{_{PD}}=-\vec{v}_b\text{}^TK_d\vec{v}_b<0~~~~\forall~(\vec{X}_e,\dot{\vec{X}}_e)
 \end{equation}
 \end{subequations}
-The global stability asserted in Eq:\ref{eq:position-pd-stability} holds for $\forall(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e)$, irrespective of the transformation applied in Eq:\ref{eq:4.80a} and Eq:\ref{eq:4.80b}. It then follows that the following global asymptotically stabilizing limits exist:
+The global stability asserted in Eq:\ref{eq:position-pd-stability} holds for $\forall(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e)$, irrespective of the transformation applied in Eq:\ref{eq:4.80a} and Eq:\ref{eq:4.80b}. Global asymptotically stabilizing limits then follow:
 \begin{subequations}
 \begin{equation}
 \underset{t\rightarrow\infty}{\lim}\vec{X}_e=Q_b\otimes(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b)\otimes Q_b^*\rightarrow\vec{0}
@@ -976,112 +977,121 @@ The global stability asserted in Eq:\ref{eq:position-pd-stability} holds for $\f
 \begin{equation}
 \therefore\underset{t\rightarrow\infty}{\lim}\vec{\mathcal{E}}_b\rightarrow\vec{\mathcal{E}}_d
 \end{equation}
-\vspace{-8pt}
+\vspace{-6pt}
 \begin{equation}
-\underset{t\rightarrow\infty}{\lim}\dot{X}_e=Q_b^*\otimes(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b)\otimes Q_b=-\vec{v}_b\Big|_{\dot{\vec{\mathcal{E}}}_e=0}
-\rightarrow\vec{0}
+\underset{t\rightarrow\infty}{\lim}\dot{X}_e=Q_b^*\otimes(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b)\otimes Q_b=-\vec{v}_b\rightarrow\vec{0}\Big|_{\dot{\vec{\mathcal{E}}}_e=0}
 \end{equation}
 \end{subequations}
 %====================================================
 \subsection{Adaptive Backstepping Controller}
 \label{subsec:control.position.bacstepping}
 %====================================================
-An adaptive backstepping algorithm, similar the attitude controller derived previously in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}, is now applied to position control. The disturbance term, $\vec{D}\in\mathcal{F}^b$, introduced to the differential Eq:\ref{eq:position-deriv} represents any lumped drag and wind forces encountered by the body which weren't quantified numerically in Sec:\ref{subsec:dynamics.aero.drag}. The backstepping iterations of the position control loop first need to stabilize the position error and then compensate for those disturbances\ldots
+An adaptive backstepping algorithm, similar to the ABC controller previously in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}, is now applied to position control. The disturbance term, $\vec{D}\in\mathcal{F}^b$, introduced to the position state differential Eq:\ref{eq:position-deriv}, represents any unmodelled lumped drag and wind forces encountered by the body. The backstepping iterations for the position control loop first need to stabilize the position error and then compensate for those disturbances (solving for \emph{IBC} then adding adaptiveness).
 \begin{equation}
-\dot{\vec{v}}_b=m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)~~~~\in\mathcal{F}^b
+\dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)~~~~\in\mathcal{F}^b
 \end{equation}
-Obviously the compensation for $\vec{D}$ is going to be an approximation of that physical disturbance term; $\hat{D}$. Beginning the backstepping process for position with the position state tracking error:
+The compensation for $\vec{D}$ is obviously an approximation for that physical disturbance term; $\hat{D}$. Beginning the backstepping process for position with a position state tracking error:
 \begin{equation}
-z_1=\mathcal{E}_d-\mathcal{E}_b
+z_1=\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b=\vec{\mathcal{E}}_e~~~~\in\mathcal{F}^{I}
 \end{equation}
 Which then has its own derivative:
+\begin{subequations}
 \begin{equation}
-\dot{z}_1=\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b=Q_b\otimes \big(\vec{0}-\vec{v}_b\big)\otimes Q_b^*= - Q_b\otimes \vec{v}_b\otimes Q_b^*
+\dot{z}_1=\dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b
 \end{equation}
+\vspace{-12pt}
+\begin{equation}
+=Q_b^*\otimes \big(\vec{v}_d-\vec{v}_b\big)\otimes Q_b = - Q_b^*\otimes \vec{v}_b\otimes Q_b\Big|_{\vec{v}_d=\vec{0}}
+\end{equation}
+\end{subequations}
 Transforming that error, $z_1$, to the body frame $\mathcal{F}^b$, in the same way as Eq:\ref{eq:4.80a}, makes the stability proof more concise. That reference frame transformation doesn't affect the Lie derivative as the energy function's gradient depends on its partial derivative w.r.t it's positional trajectory only, namely $\mathcal{E}_e(t)$.
 \begin{subequations}
 \begin{equation}
-\hat{z}_1=X_e=Q_b^*\otimes z_1 \otimes Q_b =Q_b^*\otimes\big(\mathcal{E}_d-\mathcal{E}_b\big)\otimes Q_b
-\end{equation}
-\vspace{-12pt}
-\begin{equation}
-\therefore \dot{\hat{z}}_1=Q_b^*\otimes\dot{z}_1\otimes Q_b = Q_b^*\otimes\big(\dot{\mathcal{E}}_d-\dot{\mathcal{E}}_b\big)\otimes Q_b = -\vec{v}_b
-\end{equation}
-\end{subequations}
-Then proposing the first positive definite LCF, $V_1(\hat{z}_1)$, in terms of that tracking error:
-\par
-\vspace{-12pt}
-\begin{subequations}
-\begin{equation}
-V_1(\hat{z}_1)=\frac{1}{2}\hat{z}_1\text{}^{T}\hat{z}_1
+\hat{z}_1=Q_b\otimes z_1 \otimes Q_b^* =Q_b\otimes\big(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b\big)\otimes Q_b^*=\vec{X}_e~~~~\in\mathcal{F}^{b}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\Rightarrow\dot{V}_1=\hat{z}_1\text{}^T\dot{\hat{z}}_1=-\hat{z}_1\text{}^T\vec{v}_b\Big|_{\dot{\mathcal{E}}_d=\vec{0}}
+\therefore \dot{\hat{z}}_1=Q_b\otimes\dot{z}_1\otimes Q_b^* = Q_b\otimes\big(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b\big)\otimes Q_b^* = -\vec{v}_b
 \end{equation}
 \end{subequations}
-The first stabilizing velocity function\footnote{Using $\Omega_d$ to differentiate from $\vec{v}_d$ which would otherwise be the translational velocity produced from the desired trajectory\ldots}, $\Omega_d$, and its associated error, $\hat{z}_2$, can be defined as:
+Then proposing the first LFC, $V_1(\hat{z}_1)$, in terms of that tracking error with a derivative $\dot{V}_1$:
 \begin{subequations}
 \begin{equation}
-\vec{v}_b\Rightarrow\Omega_d = \Gamma_1 \hat{z}_1
+V_1(\hat{z}_1)=\frac{1}{2}\hat{z}_1\text{}^{T}\hat{z}_1~~>0,~\forall(\hat{z}_1)
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+\Rightarrow\dot{V}_1(\hat{z}_1)=\hat{z}_1\text{}^T\dot{\hat{z}}_1=-\hat{z}_1\text{}^T\vec{v}_b
+\end{equation}
+\end{subequations}
+The first stabilizing velocity function, $\gamma_d$, and its associated error, $\hat{z}_2$, can be defined as:
+\begin{subequations}
+\begin{equation}
+\vec{v}_b\Rightarrow\gamma_d = \Gamma_1 \hat{z}_1
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-\hat{z}_2 = \Omega_d - \vec{v}_b = \Gamma_1\hat{z}_1-\vec{v}_b
+\hat{z}_2 = \gamma_d - \vec{v}_b = \Gamma_1\hat{z}_1-\vec{v}_b
 \end{equation}
 \vspace{-15pt}
 \begin{equation}\label{eq:4.90c}
 \therefore \vec{v}_b=\Gamma_1\hat{z}_1-\hat{z}_2
 \end{equation}
 \end{subequations}
+Which changes the first LFC such that:
+\begin{equation}
+V_1=-\hat{z}_1^T\vec{v}_b=-\hat{z}_1^T\Gamma_1\hat{z}_1+\hat{z}_1^T\hat{z}_2
+\end{equation}
 So that second error state $\hat{z}_2$ has a derivative:
 \begin{subequations}
 \begin{equation}
-\dot{\hat{z}}_2=\dot{\Omega}_d-\dot{\vec{v}}_b=\Gamma_1\dot{\hat{z}}_1-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)
+\dot{\hat{z}}_2=\dot{\gamma}_d-\dot{\vec{v}}_b=\Gamma_1\dot{\hat{z}}_1-m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)
 \end{equation}
-\vspace{-15pt}
+\vspace{-12pt}
 \begin{equation}
-=-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)
+=-\Gamma_1\vec{v}_b-m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)
 \end{equation}
 \end{subequations}
-Introducing that second error $\hat{z}_2$ into a new LCF $V_2$:
-\begin{equation}
-V_2(\hat{z}_1,\hat{z}_2)=V_1(\hat{z}_1)+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
-\end{equation}
-Which has a derivative:
+Introducing that second error $\hat{z}_2$ into a new LFC $V_2$:
 \begin{subequations}
 \begin{equation}
-\dot{V}_2=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2=-\hat{z}_1\text{}^T\vec{v}_b+\hat{z}_2\text{}^T\dot{\hat{z}}_2
+V_2(\hat{z}_1,\hat{z}_2)=V_1(\hat{z}_1)+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-\hat{z}_1\text{}^T\vec{v}_b+\hat{z}_2\text{}^T\bigg(-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
+=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
 \end{equation}
-And substituting Eq:\ref{eq:4.90c} for $\vec{v}_b$ into only the first energy term of the LCF derivative. Specifically; $-\hat{z}_1\text{}^T\vec{v}_b=-\hat{z}_1\text{}^T\big(\Gamma_1\hat{z}_1-\hat{z}_2\big)$. The remaining terms for $\vec{v}_b$ are left unchanged:
+\end{subequations}
+Which has a derivative:
+\begin{subequations}
 \begin{equation}
-=-\hat{z}_1\text{}^T\big(\Gamma_1\hat{z}_1-\hat{z}_2\big)+\hat{z}_2\text{}^T\bigg(-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
+\dot{V}_2(\hat{z}_1,\hat{z}_2)=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2
 \end{equation}
-\vspace{-5pt}
+\vspace{-6pt}
 \begin{equation}
-=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\hat{z
-}_1-\Gamma_1\vec{v}_b-m^{-1}\big(-\vec{\omega}_b\times m\vec{v}_b+m\vec{G}_b+\vec{D}_b+\mu\vec{F}\big)\bigg)
+=-\hat{z}_1^T\Gamma_1\hat{z}_1+\hat{z}_1\text{}^T\hat{z}_2+\hat{z}_2\text{}^T\dot{\hat{z}}_2
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(\hat{z
+}_1-\Gamma_1\vec{v}_b-m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)\bigg)
 \end{equation}
 \end{subequations}
 An ideal backstepping control law, with the assumption that $\vec{D}_b$ is precisely known, is then:
 \begin{subequations}
 \begin{equation}
-\mu\vec{F}_{_{IBC}}=\vec{\omega}_b\times m\vec{v}_b-m\vec{G}_b-\vec{D}_b-m\hat{z}_1-m\Gamma_1\vec{v}_b+m\Gamma_2\hat{z}_2
+\vec{F}_{_{IBC}}=m_b\big(\hat{z}_1-\Gamma_1\vec{v}_b+\Gamma_2\hat{z}_2\big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b-\vec{D}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-=\vec{\omega}_b\times m\vec{v}_b-m\vec{G}_b-\vec{D}_b+\big(\Gamma_1\Gamma_2-m\big)\hat{z}_1-m\big(\Gamma_1+\Gamma_2\big)\vec{v}_b
+=m_b\Big(\big(1+\Gamma_1\Gamma_2\big)\hat{z}_1-\big(\Gamma_1+\Gamma_2\big)\vec{v}_b\big)\Big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b-\vec{D}_b
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
 \Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2<\vec{0}~~~~\forall~(\hat{z}_1,\hat{z}_2)~\text{\&}~\forall~(z_1,\hat{z_2})
 \end{equation}
 \end{subequations}
-Which clearly leads to asymptotic (\emph{extended to exponential next}) stability under the assumption that the disturbance term $\vec{D}_b$ is known and can be compensated for well. In the controller both $\Gamma_1$ \& $\Gamma_2$ are symmetric positive definite control coefficient matrices to be determined later\ldots
+Which leads to asymptotic (\emph{extended to exponential next}) stability under the assumption that the disturbance term $\vec{D}_b$ is known and can be compensated for well. In the controller both $\Gamma_1$ \& $\Gamma_2$ are positive symmetric control coefficient matrices to be optimized.
 \par
 Adjusting the backstepping rule and proposed LCF to incorporate an adaptive disturbance approximation term $\hat{D}$, similar to the adaptive backstepping attitude controller previously in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. That approximation leads to an estimation error $\widetilde{D}$, once again assuming the physical disturbance dynamics $\dot{\vec{D}}_b$ are far slower than the control dynamics; $\dot{\vec{D}}_b<<\dot{\hat{D}}$.
 \begin{subequations}
