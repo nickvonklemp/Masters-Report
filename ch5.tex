@@ -4,22 +4,42 @@
 \chapter{Controller Allocation}
 \label{ch:allocation}
 %====================================================
-\section{Allocator slack}
+The higher level attitude and position controllers (Sec:\ref{sec:control.attitude} and Sec:\ref{sec:control.position} respectively) design a desired virtual control input; $H(\vec{\mathbf{x}}_e,t)=\vec{\nu}_d=[\vec{F}_\mu~\vec{\tau}_\mu]^T$. The system's over-actuation was previously described in Sec:\ref{sec:control.inputs}; this chapter aims to solve for explicit actuator positions from a virtual control input. Fig:\ref{fig:allocation-block} shows a simplified allocation block reduced from Fig:\ref{fig:control-block}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/allocator-block}
+\vspace{-6pt}
+\caption{Allocation block}
+\label{fig:allocation-block}
+\vspace{-8pt}
+\end{figure}
+\par
+A distribution rule is needed to \emph{allocate} for physical actuator positions, $u_c\in\mathbb{U}$, to command that input $\vec{\nu}_c$, from Eq:\ref{eq:control-input}. Reiterating that (pseudo) inversion based allocation requires an affine actuator effectiveness function. The allocator is abstracted to first solve for four thrust vectors which are applied by each motor module, Eq:\ref{eq:4.7}.
+\begin{equation}
+B^{\dagger}(\mathbf{x},\vec{\nu}_d,t)=\big[\vec{T}_1,~\vec{T}_2,~\vec{T}_3,~\vec{T}_4\big]^T
+\end{equation}
+Thereafter each 3D thrust vector is used to solve each module's explicit propeller's rotational speed and both servo rotational positions, effectively unwinding the rotation applied by the structure in Fig:\ref{fig:force-redirect}.
+\begin{equation}
+[\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
+\end{equation}
+%====================================================
+\section{Generalized allocation}
 \label{sec:allocation.slack}
 %====================================================
-Following the higher level control laws, a distribution algorithm is needed to \emph{allocate} out the desired virtual control inputs, $\vec{\nu}_d=[\mu\vec{F}~\mu\vec{\tau}]^T$, to commanded actuator positions, $u_c\in\mathbb{U}$. The allocation block, $B^\dagger(\mathbf{x},~\vec{\nu}_d,~t)$, from the control loop, Fig:\ref{fig:control-loop}, constructs physical actuator positions from the virtual control input. For regular, unconstrained control allocation the solution is posed as an optimization\footnote{\emph{Control Allocation by Johansen, et al. [2012]\cite{allocation}} \textbf{and} \emph{Control allocation for over actuated systems by Oppenheimer, et al. [2006]\cite{controlallocation}} both detail the nature of generalized nonlinear allocation loops.} problem; aiming to minimize deviation between the virtual and commanded control inputs, $\vec{\nu}_d$ \& $\vec{\nu}_c$ respectively.
+For regular, unconstrained control allocation the solution is posed as an optimization problem;\cite{allocation,controlallocation}. The objective is to minimize deviation between the virtual and commanded control inputs, $\vec{\nu}_d$ and $\vec{\nu}_c$ respectively. For some state control law $H(\vec{\mathbf{x}}_e,t)$:
 \begin{equation}\label{eq:allocation-slack}
-\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(\norm{Q_s}\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=h(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
+\underset{u\in\mathbb{U}^{m},~s\in\mathbb{R}^{n}}{min}\big(\norm{Q_s}\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=H(\mathbf{x}_e,t)-B(\mathbf{x},t,u)=s
 \end{equation}
-Where $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. In Eq:\ref{eq:allocation-slack} a generalized controller, $h(\mathbf{x}_e,t)$, is used; in the context of a 6-DOF control loop. That controller would combined virtual control inputs $\mu\vec{F}$ and $\mu\vec{\tau}$ for position and attitude control respectively. In the over-actuated case, there exists an entire family of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The over-allocation solution is to introduce a secondary cost function\footnote{Or control objective.}, $J(\mathbf{x},t,u)$, into the optimization problem of Eq:\ref{eq:allocation-slack}.
+Where $u\in\mathbb{U}^m$ is the dimension of the actuator space and $\vec{\mathbf{x}},~\vec{\nu}_d,~\vec{\nu}_c,~s\in\mathbb{R}^{n}$ is the dimension of virtual plant inputs, namely the degrees of freedom the system has. In this case $u\in\mathbb{U}^{12}$ for the 12 separate actuators and $\vec{\mathbf{x}}\in\mathbb{R}^6$ for the 6-DOF rigid body.
+\par
+In Eq:\ref{eq:allocation-slack}, $Q_s$ is some cost function to prioritize the slack variable, $s$, requirements. Typically that cost function will just be the $L_2$ norm of the slack. Over-actuation means there exists an entire family of suitable actuator positions $u$ which are all solutions to Eq:\ref{eq:allocation-slack}. The solution is to introduce a secondary cost function, or control objective  $J(\vec{\mathbf{x}},t,u)$, into Eq:\ref{eq:allocation-slack}.
 \begin{equation}\label{eq:allocation-problem}
-\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{such that}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s
+\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\vec{\mathbf{x}},u,t)\big)~~\text{such that}~~H(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},u,t)=s
 \end{equation}
-That secondary control objective $J(\mathbf{x},t,u)$ and its associated \emph{explicit} solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation research. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduced such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
+That secondary control objective $J(\vec{\mathbf{x}},t,u)$ and its associated \emph{explicit} solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation research. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Section:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduced such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
 \begin{multline}
 \therefore\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^6}{min}\big(||Q_s||+J(\mathbf{x},u,t)\big)~~\text{s.t}~~h(\mathbf{x}_e,t)-B(\mathbf{x},u,t)=s\\\text{subject to}~~u=u_{n-1}+\Delta u,~\Delta u\in\mathbb{C}
 \end{multline}
-\par
 Most control allocation paradigms assume a linear, multiplicative relationship with the effectiveness function, hence the abstraction layer which was introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function, when abstracted to a linear matrix multiplication, reduces to:
 \begin{equation}
 \vec{\nu}_d=h(\mathbf{x}_e,t)\Longleftrightarrow B(\mathbf{x},u,t)=B(\mathbf{x},t)u=\vec{\nu}_c

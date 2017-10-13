@@ -89,7 +89,7 @@ As mentioned previously, a higher level controller designs desired net plant inp
 \end{bmatrix}^T
 \end{equation}
 \begin{equation}
-\rightarrow\vec{\nu}_f=B'(\vec{\mathbf{x}},t)\begin{bmatrix}
+\rightarrow\vec{\nu}_c=B'(\vec{\mathbf{x}},t)\begin{bmatrix}
 \vec{T}_1&
 \vec{T}_2&
 \vec{T}_3&
@@ -849,10 +849,29 @@ Typical stabilizing limits exists from Eq:\ref{eq:abc-asymptotic} but, most impo
 \therefore\underset{t\rightarrow\infty}{\lim}\hat{L}\rightarrow\vec{L}_b
 \end{equation}
 \end{subequations}
-Fig:\ref{} shows how the disturbance approximator $\hat{L}$ estimates a generalized turbulence acting on a rigid body. Note 
-%=============================================================
-
-
+Fig:\ref{fig:disturbance_L} shows how the disturbance observer $\hat{L}$ tracks a \emph{generalized} (single channel) turbulence acting in openloop on a rigid body. A moderate damping is applied to the estimate when compared to the true disturbance; producing a small error, shown Fig:\ref{fig:error_LR}. Note that the example shown in \ref{fig:example_L} contains no attitude steps or trajectory changes. The nature of torque disturbances, the observer and adaptive controller performances are expanded on in Sec:\ref{sec:simulation.disturbnace}.
+\begin{figure}[hbtp]
+\vspace{-6pt}
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{graphs/disturbance_L}
+\vspace{-8pt}
+\caption{Disturbance observer}
+\label{fig:disturbance_L}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{graphs/error_LR}
+\vspace{-8pt}
+\caption{Disturbance error deviation $\vec{L}_\Delta$}
+\label{fig:error_LR}
+\end{subfigure}
+\vspace{-6pt}
+\caption{Adaptive disturbance observer example}
+\label{fig:example_L}
+\end{figure}
+\par
 However, no further conclusions can be drawn on that stability in Eq:\ref{eq:abc-asymptotic}. A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a non-linear control system to the influence of unwanted disturbances; \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Alternatively, the previous disturbance estimate $\vec{L}_b\equiv\hat{L}_{n-1}$ could be used, such that:
 \begin{subequations}
 \begin{equation}
@@ -883,12 +902,12 @@ Then, it leads to the following LFC derivative which can then prove exponential 
 \begin{equation}
 \dot{V}_{_{ABC}}(\vec{q}_e,z_1,\widetilde{L})=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\Delta L^T\Gamma_L^{-1}\Delta L
 \end{equation}
-The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested in simulation later in Ch:\ref{ch:simulation}; the adaptive gain matrix $\Gamma_L$ is something that will similarly need to be designed. For control coefficients a separate optimization loop will be run, later disturbance will be introduced and the adaptive gain will independently be attained and optimized.
+The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested in simulation later in Sec:\ref{sec:simulation.disturbance.torque}; the adaptive gain matrix $\Gamma_L$ is something that will similarly need to be designed. For control coefficients a separate optimization loop will be run, later disturbance will be introduced and the adaptive gain will independently be attained and optimized.
 %====================================================
 \section{Position Control}
 \label{sec:control.position}
 %====================================================
-Only two control laws for position control are presented here, the main focus is on attitude controllers derived in the antecedent. The attitude control loop cab be stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but due to Coriolis cross-coupling the position loop requires a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented as the reference case. Thereafter an adaptive backstepping controller is derived. Dynamics for the position control loop, Eq:\ref{eq:quaternion-states-acceleration}, includes a coupled angular velocity component.
+Only two control laws for position control are presented here, the main focus is on attitude controllers derived in the antecedent. The attitude control loop can be stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but due to Coriolis cross-coupling the position loop requires a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented as the reference case. Thereafter an adaptive backstepping controller is derived. Dynamics for the position control loop, Eq:\ref{eq:quaternion-states-acceleration}, includes a coupled angular velocity component.
 \begin{equation}\label{eq:position-deriv}
 \dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~~\in\mathcal{F}^b
 \end{equation}
@@ -1107,59 +1126,83 @@ Making $\dot{V}_2$ negative definite:
 \end{subequations}
 Which leads to global asymptotic stability, assuming that the disturbance term $\vec{D}_b$ is known and can be compensated for. In the controller both $\Gamma_1$ \& $\Gamma_2$ are positive symmetric control coefficient matrices to be optimized.
 \par
-Extending the backstepping rule and proposed LCF to incorporate an adaptive disturbance approximator $\hat{D}$, similar to the attitude controller in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. The approximation leads to an estimate error $\Delta D$, assuming that physical disturbances $\dot{\vec{D}}_b$ are far slower than the control dynamics; $\dot{\vec{D}}_b<<\dot{\hat{D}}$.
+Extending the backstepping rule and proposed LCF to incorporate an adaptive disturbance approximator $\hat{D}$, similar to the attitude controller in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. The approximation leads to an estimate error $\vec{D}_\Delta$, assuming that physical disturbances $\dot{\vec{D}}_b$ are far slower than the control dynamics; $\dot{\vec{D}}_b<<\dot{\hat{D}}$.
 \begin{subequations}
 \begin{equation}
-\Delta D=\vec{D}_b-\hat{D}~~~~\in\mathcal{F}^b
+\vec{D}_\Delta=\vec{D}_b-\hat{D}~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-\Delta \dot{D}=\dot{\vec{D}}_b-\dot{\hat{D}}\approx\vec{0}-\dot{\hat{D}}=-\dot{\hat{D}}
+\therefore\dot{\vec{D}}_\Delta=\dot{\vec{D}}_b-\dot{\hat{D}}\approx\vec{0}-\dot{\hat{D}}=-\dot{\hat{D}}
 \end{equation}
 The control law then designs a force, using that disturbance estimate:
 \begin{equation}
 \vec{F}_{_{ABC}}=m_b\big(\hat{z}_1-\Gamma_1\vec{v}_b+\Gamma_2\hat{z}_2\big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b-\hat{D}~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Proposing an LFC extended from the IBC case which includes that disturbance estimate error $\Delta D$ and finding it's derivative:
+Proposing an LFC extended from the IBC case which includes that disturbance estimate error $\vec{D}_\Delta$ and finding it's derivative:
 \begin{subequations}
 \begin{equation}
-V_{_{ABC}}= V_{_{IBC}}+\frac{1}{2}\Delta D^T\Gamma_D^{-1}\Delta D=
-\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2+\frac{1}{2}\Delta D^T\Gamma_D^{-1}\Delta D
+V_{_{ABC}}= V_{_{IBC}}+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta=
+\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\Rightarrow\dot{V}_{_{ABC}}=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2+\Delta D^T\Gamma_D^{-1}\Delta\dot{D}
+\Rightarrow\dot{V}_{_{ABC}}=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2+\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\vec{D}}_\Delta
 \end{equation}
-Then substituting derivatives for $\dot{\hat{z}}_2$ and $\Delta \dot{D}$:
+Then substituting derivatives for $\dot{\hat{z}}_2$ and $\dot{\vec{D}}_\Delta$:
 \begin{equation}
-=-\hat{z}_1^T\Gamma_1\hat{z}_1+\hat{z}_2^T\bigg(\hat{z}_1-\Gamma_1\vec{v}_b-m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)\bigg)-\Delta D^T\Gamma_D^{-1}\dot{\hat{D}}
-\end{equation}
-\vspace{-8pt}
-\begin{equation}
-=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\Gamma_2\hat{z}_2-m_b^{-1}\big(\vec{D}_b-\hat{D}\big)\bigg)-\Delta D\text{}^T\Gamma_D^{-1}\dot{\hat{D}}
+=-\hat{z}_1^T\Gamma_1\hat{z}_1+\hat{z}_2^T\bigg(\hat{z}_1-\Gamma_1\vec{v}_b-m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)\bigg)-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\hat{D}}
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-m^{-1}\hat{z}_2^T\Delta D-\Delta D^T\Gamma_D^{-1}\dot{\hat{D}}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\Gamma_2\hat{z}_2-m_b^{-1}\big(\vec{D}_b-\hat{D}\big)\bigg)-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\hat{D}}
+\end{equation}
+\vspace{-8pt}
+\begin{equation}
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-m_b^{-1}\hat{z}_2^T\vec{D}_\Delta-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\hat{D}}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-m^{-1}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\big(\Gamma_D\hat{z}_2+\dot{\hat{D}}\big)
+=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-m_b^{-1}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\big(\Gamma_D\hat{z}_2+\dot{\hat{D}}\big)
 \end{equation}
 \end{subequations}
 Then, a self-evident choice for the disturbance update law would be; $\dot{\hat{D}}=-m^{-1}\Gamma_D\hat{z}_2$, which would ensure asymptotic stability. Expanding on that, an interesting solution which could potentially enforce exponential stability would be to use $\hat{D}_{n-1}$ as a disturbance estimate:
 \begin{subequations}
 \begin{equation}
-\dot{\hat{D}}=-m^{-1}\Gamma_D\hat{z}_2+(\hat{D}_{n-1}-\hat{D})
+\dot{\hat{D}}=-m_b^{-1}\Gamma_D\hat{z}_2+(\hat{D}_{n-1}-\hat{D}_n)
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-\therefore\dot{V}_{_{ABC}}=-\hat{z}_1\text{}^T\Gamma_1\hat{z}-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\big(\hat{D}_{n-1}-\hat{D}_n\big)
+\therefore\dot{V}_{_{ABC}}=-\hat{z}_1\text{}^T\Gamma_1\hat{z}-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\big(\hat{D}_{n-1}-\hat{D}_n\big)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\approx-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\widetilde{D}\text{}^T\Gamma_D\text{}^{-1}\widetilde{D}<\vec{0}~~~~\forall(\hat{z}_1,\hat{z}_2,\widetilde{D})
+\equiv-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta<0~~~~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta)
 \end{equation}
 \end{subequations}
-Similarly for the suggested exponentially stable adaptive backstepping controller for the attitude plant, using $\hat{D}_{n-1}$ for an existing disturbance estimate will need to be simulated in order to ascertain if it's a suitable conjecture. Note here that adaptive control laws refer to adaptability to unknown disturbances and not plant model uncertainty which would take a different approach to the backstepping algorithm.
+The force disturbance observer tracks a generalized single axis disturbance as illustrated in Fig:\ref{fig:disturbance_D}. Note that Fig:\ref{fig:example_D} is in \emph{open loop}. An error deviation for the estimation and the true disturbance is plotted in Fig:\ref{fig:error_DR}. A vector wind field and stochastic force fluctuations are included in the disturbance model, later discussed in Sec:\ref{sec:simulation.disturbance.force}.
+\begin{figure}[hbtp]
+\vspace{-6pt}
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{graphs/disturbance_L}
+\vspace{-8pt}
+\caption{Disturbance observer}
+\label{fig:disturbance_D}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{graphs/error_LR}
+\vspace{-8pt}
+\caption{Disturbance error deviation $\vec{D}_\Delta$}
+\label{fig:error_DR}
+\end{subfigure}
+\vspace{-6pt}
+\caption{Adaptive disturbance observer example}
+\label{fig:example_D}
+\vspace{-16pt}
+\end{figure}
+\par
+Similarly for the suggested exponentially stable adaptive backstepping controller for the attitude plant, using $\hat{D}_{n-1}$ for an existing disturbance estimate will need to be simulated in order to ascertain if it's a suitable conjecture (Sec:\ref{sec:simulation.disturbance.force})\ldots
