@@ -7,7 +7,7 @@
 \section{Control Loop}
 \label{sec:control.loop}
 %====================================================
-The control problem here is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero set-point tracking (\emph{attitude and position} states) on a quadrotor by solving the problem of its inherent under-actuation. For the purposes of the subsequent controller development, the plant is described in the following typical non-linear state space form:
+The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero set-point tracking (for both \emph{attitude} and \emph{position} states) on a quadrotor by solving the problem of its inherent under-actuation. For the purposes of the subsequent controller development, the plant is described in the following typical non-linear state space form:
 \begin{subequations}\label{eq:control-loop-states}
 \begin{equation}
 \frac{d}{dt}{\vec{\mathbf{x}}}=f(\vec{\mathbf{x}},t)+g(\vec{\mathbf{x}},\vec{\nu},t)
@@ -17,11 +17,14 @@ The control problem here is, as outlined in Ch:\ref{ch:intro}, to achieve non-ze
 \vec{y} = c(\vec{\mathbf{x}},t)+d(\vec{\mathbf{x}},\vec{\nu},t)
 \end{equation}
 \end{subequations}
-Where the plant's dynamics are governed by state progression $f(\vec{\mathbf{x}},t)$ and the plant's input response $g(\vec{\mathbf{x}},\vec{\nu},t)$ for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\mathbf{x},t)\vec{\nu}$. Set-point tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)=\vec{\mathbf{x}}$. As such, the control problem is to design a stabilizing control law $h$ for some error state $\mathbf{x}_e$:
+Where the plant's dynamics are governed by state progression $f(\vec{\mathbf{x}},t)$ and the plant's input response $g(\vec{\mathbf{x}},\vec{\nu},t)$ for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\vec{\mathbf{x}},t)\vec{\nu}$. Set-point tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)\equiv\vec{\mathbf{x}}$. The control problem is then to design a stabilizing control law $H$ for some error state $\vec{\mathbf{x}}_e$:
 \begin{equation}
-\vec{\nu}_d=h(\mathbf{x}_e,t)=h(\mathbf{x}_b,\dot{\mathbf{x}}_b,\mathbf{x}_d,\dot{\mathbf{x}}_d,t)
+\vec{\nu}_d=H(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)=H(\vec{\mathbf{x}}_b,\dot{\vec{\mathbf{x}}}_b,\vec{\mathbf{x}}_d,\dot{\vec{\mathbf{x}}}_d,t)=\begin{bmatrix}
+\vec{F}_d\\
+\vec{\tau}_d
+\end{bmatrix}
 \end{equation}
-Such that the controlled plant is asymptotically stabilizing or that $\lim_{t\rightarrow\infty}\mathbf{x}_e=0$. Trajectory stability conditions are further defined next in Sec:\ref{sec:control.stability}. Note that it is possible to combine attitude and position states into a single common trajectory state such that:
+Such that the controlled plant is asymptotically stabilizing or that $\lim_{t\rightarrow\infty}\vec{\mathbf{x}}_e=0$. Trajectory stability conditions are further defined next in Sec:\ref{sec:control.stability}. Note that it is possible to combine attitude and position states into a single common trajectory state such that:
 \\
 \vspace{-5pt}
 \begin{equation}
@@ -37,9 +40,9 @@ The allocator solves for actuator values $u\in\mathbb{U}$ such that $\vec{\nu}_c
 \begin{equation}
 \underset{\in\mathbb{U}}{u}=B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)
 \end{equation}
-This chapter derives higher level controllers for $\vec{\nu}_d=h(\vec{\mathbf{x}}_e,t)$; allocation rules are discussed next in Ch:\ref{ch:allocation}. A collection of attitude and position controllers are presented here whose stability is proven with Lyapunov theorem \cite{bojelayupanov,lyapunovstabilitytheorem,noteonlyapunov}. Each controller is compared in the context of an over actuated quadrotor plant. Similarly a series of proposed allocation schemes are presented. Controller comparisons, their details and efficacy are evaluated is subsequently in Ch:\ref{ch:simulation}. 
+This chapter derives higher level controllers for $\vec{\nu}_d=H(\vec{\mathbf{x}}_e,t)$; allocation rules are discussed next in Ch:\ref{ch:allocation}. A collection of attitude and position controllers are presented here whose stability is proven with Lyapunov theorem \cite{bojelayupanov,lyapunovstabilitytheorem,noteonlyapunov}. Each controller is compared in the context of an over actuated quadrotor plant, similarly a series of allocation schemes are presented. Controller comparisons, their details and efficacy are evaluated subsequently in Ch:\ref{ch:simulation}. 
 \par
-A generalized over-actuated control loop consists of a series of cascaded control blocks (Fig:\ref{fig:control-loop}). From the trajectory's error state $\vec{\mathbf{x}}_e$, a control law designs a virtual control input $\vec{\nu}_d$ which is applied to the allocation block. The allocation law $B^{\dagger}(\mathbf{x},\vec{\nu}_d,t)$ solves for physical actuator positions $u\in\mathbb{U}$. Actuator positions command a physical input $\vec{\nu}_c=B(\mathbf{x},u,t)$ which is an input to the state's dynamics, Eq:\ref{eq:control-loop-states}. Finally the output tracking state is estimated with some filter $\hat{\mathbf{x}}=A(\mathbf{x},t)$ which is used to calculate the error state (Sec:\ref{sec:simulation.state}).
+A generalized over-actuated control loop consists of a series of cascaded control blocks (Fig:\ref{fig:control-loop}). From the trajectory's error state $\vec{\mathbf{x}}_e$, a control law designs a virtual control input $\vec{\nu}_d$ which is applied to the allocation block. The allocation law $B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ solves for physical actuator positions $u\in\mathbb{U}$. Actuator positions command a physical input $\vec{\nu}_c=B(\vec{\mathbf{x}},u,t)$ which is an input to the state's dynamics, Eq:\ref{eq:control-loop-states}. Finally the output tracking state is estimated with some filter $\hat{\mathbf{x}}=A(\vec{\mathbf{x}},t)$ which is used to calculate the error state (Sec:\ref{sec:simulation.state}).
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{figs/control-loop}
@@ -73,12 +76,12 @@ As mentioned previously, a higher level controller designs desired net plant inp
 \begin{subequations}\label{eq:4.7}
 \begin{equation}
 \vec{\nu}_c=\begin{bmatrix}
-\vec{F}_\mu(u)\\
-\vec{\tau}_\mu(u)
+\vec{F}_c(u)\\
+\vec{\tau}_c(u)
 \end{bmatrix}
 = 
 \begin{bmatrix}
-1 & 1 & 1 & 1\\
+\mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3}\\
 [\vec{L}_1]_\times & [\vec{L}_2]_\times & [\vec{L}_3]_\times & [\vec{L}_4]_\times
 \end{bmatrix}
 \begin{bmatrix}
@@ -97,11 +100,11 @@ As mentioned previously, a higher level controller designs desired net plant inp
 \end{bmatrix}^T
 \end{equation}
 \end{subequations}
-Where $[\vec{L}_i]_\times$ is the cross product vector of the $i^{th}$ torque arm. Explicit actuator positions for each module, $[\Omega_i,\lambda_i,\alpha_i]^T$, can then be solved from those thrust vectors $\vec{T}_i$ for $i\in[1:4]$ with some trigonometry, "unwinding" transformations applied in Eq:\ref{eq:control-input}. That trigonometric inversion is detailed later in Sec:\ref{sec:allocation.slack} but is described as the function $R^\dagger$:
+Where $[\vec{L}_i]_\times$ is the cross product vector of the $i^{th}$ torque arm. Explicit actuator positions for each module, $[\Omega_i,\lambda_i,\alpha_i]^T$, can then be solved from those thrust vectors $\vec{T}_i$ for $i\in[1:4]$ with some trigonometry, "undoing" the transformation applied in Eq:\ref{eq:control-input}. That trigonometric inversion is detailed later in Sec:\ref{sec:allocation.inversion} but is described as the function $R^\dagger$:
 \begin{equation}\label{eq:4.8}
-[\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
+[\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
 \end{equation}
-The generalized control loop illustrated in Fig:\ref{fig:control-loop} is extended to include the abstracted allocation blocks of Eq:\ref{eq:4.7} and Eq:\ref{eq:4.8}, shown in Fig:\ref{fig:control-block}. The net control block still solves for the same actuator matrix $u\in\mathbb{U}$. The entire loop accommodates for comparison of various $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$ allocation rules without having to redesign the remainder of the loop's structure.
+The generalized control loop illustrated in Fig:\ref{fig:control-loop} is extended to include the abstracted allocation blocks of Eq:\ref{eq:4.7} and Eq:\ref{eq:4.8}, shown in Fig:\ref{fig:control-block}. The net control block still solves for the same actuator matrix $u\in\mathbb{U}$. The entire loop accommodates for comparison of various $B^\dagger(\vec{\mathbf{x}},\vec{\nu}_d,t)$ allocation rules without having to redesign the remainder of the loop's structure.
 \begin{figure}[htbp]
 \vspace{-8pt}
 \centering
@@ -121,7 +124,7 @@ Each control law is co-dependent on an accompanying allocation algorithm. Tradit
 \section{Stability}
 \label{sec:control.stability}
 %====================================================
-Before undertaking the control plant derivations, it is worth outlining definitions of what the control objectives are. The research question aims to achieve non-zero set-point tracking of state's trajectory. A control loop then aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model} whilst tracking particular trajectories for attitude and position, $\mathbf{x}_d(t)=[\vec{\mathcal{E}}_d(t)~Q_d(t)]^T$. 
+Before undertaking the control plant derivations, it is worth outlining definitions of what the control objectives are. The research question aims to achieve non-zero set-point tracking of state's trajectory. A control loop then aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model} whilst tracking particular trajectories for attitude and position, $\vec{mathbf{x}}_d(t)=[\vec{\mathcal{E}}_d(t)~Q_d(t)]^T$. 
 \par
 The entire system's control loop was previously detailed in Sec:\ref{sec:control.loop}. Stability in the context of trajectory tracking must be defined. Generalized trajectory stability definitions are not uncommon in the context of energy based control design, or Lyapunov theorem (Sec:\ref{sec:control.lyapunov}). Stability definitions pertinent to Lyapunov's stability theorem are briefly presented here; the following is adapted from \cite{bojelayupanov,lyapunovstabilitytheorem}. In general for some autonomous trajectory $\vec{\mathbf{x}}(t)$, an equilibrium point $\vec{\mathbf{x}}(t_0)$ is said to be stable (\textbf{S}) if and only if (\emph{iff}) the following is true:
 \begin{subequations}\label{eq:basic-stability}
@@ -234,7 +237,7 @@ The above definitions of stability are only locally defined, and so the stabilit
 \end{equation}
 \vspace{-16pt}
 \begin{equation}
-\Rightarrow \lim_{t\rightarrow\infty}\norm{\vec{\mathbf{x}}(t)}\rightarrow \vec{0},~~\forall \vec{\mathbf{x}}(t_0)
+\Rightarrow \lim_{t\rightarrow\infty}\norm{\vec{\mathbf{x}}(t)}\rightarrow 0,~~\forall \vec{\mathbf{x}}(t_0)
 \end{equation}
 \end{subequations}
 Similarly exponential stability can extend to the global case \emph{iff} \textbf{UES} conditions are first met. In the global case, the origin can be the only equilibrium point. Stability from Eq:\ref{eq:exponential-stability} is then globally:
@@ -252,29 +255,29 @@ The theory analyses a generalized energy function of a system's autonomous traje
 \par
 Lyapunov analysis is a powerful method for stability verification, the system's trajectory itself need not be explicitly defined for stability to be ascertained. Proof of Lyapunov's theorem is done with a contradiction disproof and, as such, the theoretical underpinning is somewhat cumbersome.
 \par
-It's worth reiterating its fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control. A backstepping controller iteratively enforces Lyapunov stability criterion onto the system through the control structure, \cite{backstepping,adaptivebackstep,intelligentbackstep}. In general, given a non-linear time invariant system that follows some continually differentiable trajectory $\mathbf{x}(t)$, typically the trajectory is going to progress subject to some rule:
+It's worth reiterating its fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control. A backstepping controller iteratively enforces Lyapunov stability criterion onto the system through the control structure, \cite{backstepping,adaptivebackstep,intelligentbackstep}. In general, given a non-linear time invariant system that follows some continually differentiable trajectory $\vec{\mathbf{x}}(t)$, typically the trajectory is going to progress subject to some rule:
 \begin{equation}
-\dot{\mathbf{x}}(t)=f\big(\vec{\mathbf{x}}(t),u\big)
+\dot{\vec{\mathbf{x}}}(t)=f\big(\vec{\mathbf{x}}(t),u\big)
 \end{equation}
-Then, constructing a generalized positive-definite function (generalized energy or \emph{Lyapunov function candidate}) $V(\mathbf{x})$ for a trajectory $\mathbf{x}(t)$. A positive definite matrix, $M$, is defined such that:
+Then, constructing a generalized positive-definite function (generalized energy or \emph{Lyapunov function candidate}) $V(\vec{\mathbf{x}})$ for a trajectory $\vec{\mathbf{x}}(t)$. A positive definite matrix, $M$, is defined such that:
 \begin{equation}
 \mathbf{z}^TM\mathbf{z}\geq 0~~~\forall \mathbf{z}
 \end{equation}
 As such an LFC typically, but not exclusively, has the quadratic and positive-definite form:
 \begin{equation}
-V(\mathbf{x})=\mathbf{x}^TP\mathbf{x}
+V(\vec{\mathbf{x}})=\vec{\mathbf{x}}^TP\vec{\mathbf{x}}
 \end{equation}
-An LFC could simply be positive semi-definite over the trajectory's bound, the quadratic form is convenient for the use of backstepping. From its definition the trajectory is continually differentiable; there is then a gradient matrix for each component of $V(x)$ in the form:
+An LFC could simply be positive semi-definite over the trajectory's bound, the quadratic form is just convenient for the use of backstepping. From its definition the trajectory is continually differentiable; there is then a gradient matrix for each component of $V(\vec{\mathbf{x}})$ in the form:
 \begin{equation}
 \nabla V(\vec{\mathbf{x}})\triangleq\bigg[\frac{\partial V(\vec{\mathbf{x}})}{\partial x_1}~\frac{\partial V(\vec{\mathbf{x}})}{\partial x_2}~\ldots~\frac{\partial V(\vec{\mathbf{x}})}{\partial x_n}\bigg]~~~~\vec{\mathbf{x}}\in\mathbb{R}^n
 \end{equation}
 The energy function's derivative, otherwise referred to as the \emph{Lie derivative}\cite{noteonlyapunov,nonlinearsystems} is calculated as follows:
 \begin{equation}
-\dot{V}(\vec{\mathbf{x}})\triangleq\nabla V(\vec{\mathbf{x}})^T\frac{d}{dt}f(\vec{\mathbf{x}})=\frac{\delta V(x)}{\delta x_1}\frac{df_1(x)}{dt}+\frac{\delta V(x)}{\delta x_2}\frac{df_2(x_2)}{dt}+~\ldots~+\frac{\delta V(x)}{\delta x_n}\frac{df_n(x)}{dt}
+\dot{V}(\vec{\mathbf{x}})\triangleq\nabla V(\vec{\mathbf{x}})^T\frac{d}{dt}f(\vec{\mathbf{x}})=\frac{\delta V(\vec{\mathbf{x}})}{\delta x_1}\frac{df_1(x_1)}{dt}+\frac{\delta V(\vec{\mathbf{x}})}{\delta x_2}\frac{df_2(x_2)}{dt}+~\ldots~+\frac{\delta V(\vec{\mathbf{x}})}{\delta x_n}\frac{df_n(x_b)}{dt}
 \end{equation}
 Lyapunov's theorem states that \emph{iff} the candidate function $V(\vec{\mathbf{x}})$ is positive definite with $V(\vec{0})=0$ and its derivative is strictly negative; $\dot{V}(\vec{\mathbf{x}})< 0~~\forall \vec{\mathbf{x}}(t) \not= 0$, the system is then asymptotically stable ($\mathbf{AS}$ from Eq:\ref{eq:asymptotic-stability}). Mathematically that means, for any $\vec{\mathbf{x}}(t)$ with $t\geq t_0$:
 \begin{equation}
-V\big(\vec{\mathbf{x}}(t)\big)=V\big(\vec{\mathbf{x}}(t_0)\big)+\int_{t_0}^t \dot{V}\big(\mathbf{x}(t)\big).dt \leq V\big(\mathbf{x}(t_0)\big)
+V\big(\vec{\mathbf{x}}(t)\big)=V\big(\vec{\mathbf{x}}(t_0)\big)+\int_{t_0}^t \dot{V}\big(\vec{\mathbf{x}}(t)\big).dt \leq V\big(\vec{\mathbf{x}}(t_0)\big)
 \end{equation}
 Which can be physically interpreted as the system's generalized energy function dissipating, irrespective of the trajectory path taken. With a strictly decreasing energy function, the system will stabilize to an equilibrium point. 
 \begin{equation}
@@ -299,7 +302,7 @@ The plant dependency makes backstepping controllers an effective controller choi
 \subsection{The Attitude Control Problem}
 \label{subsec:control.attitude.problem}
 %====================================================
-The set-point tracking control problem (\cite{attitudecontrolproblem}) for the attitude plant is to design a stabilizing control torque $\vec{\tau}_d=h(\mathbf{x}_e,t)$ such that for any desired attitude quaternion, $\forall~Q_d\in\mathbb{Q}$, and an instantaneous attitude body quaternion, $Q_b(t)\in\mathbb{Q}$, the error state asymptotically stabilizes to the origin; $Q_e\rightarrow[1~\vec{0}~]^T$. Or that:
+The set-point tracking control problem (\cite{attitudecontrolproblem}) for the attitude plant is to design a stabilizing control torque $\vec{\tau}_d=h(\vec{\mathbf{x}}_e,t)$ such that for any desired attitude quaternion, $\forall~Q_d\in\mathbb{Q}$, and an instantaneous attitude body quaternion, $Q_b(t)\in\mathbb{Q}$, the error state asymptotically stabilizes to the origin; $Q_e\rightarrow[1~\vec{0}~]^T$. Or that:
 \begin{equation}
 \vec{\tau}_d=h(Q_d,~\dot{Q}_d,~Q_b(t),~\dot{Q}_b(t))~~\text{such that}~~\underset{t\rightarrow\infty}{\lim}Q_b(t)\rightarrow Q_d
 \end{equation}
@@ -332,7 +335,7 @@ The time derivative of the quaternion error state is calculated from the quatern
 \subsubsection{PD Controller}
 \label{subsubsec:control.attitude.controllers.pd}
 %====================================================
-The following control law is used as a reference case for comparison of the remaining controllers derived. It is a simple Proportional-Derivative attitude controller, adapted from \cite{fullquaternion} and following a stability proof similar to the one derived in \cite{attitudecontrolproblem}. An attitude PD controller is proportional only to the vector quaternion error. Such that the error is the same dimension as the angular velocity error; $\in\mathbb{R}^3$. A PD controller designs the control torque as:
+The following control law is used as a reference case for compariing the remaining controllers derived. It is a simple Proportional-Derivative attitude controller, adapted from \cite{fullquaternion} and following a stability proof similar to the one derived in \cite{attitudecontrolproblem}. An attitude PD controller is proportional only to the vector quaternion error. Such that the error is the same dimension as the angular velocity error; $\in\mathbb{R}^3$. A PD controller designs the control torque as:
 \begin{equation}\label{eq:independent-pd}
 \vec{\tau}_{_{PD}}=K_d\vec{\omega}_e+K_p\vec{q}_e~~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
@@ -363,7 +366,7 @@ Recalling the angular velocity differential equation from Eq:\ref{eq:quaternion-
 \dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{_{PD}}\big)~~~~\in\mathcal{F}^b
 \end{equation}
 Where $\vec{\tau}_Q$ is a simplified representation of the net aerodynamic torque experienced by the body from the rotating propellers, drawn from Eq:\ref{eq:aerodynamic-torque}. Then, 
-Similarly, using the fact that a quaternion's derivative is defined as:
+similarly, using the fact that a quaternion's derivative is defined as:
 \begin{equation}\label{eq:quat-derivative}
 \dot{Q}=\begin{bmatrix}
 -\frac{1}{2}\vec{q}^{\hspace{3pt}T}\vec{\omega}\\
@@ -445,7 +448,7 @@ Expanding on what has, in practice (Table:\ref{tab:controllers} from Sec:\ref{su
 \begin{equation}\label{eq:control-aux-pd}
 \vec{\tau}_{_{XPD}}=\underbrace{\Gamma_2{\widetilde{\Omega}}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}}_{Independent}+\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{Compensation}
 \end{equation}
-Wherein the coefficients $\Gamma_2$ and $\Gamma_3$ are both diagonal positive definite coefficient matrices whilst $\Gamma_1$, used next in Eq:\ref{eq:aux-pd-1}, is a symmetrical matrix. Each coefficient matrix is explicitly determined later. Auxiliary plants $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$ are defined as follows. The first auxiliary plant $\bar{\Omega}$ is proportional to the quaternion error and hence its derivative $\dot{\bar{\Omega}}$ is a quaternion rate:
+Wherein the coefficients $\Gamma_2$ and $\Gamma_3$ are both diagonal positive coefficient matrices whilst $\Gamma_1$, used next in Eq:\ref{eq:aux-pd-1}, is a symmetrical matrix. Each coefficient matrix is explicitly determined later. Auxiliary plants $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$ are defined as follows. The first auxiliary plant $\bar{\Omega}$ is proportional to the quaternion error and hence its derivative $\dot{\bar{\Omega}}$ is a quaternion rate:
 \begin{subequations}\label{eq:aux-pd-1}
 \begin{equation}
 \bar{\Omega}\triangleq-\Gamma_1\vec{q}_e~~\therefore~~\dot{\bar{\Omega}}=-\Gamma_1\dot{\vec{q}}_e
@@ -471,7 +474,7 @@ The second auxiliary plant, $\widetilde{\Omega}$, is proportional to both quater
 \end{subequations}
 Using an LFC similar to the basic $V_{_{PD}}$ function candidate from Eq:\ref{eq:lyapunov-pd}, but substituting an auxiliary term $\widetilde{\Omega}$ for the body's angular velocity $\vec{\omega}_b$ into the LFC $V_{_{XPD}}$:
 \begin{equation}\label{eq:lyapunov-xpd}
-V_{_{XPD}}\big(\vec{q}_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}
+V_{_{XPD}}\big(\vec{q}_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}~~>0,~\forall(\vec{q}_e,\widetilde{\Omega})
 \end{equation}
 Again using the simplification from a quaternion's inherent properties in Eq:\ref{eq:4.17}, the LFC from Eq:\ref{eq:lyapunov-xpd} then simplifies with the following derivative:
 \begin{subequations}
@@ -535,7 +538,7 @@ Similarly, for the transposed counterpart of Eq:\ref{eq:4.48c} in Eq:\ref{eq:4.3
 Which, when substituted back into Eq:\ref{eq:4.34c}, then simplifies the LFC derivative to negative definite:
 \end{subequations}
 \begin{equation}
-\Rightarrow\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}<0~~~~\forall~(\vec{q}_e,\widetilde{\Omega})
+\Rightarrow\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}~~<0,~\forall(\vec{q}_e,\widetilde{\Omega}),~\exists(\Gamma_1,\Gamma_2,\Gamma_3)>0
 \end{equation}
 As such, the control law $\vec{\tau}_{_{XPD}}$ asymptomatically stabilizes the attitude plant globally. Both $\widetilde{\Omega}$ and $\vec{q}_e$ tend to $\vec{0}$, or more specifically the following global stability limits exist:
 \begin{subequations}
@@ -585,7 +588,7 @@ The bounding exponential coefficient $\alpha$ can be found using maximum Eigen v
 \par
 \emph{\color{Gray}The above stability proof for the auxiliary attitude controller was expanded upon and derived from \cite{attitudestabilization}, adapted to fit attitude setpoint tracking. Introduction of the quaternion error, which is dependent on the quaternion scalar, dramatically improves controller performance. The exponential stability notably improves settling times and overshoot errors, demonstrated in Sec:\ref{subsec:simulation.attitude.xpd}.}
 \newpage
-Interestingly a previously \cite{robustattitude} was the precursor for PD based attitude plants with asymptotic exponential stability. That proposed control law first did not make use of any defined \emph{auxiliary plants}, unlike Eq:\ref{eq:control-aux-pd}; however equivalent terms were effectively incorporated. The control law was developed for spacecraft attitude tracking and proposed a very similar exponentially stabilizing control scheme to that of $\vec{\tau}_{_{XPD}}$. That controller, when changed to the notational convention used here, designs body torque as:
+Interestingly a previous \cite{robustattitude} was the precursor for PD based attitude plants with asymptotic exponential stability. That proposed control law first did not make use of any defined \emph{auxiliary plants}, unlike Eq:\ref{eq:control-aux-pd}; however equivalent terms were effectively incorporated. The control law was developed for spacecraft attitude tracking and proposed a very similar exponentially stabilizing control scheme to that of $\vec{\tau}_{_{XPD}}$. That controller, when changed to the notational convention used here, designs body torque as:
 \begin{equation}\label{eq:control-auxp-pd}
 \vec{\tau}^{\hspace{3pt}'}_{_{XPD}}=-\frac{1}{2}\Big[\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\Gamma_1+\alpha\big(1-q_0\mathbb{I}_{3\times 3}\big)\Big]\vec{q}_e-\Gamma_2\vec{\omega}_b\in\mathcal{F}^b
 \end{equation} 
@@ -603,7 +606,7 @@ The caveat of IBC control is poor robust stability performance; being especially
 %====================================================
 Starting with the ideal case for the first proposed backstepping controller, similar to \cite{satellitebackstepping}; it is assumed the attitude plant described in Eq:\ref{eq:quaternion-states-angular} from the consolidated model in Sec:\ref{sec:dynamics.model} exactly matches the dynamics of the physical prototype. The ideal backstepping controller aims to compensate for the plant's dynamic response to trajectory inputs perfectly. Neglecting uncertainties associated with the dynamic model, the aim here is to apply a stabilizing torque design. Recalling the quaternion tracking error from Eq:\ref{eq:quaternion-error}; $Q_e=Q_b^*\otimes Q_e$, consider the first LFC proposal for a quaternion error $Q_e$:
 \begin{equation}\label{eq:ibc-lfc-1}
-V_1(\vec{q}_e)=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2
+V_1(\vec{q}_e)=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2~~>0,~\forall(\vec{q}_e)
 \end{equation}
 After substituting in the quaternion rates but \emph{without} using the quaternion reduction proposed in Eq:\ref{eq:4.18}, $V_1(\vec{q}_e)$ has a Lie derivative:
 \begin{subequations}
@@ -666,7 +669,7 @@ V_2(\vec{q}_e,z_1)=V_1(\vec{q}_e)+\frac{1}{2}z_1\text{}^Tz_1
 \end{equation}
 \vspace{-6pt}
 \begin{equation}
-=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1
+=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1~~>0,~\forall(\vec{q}_e,z_1)
 \end{equation}
 \end{subequations}
 That first error $z_1$ has its own time derivative, and recalling the body's angular acceleration $\dot{\vec{\omega}}_b$ from earlier with an undefined input $\vec{\tau}_{IBC}$, which still has plant dependency compensation.
@@ -687,7 +690,7 @@ That first error $z_1$ has its own time derivative, and recalling the body's ang
 =-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{\tau}_{IBC}\big)
 \end{equation}
 \end{subequations}
-So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$ with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)$:
+So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$, with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)$:
 \begin{subequations}\label{eq:ibc-deriv}
 \begin{multline}
 \dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)+z_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
@@ -726,7 +729,7 @@ With $\Gamma_2$ being another positive-definite symmetric coefficient matrix. Th
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1< 0~~~~\forall~(\vec{q}_e,z_1)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1~~<0,~\forall~(\vec{q}_e,z_1),~\exists(\Gamma_1,\Gamma_2)>0
 \end{equation}
 \end{subequations}
 As such $\vec{q}_e\rightarrow 0$ \& $q_0\rightarrow 1$ as $t\rightarrow\infty$. Similarly $z_1\rightarrow 0$, which leads to the limit:
@@ -740,7 +743,7 @@ Because the quaternion error vector already tends to $0$;$~\vec{q}_e\rightarrow 
 Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof is proposed in the sequel. Recalling Eq:\ref{eq:4.34}:
 \begin{subequations}
 \begin{equation}
-|q_0|-1\leq 1 - q_0^{2} = \norm{\vec{q_e}}^2
+q_0-1\leq 1 - q_0^{2} = \norm{\vec{q_e}}^2
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
@@ -771,7 +774,7 @@ Which then leads to a similar exponential stability trajectory boundedness such 
 \therefore V\big(\norm{\vec{q}_e(t)},\norm{z_1(t)}\big)\leq Me^{-\alpha t/2}V\big(\norm{\vec{q}_e(0)},\norm{z_1(0)}\big)
 \end{equation}
 \end{subequations}
-Whilst stabilizing, the IBC controller is not globaly stable. The plant conditions require exact plant matching and account for no unmodelled disturbances or measurement uncertainty. In practice the introduction of some disturbance torque $\vec{L}$ could easily drive Eq:\ref{eq:ibc-deriv} away from negative-definite such that stability is lost.
+Whilst stabilizing, the IBC controller is not globaly stable. The plant conditions require exact plant matching and account for no unmodelled disturbances or measurement uncertainty. In practice the introduction of some disturbance torque $\vec{L}$ could potentially drive Eq:\ref{eq:ibc-deriv} away from negative-definite such that stability is lost.
 %====================================================
 \subsubsection{Adaptive Backstepping Controller}
 \label{subsubsec:control.attitude.nonlinear.adaptivebackstep}
@@ -780,7 +783,7 @@ Considering only a lumped uncertainty/disturbance term for the adaptive case and
 \begin{equation}
 \dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}_b+\vec{\tau}_{_{ABC}}\big)
 \end{equation}
-An unmoderated disturbance acts as an external torque on Eq:\ref{eq:newton}. Obviously estimation errors and disturbances could simply be compensated for in the control law; $-\vec{L}_b$. However, it is difficult to approximate disturbances without any \emph{apriori} knowledge about of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth which that noise occurs in, the same cannot be said for wind disturbances or payload variations\ldots
+Unmodelled disturbances act as external torques on Eq:\ref{eq:newton}. Obviously plant modeling errors and disturbances could simply be compensated for in the control law; $-\vec{L}_b$. However, it is difficult to approximate disturbances without any \emph{apriori} knowledge about of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth which that noise occurs in, the same cannot be said for wind disturbances or payload variations\ldots
 \par
 An approximate disturbance estimation, $\hat{L}$, is used for that compensation in the designed control torque $\vec{\tau}_{_{ABC}}$. Each estimate will have its own error deviation from a true $\vec{L}_b$ acting on the body:
 \begin{equation}\label{eq:estimate-error}
@@ -795,10 +798,10 @@ V_{_{ABC}}(\vec{q}_e,z_1,\vec{L}_\Delta)=V_{_{IBC}}(\vec{q}_e,z_1)+\frac{1}{2}\v
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1+\frac{1}{2}\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta
+=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1+\frac{1}{2}\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta~~>0,~\forall(\vec{q}_e,z_1,\vec{L}_\Delta)
 \end{equation}
 \end{subequations}
-Where the $3\times 3$ positive symmetric coefficient matrix $\Gamma_L$ is an adaptation gain matrix. Those particular coefficients determine rate at which the system \emph{adapts} to disturbances. To prove stability one starts with the LFC derivative $\dot{V}_{_{ABC}}$:
+Where the $3\times 3$ positive diagonal coefficient matrix $\Gamma_L$ is an adaptation gain matrix. Those particular coefficients determine the rate at which the system \emph{adapts} to disturbances. To prove stability one starts with the LFC derivative $\dot{V}_{_{ABC}}$:
 \begin{equation}
 \dot{V}_{_{ABC}}(\vec{q}_e,z_1,\vec{L}_\Delta)=\dot{V}_{_{IBC}}(\vec{q}_e,~z_1)+\frac{1}{2}\dot{\vec{L}}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta+\frac{1}{2}\vec{L}_\Delta^{~T}\Gamma_L^{-1}\dot{\vec{L}}_\Delta
 \end{equation}
@@ -837,7 +840,7 @@ The decision then needs to be made as to how the disturbance estimate is going t
 \end{equation}
 The disturbance is therefore compensated for and the estimate error is ensured to have asymptotic stability seeing that $V_{_{ABC}}$ is positive definite.
 \begin{equation}\label{eq:abc-asymptotic}
-\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1<\vec{0}~~~~\forall~(\vec{q}_e,z_1,\vec{L}_\Delta)
+\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1~~<0,~\forall~(\vec{q}_e,z_1,\vec{L}_\Delta),~\exists(\Gamma_1,\Gamma_2)>0
 \end{equation}
 Typical stabilizing limits exists from Eq:\ref{eq:abc-asymptotic} but, most importantly:
 \begin{subequations}
@@ -855,14 +858,14 @@ Fig:\ref{fig:disturbance_L} shows how the disturbance observer $\hat{L}$ tracks 
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.7\textwidth]{graphs/disturbance_L}
+\includegraphics[width=0.65\textwidth]{graphs/disturbance_L}
 \vspace{-8pt}
 \caption{Disturbance observer}
 \label{fig:disturbance_L}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.7\textwidth]{graphs/error_LR}
+\includegraphics[width=0.65\textwidth]{graphs/error_LR}
 \vspace{-8pt}
 \caption{Disturbance error deviation $\vec{L}_\Delta$}
 \label{fig:error_LR}
@@ -896,18 +899,18 @@ With that rule substituted into the LFC from Eq:\ref{eq:abc-lfc-deriv}, its deri
 \end{subequations}
 Given that the starting estimate $\hat{L}_0=\vec{0}$ and that the change of disturbance over a single control cycle is going to be small once the approximator has settled; its fair to assume the following:
 \begin{equation}\label{eq:estimator-assumption}
-\underset{t\rightarrow\infty}{\lim}\Delta L'=\big(\hat{L}_{n-1}-\hat{L}_n\big)\rightarrow\Delta L
+\underset{t\rightarrow\infty}{\lim}\vec{L}'_\Delta=\big(\hat{L}_{n-1}-\hat{L}_n\big)\rightarrow\vec{L}_\Delta
 \end{equation}
 Then, it leads to the following LFC derivative which can then prove exponential stability. It clear that a coefficient $\dot{V}_{_{ABC}}\leq-\alpha V_{_{ABC}}$ exists and can be found:
 \begin{equation}
-\dot{V}_{_{ABC}}(\vec{q}_e,z_1,\widetilde{L})=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\Delta L^T\Gamma_L^{-1}\Delta L
+\therefore\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta~~<0,~\forall(\vec{q}_e,z_1,\vec{L}_\Delta),~\exists(\Gamma_1,\Gamma_2,\Gamma_L)>0
 \end{equation}
 The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested in simulation later in Sec:\ref{sec:simulation.disturbance.torque}; the adaptive gain matrix $\Gamma_L$ is something that will similarly need to be designed. For control coefficients a separate optimization loop will be run, later disturbance will be introduced and the adaptive gain will independently be attained and optimized.
 %====================================================
 \section{Position Control}
 \label{sec:control.position}
 %====================================================
-Only two control laws for position control are presented here, the main focus is on attitude controllers derived in the antecedent. The attitude control loop can be stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but due to Coriolis cross-coupling the position loop requires a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented as the reference case. Thereafter an adaptive backstepping controller is derived. Dynamics for the position control loop, Eq:\ref{eq:quaternion-states-acceleration}, includes a coupled angular velocity component.
+Only two control laws for position control are presented here, the main focus is on attitude controllers derived in the antecedent. The attitude control loop can be stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but, due to Coriolis cross-coupling, the position loop requires a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented as the reference case. Thereafter an adaptive backstepping controller is derived. Dynamics for the position control loop, Eq:\ref{eq:quaternion-states-acceleration}, includes a coupled angular velocity component.
 \begin{equation}\label{eq:position-deriv}
 \dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~~\in\mathcal{F}^b
 \end{equation}
@@ -972,7 +975,7 @@ The control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ h
 Then proposing a Lyapunov function candidate:
 \begin{subequations}
 \begin{equation}
-V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\dot{\vec{X}}_e\text{}^Tm_b\dot{\vec{X}}_e~~>0,~\forall(\vec{X}_e,\dot{\vec{X}}_e)
+V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\dot{\vec{X}}_e\text{}^Tm_b\dot{\vec{X}}_e>0~~~\forall(\vec{X}_e,\dot{\vec{X}}_e)
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -998,7 +1001,7 @@ Then calculating the LFC derivative with the PD control law substituted:
 \end{equation}
 \vspace{-8pt}
 \begin{equation}\label{eq:position-pd-stability}
-\therefore\dot{V}_{_{PD}}=-\vec{v}_b\text{}^TK_d\vec{v}_b<0~~~~\forall~(\vec{X}_e,\dot{\vec{X}}_e)
+\therefore\dot{V}_{_{PD}}=-\vec{v}_b\text{}^TK_d\vec{v}_b~~<0,~\forall(\vec{X}_e,\dot{\vec{X}}_e),~\exists(K_d,K_p)>0
 \end{equation}
 \end{subequations}
 The global stability asserted in Eq:\ref{eq:position-pd-stability} holds for $\forall(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e)$, irrespective of the transformation applied in Eq:\ref{eq:4.80a} and Eq:\ref{eq:4.80b}. Global asymptotically stabilizing limits then follow:
@@ -1092,7 +1095,7 @@ V_2(\hat{z}_1,\hat{z}_2)=V_1(\hat{z}_1)+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
+=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2~~>0,~\forall(\hat{z}_1,\hat{z}_2)
 \end{equation}
 \end{subequations}
 Which has a derivative, with $\dot{\hat{z}}_2$ substituted from Eq:\ref{eq:102b}:
@@ -1121,10 +1124,10 @@ An ideal backstepping control law, with the assumption that $\vec{D}_b$ is preci
 \end{equation}
 Making $\dot{V}_2$ negative definite:
 \begin{equation}
-\Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2<0~~~~\forall~(\hat{z}_1,\hat{z}_2)~\text{\&}~\forall~(z_1,\hat{z_2})
+\Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2~~<0,~\forall(\hat{z}_1,\hat{z}_2),~\exists(\Gamma_1,\Gamma_2)>0
 \end{equation}
 \end{subequations}
-Which leads to global asymptotic stability, assuming that the disturbance term $\vec{D}_b$ is known and can be compensated for. In the controller both $\Gamma_1$ \& $\Gamma_2$ are positive symmetric control coefficient matrices to be optimized.
+Which leads to global asymptotic stability, assuming that the disturbance term $\vec{D}_b$ is known and can be compensated for. In the controller both $\Gamma_1$ and $\Gamma_2$ are positive symmetric control coefficient matrices to be optimized.
 \par
 Extending the backstepping rule and proposed LCF to incorporate an adaptive disturbance approximator $\hat{D}$, similar to the attitude controller in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. The approximation leads to an estimate error $\vec{D}_\Delta$, assuming that physical disturbances $\dot{\vec{D}}_b$ are far slower than the control dynamics; $\dot{\vec{D}}_b<<\dot{\hat{D}}$.
 \begin{subequations}
@@ -1143,8 +1146,10 @@ The control law then designs a force, using that disturbance estimate:
 Proposing an LFC extended from the IBC case which includes that disturbance estimate error $\vec{D}_\Delta$ and finding it's derivative:
 \begin{subequations}
 \begin{equation}
-V_{_{ABC}}= V_{_{IBC}}+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta=
-\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta
+V_{_{ABC}}(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta)= V_{_{IBC}}(\hat{z}_1,\hat{z}_2)+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta
+\end{equation}
+\begin{equation}
+=\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta~~>0,~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -1178,7 +1183,7 @@ Then, a self-evident choice for the disturbance update law would be; $\dot{\hat{
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\equiv-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta<0~~~~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta)
+\equiv-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta~~<0,~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta),~\exists(\Gamma_1,\Gamma_2,\Gamma_\Delta)
 \end{equation}
 \end{subequations}
 The force disturbance observer tracks a generalized single axis disturbance as illustrated in Fig:\ref{fig:disturbance_D}. Note that Fig:\ref{fig:example_D} is in \emph{open loop}. An error deviation for the estimation and the true disturbance is plotted in Fig:\ref{fig:error_DR}. A vector wind field and stochastic force fluctuations are included in the disturbance model, later discussed in Sec:\ref{sec:simulation.disturbance.force}.

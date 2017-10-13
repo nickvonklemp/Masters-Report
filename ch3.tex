@@ -778,7 +778,7 @@ Quaternion attitude control and its stability goals are expanded upon subsequent
 Although quaternions are indeed better than their Euler angle parameterized attitde counterpart(s) and lacking the associated singularity, they do contain one caveat. Becuase a quaternion $Q=[q_0~\vec{q}\hspace{2pt}]^T$ represents a body's attitude in $\mathbb{R}^3$ using $\mathbb{R}^4$ there is an infinite coverage of attitude states, \cite{unwinding}. 
 \par
 Each unit quaternion, stemming from Euler-Rodriguez theorem, represents a single Euler-axis rotation of $\theta$ about a unit axis $\hat{u}$ such that:
-\begin{equation}
+\begin{equation}\label{eq:quaternion-euler-axis}
 Q=\begin{bmatrix}
 q_0\\
 \vec{q}
