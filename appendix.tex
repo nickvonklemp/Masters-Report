@@ -585,5 +585,47 @@ It is interesting to note that positive and negative step directions are not sym
 \section{Combined Torque Response Tests}
 \label{app:tau-comb-test}
 %-----------------------------------------------------
+\newpage
 %-----------------------------------------------------
+\section{Controller Disturbance Rejection}
+\label{app:disturbance}
 %-----------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/PD_Diagonal_Trajectory_dist}
+\caption{Diagonal Proportional Derivative Controller}
+\label{fig:app-attitude-pd-dist}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/XPD_Trajectory_dist}
+\caption{Auxilliary Plant Controller}
+\label{fig:app-attitude-xpd-dist}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/IBC_Trajectory_dist}
+\caption{Ideal Backstepping Controller}
+\label{fig:app-attitude-ibc-dist}
+\end{subfigure}
+\caption{Disturbances on Attitude Controllers}
+\end{figure}
+\par
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/PD_Position_Trajectory_dist}
+\caption{Proportional Derivative Controller}
+\label{fig:app-position-pd-dist}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/IBC_Position_Trajectory_dist}
+\caption{Ideal Backstepping Controller}
+\label{fig:app-position-ibc-dist}
+\end{subfigure}
+\caption{Disturbances on Position Controllers}
+\end{figure}

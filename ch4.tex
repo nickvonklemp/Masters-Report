@@ -433,7 +433,7 @@ From Lyapunov stability theorem there then exists the limits for \emph{local} as
 \end{subequations}
 Hence the quaternion error stabilizes $Q_e\rightarrow[1~\vec{0}\hspace{3pt}]^{T}$ as $t\rightarrow\infty$. The stability shown in Eq:\ref{eq:pd-local-stability} is only local; introducing plant dependent compensation to the PD control law in Eq:\ref{eq:independent-pd} alleviates the stringent requirements on assumptions 1 through 3. Obviously compensation terms are \emph{state estimates} and so a small degree of uncertainty exists (stability is discussed in Sec:\ref{subsec:simulation.comparison.attitude}):
 \begin{equation}\label{eq:dependent-pd}
-\vec{\tau}_{_{PD}}=\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q+K_d\vec{\omega}_e+K_p\vec{q}_e
+\vec{\tau}_{_{PD}}=\underbrace{Independent}{K_p\vec{q}_e+K_d\vec{\omega}_e}+\underbrace{Compensation}{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}
 \end{equation}
 The resultant stability proof for the plant dependent case Eq:\ref{eq:dependent-pd} is much the same as that for the independent controller, Eq:\ref{eq:independent-pd}. The same LFC from Eq:\ref{eq:lyapunov-pd} shows that Eq:\ref{eq:pd-local-stability} holds globally:
 \begin{equation}\label{eq:dependent-global-stability}
@@ -737,7 +737,7 @@ As such $\vec{q}_e\rightarrow 0$ \& $q_0\rightarrow 1$ as $t\rightarrow\infty$. 
 \underset{t\rightarrow\infty}{\lim}(\Gamma_1\vec{q}_e-\vec{\omega}_b)=\vec{0}
 \end{equation} 
 Because the quaternion error vector already tends to $0$;$~\vec{q}_e\rightarrow \vec{0}$, it follows that $\vec{\omega}_b\rightarrow \vec{0}$ as well. It can also be said that, from the definition of $\vec{\omega}_e$, that the angular velocity error stabilizes too. There is a distinct similarity in the structure of $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc} and that of the auxiliary PD controller presented in Eq:\ref{eq:control-aux-pd}. Expanding $\vec{\tau}_{_{XPD}}$ into state terms using the definitions of each auxiliary plant, $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$:
-\begin{equation}
+\begin{equation}\label{eq:simplified-auxpd}
 \vec{\tau}_{_{XPD}}=\big(\Gamma_1\Gamma_2+\Gamma_3\big)\vec{q}_e-\Gamma_2\vec{\omega}_b-\frac{\Gamma_1J_b(u)}{2}([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3})\vec{\omega}_b
 \end{equation}
 Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof is proposed in the sequel. Recalling Eq:\ref{eq:4.34}:
@@ -779,19 +779,17 @@ Whilst stabilizing, the IBC controller is not globaly stable. The plant conditio
 \subsubsection{Adaptive Backstepping Controller}
 \label{subsubsec:control.attitude.nonlinear.adaptivebackstep}
 %====================================================
-Considering only a lumped uncertainty/disturbance term for the adaptive case and assuming state dependent uncertainty can be included in such a term. Adding that term, a lumped $\vec{L}_b$ in the body frame, into the angular acceleration dynamics:
+A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a non-linear control system to the influence of unwanted disturbances; \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Considering only a lumped uncertainty/disturbance term for the adaptive case and assuming state dependent uncertainty can be included in such a term.A lumped $\vec{L}_b$., in the body frame, is then added into the angular acceleration dynamics:
 \begin{equation}
-\dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}_b+\vec{\tau}_{_{ABC}}\big)
+\dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}_b+\vec{\tau}_{_{ABC}}\big)~~~~\in\mathcal{F}^{b}
 \end{equation}
-Unmodelled disturbances act as external torques on Eq:\ref{eq:newton}. Obviously plant modeling errors and disturbances could simply be compensated for in the control law; $-\vec{L}_b$. However, it is difficult to approximate disturbances without any \emph{apriori} knowledge about of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth which that noise occurs in, the same cannot be said for wind disturbances or payload variations\ldots
+Unmodelled disturbances act as external torques on the Lagrangian in Eq:\ref{eq:newton.b}. Plant modelling errors and disturbances could simply be compensated for in the control law; $-\vec{L}_b$. It is, however, practically difficult to estimate disturbances without any \emph{apriori} knowledge about of its properties. Noise compensation in sensors can be done easily due to the known frequency bandwidth within which that noise occurs; the same cannot be said for wind disturbances or payload variations\ldots
 \par
-An approximate disturbance estimation, $\hat{L}$, is used for that compensation in the designed control torque $\vec{\tau}_{_{ABC}}$. Each estimate will have its own error deviation from a true $\vec{L}_b$ acting on the body:
+An approximate disturbance observer, $\hat{L}$, is used for that compensation in the designed control torque $\vec{\tau}_{_{ABC}}$. Each estimate will have its own error deviating from the physical $\vec{L}_b$ acting on the vehicle:
 \begin{equation}\label{eq:estimate-error}
 \vec{L}_\Delta=\vec{L}_b-\hat{L}
 \end{equation}
-Adaptive backstepping control aims to introduce that estimate error into an LFC and develop a derivative term for $\dot{\hat{L}}$, or a \emph{disturbance update law}, to asymptotically stabilize the estimate error. Typically, disturbance update rules are the primary contribution for satellite and generalized attitude control research papers.
-\par
-The estimate error is then introduced to an LFC extended from the IBC case in Eq:\ref{eq:ibc-lfc}:
+Adaptive backstepping control introduces that observer's estimate error into an LFC to develop a derivative term for $\dot{\hat{L}}$, or a \emph{disturbance update law}, to asymptotically stabilize the estimate error. Typically, disturbance update rules are the primary contribution for satellite and generalized attitude control research papers, the statistical nature of disturbance approximation is a subject for another project. That estimate error, $\vec{L}_\Delta$ is then introduced to an LFC derived from the IBC case (previously in Eq:\ref{eq:ibc-lfc}):
 \begin{subequations}
 \begin{equation}
 V_{_{ABC}}(\vec{q}_e,z_1,\vec{L}_\Delta)=V_{_{IBC}}(\vec{q}_e,z_1)+\frac{1}{2}\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta
@@ -801,26 +799,26 @@ V_{_{ABC}}(\vec{q}_e,z_1,\vec{L}_\Delta)=V_{_{IBC}}(\vec{q}_e,z_1)+\frac{1}{2}\v
 =\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1+\frac{1}{2}\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta~~>0,~\forall(\vec{q}_e,z_1,\vec{L}_\Delta)
 \end{equation}
 \end{subequations}
-Where the $3\times 3$ positive diagonal coefficient matrix $\Gamma_L$ is an adaptation gain matrix. Those particular coefficients determine the rate at which the system \emph{adapts} to disturbances. To prove stability one starts with the LFC derivative $\dot{V}_{_{ABC}}$:
+Where $\Gamma_L$ is the positive $3\times 3$ positive adaptation gain matrix. That gain determines the rate at which the system \emph{adapts} to disturbances. The stability proof starts with the LFC rate $\dot{V}_{_{ABC}}$:
 \begin{equation}
 \dot{V}_{_{ABC}}(\vec{q}_e,z_1,\vec{L}_\Delta)=\dot{V}_{_{IBC}}(\vec{q}_e,~z_1)+\frac{1}{2}\dot{\vec{L}}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta+\frac{1}{2}\vec{L}_\Delta^{~T}\Gamma_L^{-1}\dot{\vec{L}}_\Delta
 \end{equation}
-Recalling the definition of $\vec{L}_\Delta$ from Eq:\ref{eq:estimate-error}. For its derivative $\dot{\vec{L}}_\Delta$ it is reasonable to assume the rate at which the physical disturbance $\vec{L}$ changes is significantly slower than that of the control system, or that $\dot{\vec{L}}_b<<\dot{\hat{L}}$. Then it follows:
+Recalling the definition of $\vec{L}_\Delta$ from Eq:\ref{eq:estimate-error}, for its derivative $\dot{\vec{L}}_\Delta$ it is reasonable to assume the rate at which the physical disturbance $\vec{L}$ changes is significantly slower than that of the control system, or that $\dot{\vec{L}}_b<<\dot{\hat{L}}$. The following approximation is then asserted:
 \begin{equation}
-\dot{\vec{L}}_\Delta=\dot{\vec{L}}_b-\dot{\hat{L}}\approx\vec{0}-\dot{\hat{L}}=-\dot{\hat{L}}
+\dot{\vec{L}}_\Delta=\dot{\vec{L}}_b-\dot{\hat{L}}\approx\vec{0}-\dot{\hat{L}}=-\dot{\hat{L}}\Big|_{\dot{\vec{L}}\approx\vec{0}}
 \end{equation}
-Substituting that estimation error rate back into the derivative $\dot{V}_{_{ABC}}$ yields:
+Substituting that estimation error rate back into the LFC derivative $\dot{V}_{_{ABC}}$ yields:
 \begin{subequations}
 \begin{multline}\label{eq:abc-lfc-deriv}
 \dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)+z_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
 \\
 -J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}_b+\vec{\tau}_{_{ABC}}\big)\bigg)-\vec{L}_\Delta^{~T}\Gamma_L^{-1}\dot{\hat{L}}
 \end{multline}
-Note that the physical disturbance term, $\vec{L}_b$, is included in  Eq:\ref{eq:abc-lfc-deriv}. Extending the ideal back stepping control law, $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc}, to include a disturbance \emph{estimate} $\hat{L}$:
+Note that the physical disturbance term, $\vec{L}_b$, is included in  Eq:\ref{eq:abc-lfc-deriv}. Extending the ideal back stepping control law, $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc}, to include a disturbance \emph{estimate} $\hat{L}$ compensation term:
 \begin{multline}
 \vec{\tau}_{_{ABC}}=J_b(u)\Big(\big(\Gamma_1\Gamma_2+1\big)\vec{q}_e-\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e\Big)+\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q-\hat{L}~~~~\in\mathcal{F}^b
 \end{multline}
-Turbulence torques, $\vec{L}_b$, act in the body frame and require no reference frame transformation. Further note that the control law compensates for disturbances with an estimate term. The energy function's derivative, $\dot{V}_{_{ABC}}$, then reduces to:
+Turbulence torques, $\vec{L}_b$, act in the body frame and so require no reference frame transformation. Noting the control law compensates for disturbances with an estimate term. The energy function's derivative, $\dot{V}_{_{ABC}}$, then reduces to:
 \begin{equation}
 \dot{V}_{_{ABC}}=\dot{V}_{_{IBC}}-z_1\text{}^TJ_b^{-1}(u)\Big(\vec{L}_b-\hat{L}\Big)-\vec{L}_\Delta^{~T}\Gamma_L^{-1}\dot{\hat{L}}
 \end{equation}
@@ -840,9 +838,9 @@ The decision then needs to be made as to how the disturbance estimate is going t
 \end{equation}
 The disturbance is therefore compensated for and the estimate error is ensured to have asymptotic stability seeing that $V_{_{ABC}}$ is positive definite.
 \begin{equation}\label{eq:abc-asymptotic}
-\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1~~<0,~\forall~(\vec{q}_e,z_1,\vec{L}_\Delta),~\exists(\Gamma_1,\Gamma_2)>0
+\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1~~<0,~\forall~(\vec{q}_e,z_1,\vec{L}_\Delta),~\exists(\Gamma_1,\Gamma_2,\Gamma_L)>0
 \end{equation}
-Typical stabilizing limits exists from Eq:\ref{eq:abc-asymptotic} but, most importantly:
+The typical stabilizing limits exists from Eq:\ref{eq:abc-asymptotic} can be drawn but most importantly the disturbance observer estimation error is stabilized:
 \begin{subequations}
 \begin{equation}
 \underset{t\rightarrow\infty}{\lim}\vec{L}_{\Delta}\rightarrow \vec{0}
@@ -852,86 +850,61 @@ Typical stabilizing limits exists from Eq:\ref{eq:abc-asymptotic} but, most impo
 \therefore\underset{t\rightarrow\infty}{\lim}\hat{L}\rightarrow\vec{L}_b
 \end{equation}
 \end{subequations}
-Fig:\ref{fig:disturbance_L} shows how the disturbance observer $\hat{L}$ tracks a \emph{generalized} (single channel) turbulence acting in openloop on a rigid body. A moderate damping is applied to the estimate when compared to the true disturbance; producing a small error, shown Fig:\ref{fig:error_LR}. Note that the example shown in \ref{fig:example_L} contains no attitude steps or trajectory changes. The nature of torque disturbances, the observer and adaptive controller performances are expanded on in Sec:\ref{sec:simulation.disturbnace}.
+Fig:\ref{fig:disturbance_L} shows how the disturbance observer $\hat{L}$ approximates a (single axis) torque turbulence acting the vehicle in \emph{steady state}. A moderate damping manifests on the estimate in relationto the physical disturbance; resulting in an error shown Fig:\ref{fig:error_LR}. The example shown in \ref{fig:example_L} contains no attitude steps or trajectory changes. The torque turbulence, the observer and the adaptive controller's performance is detailed later in Sec:\ref{sec:simulation.disturbnace}.
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.65\textwidth]{graphs/disturbance_L}
+\includegraphics[width=0.8\textwidth]{graphs/disturbance_L}
 \vspace{-8pt}
-\caption{Disturbance observer}
+\caption{Torque disturbance observer}
 \label{fig:disturbance_L}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.65\textwidth]{graphs/error_LR}
+\includegraphics[width=0.8\textwidth]{graphs/error_LR}
 \vspace{-8pt}
-\caption{Disturbance error deviation $\vec{L}_\Delta$}
+\caption{Torque disturbance error deviation $\vec{L}_\Delta$}
 \label{fig:error_LR}
 \end{subfigure}
 \vspace{-6pt}
 \caption{Adaptive disturbance observer example}
 \label{fig:example_L}
+\vspace{-25pt}
 \end{figure}
-\par
-However, no further conclusions can be drawn on that stability in Eq:\ref{eq:abc-asymptotic}. A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a non-linear control system to the influence of unwanted disturbances; \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Alternatively, the previous disturbance estimate $\vec{L}_b\equiv\hat{L}_{n-1}$ could be used, such that:
-\begin{subequations}
-\begin{equation}
-\vec{L}_\Delta'\triangleq\vec{L}_b-\hat{L}\equiv(\hat{L}_{n-1}-\hat{L}_n)
-\end{equation}
-Then proposing a $1^{\text{st}}$ order approximation update rule for $\dot{\hat{L}}$ to replace Eq:\ref{eq:asymptotic-disturbance}:
-\begin{equation}
-\dot{\hat{L}}=-\Gamma_LJ_b^{-1}z_1+\vec{L}_\Delta'
-\end{equation}
-\vspace{-12pt}
-\begin{equation}
-=-\Gamma_L\Gamma_1J_b^{-1}(u)\vec{q}_e+\Gamma_LJ_b^{-1}(u)\vec{\omega}_b+(\hat{L}_{n-1}-\hat{L}_n)
-\end{equation}
-With that rule substituted into the LFC from Eq:\ref{eq:abc-lfc-deriv}, its derivative becomes:
-\begin{equation}
-\therefore\dot{V}_{_{ABC}}'=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\vec{L}_\Delta^{~T}\Gamma_L^{-1}\big(\hat{L}_{n-1}-\hat{L}_n\big)
-\end{equation}
-\vspace{-12pt}
-\begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta'
-\end{equation}
-\end{subequations}
-Given that the starting estimate $\hat{L}_0=\vec{0}$ and that the change of disturbance over a single control cycle is going to be small once the approximator has settled; its fair to assume the following:
-\begin{equation}\label{eq:estimator-assumption}
-\underset{t\rightarrow\infty}{\lim}\vec{L}'_\Delta=\big(\hat{L}_{n-1}-\hat{L}_n\big)\rightarrow\vec{L}_\Delta
-\end{equation}
-Then, it leads to the following LFC derivative which can then prove exponential stability. It clear that a coefficient $\dot{V}_{_{ABC}}\leq-\alpha V_{_{ABC}}$ exists and can be found:
-\begin{equation}
-\therefore\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-\vec{L}_\Delta^{~T}\Gamma_L^{-1}\vec{L}_\Delta~~<0,~\forall(\vec{q}_e,z_1,\vec{L}_\Delta),~\exists(\Gamma_1,\Gamma_2,\Gamma_L)>0
-\end{equation}
-The assumption in Eq:\ref{eq:estimator-assumption} is going to need to be tested in simulation later in Sec:\ref{sec:simulation.disturbance.torque}; the adaptive gain matrix $\Gamma_L$ is something that will similarly need to be designed. For control coefficients a separate optimization loop will be run, later disturbance will be introduced and the adaptive gain will independently be attained and optimized.
 %====================================================
 \section{Position Control}
 \label{sec:control.position}
 %====================================================
-Only two control laws for position control are presented here, the main focus is on attitude controllers derived in the antecedent. The attitude control loop can be stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but, due to Coriolis cross-coupling, the position loop requires a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented as the reference case. Thereafter an adaptive backstepping controller is derived. Dynamics for the position control loop, Eq:\ref{eq:quaternion-states-acceleration}, includes a coupled angular velocity component.
+Only two plant dependent position control laws are derived here, attitude control is the primary focus. The attitude control loop is stabilized independently from the position loop (Eq:\ref{eq:quaternion-states-angular} and Eq:\ref{eq:quaternion-states-acceleration}) but the Coriolis cross-coupling, from Eq:\ref{eq:states.b}, means the position loop first needs a stable attitude before being stabilized itself. A simple Proportional-Derivative structure is presented first as the reference case. Thereafter an ideal backstepping control which is extended to an adaptive control law is derived. Recalling the dynamics for translational acceleration from Eq:\ref{eq:quaternion-states-acceleration}:
 \begin{equation}\label{eq:position-deriv}
 \dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{F}_\mu(u)\big)~~~~[\text{m.s}^{-2}],~~\in\mathcal{F}^b
 \end{equation}
-Where $\vec{G}_b$ is the gravitational acceleration in the body frame. Given the standard operating conditions of a quadrotor (App:\ref{app:equations.standard}) it is typically assumed that $\vec{\omega}_b\approx\vec{0}$ or that inherent angular velocity coupled dynamics are negligible; $\vec{\omega}_b\times m\vec{v}_b\approx 0$. If the plant model is known or atleast approximated with a relative degree of certainty, it is easy to compensate for those dynamics rather than making assumptions about their influence on the system. That plant dependency can be compensated for in the designed control force $\vec{F}_\mu(u)$. 
+Reiterating that the Coriolis acceleration term $-\vec{\omega_b}\times m_b\vec{v}_b$ is what couples the position loop to the attitude plant. Noting that $\vec{G}_b$ is the gravitational acceleration transformed to the body frame. Furthermore most texts assume that under standard operating conditions (App:\ref{app:equations.standard}) angular velocity is small if not negligible; $\vec{\omega}_b\approx\vec{0}$. Such an approximation makes the coupled Coriolis term assumed to be insignificant; $\vec{\omega}_b\times m\vec{v}_b\approx 0$. 
 \par
-The translational velocity, $\vec{v}_b$, defined in the body frame is related to the inertial position rates through a quaternion transformation:
+If the plant's state is known, or atleast estimated with a relative degree of certainty, it is easy to compensate for those dynamics rather than making assumptions about their influence on the system. Such an introduced plant dependency can be compensated for in the designed control force $\vec{F}_\mu(u)$. The translational velocity, $\vec{v}_b$, defined in the body frame is related to the inertial position rates through a quaternion transformation:
 \begin{equation}
 \dot{\vec{\mathcal{E}}}_b=Q_b\otimes\vec{v}_b\otimes Q_b^*~~~~[\text{m.s}^{-1}],~~\in\mathcal{F}^I
 \end{equation}
-The difference in reference frames is an important distinction between the position and attitude control loops. Position error is calculated purely as a subtractive term:
+The difference in reference frames is an important distinction between the position and attitude state equations. Position error is calculated purely as a subtractive term from a particular setpoint $\vec{\mathcal{E}}_d$:
 \begin{equation}
-\vec{\mathcal{E}}_e=\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b(t)~~~~[\text{m}],~~\in\mathcal{F}^I
+\vec{\mathcal{E}}_e=\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b~~~~[\text{m}],~~\in\mathcal{F}^I
 \end{equation}
-With $\vec{\mathcal{E}}_d$ being some position setpoint from the trajectory generation block. The translational velocity error can be similarly calculated but, in the same way that the angular velocity setpoint is $\vec{\omega}_d=\vec{0}$, the desired translational velocity is zero.
-\begin{equation}
-\dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b(t)=-\dot{\vec{\mathcal{E}}}_b(t)\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
-\end{equation}
-The objective for position setpoint tracking is analogous to that of the attitude setpoint tracking. In particular the aim is to produce a stabilizing control law that ensures the position tracking error asymptotically tends to $\vec{0}$:
+The translational position rate error $\dot{\vec{\mathcal{E}}}_b(t)$, \emph{not velocity error}, can be similarly calculated but, in the same way. In this case both position rate and velocity setpoints are zero, $\dot{\vec{\mathcal{E}}}_d=\vec{v}_d=\vec{0}$.
 \begin{subequations}
 \begin{equation}
-\vec{F}_\mu(u)=g\Big(\vec{\mathcal{E}}_d,\dot{\vec{\mathcal{E}}}_d,\vec{\mathcal{E}}_b(t),\dot{\vec{\mathcal{E}}}_b(t)\Big)=g(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e)~~~~[\text{N}],~~\in\mathcal{F}^b
+\dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b=-\dot{\vec{\mathcal{E}}}_b\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}~~~~\in\mathcal{F}^{I}
+\end{equation}
+\vspace{-12pt}
+\begin{equation}
+\therefore \vec{v}_e = Q_b^*\otimes\big(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b\big)\otimes Q_b = -\vec{v}_b~~~~\in\mathcal{F}^{b}
+\end{equation}
+\end{subequations}
+Position setpoint aims is to produce a stabilizing control law $g(\vec{\mathbf{x}}_e,t)$ that ensures the position tracking error asymptotically tends to $\vec{0}$. Or more formally that:
+\begin{subequations}
+\begin{equation}
+\vec{F}_\mu(u)=g\Big(\vec{\mathcal{E}}_d,\dot{\vec{\mathcal{E}}}_d,\vec{\mathcal{E}}_b,\dot{\vec{\mathcal{E}}}_b,t\Big)=g(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e,t)~~~~[\text{N}],~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -942,17 +915,17 @@ The objective for position setpoint tracking is analogous to that of the attitud
 \subsection{PD Controller}
 \label{subsec:control.position.pd}
 %==================================================== 
-Starting with a simple PD structure to use for reference. The plant dependent controller designs the net force proportional to both the position error and the first derivative velocity error:
+Starting with a simple Proportional-Derivative controller to be used for the reference case. Plant dependent control designs the net force proportional to both the position error and the first derivative velocity error:
 \begin{subequations}\label{eq:position-pd}
 \begin{equation}
-\vec{F}_{_{PD}}=K_p\vec{\mathcal{E}}_e+K_d\dot{\vec{\mathcal{E}}}_e+\vec{\omega}_b\times m_b\vec{v}_b-m\vec{G}_b~~~~\in\mathcal{F}^b
+\vec{F}_{_{PD}}=K_p\vec{\mathcal{E}}_e+K_d\dot{\vec{\mathcal{E}}}_e+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
 =K_p\big(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b\big)-K_d\big(\dot{\vec{\mathcal{E}}}_b\big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b\Big|_{\dot{\vec{\mathcal{E}}}_e=-\dot{\vec{\mathcal{E}}}_b}
 \end{equation}
 \end{subequations}
-The stability proof requires that error states are transformed to the body frame $\mathcal{F}^b$, such that the control input and error states all act in a common frame. Defining an error state $\vec{X}_e$:
+The stability proof requires that error states are transformed to the body frame $\mathcal{F}^b$, such that the control input and error states all act in a common frame. Defining a position error state $\vec{X}_e$ transformed to the body frame:
 \begin{subequations}
 \begin{equation}\label{eq:4.80a}
 \vec{X}_e\triangleq Q_b\otimes(\vec{\mathcal{E}}_d-\vec{\mathcal{E}}_b)\otimes Q_b^*=\vec{X}_d-\vec{X}_b~~~~\in\mathcal{F}^{b}
@@ -962,17 +935,17 @@ Recalling the difference between position rates and translational velocity in Eq
 \dot{\vec{X}}_e\triangleq Q_b\otimes(\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b)\otimes Q_b^*=-Q_b\otimes\dot{\vec{\mathcal{E}}}_b\otimes Q_b^* = -\vec{v}_b\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}
 \end{equation}
 \end{subequations}
-The control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ has arguments $\vec{\mathcal{E}},\dot{\vec{\mathcal{E}}}\in\mathcal{F}^I$, which are transformed:
+The control law from Eq:\ref{eq:position-pd}, despite being $\in\mathcal{F}^b$ has arguments $\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e\in\mathcal{F}^I$, which are substituted with the transformed position error $\vec{X}e$:
 \begin{subequations}
 \begin{equation}
-\vec{F}_{_{PD}}=K_p\vec{X}_e + K_d\dot{\vec{X}}_e + \vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b
+\vec{F}_{_{PD}}=K_p\vec{X}_e + K_d\dot{\vec{X}}_e + \vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
 =K_p\vec{X}_e-K_d\vec{v}_b+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b
 \end{equation}
 \end{subequations}
-Then proposing a Lyapunov function candidate:
+Then proposing a positive definite Lyapunov function candidate:
 \begin{subequations}
 \begin{equation}
 V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\dot{\vec{X}}_e\text{}^Tm_b\dot{\vec{X}}_e>0~~~\forall(\vec{X}_e,\dot{\vec{X}}_e)
@@ -982,7 +955,7 @@ V_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\
 =\frac{1}{2}\vec{X}_e\text{}^TK_p\vec{X}_e+\frac{1}{2}\vec{v}_b\text{}^Tm_b\vec{v}_b\Big|_{\dot{\vec{X}}_e=-\vec{v}_b}
 \end{equation}
 \end{subequations}
-Then calculating the LFC derivative with the PD control law substituted:
+Calculating that LFC's derivative $\dot{V}_{_{PD}}$ with the PD control law substituted:
 \begin{subequations}
 \begin{equation}
 \dot{V}_{_{PD}}(\vec{X}_e,\dot{\vec{X}}_e)=\vec{X}_e\text{}^TK_p\dot{\vec{X}}_e+\vec{v}_b\text{}^Tm_b\dot{\vec{v}}_b
@@ -1022,7 +995,7 @@ The global stability asserted in Eq:\ref{eq:position-pd-stability} holds for $\f
 \subsection{Adaptive Backstepping Controller}
 \label{subsec:control.position.bacstepping}
 %====================================================
-An adaptive backstepping algorithm, similar to the ABC controller previously in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}, is now applied to position control. The disturbance term, $\vec{D}\in\mathcal{F}^b$, introduced to the position state differential Eq:\ref{eq:position-deriv}, represents any unmodelled lumped drag \emph{and} wind forces encountered by the body. The backstepping iterations for the position control loop first need to stabilize the position error and only thereafter compensate those disturbances (solving for \emph{IBC} then adding adaptiveness).
+An adaptive backstepping algorithm, analogue to the adaptive controller previously in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}, is now applied to position control. The disturbance term, $\vec{D}\in\mathcal{F}^b$, introduced to the position state differential Eq:\ref{eq:position-deriv}, represents any unmodelled lumped drag \emph{and} wind forces encountered by the vehicle in flight. Backstepping iterations for the position control loop first need to stabilize the position error and only thereafter compensate those disturbances (solving for \emph{IBC} then adding adaptivity).
 \begin{equation}
 \dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)~~~~\in\mathcal{F}^b
 \end{equation}
@@ -1074,7 +1047,7 @@ The first stabilizing velocity function, $\gamma_d$, and its associated error, $
 \therefore \vec{v}_b=\Gamma_1\hat{z}_1-\hat{z}_2
 \end{equation}
 \end{subequations}
-Which changes the first LFC such that:
+Changing that first LFC with variable substitution such that:
 \begin{equation}
 V_1=-\hat{z}_1^T\vec{v}_b=-\hat{z}_1^T\Gamma_1\hat{z}_1+\hat{z}_1^T\hat{z}_2
 \end{equation}
@@ -1101,7 +1074,7 @@ V_2(\hat{z}_1,\hat{z}_2)=V_1(\hat{z}_1)+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2
 Which has a derivative, with $\dot{\hat{z}}_2$ substituted from Eq:\ref{eq:102b}:
 \begin{subequations}
 \begin{equation}
-\dot{V}_2(\hat{z}_1,\hat{z}_2)=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2
+\dot{V}_2(\hat{z}_1,\hat{z}_2)=\dot{V}_1(\hat{z}_1)+\hat{z}_2\text{}^T\dot{\hat{z}}_2=\hat{z}_1\text{}^T\dot{\hat{z}}_1+\hat{z}_2\text{}^T\dot{\hat{z}}_2
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -1127,18 +1100,16 @@ Making $\dot{V}_2$ negative definite:
 \Rightarrow \dot{V}_{_{IBC}}=\dot{V}_2=-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2~~<0,~\forall(\hat{z}_1,\hat{z}_2),~\exists(\Gamma_1,\Gamma_2)>0
 \end{equation}
 \end{subequations}
-Which leads to global asymptotic stability, assuming that the disturbance term $\vec{D}_b$ is known and can be compensated for. In the controller both $\Gamma_1$ and $\Gamma_2$ are positive symmetric control coefficient matrices to be optimized.
-\par
-Extending the backstepping rule and proposed LCF to incorporate an adaptive disturbance approximator $\hat{D}$, similar to the attitude controller in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. The approximation leads to an estimate error $\vec{D}_\Delta$, assuming that physical disturbances $\dot{\vec{D}}_b$ are far slower than the control dynamics; $\dot{\vec{D}}_b<<\dot{\hat{D}}$.
+Which leads to global asymptotic stability, assuming that the disturbance term $\vec{D}_b$ is known and can be compensated for. In the controller both $\Gamma_1$ and $\Gamma_2$ are positive symmetric control coefficient matrices to be optimized. Extending the backstepping rule and proposed LFC to incorporate an adaptive disturbance approximator $\hat{D}$, similar to the attitude controller in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. The approximation leads to an estimate error $\vec{D}_\Delta$, assuming that physical disturbances $\dot{\vec{D}}_b$ are far slower than the control dynamics; $\dot{\vec{D}}_b<<\dot{\hat{D}}$.
 \begin{subequations}
 \begin{equation}
 \vec{D}_\Delta=\vec{D}_b-\hat{D}~~~~\in\mathcal{F}^b
 \end{equation}
-\vspace{-12pt}
+\vspace{-16pt}
 \begin{equation}
-\therefore\dot{\vec{D}}_\Delta=\dot{\vec{D}}_b-\dot{\hat{D}}\approx\vec{0}-\dot{\hat{D}}=-\dot{\hat{D}}
+\therefore\dot{\vec{D}}_\Delta=\dot{\vec{D}}_b-\dot{\hat{D}}\approx\vec{0}-\dot{\hat{D}}=-\dot{\hat{D}}\Big|_{\dot{\vec{D}}_b\approx\vec{0}}
 \end{equation}
-The control law then designs a force, using that disturbance estimate:
+The control law then designs a force, using that disturbance observer $\hat{D}$:
 \begin{equation}
 \vec{F}_{_{ABC}}=m_b\big(\hat{z}_1-\Gamma_1\vec{v}_b+\Gamma_2\hat{z}_2\big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b-\hat{D}~~~~\in\mathcal{F}^b
 \end{equation}
@@ -1148,6 +1119,7 @@ Proposing an LFC extended from the IBC case which includes that disturbance esti
 \begin{equation}
 V_{_{ABC}}(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta)= V_{_{IBC}}(\hat{z}_1,\hat{z}_2)+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta
 \end{equation}
+\vspace{-14pt}
 \begin{equation}
 =\frac{1}{2}\hat{z}_1\text{}^T\hat{z}_1+\frac{1}{2}\hat{z}_2\text{}^T\hat{z}_2+\frac{1}{2}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta~~>0,~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta)
 \end{equation}
@@ -1159,7 +1131,7 @@ Then substituting derivatives for $\dot{\hat{z}}_2$ and $\dot{\vec{D}}_\Delta$:
 \begin{equation}
 =-\hat{z}_1^T\Gamma_1\hat{z}_1+\hat{z}_2^T\bigg(\hat{z}_1-\Gamma_1\vec{v}_b-m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+m_b\vec{G}_b+\vec{D}_b+\vec{F}_{_{ABC}}\big)\bigg)-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\hat{D}}
 \end{equation}
-\vspace{-8pt}
+\vspace{-10pt}
 \begin{equation}
 =-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1+\hat{z}_2\text{}^T\bigg(-\Gamma_2\hat{z}_2-m_b^{-1}\big(\vec{D}_b-\hat{D}\big)\bigg)-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\hat{D}}
 \end{equation}
@@ -1168,46 +1140,46 @@ Then substituting derivatives for $\dot{\hat{z}}_2$ and $\dot{\vec{D}}_\Delta$:
 =-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-m_b^{-1}\hat{z}_2^T\vec{D}_\Delta-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\dot{\hat{D}}
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:4.105g}
 =-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-m_b^{-1}\vec{D}_\Delta^{~T}\Gamma_D^{-1}\big(\Gamma_D\hat{z}_2+\dot{\hat{D}}\big)
 \end{equation}
 \end{subequations}
-Then, a self-evident choice for the disturbance update law would be; $\dot{\hat{D}}=-m^{-1}\Gamma_D\hat{z}_2$, which would ensure asymptotic stability. Expanding on that, an interesting solution which could potentially enforce exponential stability would be to use $\hat{D}_{n-1}$ as a disturbance estimate:
+Then, a self-evident choice for the disturbance update law would be; $\dot{\hat{D}}=-m^{-1}\Gamma_D\hat{z}_2$, which ensures asymptotic stability. Substituting that into the LFC derivative Eq:\ref{eq:4.105g} produces:
 \begin{subequations}
-\begin{equation}
-\dot{\hat{D}}=-m_b^{-1}\Gamma_D\hat{z}_2+(\hat{D}_{n-1}-\hat{D}_n)
+\begin{equation}\label{eq:abc-asymptotic-position}
+\dot{\hat{D}}=-m_b^{-1}\Gamma_D\hat{z}_2=-m_b^{-1}\Gamma_D\Big(\Gamma_1\hat{z}_1-\vec{v}_b\Big)
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-\therefore\dot{V}_{_{ABC}}=-\hat{z}_1\text{}^T\Gamma_1\hat{z}-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\big(\hat{D}_{n-1}-\hat{D}_n\big)
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
-\equiv-\hat{z}_1\text{}^T\Gamma_1\hat{z}_1-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2-\vec{D}_\Delta^{~T}\Gamma_D^{-1}\vec{D}_\Delta~~<0,~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta),~\exists(\Gamma_1,\Gamma_2,\Gamma_\Delta)
+\therefore\dot{V}_{_{ABC}}=-\hat{z}_1\text{}^T\Gamma_1\hat{z}-\hat{z}_2\text{}^T\Gamma_2\hat{z}_2~~<0,~\forall(\hat{z}_1,\hat{z}_2,\vec{D}_\Delta),~\exists(\Gamma_1,\Gamma_2,\Gamma_\Delta)
 \end{equation}
 \end{subequations}
-The force disturbance observer tracks a generalized single axis disturbance as illustrated in Fig:\ref{fig:disturbance_D}. Note that Fig:\ref{fig:example_D} is in \emph{open loop}. An error deviation for the estimation and the true disturbance is plotted in Fig:\ref{fig:error_DR}. A vector wind field and stochastic force fluctuations are included in the disturbance model, later discussed in Sec:\ref{sec:simulation.disturbance.force}.
+\par
 \begin{figure}[hbtp]
-\vspace{-6pt}
+\vspace{-14pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.7\textwidth]{graphs/disturbance_L}
+\includegraphics[width=0.8\textwidth]{graphs/disturbance_D}
 \vspace{-8pt}
-\caption{Disturbance observer}
+\caption{Force disturbance observer}
 \label{fig:disturbance_D}
 \end{subfigure}
+\vspace{-26pt}
+\end{figure}
+\newpage
+\begin{figure}[htbp]\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.7\textwidth]{graphs/error_LR}
+\includegraphics[width=0.8\textwidth]{graphs/error_LR}
 \vspace{-8pt}
-\caption{Disturbance error deviation $\vec{D}_\Delta$}
+\caption{Force disturbance error deviation $\vec{D}_\Delta$}
 \label{fig:error_DR}
 \end{subfigure}
 \vspace{-6pt}
 \caption{Adaptive disturbance observer example}
 \label{fig:example_D}
-\vspace{-16pt}
+\vspace{-10pt}
 \end{figure}
 \par
-Similarly for the suggested exponentially stable adaptive backstepping controller for the attitude plant, using $\hat{D}_{n-1}$ for an existing disturbance estimate will need to be simulated in order to ascertain if it's a suitable conjecture (Sec:\ref{sec:simulation.disturbance.force})\ldots
+The disturbance observer tracks a general single axis directional force disturbance as illustrated in Fig:\ref{fig:disturbance_D}. The disturbance is a combined fluctuating wind force and vector field; the model of which is later described in Sec:\ref{subsec:simulation.disturbance.force}. Note that Fig:\ref{fig:example_D} tracks an \emph{open loop} disturbance on a vehicle stabilized steady state. An estimation error for the deviation from the physical disturbance is plotted in Fig:\ref{fig:error_DR}. Again there is a damping between the physical and approximated forces; no new state information is used to estimate signals in both Fig:\ref{fig:disturbance_L} and Fig:\ref{fig:disturbance_D} for attitude and position disturbances respectively. Adaptive observers in Eq:\ref{eq:abc-asymptotic} and Eq:\ref{eq:abc-asymptotic-position} simply introduce additional free parameters to the control loop\ldots
