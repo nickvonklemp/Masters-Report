@@ -560,7 +560,7 @@ Performance of each position step was another ITAE integral of the position erro
 \vec{\zeta}_{\mathcal{E}}=C_{X}\int_{t=0}^{15}t|\vec{X}_e(t)|.dt+C_{v}\int_{t=0}^{15}t|\vec{v}_e(t)|.dt
 \end{equation}
 Weighting coefficients $C_X$ and $C_v$ priorities position and velocity errors respectively, but were both weighted equally such that $C_X=C_v=1$. Each swarm was tested 91 times and the resultant cost of Eq:\ref{eq:position-performance} was averaged for an overall performance metric. Only plant dependent compensating controllers were optimized for the position control loop. To compare the relative performance of position controllers a constant step test was applied in both cases:
-\begin{equation}
+\begin{equation}\label{eq:position-step}
 \vec{\mathcal{E}}_d=\begin{bmatrix}
 X_d\\
 Y_d\\
@@ -863,6 +863,57 @@ The position adaptive backstepping controller then tracks the inertial frame tra
 \section{Allocation Tests}
 \label{sec:simulation.allocator}
 %====================================================
+The various allocation rules, as described in Ch:\ref{ch:allocation}, implement virtual control inputs to solve for explicit actuator positions. The abstraction applied to achieve an affine relationship required for inversion allocation, below in Eq:\ref{}, meant that actuator transfer rates were independent from the allocation rule applied.
+\begin{subequations}\label{eq:allocator-test}
+\begin{equation}\label{eq:allocator-test.a}
+\vec{\nu}_c=B'(\vec{\mathbf{x}},t)u=\begin{bmatrix}
+\mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3}\\
+[\vec{L}_1]_\times & [\vec{L}_2]_\times & [\vec{L}_3]_\times & [\vec{L}_4]_\times
+\end{bmatrix}
+\begin{bmatrix}
+\vec{T}_1\\
+\ldots\\
+\vec{T}_4
+\end{bmatrix}
+\end{equation}
+\par
+\begin{equation}
+u\cdot i = \begin{bmatrix}
+\Omega_i & \lambda_i & \alpha_i
+\end{bmatrix}^T = R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~\text{for}~i\in[1:4]
+\end{equation}
+\end{subequations}
+The transfer rate at which physically commanded inputs implement virtually designed control inputs, $\vec{\nu}_c\rightarrow\vec{\nu}_d$, is affected by the thrust version equation $R^\dagger(\vec{\mathbf{x}},t)$, not allocation rules $B'(\vec{\mathbf{x}},t)$. The consequence of this is that, in the context of actuator transfer rates, each allocation rule performed almost identically. Inversion solutions, Eq:\ref{eq:allocation-quadratic}, solve for quadratic least squares actuator positions. That means that each $|\vec{T}_i|$  within the $\mathbb{R}^{1\times 12}$ matrix $|\vec{F}|$ is minimized. The solution is an actuator cost efficient one. In general, psuedo inversion, wieghted and norm inversion each stem from Eq:\ref{eq:inversion}: 
+\begin{subequations}
+\begin{equation}
+\underset{\in\mathbb{U}}{u}=(\mathbb{I}_{m\times m}-CB(\vec{\mathbf{x}},t)\big)u_p+C\vec{\nu}_d
+\end{equation}
+\vspace{-10pt}
+\begin{equation}
+C=W^{-1}B^T(\vec{\mathbf{x}},t)\big(B(\vec{\mathbf{x}},t)W^{-1}B^T(\vec{\mathbf{x}},t)\big)^{-1}
+\end{equation}
+\end{subequations}
+A pseudo inversion allocation solves for $\vec{F}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. A combined attitude \emph{and} position step, Eq:\ref{eq:attitude-step-position} and Eq:\ref{eq:position-step} setpoints respectively, in Fig:\ref{} shows the reference case to be improved on. Recalling the combined setpoint:
+\begin{equation}
+\vec{\mathbf{x}}_d=\begin{bmatrix}
+\vec{\mathcal{E}}_d\\
+Q_d
+\end{bmatrix}
+=
+\begin{bmatrix}
+\begin{bmatrix}
+7.5 & 4 & 3
+\end{bmatrix}^T\\
+\begin{bmatrix}
+-0.3254 & 0.2226 & -0.2579 & 0.8821
+\end{bmatrix}
+\end{bmatrix}
+\end{equation}
+
+\begin{figure}
+
+\end{figure}
+
 
 
 To test the allocator rules proposed
