@@ -864,6 +864,30 @@ The position adaptive backstepping controller then tracks the inertial frame tra
 \label{sec:simulation.allocator}
 %====================================================
 
+
+To test the allocator rules proposed
+\begin{equation}
+\vec{\nu}_p=\begin{bmatrix}
+\vec{F}_p\\
+\vec{\tau}_p
+\end{bmatrix}
+=
+\begin{bmatrix}
+\begin{bmatrix}
+0\\
+0\\
+15.45
+\end{bmatrix}
+&
+\begin{bmatrix}
+0.00025\\
+0.00050\\
+-0.0189
+\end{bmatrix}
+\end{bmatrix}^T
+\end{equation}
+% F =  2.38779714407545e-07      -1.2106031378062e-06          15.4478103392678
+% T = 0.00024647394508733      0.000504691904223978       -0.0189404174320111
 %====================================================
 \section{Input Saturation}
 \label{sec:simulation.saturation}
