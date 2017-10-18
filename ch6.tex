@@ -624,7 +624,7 @@ K_p = \begin{bmatrix}
 0 & 0 & 3.8698
 \end{bmatrix}
 \end{equation}
-The inertial position step has a response shown in Fig:\ref{fig:PD_Position_Step}, stepping from the initial position to the setpoint described in Eq:\ref{eq:attitude-step-position}. The position settles in $t_{95}=4.6824~[\text{s}]$ without any overshoot. Not shown but still considered is the effect a step has on the attitude plant, which still remained stable at the origin. Because the attitude setpoint is $Q_d=[1~\vec{0}]^T$, most of the force requirement in Fig:\ref{fig:PD_Position_Force} is to oppose the gravitational downward force acting on the body.
+The inertial position step has a response shown in Fig:\ref{fig:PD_Position_Step}, stepping from the initial position to the setpoint described in Eq:\ref{eq:attitude-step-position}. The position settles in $t_{95}=4.007~[\text{s}]$ without any overshoot. Not shown but still considered is the effect a step has on the attitude plant, which still remained stable at the origin. Because the attitude setpoint is $Q_d=[1~\vec{0}]^T$, most of the force requirement in Fig:\ref{fig:PD_Position_Force} is to oppose the gravitational downward force acting on the body.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{\textwidth}
@@ -734,7 +734,7 @@ The optimized gain coefficients for $\Gamma_1$ and $\Gamma_2$ were then produced
 \caption{Position Backstepping Controller}
 \end{figure}
 \par
-Fig:\ref{fig:IBC_Position_Step} shows the step response to a change in translational position setpoint. Note that the position plotted in Fig:\ref{fig:IBC_Position_Step} is the relative position in the inertial frame $\mathcal{F}^{I}$. The Ideal Backstepping controller settles in $t_{95}=3.1057~[\text{s}]$, showing the improvement exponential stability applies to the asymptotic stability achieved by a PD controller previously\ldots
+Fig:\ref{fig:IBC_Position_Step} shows the step response to a change in translational position setpoint. Note that the position plotted in Fig:\ref{fig:IBC_Position_Step} is the relative position in the inertial frame $\mathcal{F}^{I}$. The Ideal Backstepping controller settles in $t_{95}=2.987~[\text{s}]$, showing the improvement exponential stability applies to the asymptotic stability achieved by a PD controller previously\ldots
 \par
 It is not unexpected that with faster settling times greater input control requirements, the virtual and commanded input forces in Fig:\ref{fig:IBC_Position_Force} are far greater than those previously in Fig:\ref{fig:PD_Position_Force}. For the most part the velocity step in Fig:\ref{fig:IBC_Position_Velocity} follows a smooth rate change.
 %====================================================
@@ -863,7 +863,7 @@ The position adaptive backstepping controller then tracks the inertial frame tra
 \section{Allocation Tests}
 \label{sec:simulation.allocator}
 %====================================================
-The various allocation rules, as described in Ch:\ref{ch:allocation}, implement virtual control inputs to solve for explicit actuator positions. The abstraction applied to achieve an affine relationship required for inversion allocation, below in Eq:\ref{}, meant that actuator transfer rates were independent from the allocation rule applied.
+The various allocation rules, as described in Ch:\ref{ch:allocation}, implement virtual control inputs to solve for explicit actuator positions. Each of the allocators tested here were done so with basic position and attitude PD controllers. The abstraction applied to achieve an affine relationship required for inversion allocation, below in Eq:\ref{eq:allocator-test}, meant that actuator transfer rates were independent from the allocation rule applied.
 \begin{subequations}\label{eq:allocator-test}
 \begin{equation}\label{eq:allocator-test.a}
 \vec{\nu}_c=B'(\vec{\mathbf{x}},t)u=\begin{bmatrix}
@@ -889,15 +889,15 @@ The transfer rate at which physically commanded inputs implement virtually desig
 \underset{\in\mathbb{U}}{u}=(\mathbb{I}_{m\times m}-CB(\vec{\mathbf{x}},t)\big)u_p+C\vec{\nu}_d
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:allocation-inversion-eq}
 C=W^{-1}B^T(\vec{\mathbf{x}},t)\big(B(\vec{\mathbf{x}},t)W^{-1}B^T(\vec{\mathbf{x}},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-A pseudo inversion allocation solves for $\vec{F}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. A combined attitude \emph{and} position step, Eq:\ref{eq:attitude-step-position} and Eq:\ref{eq:position-step} setpoints respectively, in Fig:\ref{} shows the reference case to be improved on. Recalling the combined setpoint:
+A combined attitude \emph{and} position step, Eq:\ref{eq:attitude-step-position} and Eq:\ref{eq:position-step} setpoints are used to compare each allocation rule. A pseudo inversion allocator is used as the reference case to which subsequent allocator algorithms are evaluated against. Recalling both position and attitude (in Euler angles $\vec{\eta}_d$ not quaternions $Q_d$):
 \begin{equation}
 \vec{\mathbf{x}}_d=\begin{bmatrix}
 \vec{\mathcal{E}}_d\\
-Q_d
+\vec{\eta}_d
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -905,19 +905,34 @@ Q_d
 7.5 & 4 & 3
 \end{bmatrix}^T\\
 \begin{bmatrix}
--0.3254 & 0.2226 & -0.2579 & 0.8821
-\end{bmatrix}
+-142 & 167 & -45
+\end{bmatrix}^T
+\end{bmatrix}~~~~\begin{bmatrix}
+[\text{m}]\\
+[\text{\textdegree}]
 \end{bmatrix}
 \end{equation}
-
-\begin{figure}
-
+A pseudo inversion allocation solves for $\vec{F}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step response. The combined attitude and position step response for a pseudo inverse allocator, $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} plants in $t_{95}=5.6233~[\text{s}]$ from the state step. 
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/pseudo_inverse_attitude}
+\caption{Attitude Step}
+\label{fig:pseudo_inverse_attitude}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/pseudo_inverse_position}
+\caption{Position Step}
+\label{fig:pseudo_inverse_position}
+\end{subfigure}
+\caption{Pseudo-Inverse step response}
+\label{fig:pseudo-inverse-step}
 \end{figure}
-
-
-
-To test the allocator rules proposed
-\begin{equation}
+\par
+The preferred allocator positions, described in Sec:\ref{subsec:allocation.allocators.norminverse}, are hovering conditions defined both in the inertial and body frames, $\mathcal{F}^{I}$ and $\mathcal{F}^{b}$. At steady state with attitude at the origin, $Q_d=[1~\vec{0}]^T$; the controller commands the virtual control input:
+\begin{equation}\label{eq:hover-actuator}
 \vec{\nu}_p=\begin{bmatrix}
 \vec{F}_p\\
 \vec{\tau}_p
@@ -925,25 +940,239 @@ To test the allocator rules proposed
 =
 \begin{bmatrix}
 \begin{bmatrix}
-0\\
-0\\
-15.45
+0&0&15.45
+\end{bmatrix}^T
+\\
+\begin{bmatrix}
+0.25&
+0.50&
+-1.89
+\end{bmatrix}^T
+\end{bmatrix}~~~~\begin{bmatrix}
+[\text{N}]\\
+[\text{N.mm}]
+\end{bmatrix}^T~~~~\in\mathcal{F}^{b,I}
+\end{equation}
+The small amount of control torque applied in Eq:\ref{eq:hover-actuator} about the $\hat{Z}$ axis is to compensate for net gravitational torque from the eccentric center of gravity and resultant aerodynamic torque $\vec{\tau}_Q$ from the propellers rotational velocity. Applying the pseudo inversion allocator rule to the preferred input $\vec{\nu}_p$ gives the following actuator positions which effect hovering conditions:
+\begin{subequations}\label{eq:preffered-hover-inertia}
+\begin{equation}
+u_p=B^\ddagger(\mathbf{x},t)\vec{\nu}_p=\begin{bmatrix}
+T_{1x}&T_{1Y}&T_{1Z}&\ldots~\ldots&T_{4x}&T_{4y}&T_{4z}
+\end{bmatrix}
+\end{equation}
+\vspace{-24pt}
+\begin{equation}
+=\begin{bmatrix}
+\begin{bmatrix}
+0.00 & -0.02 & 3.86
+\end{bmatrix} 
+&
+\begin{bmatrix}
+0.02 & 0 & 3.86
 \end{bmatrix}
 &
 \begin{bmatrix}
-0.00025\\
-0.00050\\
--0.0189
+0 & 0.02 & 3.86
 \end{bmatrix}
-\end{bmatrix}^T
+&
+\begin{bmatrix}
+-0.02 & 0 & 3.86
+\end{bmatrix}
+\end{bmatrix}^T~~~~[\text{N}]
 \end{equation}
-% F =  2.38779714407545e-07      -1.2106031378062e-06          15.4478103392678
-% T = 0.00024647394508733      0.000504691904223978       -0.0189404174320111
+\end{subequations}
+Testing the same attitude and position setpoint steps, but using preferred hovering actuator conditions relative to the inertial frame (illustrated in Fig:\ref{fig:hover-inertial}) produces a response shown in Fig:\ref{fig:inertial-norm-step}. The plant settle in $t_{95}=5.617~[\text{s}]$ with a practically identical to the pseudo-inverse case presented in Fig:\ref{fig:pseudo-inverse-step}.
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/inertial_norm_attitude}
+\caption{Attitude Step}
+\label{fig:inertial_norm_attitude}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/inertial_norm_position}
+\caption{Position Step}
+\label{fig:inertia_norm_position}
+\end{subfigure}
+\caption{Inertial hover preferred actuator step response}
+\label{fig:inertial-norm-step}
+\end{figure}
+\par
+Transforming the hovering conditions in Eq:\ref{eq:hover-actuator} from the inertial frame to the body frame is applied through the following transformation:
+\begin{equation}
+\vec{\nu}_p\text{}\hspace{-2pt}'=\begin{bmatrix}
+Q_b\otimes\vec{F}_p\otimes Q_b^*\\
+Q_b\otimes\vec{\tau}_p\otimes Q_b^*
+\end{bmatrix}~~~~\in\mathcal{F}^{b}
+\end{equation}
+\newpage
+The hovering conditions are then a function of the body's attitude. However, because the control plant only tracks first order setpoints the control plant's response then always tends towards stability at each controller interval. As a result the control law always aims at tending towards hovering conditions. Again the plant settles in roughly the same time, $t_{95}=5.614~[\text{s}]$, with a response shown in Fig:\ref{fig:body-norm-step}.
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/body_norm_attitude}
+\caption{Attitude Step}
+\label{fig:body_norm_attitude}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/body_norm_position}
+\caption{Position Step}
+\label{fig:body_norm_position}
+\end{subfigure}
+\caption{Body frame hover preferred actuator step response}
+\label{fig:body-norm-step}
+\end{figure}
+\par
+The weighted actuator allocation rule, proposed in Sec:\ref{subsec:allocation.allocators.weightedinverse} prioritizes used of different input thrust components in Eq:\ref{eq:allocator-test.a}. The weighting matrix is a $12\times 12$ set of coefficients which affect various allocator inputs as illustrated in Fig:\ref{fig:weighted-matrix}. In order to reduce slack and ensure setpoint tracking, being the primary control objective, was achieved, each weighting coefficient row and column needed to sum to unity. It was suggested that coefficients were selected based on optimization as per the penalty function Eq:\ref{eq:actuator-penalty}. In practice the weighting coefficients have no bearing on the input plant settling time for each actuator module; to demonstrate a weighted actuator case the following weighting matrix was used for $C=W^{-1}B^T(B.W^{-1}.B^T)^{-1}$ from Eq:\ref{eq:allocation-inversion-eq}:
+\begin{equation}
+W\triangleq
+\begin{bmatrix}
+\begin{bmatrix}
+72 & 9 & 9\\
+9 & 72 & 9\\
+9 & 9 & 72
+\end{bmatrix}
+&
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+&
+\begin{bmatrix}
+8 & 1 & 1\\
+1 & 8 & 1\\
+1 & 1 & 8
+\end{bmatrix}
+&
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+\\
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+&
+\begin{bmatrix}
+72 & 9 & 9\\
+9 & 72 & 9\\
+9 & 9 & 72
+\end{bmatrix}
+&
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+&
+\begin{bmatrix}
+8 & 1 & 1\\
+1 & 8 & 1\\
+1 & 1 & 8
+\end{bmatrix}
+\\
+\begin{bmatrix}
+8 & 1 & 1\\
+1 & 8 & 1\\
+1 & 1 & 8
+\end{bmatrix}
+&
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+&
+\begin{bmatrix}
+72 & 9 & 9\\
+9 & 72 & 9\\
+9 & 9 & 72
+\end{bmatrix}
+&
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+\\
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+&
+\begin{bmatrix}
+8 & 1 & 1\\
+1 & 8 & 1\\
+1 & 1 & 8
+\end{bmatrix}
+&
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+&
+\begin{bmatrix}
+72 & 9 & 9\\
+9 & 72 & 9\\
+9 & 9 & 72
+\end{bmatrix}
+\end{bmatrix}\times 10^{-3}
+\end{equation}
+The response in Fig:\ref{fig:weighted-inverse-step} shows the difference between each of the above allocation rules is small if not negligible, the final weighted inversion allocator settles in $t_{95}=5.618$. The inversion based allocator's requirement for an affine effectiveness relationship meant that actuator transfer functions were separated from the allocation block\ldots
+\begin{figure}[hbtp]
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/weighted_inverse_attitude}
+\caption{Attitude Step}
+\label{fig:weighted_inverse_attitude}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{graphs/weighted_inverse_position}
+\caption{Position Step}
+\label{fig:weighted_inverse_position}
+\end{subfigure}
+\caption{Weighted actuator allocation step response}
+\label{fig:weighted-inverse-step}
+\end{figure}
+\par
+Because of the requirements that each allocator still meets the slack variable requirements of setpoint tracking, each allocator's performance is much of the same. The 12 produced thrust component inputs are within a margin of error effectively the same accross each allocation rule\ldots
 %====================================================
 \section{Input Saturation}
 \label{sec:simulation.saturation}
 %====================================================
-
+The introduction of a rotational limit to the actuating servos was a design decision made previously in Sec:\ref{subsec:proto.design.transfer}. The $\pm 90\text{\textdegree}$ limit on the servos is something which can easily be solved by altering the design to incorporate continuous rotation actuators. The standard state setpoint step used thus far \emph{does not} command any of the actuators beyond their rotational limits, neither does the applied trajectory tracking loop. Alternatively, the following state setpoint is used:
+\begin{equation}
+\vec{\mathbf{x}}_d\text{}\hspace{-2pt}'=
+\begin{bmatrix}
+\vec{\mathcal{E}}_d\text{}\hspace{-2pt}'\\
+\vec{\eta}_d\text{}\hspace{-2pt}'
+\end{bmatrix}
+=\begin{bmatrix}
+\begin{bmatrix}
+7.5 & 4 & 3
+\end{bmatrix}^T
+\begin{bmatrix}
+-142 & 35 & -45
+\end{bmatrix}^T
+\end{bmatrix}
+~~~~\begin{bmatrix}
+[\text{m}]\\
+[\text{\textdegree}]
+\end{bmatrix}
+\end{equation}
+The attitude setpoint, $\vec{\eta}_d\text{}\hspace{-2pt}'$, commands each servo beyond their rotational limit. Fig:\ref{} shows the commanded positions of each of the 8 servos \emph{without} the rotational hard limit.
 %====================================================
 \section{State Estimation}
 \label{sec:simulation.state}

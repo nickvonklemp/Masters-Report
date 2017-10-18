@@ -95,6 +95,7 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {6.11}{\ignorespaces Position setpoint workspace\relax }}{131}{figure.caption.95}}
 \newlabel{fig:position-setpoint}{{6.11}{131}{Position setpoint workspace\relax }{figure.caption.95}{}}
 \newlabel{eq:position-performance}{{6.26}{131}{Position Controllers}{equation.6.4.26}{}}
+\newlabel{eq:position-step}{{6.27}{131}{Position Controllers}{equation.6.4.27}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}PD}{131}{subsection.6.4.1}}
 \newlabel{subsec:simulation.position.pd}{{6.4.1}{131}{PD}{subsection.6.4.1}{}}
 \newlabel{eq:simulation-attitde-pd-diagonal-coefficients}{{6.29}{131}{PD}{equation.6.4.29}{}}
@@ -146,13 +147,40 @@
 \newlabel{sec:simulation.allocator}{{6.7}{137}{Allocation Tests}{section.6.7}{}}
 \newlabel{eq:allocator-test}{{6.38}{137}{Allocation Tests}{equation.6.7.38}{}}
 \newlabel{eq:allocator-test.a}{{6.38a}{137}{Allocation Tests}{equation.6.7.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.8}Input Saturation}{138}{section.6.8}}
-\newlabel{sec:simulation.saturation}{{6.8}{138}{Input Saturation}{section.6.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.9}State Estimation}{138}{section.6.9}}
-\newlabel{sec:simulation.state}{{6.9}{138}{State Estimation}{section.6.9}{}}
+\newlabel{eq:allocation-inversion-eq}{{6.39b}{138}{Allocation Tests}{equation.6.7.2}{}}
+\newlabel{fig:pseudo_inverse_attitude}{{6.20a}{138}{Attitude Step\relax }{figure.caption.106}{}}
+\newlabel{sub@fig:pseudo_inverse_attitude}{{a}{138}{Attitude Step\relax }{figure.caption.106}{}}
+\newlabel{fig:pseudo_inverse_position}{{6.20b}{138}{Position Step\relax }{figure.caption.106}{}}
+\newlabel{sub@fig:pseudo_inverse_position}{{b}{138}{Position Step\relax }{figure.caption.106}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.20}{\ignorespaces Pseudo-Inverse step response\relax }}{138}{figure.caption.106}}
+\newlabel{fig:pseudo-inverse-step}{{6.20}{138}{Pseudo-Inverse step response\relax }{figure.caption.106}{}}
+\newlabel{eq:hover-actuator}{{6.41}{138}{Allocation Tests}{equation.6.7.41}{}}
+\newlabel{eq:preffered-hover-inertia}{{6.42}{139}{Allocation Tests}{equation.6.7.42}{}}
+\newlabel{fig:inertial_norm_attitude}{{6.21a}{139}{Attitude Step\relax }{figure.caption.107}{}}
+\newlabel{sub@fig:inertial_norm_attitude}{{a}{139}{Attitude Step\relax }{figure.caption.107}{}}
+\newlabel{fig:inertia_norm_position}{{6.21b}{139}{Position Step\relax }{figure.caption.107}{}}
+\newlabel{sub@fig:inertia_norm_position}{{b}{139}{Position Step\relax }{figure.caption.107}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.21}{\ignorespaces Inertial hover preferred actuator step response\relax }}{139}{figure.caption.107}}
+\newlabel{fig:inertial-norm-step}{{6.21}{139}{Inertial hover preferred actuator step response\relax }{figure.caption.107}{}}
+\newlabel{fig:body_norm_attitude}{{6.22a}{140}{Attitude Step\relax }{figure.caption.108}{}}
+\newlabel{sub@fig:body_norm_attitude}{{a}{140}{Attitude Step\relax }{figure.caption.108}{}}
+\newlabel{fig:body_norm_position}{{6.22b}{140}{Position Step\relax }{figure.caption.108}{}}
+\newlabel{sub@fig:body_norm_position}{{b}{140}{Position Step\relax }{figure.caption.108}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.22}{\ignorespaces Body frame hover preferred actuator step response\relax }}{140}{figure.caption.108}}
+\newlabel{fig:body-norm-step}{{6.22}{140}{Body frame hover preferred actuator step response\relax }{figure.caption.108}{}}
+\newlabel{fig:weighted_inverse_attitude}{{6.23a}{141}{Attitude Step\relax }{figure.caption.109}{}}
+\newlabel{sub@fig:weighted_inverse_attitude}{{a}{141}{Attitude Step\relax }{figure.caption.109}{}}
+\newlabel{fig:weighted_inverse_position}{{6.23b}{141}{Position Step\relax }{figure.caption.109}{}}
+\newlabel{sub@fig:weighted_inverse_position}{{b}{141}{Position Step\relax }{figure.caption.109}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.23}{\ignorespaces Weighted actuator allocation step response\relax }}{141}{figure.caption.109}}
+\newlabel{fig:weighted-inverse-step}{{6.23}{141}{Weighted actuator allocation step response\relax }{figure.caption.109}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.8}Input Saturation}{141}{section.6.8}}
+\newlabel{sec:simulation.saturation}{{6.8}{141}{Input Saturation}{section.6.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.9}State Estimation}{141}{section.6.9}}
+\newlabel{sec:simulation.state}{{6.9}{141}{State Estimation}{section.6.9}{}}
 \@setckpt{ch6}{
-\setcounter{page}{139}
-\setcounter{equation}{40}
+\setcounter{page}{142}
+\setcounter{equation}{45}
 \setcounter{enumi}{3}
 \setcounter{enumii}{4}
 \setcounter{enumiii}{0}
@@ -166,7 +194,7 @@
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{19}
+\setcounter{figure}{23}
 \setcounter{table}{0}
 \setcounter{r@tfl@t}{0}
 \setcounter{Item}{9}
@@ -181,13 +209,13 @@
 \setcounter{mdf@env@ii}{0}
 \setcounter{mdf@zref@counter}{0}
 \setcounter{ContinuedFloat}{0}
-\setcounter{subfigure}{0}
+\setcounter{subfigure}{2}
 \setcounter{subtable}{0}
 \setcounter{tikztiming@nrows}{0}
 \setcounter{tikztimingrows}{0}
 \setcounter{tikztimingtrans}{0}
 \setcounter{tikztimingtranspos}{0}
-\setcounter{parentequation}{39}
+\setcounter{parentequation}{42}
 \setcounter{theorem}{0}
 \setcounter{corollary}{0}
 \setcounter{section@level}{0}
