@@ -33,7 +33,7 @@ Such that the controlled plant is asymptotically stabilizing or that $\lim_{t\ri
 The body's trajectory is then fully described by $\vec{\mathbf{x}}(t)$. Separate control laws are developed for attitude and position tracking and hence those states are not combined in the context of this control project. However for the purposes of describing the control plant, a single major loop is considered.
 \par
 Because of the plant's overactuatedness the control loop is split into two blocks; first a higher level \emph{set-point tracking} controller designs a virtual control input $\vec{\nu}_d$. That being net forces $\vec{F}_d$ and torques $\vec{\tau}_d$ to act on the body. A lower level \emph{allocator} then solves for explicit actuator positions from $\vec{\nu}_d$ to physically actuate that \emph{virtual} control input. The actuator set then implements a commanded control input $\vec{\nu}_c$ through its effectiveness function (Eq:\ref{eq:dynamic-plant-inputs})
-\begin{equation}
+\begin{equation}\label{eq:control-effectiveness}
 \vec{\nu}_c=B(\vec{\mathbf{x}},u,t)
 \end{equation}
 The allocator solves for actuator values $u\in\mathbb{U}$ such that $\vec{\nu}_c\rightarrow\vec{\nu}_d$. That allocation function, $B^\dagger$, can be \emph{roughly} referred to as the effectiveness inverse:

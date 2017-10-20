@@ -7,26 +7,27 @@
 \section{Simulator description}
 \label{sec:simulation.block}
 %====================================================
-The proposed attitude and position control laws, together with the system dynamic equations of motion including each actuator's transfer function, were all tested in simulation to determine a particular controller's efficacy. The rigid-body equations of motion from Sec:\ref{subsec:dynamics.rigidbody.lagrange}, with non-linearities from Sec:\ref{sec:dynamics.aero} and multi-body responses from Sec:\ref{sec:dynamics.nonlinearities}, were incorporated into a high fidelity simulation environment. Closely matching the dynamics of the physical quadrotor prototype proposed in Sec:\ref{sec:proto.design}; relying on measurement data produced by tests in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} to provide a degree of confidence in the simulations accuracy. The consolidated quaternion dynamics in Sec:\ref{sec:dynamics.model} formed the basis of the simulation; building a loop extended from the control structure in Fig:\ref{fig:control-block}. Each control law is optimized first without the effect of the servo's $180$\textdegree saturation limit. Limiting the servos was a conscientious design decision and as such its effects are investigated in Sec:\ref{sec:simulation.saturation}; but for now servos are considered to be continuous\ldots
+The proposed attitude and position control laws, together with the system dynamic equations of motion including each actuator's transfer function, were all tested in simulation to determine a particular controller's efficacy. The rigid-body equations of motion from Sec:\ref{subsec:dynamics.rigidbody.lagrange}, with non-linearities from Sec:\ref{sec:dynamics.aero} and multi-body responses from Sec:\ref{sec:dynamics.nonlinearities}, were incorporated into a high fidelity simulation environment. Closely matching the dynamics of the physical quadrotor prototype proposed in Sec:\ref{sec:proto.design}; using measurement data produced by tests in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} to provide a degree of confidence in the simulation's accuracy. The consolidated quaternion dynamics in Sec:\ref{sec:dynamics.model} formed the basis of the simulation; building a loop extended from the control structure in Fig:\ref{fig:control-block}. Each control law is optimized first without the effect of the servo's $180$\textdegree saturation limit. Limiting the servos was a conscientious design decision and as such its effects are investigated in Sec:\ref{sec:simulation.saturation}; but for now servos are considered to be continuous\ldots
 \par
 \begin{figure}[htbp]
-\vspace{-12pt}
+\vspace{-10pt}
 \centering
 \includegraphics[width=0.93\textwidth]{figs/simulation-block}
+\vspace{-10pt}
 \caption{Simulation loop}
 \label{fig:simulation-block}
 \end{figure}
-\vspace{-20pt}
+\vspace{-12pt}
 \par
-An abstracted simulation block is illustrated in Fig:\ref{fig:simulation-block}; incorporating both attitude and position control loops together with additive non-linearities derived previously. Certain feedback elements were omitted to retain clarity in the diagram, both Coriolis and Gyroscopic non-linear couplings were included. Not shown is some form of state estimation discretization between the state-tracking output $y=\vec{\mathbf{x}}=[Q_b,~\vec{\mathcal{E}}\hspace{2pt}]^T$ and the feedback state $\hat{x}$ used for setpoint tracking. Those effects are discussed subsequently in Sec:\ref{sec:simulation.state}.
+An abstracted simulation loop is illustrated in Fig:\ref{fig:simulation-block}; incorporating both attitude and position control loops together with the additive non-linearities. Certain feedback elements were omitted to retain clarity in the diagram, both Coriolis and Gyroscopic non-linear couplings were included. Not shown is some form of state-estimation discretization between the state-tracking output $y=\vec{\mathbf{x}}=[Q_b,~\vec{\mathcal{E}}\hspace{2pt}]^T$ and the feedback state $\hat{\mathbf{x}}$ used for setpoint tracking. Discretized effects of state-estimators are discussed later in Sec:\ref{sec:simulation.state}.
 \par
-Initial conditions for each state integrator, both position and attitude accelerations, $\dot{\vec{v}}_b$ and $\dot{\vec{\omega}}_b$ and their velocities $\dot{\mathcal{E}}$ and $\dot{Q}_b$ respectively, are not illustrated but implied. Obviously starting conditions are important for each trajectory simulation but are explicitly defined for each simulation in question. Actuator transfer functions from Sec:\ref{subsec:proto.design.transfer} are bundled into an $H_{i}(S)$ block to account for the transfer function and saturation effects of each motor module. Each bundled input $u_{1\rightarrow 4}$ is similarly the projected actuator matrix:
+Initial conditions for each state integrator, both position and attitude accelerations, $\dot{\vec{v}}_b$ and $\dot{\vec{\omega}}_b$ and their velocities $\dot{\mathcal{E}}$ and $\dot{Q}_b$ respectively, are not illustrated but implied. Obviously starting conditions are important for each trajectory's simulation but are specifically defined for each simulation in question. Actuator transfer functions from Sec:\ref{subsec:proto.design.transfer} are combined into a bundled $H_{i}(S)$ block, accounting for transfer functions and the saturation limits of each motor module. Each bundled input $u_{1\rightarrow 4}$ is similarly the projected actuator matrix:
 \begin{equation}
 u_{i}=u\cdot i = \begin{bmatrix}
 \Omega_i & \lambda_i & \alpha_i
-\end{bmatrix}
+\end{bmatrix}~~~~\text{for}~i\in[1:4]
 \end{equation}
-Then $\vec{T}_i(S)$ is the resultant thrust vector from a single motor module with a combined MIMO transfer function. Lastly the setpoints for both attitude and position states are either stepped set points or produced from a simple orbital trajectory. The former is used for controller optimization, discussed subsequently, and the latter is used to evaluate the effective net controller performance. To investigate the question of non-zero setpoint tracking an orbital trajectory is simulated, shown in Fig:\ref{fig:trajectory}
+Then $\vec{T}_i(S)$ is the resultant thrust vector from a single motor module with a combined MIMO transfer function. Lastly the setpoints for both attitude and position states are either stepped set points or produced from a simple orbital trajectory. The former is used for controller optimization and the latter is used to evaluate the net setpoint tracking controller performance. To discuss the question of non-zero setpoint tracking an orbital trajectory is simulated; shown in Fig:\ref{fig:trajectory}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.5\textwidth]{figs/trajectory}
@@ -35,18 +36,18 @@ Then $\vec{T}_i(S)$ is the resultant thrust vector from a single motor module wi
 \vspace{-18pt}
 \end{figure}
 \par
-The trajectory's setpoints are exclusively attitude and position targets; the trajectory is independent of actuator values or the aircraft's configuration. For some central point in the inertial frame $\vec{C}_0\in\mathcal{F}^I$, the trajectory orbits at an angular rate of $\dot{\theta}~[\text{Hz}]$ with a height of $\hat{z}_c~[\text{m}]$ at a radius $R~[\text{m}]$ from the center $\vec{C}$. The position setpoint then follows:
+The trajectory's setpoints are only attitude and position targets; a trajectory is entirely independent from actuator values of the aircraft's configuration. For a central point in the inertial frame $\vec{C}_0\in\mathcal{F}^I$, the trajectory orbits at an angular rate of $\dot{\theta}~[\text{Hz}]$ around that center. The orbit is at a height of $\hat{z}_c~[\text{m}]$ and at a radius $R_c~[\text{m}]$ from the center $\vec{C}$. The position setpoint then follows:
 \begin{subequations}
 \begin{equation}
 \vec{\mathcal{E}}_{d}(t)=\begin{bmatrix}
-C_{0x}+R\cos \theta(t)\\
-C_{0y}+R\sin \theta(t)\\
+C_{0x}+R_c\cos \theta(t)\\
+C_{0y}+R_c\sin \theta(t)\\
 \hat{z}_c
 \end{bmatrix}~~~~\in\mathcal{F}^I
 \end{equation}
-Every time varying attitude setpoint is aligned with the normal vector $\hat{n}_d(t)$, pointing away from $\vec{C}_0$:
+The time varying trajectory's attitude setpoint is aligned with a normal vector $\hat{n}_c(t)$, pointing away from the center point $\vec{C}_0$:
 \begin{equation}
-\hat{n}_d(t)\triangleq\frac{\vec{\mathcal{E}}_d(t)-\vec{C}_0}{\sqrt{\hat{z}_c^2+R^2}}
+\hat{n}_c(t)\triangleq\frac{\vec{\mathcal{E}}_d(t)-\vec{C}_0}{\sqrt{\hat{z}_c^2+R_c^2}}
 \end{equation}
 The quaternion setpoint is then constructed such that:
 \begin{equation}
@@ -55,19 +56,19 @@ Q_d(t)=\begin{bmatrix}
 \end{bmatrix}^T
 \end{equation}
 \end{subequations}
-No first order or higher derivative setpoints are applied for the trajectory in Fig:\ref{fig:trajectory}. Both position and attitude rates are respectively $\dot{\vec{\mathcal{E}}}_d(t)=\vec{0}$ and $\dot{Q}_d(t)=\vec{0}$ throughout the trajectory.
+No first order or higher derivative setpoints are applied for the trajectory in Fig:\ref{fig:trajectory}. Both position and attitude rates are respectively $\dot{\vec{\mathcal{E}}}_d(t)=\vec{0}$ and $\dot{Q}_d(t)=\vec{0}$ throughout the entire trajectory.
 %====================================================
 \section{Controller Tuning}
 \label{sec:simulation.tuning}
 %====================================================
-Control derivation and stability shown previously in Ch:\ref{ch:control} demonstrated only a controller's setpoint tracking ability, providing no further insight into the controller coefficient design. Lyapunov stability theorem, in the context of Sec:\ref{sec:control.attitude}-\ref{sec:control.position}, evaluates a particular trajectory's stability over $t\rightarrow\infty$ but nothing more. Often at the coefficient selection stage a \emph{monte carlo} approach is used; in most cases choosing coefficients seemingly at random and haphazardly, without any obvious forethought\ldots 
+Each controller's derivation and stability proven previously in Ch:\ref{ch:control} demonstrated only a control law's setpoint tracking ability; providing no further insight into the controller coefficient design. Lyapunov stability theorem, in the context of Sec:\ref{sec:control.attitude}-\ref{sec:control.position}, evaluates a particular trajectory's stability over $t\rightarrow\infty$ but nothing more. Often at the coefficient selection stage a \emph{monte carlo} approach is used; in most cases choosing coefficients seemingly at random and haphazardly, without any obvious forethought\ldots 
 %====================================================
 \subsection{Partical Swarm Based Optimization}
 \label{subsec:simulation.tuning.pso}
 %====================================================
-Particle swarm based optimization (\emph{PSO}) has been shown in both \cite{adaptivepso} and \cite{autopilotPSO}, amongst others, to be an effective controller coefficient selection tool. The algorithm regards each variable to be optimized as a \emph{particle} which exists within some defined search space. The collection or \emph{swarm} of particles explores the search space directed by both the swarm's previous performance as well as the relative performance between each particle. In \cite{particletrajectories} the statistical nature of the swarm's trajectory is discussed, however such investigations are well beyond the scope of this work.
+Particle swarm based optimization (\emph{PSO}) has been shown in both \cite{adaptivepso} and \cite{autopilotPSO}, amongst others, to be an effective controller coefficient design tool. The algorithm treats each variable to be optimized as a \emph{particle} which exists within some defined search space. The collection or \emph{swarm} of particles explores the search space directed by both the swarm's previous performance as well as the relative performance between each particle. In \cite{particletrajectories} the statistical nature of the swarm's trajectory is discussed, however such investigations are well beyond the scope of this work.
 \par
-In general the PSO algorithm applies a directed and \emph{gradient free} based search of solutions for a given optimization problem. The lack of an explicit gradient is an important distinction which differentiates PSO from other algorithms. Often a predefined gradient function is required to direct the optimization search; MatLab's own Fmincon\cite{fmincon} or Interior-Point optimizer\cite{ipopt} algorithms for example. Interval gradient calculations can be computationally exhaustive and reduce the rate of execution for the entire process. An optimizer's performance is directly proportional to the number of iterations it actually executes, if an iteration has a high degree of complexity it's solution time is then adversely effected.
+In general the PSO algorithm applies a \emph{gradient free} based search of solutions for a given optimization problem. The lack of a specified gradient is an important distinction which differentiates PSO from other algorithms. Often a predefined gradient function is required to direct the optimization search; MatLab's own Fmincon\cite{fmincon} or Interior-Point optimizer\cite{ipopt} algorithms for example. Interval gradient calculations can be computationally exhaustive and reduce the rate of execution for the entire process. An optimizer's performance is directly proportional to the number of iterations it actually executes, if an iteration has a high degree of complexity it's solution time is then adversely effected.
 \par
 The PSO algorithm is defined as follows; if there exists a set $\vec{x}$ of $k$ variables, $\vec{x}\in\mathbb{R}^{k\times 1}$ to be optimized. The swarm of $\vec{x}_n$ particles at the $n^{\text{th}}$ interval is updated as per the velocity function:
 \begin{subequations}
@@ -79,40 +80,44 @@ The PSO algorithm is defined as follows; if there exists a set $\vec{x}$ of $k$ 
 \vec{v}_{n+1}\triangleq w\ast \vec{v}_n+c_1\ast r_1\big(\vec{P}_{best}-\vec{x}_n\big)+c_2\ast r_2\big(\vec{G}_{best}-\vec{x}_n\big)
 \end{equation}
 \end{subequations}
-Each $\ast$ operator in Eq:\ref{eq:swarm-velocity} represents an element-by-element matrix coefficient multiplication operation. Both $\vec{P}_{best}$ and $\vec{G}_{best}$ are previous swarm positions where local and global optima were respectively achieved. Performance of the swarm's current interval is evaluated as per some cost function, responding to a system's dynamics; expanded on next. Finally $r_1$ and $r_2$ are random seeded $\mathbb{R}^{1\times k}$ exploratory matrices which progress the search direction, biased by two weighting coefficients $c_1$ and $c_2$. The search is prejudiced toward local optima by $c_1$ whilst $c_2$ directs the swarm toward global optima. Fig:\ref{fig:swarm-trajectory} illustrates how positions of both local and global optima influence subsequent velocity.
+\par
 \begin{figure}[hbtp]
-\vspace{-12pt}
+\vspace{-14pt}
 \centering
-\includegraphics[width=0.47\textwidth]{figs/swarm-trajectory}
-\vspace{-12pt}
+\includegraphics[width=0.55\textwidth]{figs/swarm-trajectory}
+\vspace{-10pt}
 \caption{Swarm trajectory's velocity direction}
 \label{fig:swarm-trajectory}
+\vspace{-12pt}
 \end{figure}
 \par
-The swarm's performance is evaluated by the response of a dynamic system to a particular swarm's interval position; typically an error deviation away from some desired state. Here, the simulation described in Fig:\ref{fig:simulation-block}, is parsed a swarm of controller coefficients as an argument and the plant's response is simulated over a series of setpoint step tests. Particulars with regards to attitude controller optimization is expanded on in Sec:\ref{sec:simulation.attitude} thereafter position controller optimization is detailed in Sec:\ref{sec:simulation.position}. The object is for setpoint tracking so each swarm's coefficient performance metric calculates an integral-time-absolute-error (\emph{ITAE}) cost, \cite{ITAE}.
+Each $\ast$ operator in Eq:\ref{eq:swarm-velocity} represents an element-by-element matrix coefficient multiplication operation. Both $\vec{P}_{best}$ and $\vec{G}_{best}$ are previous swarm positions where local and global optima were respectively achieved. Performance of the swarm's current interval is evaluated as per some cost function, responding to a system's dynamics; expanded on next. Finally $r_1$ and $r_2$ are random seeded $\mathbb{R}^{1\times k}$ exploratory matrices which progress the search direction, biased by two weighting coefficients $c_1$ and $c_2$. The search is prejudiced toward local optima by $c_1$ whilst $c_2$ directs the swarm toward global optima. Fig:\ref{fig:swarm-trajectory} illustrates how positions of both local and global optima influence subsequent velocity.
+\par
+The swarm's interval performance is evaluated by the response of a dynamic system to the swarm's position;  typically an error deviation away from some desired state. Here, the simulation described in Fig:\ref{fig:simulation-block}, is parsed a swarm of controller coefficients as an argument and the plant's setpoint response is simulated over a series of step tests. Particulars with regards to attitude controller optimization is discussed in Sec:\ref{sec:simulation.attitude} thereafter position controller optimization is detailed in Sec:\ref{sec:simulation.position}. The objective is for zero-error setpoint tracking so each swarm's coefficient performance metric calculates an integral-time-absolute-error (\emph{ITAE}) cost, \cite{ITAE}.
 \begin{equation}
 \vec{\zeta}\triangleq\int_{t_0}^{t_\infty}t|\vec{e}(t)|.dt
 \end{equation}
-With an error $\vec{e}(t)$ deviating from the plant's given setpoint. The ITAE integral is taken over the entire simulation time, an effective $t_\infty$. The time multiplier ensures setpoint error \emph{and} settling time optimality; punishing overshoot and under-damped oscillatory like behaviour.
+With an error $\vec{e}(t)$ deviating from the plant's given setpoint. The ITAE integral is evaluated over the entire simulation time or an effective $t_\infty$. The time multiplier ensures setpoint error \emph{and} settling time optimality; punishing overshoot and under-damped or oscillatory like behaviour.
 \par
 In general a PSO algorithm follows the flow diagram in Fig:\ref{fig:particle-diagram}. Because each controller was empirically proven to be stable independent of it's trajectory; the controller will settle irrespective of the proposed interval coefficient values. A consequence of this is the starting conditions for the swarm, $\vec{x}_0$, have no bearing on the progression of the optimization. A round set of unity coefficients were selected as a starting point for each controller's optimization\ldots
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{figs/particle-diagram}
+\includegraphics[width=0.7\textwidth]{figs/particle-diagram}\vspace{-12pt}
 \caption{Particle swarm flow diagram}
 \label{fig:particle-diagram}
+\vspace{-18pt}
 \end{figure}
 \par
 Termination conditions for the iterative optimization loop either limit the number of iteration cycles performed or break from the process once a result is regarded as sufficiently close to optimal. Each optimization cycle was iterated for $tx=1000$ times, testing and evaluating one thousand different swarm values for a series of stepped setpoints. As the optimizer progressed through iterations it adapted it's bias from a global to local optima, refining the way in which it searched for potential controller coefficients.
 \begin{equation}
-\vec{v}_{n+1}=\vec{v}_n+\frac{tx}{1000}\ast r_1(\vec{P}_{best}-\vec{x}_n)+\frac{1000-tx}{1000}\ast r_2(\vec{G}_{best}-\vec{x}_n)
+\vec{v}_{n+1}=\vec{v}_n+\frac{tx}{1000}\ast r_1(\vec{P}_{best}-\vec{x}_n)+\frac{1000-tx}{1000}\ast r_2(\vec{G}_{best}-\vec{x}_n)~~~~\text{for}~tx\in[1:1000]
 \end{equation}
-This provided each controller an equal opportunity to reach optimality and biased control structures which improved their performance at a faster rate. Moreover each swarm's progression was limited such that it never violated the Lyapunov stability conditions of it's pertinent control law\ldots
+This gave each controller an equal likelihood of reaching optimality. Obviously controllers which improve their performance between each iteration at a faster rate were biased here. Moreover each swarm's progression was limited such that it never violated the Lyapunov stability conditions of it's respective control law\ldots
 %====================================================
 \section{Attitude Controllers}
 \label{sec:simulation.attitude}
 %====================================================
-Attitude controllers derived in Sec:\ref{sec:control.attitude} were optimized first, owing to their independence from the position loop. A constant hovering force condition was simply applied to the virtual plant input $\vec{F}_d$. A pseudo inversion allocator, Sec:\ref{subsec:allocation.allocators.inverse}, was applied to the control loop when testing each attitude controller. To evaluate an individual swarm's performance a number of step tests were performed. Each attitude setpoint was first defined in the Euler angle parametrization, being conceptually easier to visualize. Thereafter the attitude setpoints were converted into a quaternion attitude and applied to the simulation.
+Attitude controllers derived in Sec:\ref{sec:control.attitude} were optimized first, owing to their independence from the position loop. A constant hovering force condition was simply applied to the virtual plant input $\vec{F}_d$ for each test. A pseudo inversion allocator, Sec:\ref{subsec:allocation.allocators.inverse}, was applied to the control loop when testing each attitude controller. To evaluate an individual swarm's performance a number of step tests were performed. Each attitude setpoint was first defined in the Euler angle parametrization, being conceptually easier to visualize. Thereafter the attitude setpoints were converted into a quaternion attitude and applied to the simulation.
 \begin{equation}
 \vec{\eta}_d(t)\triangleq \begin{bmatrix}
 \phi_d(t)&
@@ -120,20 +125,20 @@ Attitude controllers derived in Sec:\ref{sec:control.attitude} were optimized fi
 \psi_d(t)
 \end{bmatrix}^T\underset{Q}{\iff}Q_d(t)
 \end{equation}
-Each of the three Euler angles were stepped in the range $[-90\text{\textdegree}:+90\text{\textdegree}]$ at an interval of $30\text{\textdegree}$. This resulted in a test of 343 possible attitude setpoints; making a workspace sphere as shown in Fig:\ref{fig:attitude-setpoint}. The attitude steps were given $t=15~[\text{s}]$ to reach their settling point, with an initial attitude position always at the origin $Q_b(t_0)=[1~\vec{0}\hspace{2pt}]$, with a \emph{positive} quaternion scalar. The performance metric for each attitude step test was an ITAE integral of quaternion vector and angular velocity errors:
+Each of the three Euler angles were stepped in the range $[-90\text{\textdegree}:+90\text{\textdegree}]$ at an interval of $30\text{\textdegree}$. This resulted in a test of 343 possible attitude setpoints; making a workspace sphere as illustrated in Fig:\ref{fig:attitude-setpoint}. Each attitude step was allowed $t=15~[\text{s}]$ to reach its settling point, with an initial attitude position always set to the origin $Q_b(t_0)=[1~\vec{0}\hspace{2pt}]$, with a \emph{positive} quaternion scalar. The performance for each attitude step test was evaluated by an ITAE integral for the quaternion error vector and angular velocity error:
 \begin{equation}\label{eq:attitude-performance}
 \vec{\zeta}_{Q}=C_Q\int_{t=0}^{15}t|\vec{q}_e(t)|.dt+C_\omega\int_{t=0}^{15}t|\vec{\omega}_e(t)|.dt~~~~\in\mathbb{R}^{3}
 \end{equation}
-Weighting coefficients $C_Q$ and $Q_\omega$ balance priority of either quaternion or angular velocity tracking, however, tracking both were equally important and so those weights were $C_Q=Q_\omega=1$. The cost integral in Eq:\ref{eq:attitude-performance} was averaged over all 343 possible attitude steps to ascertain the overall performance of a proposed set of coefficients.
+Weighting coefficients $C_Q$ and $Q_\omega$ balance priority of either quaternion or angular velocity tracking, however, tracking both were equally important and so those weights were $C_Q=Q_\omega=1$. The cost integral in Eq:\ref{eq:attitude-performance} was averaged over all 343 possible attitude steps to ascertain the overall performance of a proposed swarm of coefficients.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{figs/attitude-setpoint}
+\includegraphics[width=0.65\textwidth]{figs/attitude-setpoint}
 \caption{Attitude setpoint working space}
 \label{fig:attitude-setpoint}
 \end{figure}
 \par
-The integral in Eq:\ref{eq:attitude-performance} produces a vector $\in\mathbb{R}^{3}$ result. Each coefficient in a particular controller contributes towards a local error in one of the $\hat{X},\hat{Y},\hat{Z}$ components, or in certain cases a pair of axial components. Each controller's local errors and the coefficients which affect them are discussed subsequently. A global error for the performance of each controller is simply the magnitude of $\norm{\vec{\zeta}_Q}$. That same global error is applicable to all of the controllers\ldots
-\newpage
+The integral in Eq:\ref{eq:attitude-performance} produces a vector $\in\mathbb{R}^{3}$ result. Each coefficient in a particular controller contributes towards a local error in one of the $\hat{X},\hat{Y},\hat{Z}$ components, or in certain cases a pair of axial components. Each controller's local errors and the coefficients which affect them are discussed subsequently. A global error for the performance of each controller is simply the magnitude $\norm{\vec{\zeta}_Q}$. The same global error is applicable to all controllers\ldots
+\par
 To compare the relative performance and effectiveness of each optimized control structure a single attitude step was investigated. That attitude change was chosen to be a sizeable step in all three Euler angles:
 \begin{equation}\label{eq:attitude-step-position}
 \vec{\eta}_d=\begin{bmatrix}
@@ -155,16 +160,16 @@ To compare the relative performance and effectiveness of each optimized control 
 0.8821
 \end{bmatrix}^T
 \end{equation}
-Then each controller's settling time, $t_{95}$, and it's relative angular velocity (the setpoint for which is $\vec{|omega}_d=\vec{0}$) for such a step is evaluated. Settling time, overshoot and setpoint error are all factors to consider when discussing the performance of a control law. Lastly, the commanded virtual input torque to the actuator set is considered too, a feasible controller can not command torque saturation or unachievable input rate changes.
+Then each controller's settling time to $95$\% of it's final value, $t_{95}$, and it's relative angular velocity (the setpoint for which is $\vec{\omega}_d=\vec{0}$) for such a step is evaluated. Settling time, overshoot and setpoint error are all factors to consider when discussing a controller's efficacy. Lastly, commanded (virtual) and applied input torque to the actuator set are discussed too. A feasible controller should not induce torque saturation or unachievable input rate changes.
 %====================================================
 \subsection{PD}
 \label{subsec:simulation.attitude.pd}
 %====================================================
-The first controller evaluated, the Proportional-Derivative structure, investigates three different scenarios. Before discussing those different situations, it is worth recalling that control structure from Sec:\ref{subsubsec:control.attitude.controllers.pd}. The control torque is designed:
+The first controller evaluated, the Proportional-Derivative structure, is investigated under three different scenarios. Before discussing those different situations, it is worth recalling that control structure from Sec:\ref{subsubsec:control.attitude.controllers.pd}. The control torque is designed with two coefficient matrices $K_p$ and $K_d$:
 \begin{equation}\label{eq:simulation-attitde-pd}
 \vec{\tau}_{_{PD}}=\underbrace{K_p\vec{q}_e+K_d\vec{\omega}_e}_{Independent}+\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{Compensation}~~~~\in\mathcal{F}^{b}
 \end{equation}
-The first two cases regard both coefficient matrices as purely diagonal, with no skew elements; testing the effect of plant dependent compensation on the controller's performance. Lastly a plant dependent compensating PD controller is tested \emph{with} symmetrical coefficient matrices. When the coefficient matrices are both diagonal the case follows:
+The first two tests regard both coefficient matrices as purely diagonal, with no skew elements; evaluating the effect of plant dependent compensation on the controller's performance. Finally a plant dependent compensating PD controller is tested \emph{with} symmetrical coefficient matrices. The diagonal coefficient matrices are as follows:
 \begin{equation}\label{eq:simulation-attitde-pd-diagonal-coefficients}
 K_p\triangleq \begin{bmatrix}
 K_p(1) & 0 & 0\\
@@ -177,7 +182,7 @@ K_d(1) & 0 & 0\\
 0 & 0 & K_d(3)
 \end{bmatrix}
 \end{equation}
-The local and global coefficient best positions are found respectively such that:
+Then each local and global position for the PSO algorithm need to be defined. The proportional coefficent $K_p$ acts on $\vec{q}_e$ whilst the derivative coefficient $K_d$ acts on $\vec{\omega}_e$, the local and global optimal position are then found such that:
 \begin{equation}
 \vec{P}_{Best}\equiv
 \begin{bmatrix}
@@ -196,7 +201,7 @@ K_d(2)\Rightarrow \min \vec{\zeta}_{_{PD}}(2)\\
 K_d(3)\Rightarrow \min \vec{\zeta}_{_{PD}}(3)
 \end{bmatrix}
 \end{equation}
-In the symmetrical coefficient case, the controller coefficients are then numbered:
+Then symmetrical coefficient case, the off-diagonal elements act on two elements of the error states. The controller coefficients are then numbered:
 \begin{equation}\label{eq:simulation-attitde-pd-symmetric-coefficients}
 K_p\triangleq \begin{bmatrix}
 K_p(1) & K_p(4) & K_p(5)\\
@@ -209,7 +214,7 @@ K_d(4) & K_d(2) & K_d(6)\\
 K_d(5) & K_d(6) & K_d(3)
 \end{bmatrix}
 \end{equation}
-Where it's local and global coefficient positions are then found such that:
+It's local and global coefficient positions are then found such that:
 \begin{subequations}\label{eq:simulation-attitude-pd-symmetric-best}
 \begin{equation}
 \vec{P}_{Best}\equiv
@@ -222,6 +227,7 @@ K_d(2)\Rightarrow \min \vec{\omega}_e(2) & K_d(5)\Rightarrow\min\vec{\omega}_e(1
 K_d(3)\Rightarrow \min \vec{\omega}_e(3)& K_d(6)\Rightarrow\min\vec{\omega}_e(2)\&\&\vec{\omega}_e(3)
 \end{bmatrix}
 \end{equation}
+\vspace{-6pt}
 \begin{equation}
 \vec{G}_{Best}\equiv\begin{bmatrix}
 K_p(1)\Rightarrow \min \vec{\zeta}_{_{PD}}(1) & K_p(4)\Rightarrow\min\vec{\zeta}_{_{PD}}(1)\&\& \vec{\zeta}_{_{PD}}(2)\\
@@ -237,7 +243,7 @@ K_d(3)\Rightarrow \min \vec{\zeta}_{_{PD}}(3) & K_d(6)\Rightarrow\min\vec{\zeta}
 \subsubsection{Independent Performance}
 \label{subsubsec:simulation.atttiude.pd.independent}
 %====================================================
-For the independent case, the same coefficients are used as those for the plant dependent case. The compensation terms in Eq:\ref{eq:simulation-attitde-pd} are neglected to produce a plant independent controller. Optimizing the diagonal only PD controller produced the following coefficients:
+For the independent controller case, the same coefficients are used as those for the plant dependent case. The \emph{attitude} compensation terms in Eq:\ref{eq:simulation-attitde-pd} are neglected to produce a plant independent controller. Optimizing the diagonal only PD controller produced the following coefficients:
 \begin{equation}\label{eq:optimized-pd-independent}
 K_p = \begin{bmatrix}
 3.5679 & 0 & 0\\
@@ -250,42 +256,51 @@ K_p = \begin{bmatrix}
 0 & 0 & 20.1827
 \end{bmatrix}
 \end{equation}
-Fig:\ref{fig:PD_Diagonal_Independent_Step} plots the quaternion response to an attitude step described in Eq:\ref{eq:attitude-step-position}. The uncompensated plant never actually settles to the setpoint; a constant steady state error manifests as a result of the uncompensated dynamics. The plant does, however, stablize at $t = 3.35~[\text{s}]$. Fig:\ref{fig:PD_Diagonal_Independent_Torque} shows the designed and commanded torques $\vec{\tau}_d$ and $\vec{\tau}_c$ respectively. The actuator transfer functions produce a lagging response on those inputs. Lastly Fig:\ref{fig:PD_Diagonal_Independent_Angular} shows the body's angular velocity $\vec{\omega}_b$ which steps to apply an attitude rotation. 
+\par
 \begin{figure}[htbp]
+\vspace{-17pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.65\textwidth]{graphs/PD_Diagonal_Independent_Step}
+\includegraphics[width=0.8\textwidth]{graphs/PD_Diagonal_Independent_Step}
+\vspace{-10pt}
 \caption{Quaternion attitude step}
 \label{fig:PD_Diagonal_Independent_Step}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/PD_Diagonal_Independent_Torque}
+%\vspace{-4pt}
 \caption{Plant input torques}
 \label{fig:PD_Diagonal_Independent_Torque}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/PD_Diagonal_Independent_Angular}
+%\vspace{-4pt}
 \caption{Angular velocity}
 \label{fig:PD_Diagonal_Independent_Angular}
 \end{subfigure}
+\vspace{-8pt}
 \caption{Independent diagonal PD}
+\vspace{-7pt}
 \end{figure}
+Fig:\ref{fig:PD_Diagonal_Independent_Step} plots the quaternion response to an attitude stepas  described in Eq:\ref{eq:attitude-step-position}. The uncompensated plant never actually settles to it's setpoint; a steady state error manifests as a result of the uncompensated constant gravitational and aerodynamic torques. The plant does, however, stablize in $t = 3.35~[\text{s}]$. Fig:\ref{fig:PD_Diagonal_Independent_Torque} compares the controller designed and phsyically commanded input torques, $\vec{\tau}_d$ and $\vec{\tau}_c$ respectively. Actuator transfer functions produce a lagging response to those input changes. Finally Fig:\ref{fig:PD_Diagonal_Independent_Angular} plots the body's angular velocity $\vec{\omega}_b\in\mathcal{F}^{b}$ which changes to apply an attitude rotation.
 %====================================================
 \subsubsection{Dependent Performance}
 \label{subsubsec:simulation.atttiude.pd.dependent}
 %====================================================
-The inclusion of a plant independent PD controller is purely for the sake of contrition, showing that a plant dependency is needed to account for steady state tracking errors. The same controller coefficients from Eq:\ref{eq:optimized-pd-independent} are used now to test the controller's dependent case; wherein the controller compensates for plant dynamics with a feedback terms.
+The inclusion of a plant independent PD controller is purely for the sake of contrition; showing that plant dependency is needed to account for steady state trajectory errors (Sec:\ref{}). Those same controller coefficients from Eq:\ref{eq:optimized-pd-independent} are now used to test the controller dependent case; wherein the controller compensates for plant dynamics in Eq:\ref{eq:simulation-attitde-pd} with a feedback terms.
 \par
-Fig:\ref{fig:PD_Diagonal_Dependent_Step} shows the quaternion attitude step for the plant dependent case. The attitude settles in $t_{95}=3.0764~[\text{s}]$. The dynamic response is much the same as the independent one previously in Fig:\ref{fig:PD_Diagonal_Independent_Step}. The torque input is still within the feasible range, not saturating any actuators. The difference is that at steady state the plant's torque input is slightly non-zero, to compensate for the previous steady state error.
+Fig:\ref{fig:PD_Diagonal_Dependent_Step} shows the typical quaternion attitude step for the plant dependent case. The attitude settles in $t_{95}=3.0764~[\text{s}]$. The dynamic response is much the same as that of the independent case in Fig:\ref{fig:PD_Diagonal_Independent_Step}, just without the steady state errors. The torque input is well still within the feasible range; not saturating any actuators. The difference is that at steady state the plant's torque input is marginally non-zero, compensating for the previous steady state error.
 \par
 \begin{figure}[htbp]
+\vspace{-10pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.65\textwidth]{graphs/PD_Diagonal_Dependent_Step}
+\includegraphics[width=0.8\textwidth]{graphs/PD_Diagonal_Dependent_Step}
+\vspace{-6pt}
 \caption{Quaternion attitude step}
 \label{fig:PD_Diagonal_Dependent_Step}
 \end{subfigure}
@@ -301,13 +316,15 @@ Fig:\ref{fig:PD_Diagonal_Dependent_Step} shows the quaternion attitude step for 
 \caption{Angular velocity}
 \label{fig:PD_Diagonal_Dependent_Angular}
 \end{subfigure}
+\vspace{-8pt}
 \caption{Dependent diagonal PD}
+\vspace{-18pt}
 \end{figure}
 %====================================================
 \subsubsection{Symmetric Controller Performance}
 \label{subsubsec:simulation.atttiude.pd.3x3}
 %====================================================
-The final Proportional-Derivative attitude controller considers both coefficient matrices with non-zero off-diagonal skew elements. Eq:\ref{eq:simulation-attitde-pd-symmetric-coefficients} shows the structure for both matrices. Once optimized the controller coefficients numeric values are:
+The last PD structured attitude controller considers both coefficient matrices with non-zero off-diagonal skew elements. Eq:\ref{eq:simulation-attitde-pd-symmetric-coefficients} shows the structure of both symmetric matrices and how their optimization positions are chosen. The optimized coefficients are then found to be:
 \begin{equation}\label{eq:optimized-pd-symmetric}
 K_p = \begin{bmatrix}
 5.9157 & 0.41649 & 0.47138\\
@@ -320,14 +337,13 @@ K_p = \begin{bmatrix}
 0.152577 & 0.577193 & 26.3436
 \end{bmatrix}
 \end{equation}
-The first difference presented with the symmetric controller coefficients is that the effective gain applied by Eq:\ref{eq:optimized-pd-symmetric} is significantly greater than that of Eq:\ref{eq:optimized-pd-independent}. The off-diagonal elements are tending towards "undoing" the cross coupling as a result of the Gyroscopic torque induced in Eq:\ref{eq:quaternion-states-angular}. 
-\par
-Fig:\ref{fig:PD_3x3_Dependent_Step} shows the step response of the symmetric PD controller. The increased effective gain in Eq:\ref{eq:optimized-pd-symmetric} results in larger overshoot and an increased settling time, $t_{95}=3.2993~[\text{s}]$. Neither greater commanded torque, Fig:\ref{fig:PD_3x3_Dependent_Torque}, nor an increased angular velocity spike, Fig:\ref{fig:PD_3x3_Dependent_Angular} are altogether unexpected consequences of a more aggressive control law. The increased number of coefficients to be tuned imply that the optimization applied to produce Eq:\ref{eq:optimized-pd-symmetric} was perhaps not as effective as reducing step errors as that of the diagonal Eq:\ref{eq:optimized-pd-independent}.
+The first notable difference of the symmetric controller is it's effective gain applied by Eq:\ref{eq:optimized-pd-symmetric} to the error in Eq:\ref{eq:simulation-attitde-pd} is larger than that of Eq:\ref{eq:optimized-pd-independent}. The off-diagonal elements are tending towards application of feedback linearisation to the Gyroscpic cross coupled induced torque, Eq:\ref{eq:quaternion-states-angular}. The step response of the optimized symmetric PD controller is shown in Fig:\ref{fig:PD_3x3_Dependent_Step}. The increased effective gain in Eq:\ref{eq:optimized-pd-symmetric} results in larger overshoot and a slower settling time, $t_{95}=3.2993~[\text{s}]$. Neither greater commanded torque, Fig:\ref{fig:PD_3x3_Dependent_Torque}, nor an increased angular velocity spike, Fig:\ref{fig:PD_3x3_Dependent_Angular} are altogether unexpected consequences of a more aggressive control law. The increased number of coefficients to be tuned simply mean that optimization to produce Eq:\ref{eq:optimized-pd-symmetric} was perhaps not as effective at interval reducing step errors than that of the diagonal Eq:\ref{eq:optimized-pd-independent}.
+\newpage
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.65\textwidth]{graphs/PD_3x3_Dependent_Step}
+\includegraphics[width=0.8\textwidth]{graphs/PD_3x3_Dependent_Step}
 \caption{Quaternion attitude step}
 \label{fig:PD_3x3_Dependent_Step}
 \end{subfigure}
