@@ -1,12 +1,16 @@
-%****************************************************
+%====================================================
 %	CHAPTER 7 - Conclusions
-%****************************************************
+%====================================================
 \chapter{Conclusion}
 \label{ch:conclusion}
-%****************************************************
-- Lagrange dynmaics for multibody system could have produced a more concise model etc \ldots\\
-- Particule multibody dynamics with internactions could provide a more verbose simulation environment rather than the very newtonian simulation loop constructed\\
-- Implicit equation dynamics in simulation may improve optimization loops in PSO algorithm\\
+%====================================================
+The original objective for the project was to design, simulate and physically test the prototype outline in Sec:\ref{sec:proto.design}. The subsequent effects the multibody system has on the dynamic equations of motion, derived in Sec:\ref{sec:dynamics.nonlinearities} proved to be significantly more complicated that initially anticipated. The introduction of non-zero inertial time rates meant that the Lagrangian derivations presented were unlike any in reference texts used. The difficulties presented with such mathematics delayed the project's time line and as a result, final flight tests were not accomplished. As such the physical implementation of the control laws proposed here remains open to further research.
+\par
+With that being said, the produced dynamic model for the system would appear to be a significant contribution for this work. The uniqueness of the multibody structure made solving for the differential equations of motion a sizeable task. A consequence of the complex dynamics was an extremely high degree of stiffness in the system, each interacting within the multibody system was a complicated process to be solved at every simulation interval. Alternatively, relative coordinates could have been defined within the dynamics and an Implicit Euler based technique potentially may have reduced the systems stiffness.
+\par
+The phsyical tests which corroporated aspects of the dynamic model, in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests}, would ideally be extended to physical flight tests. However considering the peculiarities with the system under consideration, the verification of the dynamics was a significant result. The non-symmetrical inertias of each body within the entire multibody system was another 
+
+
 - Firmware changes to ESC drastically improved transfer function time constant, made assumption that servos would improve actuator response times redundant.\\
 -Difficulty with non-linear multibody in Sec:\ref{sec:dynamics.nonlinearities} causes stiffness in control optimization. Same troubles with time varying inertias caused Osprey inspiration issues too...\\
 - non-linear multibody dynamics required multiple revisions, took longer than expected\\

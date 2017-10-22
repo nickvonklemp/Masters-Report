@@ -590,40 +590,58 @@ It is interesting to note that positive and negative step directions are not sym
 \section{Controller Disturbance Rejection}
 \label{app:disturbance}
 %-----------------------------------------------------
+\subsection{Attitude Controllers}
+\label{app:disturbance.attitude}
+%-----------------------------------------------------
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{\textwidth}
+\vspace{-12pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/PD_Diagonal_Trajectory_dist}
+\vspace{-12pt}
 \caption{Diagonal Proportional Derivative Controller}
 \label{fig:app-attitude-pd-dist}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
+\vspace{-3pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/XPD_Trajectory_dist}
+\vspace{-12pt}
 \caption{Auxilliary Plant Controller}
 \label{fig:app-attitude-xpd-dist}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
+\vspace{-3pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/IBC_Trajectory_dist}
+\vspace{-10pt}
 \caption{Ideal Backstepping Controller}
 \label{fig:app-attitude-ibc-dist}
 \end{subfigure}
+\vspace{-3pt}
 \caption{Disturbances on Attitude Controllers}
 \end{figure}
-\par
+\newpage
+%-----------------------------------------------------
+\subsection{Position Controllers}
+\label{app:disturbance.position}
+%-----------------------------------------------------
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{\textwidth}
+\vspace{-12pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/PD_Position_Trajectory_dist}
+\vspace{-12pt}
 \caption{Proportional Derivative Controller}
 \label{fig:app-position-pd-dist}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
+\vspace{-3pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/IBC_Position_Trajectory_dist}
+\vspace{-12pt}
 \caption{Ideal Backstepping Controller}
 \label{fig:app-position-ibc-dist}
 \end{subfigure}
