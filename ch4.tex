@@ -320,7 +320,7 @@ The desired angular velocity is taken with respect to the desired angular attitu
 \vec{\omega}_e=Q_e^*\otimes\vec{\omega}_d\otimes Q_e-\vec{\omega}_b(t)
 \end{equation}
 Typically for the trajectories generated here the desired angular velocity is zero; $\vec{\omega}_d=\vec{0}$. It follows that the angular rate error is then simply the negative body angular velocity. It would be easy to incorporate a non-zero angular velocity setpoint to accommodate for higher order state derivative tracking trajectories.
-\begin{equation}
+\begin{equation}\label{eq:4.27c}
 \vec{\omega}_e=-\vec{\omega}_b(t)\Big|_{\vec{\omega}_d=\vec{0}}
 \end{equation}
 \end{subequations}
@@ -893,7 +893,7 @@ The difference in reference frames is an important distinction between the posit
 \end{equation}
 The translational position rate error $\dot{\vec{\mathcal{E}}}_b(t)$, \emph{not velocity error}, can be similarly calculated but, in the same way. In this case both position rate and velocity setpoints are zero, $\dot{\vec{\mathcal{E}}}_d=\vec{v}_d=\vec{0}$.
 \begin{subequations}
-\begin{equation}
+\begin{equation}\label{eq:4.85a}
 \dot{\vec{\mathcal{E}}}_e=\dot{\vec{\mathcal{E}}}_d-\dot{\vec{\mathcal{E}}}_b=-\dot{\vec{\mathcal{E}}}_b\Big|_{\dot{\vec{\mathcal{E}}}_d=\vec{0}}~~~~\in\mathcal{F}^{I}
 \end{equation}
 \vspace{-12pt}
