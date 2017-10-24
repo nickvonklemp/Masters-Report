@@ -417,9 +417,9 @@ The position of the globally best performing swarm is found similarly:
 The optimized control coefficients, after $tx=1000$ iterations, are as follows:
 \begin{multline}\label{eq:optimized-auxpd}
 \Gamma_1=\begin{bmatrix*}[r]
-3.5924 & -0.2457 & -0.02770\\
--0.2457 & 3.0666 & -0.06023\\
--0.02770 & -0.0602 & 3.3809
+3.5924 & -0.2457 & -0.0277\\
+-0.2457 & 3.0666 & -0.0602\\
+-0.0277 & -0.0602 & 3.3809
 \end{bmatrix*}~,~~\Gamma_2=\begin{bmatrix*}[r]
 4.6943 & 0 & 0\\
 0 & 4.1642 & 0\\
@@ -465,7 +465,7 @@ In spite of the significantly improved settling time the Auxilliary plant contro
 %====================================================
 \subsection{Ideal and Adaptive Backstepping Controllers}
 %====================================================
-The second exponentially stabilizing controller and final attitude controller to be tested is the Ideal Backstepping Controller. Both Ideal and Adaptive backstepping controllers use the same error coefficients; the difference in structure between the two is an adaptive disturbance observer. That observer estimates compensation terms introduced into the Adaptive Backstepping controller to improve robust stability. Reiterating the IBC structure from Eq:\ref{eq:control-ibc}:
+The second exponentially stabilizing controller and final attitude controller tested is the Ideal Backstepping Controller. Both Ideal and Adaptive backstepping controllers use the same error coefficients; the difference in structure between the two is the addition of an adaptive disturbance observer. That observer estimates compensation terms in the Adaptive Backstepping controller, improving robust stability. Reiterating the IBC structure from Eq:\ref{eq:control-ibc}:
 \begin{equation}\label{eq:simulation-attitude-ibc}
 =\underbrace{J_b(u)\Big((\Gamma_1\Gamma_2+1)\vec{q}_e-\Gamma_2\vec{\omega}_b+\Gamma_1\dot{\vec{q}}_e \Big)}_{\text{Ideal backstepping}}
 +\underbrace{\vec{\omega}_b\times J_b(u)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g-\vec{\tau}_Q}_{\text{Compenstation}}~~~~\in\mathcal{F}^{b}
@@ -484,8 +484,9 @@ Wherein the gain matrices $\Gamma_1$ and $\Gamma_2$ are both positive symmetrica
 \Gamma_2(5) & \Gamma_2(6) & \Gamma_2(3)
 \end{bmatrix}
 \end{equation}
-However, both coefficient matrices act on the two error vectors $\vec{q}_e$ and $\vec{\omega}_e$. Trying to differentiate the local and global coefficient optimum results then becomes problematic. Making both the local and global positions equivalent reduces the directed swarm search to a randomized \emph{monte carlo} trial and error method. To avoid this it was elected to prioritize $\Gamma_1$ to control the quaternion vector error $\vec{q}_e$, similarly $\Gamma_2$ was prioritized to control the angular velocity error $\vec{\omega}_e$. It then follows that global and local best positions $\vec{P}_{best}$ and $\vec{G}_{best}$ respectively are found in the way as the symmetrical PD controller, Eq:\ref{eq:simulation-attitude-pd-symmetric-best}. This means local and global positions can still be used to direct the search space:
+However, both coefficient matrices act on the two error vectors $\vec{q}_e$ and $\vec{\omega}_e$. Trying to differentiate the local and global coefficient optimum results then becomes difficult. Making both the local and global positions equivalent reduces the directed swarm search to a randomized \emph{monte carlo} trial and error method. To avoid this $\Gamma_1$ is prioritized to control the quaternion vector error $\vec{q}_e$, similarly $\Gamma_2$ was dedicated to controlling the angular velocity error $\vec{\omega}_e$. It then follows that local and global best positions, $\vec{P}_{best}$ and $\vec{G}_{best}$ respectively, are found in the same way as the symmetrical PD controller, Eq:\ref{eq:simulation-attitude-pd-symmetric-best}. This means local and global positions can still be used to direct the search space:
 \begin{subequations}
+\vspace{-6pt}
 \begin{equation}
 \vec{P}_{Best}\equiv
 \begin{bmatrix}
@@ -497,7 +498,7 @@ However, both coefficient matrices act on the two error vectors $\vec{q}_e$ and 
 \Gamma_2(3)\Rightarrow \min \vec{\omega}_e(3)& \Gamma_2(6)\Rightarrow\min\vec{\omega}_e(2)\&\&\vec{\omega}_e(3)
 \end{bmatrix}
 \end{equation}
-\vspace{-10pt}
+\vspace{-6pt}
 \begin{equation}
 \vec{G}_{Best}\equiv\begin{bmatrix}
 \Gamma_1(1)\Rightarrow \min \vec{\zeta}_{_{IBC}}(1) & \Gamma_1(4)\Rightarrow\min\vec{\zeta}_{_{IBC}}(1)\&\& \vec{\zeta}_{_{IBC}}(2)\\
@@ -509,18 +510,18 @@ However, both coefficient matrices act on the two error vectors $\vec{q}_e$ and 
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-The optimized then yielded the following two sets of gain coefficient matrices:
+When optimized two sets of gain coefficient matrices are:
 \begin{equation}\label{eq:optimized-IBC}
 \Gamma_1 = \begin{bmatrix*}[r]
-5.86306 & 0.0515342 & 1.02209\\
-0.0515342 & 13.8375 & 0.853279\\
-1.02209 & 0.853279 & 11.9644
+5.8631 & 0.0515 & 1.0221\\
+0.0515 & 13.8375 & 0.8533\\
+1.0221 & 0.8533 & 11.9644
 \end{bmatrix*}
 ~~\text{and}~~
 \Gamma_2 = \begin{bmatrix*}[r]
-9.1127 & 0.28871 & 0.13528\\
-0.28871 & 6.8389 & 0.19714\\
-0.13528 & 0.18714 & 2.5294
+9.1127 & 0.2887 & 0.1353\\
+0.2887 & 6.8389 & 0.1971\\
+0.1353 & 0.1871 & 2.5294
 \end{bmatrix*}
 \end{equation}
 \begin{figure}[hbtp]
@@ -554,12 +555,12 @@ The optimized then yielded the following two sets of gain coefficient matrices:
 \vspace{-12pt}
 \end{figure}
 \par
-The regular attitude step's response in Fig:\ref{fig:IBC_Step} shows a dramatically faster response, with notable oscillations at the settling point. The step settles in $t_{95}=1.6403~[\text{s}]$; almost twice as fast as a basic PD controller but the commanded control inputs in Fig:\ref{fig:IBC_Torque} are the largest of all the controllers. Out of each control law suggested the IBC is by far the most aggressive which results sizeable and perhaps unsatisfactory overshoot. Furthermore the commanded angular velocity changes for the IBC controller are, on average, twice the size of the previous control laws. The Adaptive backstepping controller is tested and discussed later in Sec:\ref{subsec:simulation.disturbance.torque} in the context of robust trajectory stability; rather than controller stepped performances here\ldots 
+The regular attitude step's response in Fig:\ref{fig:IBC_Step} shows a dramatically faster response, with notable oscillations at the settling point. The step settles in $t_{95}=1.6403~[\text{s}]$; almost twice as fast as a basic PD controller. However, the commanded control inputs in Fig:\ref{fig:IBC_Torque} are the largest of all the attitude controllers considered. The Ideal Backstepping controller is by far the most aggressive which leads to sizeable and perhaps unsatisfactory overshoot. Moreover the commanded angular velocity changes for the IBC controller are, on average, twice that of the previous control laws. The Adaptive backstepping controller is tested and discussed later in Sec:\ref{subsec:simulation.disturbance.torque} in the context of robust trajectory stability; rather than controller stepped performances here\ldots 
 %====================================================
 \section{Position Controllers}
 \label{sec:simulation.position}
 %====================================================
-Following the attitude controller optimization, a similar approach was applied to the two proposed position control laws (in Sec:\ref{sec:control.position}). It is important to specify that, for position controller optimization, a plant dependent diagonal PD attitude controller (Sec:\ref{subsubsec:simulation.atttiude.pd.dependent}) was used to stabilize the coupled attitude dynamics. To test each position controller coefficient swarm's performance the attitude setpoint was kept at a constant $Q_d=[1~\vec{0}\hspace{2pt}]^T$, while various position setpoints were applied. Moreover the same basic pseudo inversion allocator (Sec:\ref{subsec:allocation.allocators.inverse}) was used for position control to allocate out the virtual control input $\vec{\nu}_d$/ Each position setpoint is defined in the inertial frame:
+Following the attitude controller optimization, a similar approach was applied to the two proposed position control laws (in Sec:\ref{sec:control.position}). It is important to specify that, for position controller optimization, a plant dependent diagonal PD attitude controller (Sec:\ref{subsubsec:simulation.atttiude.pd.dependent}) was used to stabilize the coupled attitude dynamics. To test each swarm's position controller coefficient performance the attitude setpoint was kept at a constant $Q_d=[1~\vec{0}\hspace{2pt}]^T$, while various position setpoints were applied. The same basic pseudo inversion allocator (Sec:\ref{subsec:allocation.allocators.inverse}) was used for position control to allocate out the virtual control input $\vec{\nu}_d$. Each position setpoint is defined in the inertial frame:
 \begin{equation}
 \vec{\mathcal{E}}_d(t)\triangleq\begin{bmatrix}
 X_d(t)&
@@ -578,7 +579,9 @@ Both test angles $\phi_x$ and $\theta_y$ rotate the radial arm  $C$ for a range 
 \begin{equation}\label{eq:position-performance}
 \vec{\zeta}_{\mathcal{E}}=C_{X}\int_{t=0}^{15}t|\vec{X}_e(t)|.dt+C_{v}\int_{t=0}^{15}t|\vec{v}_e(t)|.dt
 \end{equation}
-Weighting coefficients $C_X$ and $C_v$ prioritize position and velocity errors respectively, both were weighted equally such that $C_X=C_v=1$. Each swarm was then tested 91 times and the resultant cost of Eq:\ref{eq:position-performance} was averaged for an overall performance metric. Only plant dependent compensating position controllers were considered and optimized for the position control loop. Not compensating for the graviational force acceleration applied to the vehicle in it's differential equation of motion, Eq:\ref{eq:quaternion-states-acceleration}, \emph{would} result in instability. To compare the relative performance of position controllers a constant step test was applied in both cases:
+Weighting coefficients $C_X$ and $C_v$ prioritize position and velocity errors respectively, both were weighted equally such that $C_X=C_v=1$. Each swarm was then tested 91 times and the resultant cost of Eq:\ref{eq:position-performance} was averaged for an overall performance metric. Only plant dependent compensating position controllers were considered and optimized for the position control loop.
+\par
+Not compensating for the graviational force acceleration applied to the vehicle in it's differential equation of motion, Eq:\ref{eq:quaternion-states-acceleration}, \emph{would} result in instability. To compare the relative performance of position controllers a constant step test was applied in both cases:
 \begin{equation}\label{eq:position-step}
 \vec{\mathcal{E}}_d=\begin{bmatrix}
 X_d&
@@ -606,7 +609,7 @@ The reference case for position control is the Proportional-Derivative controlle
 \begin{equation}
 \vec{F}_{_{PD}}=K_p\vec{X}_e + K_d\dot{\vec{X}}_e + \vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
-Where both $K_p$ and $K_d$ are diagonal gain coefficient matrices. The introduction of symmetric coefficients did not yield in improvements for the attitude plant in Sec:\ref{subsubsec:simulation.atttiude.pd.3x3} so it was not investigated here in the context of position control. The two gain coefficients for the PD controller are structured as follows:
+Where both $K_p$ and $K_d$ are diagonal gain coefficient matrices. The introduction of symmetric coefficients did not yield any improvements for the attitude plant in Sec:\ref{subsubsec:simulation.atttiude.pd.3x3} so it was not investigated here in the context of position control. The two gain coefficients for the PD controller are structured as follows:
 \begin{equation}\label{eq:simulation-attitde-pd-diagonal-coefficients}
 K_p\triangleq \begin{bmatrix}
 K_p(1) & 0 & 0\\
@@ -651,7 +654,7 @@ K_p = \begin{bmatrix}
 0 & 0 & 3.8698
 \end{bmatrix}
 \end{equation}
-The inertial position step had a response shown in Fig:\ref{fig:PD_Position_Step}; stepping from the initial position to the setpoint(s) described in Eq:\ref{eq:attitude-step-position}. The position step settled in $t_{95}=4.007~[\text{s}]$ without any overshoot. Not shown but still considered is the effect a position step has on the attitude plant's stability, which still remained stable at the origin with no deviations. Because the attitude setpoint is $Q_d=[1~\vec{0}]^T$; almost all the force requirement in steady state is to oppose the gravitational downward force acting on the body, Fig:\ref{fig:PD_Position_Force}.
+The inertial position's step had a response shown in Fig:\ref{fig:PD_Position_Step}; stepping from the initial position to the setpoint(s) described in Eq:\ref{eq:attitude-step-position}. The position step settled in $t_{95}=4.007~[\text{s}]$ without any overshoot. Not shown but still considered is the effect a position step has on the attitude plant's stability, which still remained stable at the origin with no deviations. Because the attitude setpoint is $Q_d=[1~\vec{0}]^T$; almost all the force requirement in steady state is to oppose the gravitational downward force acting on the body, Fig:\ref{fig:PD_Position_Force}.
 \begin{figure}[htbp]
 \vspace{-12pt}
 \centering
@@ -681,11 +684,11 @@ The inertial position step had a response shown in Fig:\ref{fig:PD_Position_Step
 \subsection{Ideal and Adaptive Position Backstepping}
 \label{subsec:simulation.position.pd}
 %====================================================
-The second and final position controller to be tested is the Ideal Backstabbing controller, the only exponentially stable position control law proposed. As is the case with attitude IBC controller, the coefficients selected for the Ideal Backstepping case are used again for the Adaptive cases; the latter is evaluated subsequently in Sec:\ref{subsec:simulation.disturbance.force}. Recalling the position IBC structure from Sec:\ref{subsec:control.position.bacstepping}:
+The second and final position controller to be tested is the Ideal Backstabbing controller, the only exponentially stable position control law proposed. As is the case with attitude IBC, the coefficients selected for the Ideal Backstepping case are used again for the Adaptive cases; the latter is evaluated subsequently in Sec:\ref{subsec:simulation.disturbance.force}. Recalling the position IBC structure from Sec:\ref{subsec:control.position.bacstepping}:
 \begin{equation}\label{eq:simulation-position-IBC}
 \vec{F}_{_{IBC}}=m_b\Big(\big(1+\Gamma_1\Gamma_2\big)\hat{z}_1-\big(\Gamma_1+\Gamma_2\big)\vec{v}_b\big)\Big)+\vec{\omega}_b\times m_b\vec{v}_b-m_b\vec{G}_b-\vec{D}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
-The two positive symmetric coefficient gain matrices in Eq:\ref{eq:simulation-position-IBC} are structured are:
+The two positive symmetric coefficient gain matrices in Eq:\ref{eq:simulation-position-IBC} are structured as:
 \begin{equation}\label{eq:simulation-position-diagonal-coefficients}
 \Gamma_1\triangleq \begin{bmatrix}
 \Gamma_1(1) & \Gamma_1(4) & \Gamma_1(5)\\
@@ -700,7 +703,7 @@ The two positive symmetric coefficient gain matrices in Eq:\ref{eq:simulation-po
 \end{equation}
 Both attitude and position ideal backstepping controllers have coefficients which act on both plant's error and error rates. This makes local and global coefficient position selection difficult without adversely affecting the swarm's optimization trajectory process. 
 \par
-Then using this first coefficient matrix $\Gamma_1$ to prioritize position tracking errors $\vec{X}_e$ and relegating $\Gamma_2$ to settle velocity errors $\vec{v}_e$; the local and global best positions are chosen as follows:
+Using the first coefficient matrix $\Gamma_1$ to prioritize position tracking errors $\vec{X}_e$ and relegating $\Gamma_2$ to settle velocity errors $\vec{v}_e$; the local and global best positions are chosen as follows:
 \begin{subequations}
 \begin{equation}
 \vec{P}_{Best}\equiv
@@ -727,16 +730,16 @@ Then using this first coefficient matrix $\Gamma_1$ to prioritize position track
 \end{subequations}
 The optimized gain coefficients for $\Gamma_1$ and $\Gamma_2$ were then produced by the PSO algorithm:
 \begin{equation}\label{eq:optimized-Position-IBC}
-\Gamma_1 = \begin{bmatrix}
-2.3409 & 0.17071 & -0.16444\\
-0.17071 & 2.0493 & 0.10597\\
--0.16444 & 0.10597 & 1.7322
-\end{bmatrix}
-~~\text{and}~~\Gamma_2= \begin{bmatrix}
-1.5287 & 0.029275 & 0.081552\\
-0.029275 & 1.4214 & -0.041008\\
-0.081552 & -0.041008 & 1.4753
-\end{bmatrix}
+\Gamma_1 = \begin{bmatrix*}{r}
+2.3409 & 0.1707 & -0.1644\\
+0.1707 & 2.0493 & 0.1060\\
+-0.1644 & 0.1060 & 1.7322
+\end{bmatrix*}
+~~\text{and}~~\Gamma_2= \begin{bmatrix*}{r}
+1.5287 & 0.02928 & 0.0816\\
+0.0292 & 1.4214 & -0.0410\\
+0.0816 & -0.0410 & 1.4753
+\end{bmatrix*}
 \end{equation}
 \par
 \begin{figure}[hbtp]
@@ -772,9 +775,9 @@ It is not unexpected that with faster settling times greater input forces are co
 \section{Set-point Control Results}
 \label{sec:simulation.autopilot}
 %====================================================
-Each presented attitude or position controllers was respectively stable in it's own right. The trajectory used to corroborate dynamic setpoint tracking (Fig:\ref{fig:trajectory}) is not a complicated, a slow orbital velocity of $\dot{\theta}=0.5~[\text{Hz}]$ was applied such that a single orbit around $\vec{C}_0$ was completed every $120~[\text{s}]$. Two Proportional Derivative attitude controllers are tested, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}), it was shown previously that symmetric gain coefficients yield no improvements in settling times. Furthermore Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independent controllers produce steady state errors for an attitude step. The same can be said for the independent controllers trajectory tracking, shown in Fig:\ref{fig:independent_diagonal_trjaectory}. Adaptive backstepping controllers and their disturbance rejection properties are discussed next in Sec:\ref{sec:simulation.disturbnace}. 
+Each proposed attitude or position controllers was respectively stable in it's own right. The trajectory used to corroborate dynamic setpoint tracking (Fig:\ref{fig:trajectory}) is not a complicated one, using a slow orbital velocity of $\dot{\theta}=0.5~[\text{Hz}]$ such that a single orbit around $\vec{C}_0$ was completed every $120~[\text{s}]$. Two Proportional Derivative \emph{attitude} controllers are tested, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}) to compare the effects of plant dependent compensation. It was shown previously that symmetric gain coefficients yield no performance improvements for the PD case, so only diagonal coefficient matrices were used. Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independent controllers result in steady state errors, the same is shown to be true for trajectory tracking. Adaptive backstepping controllers and their disturbance rejection properties are only discussed next in Sec:\ref{sec:simulation.disturbance}. 
 \par
-Each attitude controller was tested together with a common PD position controller, tracking the orbital XYZ position. Conversely each position controller is tested using a simple diagonal PD controller to track the attitude. The attitude controllers have an initial step to reach the orbital attitude from their starting attitude; $Q_0=[1~\vec{0}]^T$. Each control law was successful in tracking a given trajectory each with little to no error. Of coarse trajectory errors could be improved even further with higher order derivative tracking introduced into each controller ($\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$).
+Each attitude controller was tested together with a common PD position controller, tracking the orbital XYZ position. Similarly each position controller is tested using a simple diagonal PD controller to track the attitude. The attitude controllers have an initial step to reach the orbital attitude from their starting attitude; $Q_0=[1~\vec{0}]^T$. Each control law was successful in tracking a given trajectory each with little to no error, except of course for the plant independent attitude controller, Fig:\ref{fig:independent_diagonal_trjaectory}. Trajectory errors could be improved further with application of higher order state derivative in each controller (wherein $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$).
 \begin{figure}[hbtp]
 \vspace{-10pt}
 \begin{subfigure}{\textwidth}
@@ -813,13 +816,12 @@ Each attitude controller was tested together with a common PD position controlle
 \vspace{-8pt}
 \caption{Attitude Trajectory Tracking}
 \label{fig:attitude-trajectory-tracking}
-\vspace{-14pt}
+\vspace{-10pt}
 \end{figure}
-The only notable difference between theattitude controllers
-plotted in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial attitude step, the Ideal Backstepping attitude controller (Fig:\ref{fig:attitude-trajectory-ibc-tracking}) introduces some oscillations whilst settling. The independent PD controller actually tracks some trajectory, but with a steady state error.
+The only notable difference between each attitude controller in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial attitude step, the Ideal Backstepping attitude controller (Fig:\ref{fig:attitude-trajectory-ibc-tracking}) oscillates whilst settling due to it's more aggressive response. The independent PD controller actually tracks some trajectory, but with a significant steady state error.
 \par
 \begin{figure}[hbtp]
-\vspace{-12pt}
+\vspace{-11pt}
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/PD_Position_Trajectory}
@@ -827,23 +829,24 @@ plotted in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial at
 \caption{Diagonal Proportional Derivative Controller}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\vspace{-3pt}
+\vspace{-2pt}
 \centering
 \includegraphics[width=0.85\textwidth]{graphs/IBC_Position_Trajectory}
 \vspace{-12pt}
 \caption{Ideal Backstepping Controller}
 \end{subfigure}
+\vspace{-6pt}
 \caption{Position Trajectory Tracking}
 \label{fig:position-trajectory-tracking}
 \vspace{-10pt}
 \end{figure}
 \par
-There is a marginal phase lag in the position controller's trajectories, Fig:\ref{fig:position-trajectory-tracking}. Once again this is a consequence of tracking only first order setpoint; if translational velocity setpoints were applied as well that phase delay would be diminished\ldots
+There is a small lag behind the position controller's trajectories, Fig:\ref{fig:position-trajectory-tracking}. Once again this is a consequence of tracking only first order setpoints; if a velocity setpoint was applied as well that tracking error would be diminished\ldots
 %====================================================
 \section{Robust Stability and Disturbance Rejection}
-\label{sec:simulation.disturbnace}
+\label{sec:simulation.disturbance}
 %====================================================
-Despite deriving adaptive control laws in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep} and Sec:\ref{subsec:control.position.bacstepping} for attitude and position controllers respectively; each of the proposed controls demonstrated acceptable stability under sizeable disturbances. App:\ref{app:disturbance} shows each controller's trajectory response to uncompensated disturbances acting on the vehicle. The torque and force disturbances are described subsequently\ldots
+Despite deriving adaptive control laws in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep} and Sec:\ref{subsec:control.position.bacstepping} for attitude and position controllers respectively; each of the proposed controls demonstrated acceptable stability under sizeable disturbances. App:\ref{app:disturbance} shows each controller's trajectory response to uncompensated disturbances acting on the vehicle. The torque and force disturbances are now detailed\ldots
 %====================================================
 \subsection{Torque Disturbance Rejection}
 \label{subsec:simulation.disturbance.torque}
