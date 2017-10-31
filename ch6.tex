@@ -851,13 +851,13 @@ Despite deriving adaptive control laws in Sec:\ref{subsubsec:control.attitude.no
 \subsection{Torque Disturbance Rejection}
 \label{subsec:simulation.disturbance.torque}
 %====================================================
-Typically  turbulence torques are difficult to define without in-depth statistical and mathematical analysis. To expedite the stability/disturbance evaluation process, torque turbulences were approximated using a Dryden Gust model,\cite{optimalgust,discretegustmodel}. Alternatively the Von Karman aerospace disturbance model(s) could be implemented but that is computationally more exhaustive.
+Torque turbulences are difficult to define without in-depth accompanying statistical and mathematical analysis. To expedite the stability/disturbance evaluation process, torque turbulences were approximated using a Dryden Gust model,\cite{optimalgust,discretegustmodel}. Alternatively the Von Karman aerospace disturbance model(s) could be implemented but that model is computationally more exhaustive.
 \par
 Without going into too much detail, the Dryden Wind model produces turbulence signals from white noise filtered through a specified Dryden power spectrum. That power spectrum varies as per an aircraft's orientation, altitude and translational velocity. For the aircraft and trajectory under consideration here such a disturbance model is sufficient for simulating small interference patterns. Recalling then the torque disturbance observer derived for the attitude backstepping plant, from Eq:\ref{eq:asymptotic-disturbance}:
 \begin{equation}\label{eq:stability-torque-overserver}
 \dot{\hat{L}}=-\Gamma_L J_b^{-1}(u)\big(\Gamma_1\vec{q}_e-\vec{\omega_b}\big)
 \end{equation}
-The gain adaptivity matrix $\Gamma_L$ was tuned on steady state such that the observer's error deviation from an applied torque $\vec{L}$ was minimized. That resulted in the diagonal adaptivity matrix of $\Gamma_L=diag(29.58,~28.43,~4.60)$. The approximator tracks an applied disturbance as shown in Fig:\ref{fig:torque-observer} over a disturbance range of $\pm 0.2~[\text{N.m}]$ for a short steady state test. Both pitch and roll torque approximator channels ($\phi$ and $\theta$) track the torque with a small error, the deviation from the applied torque only occurs in the $\psi$ channel about the $\hat{Z}_b$ axis\ldots
+The gain adaptivity matrix $\Gamma_L$ was tuned on steady state such that the observer's error deviation from an applied torque $\vec{L}$ was minimized. That resulted in the diagonal adaptivity matrix of $\Gamma_L=diag(29.58,~28.43,~4.60)$. The approximator tracks an applied disturbance as shown in Fig:\ref{fig:torque-observer} over a disturbance range of $\pm 0.2~[\text{N.m}]$ for a short steady state test. Both pitch and roll torque approximator channels ($\phi$ and $\theta$) track the torque with a relatively small error. Greater deviation from the applied torque does, however, occur in the $\psi$ channel about the $\hat{Z}_b$ axis\ldots
 \begin{figure}[htbp]
 \vspace{-12pt}
 \centering
@@ -884,11 +884,11 @@ The cost of the disturbance approximator in the attitude plant is obviously more
 \subsection{Disturbance Force Rejection}
 \label{subsec:simulation.disturbance.force}
 %====================================================
-Force disturbances are similarly emulated in simulation using a Dryden Gust model for wind turbulent velocity generation. Additional a wind vector field, across the inertial frame test space, was also used to introduce a constant force offset throughout the trajectory simulation. The force disturbance observer, from Eq:\ref{eq:abc-asymptotic-position}, has an estimate update rule such that:
+Force disturbances are similarly emulated in simulation using a Dryden Gust model for wind turbulent velocity generation. Additionally, a wind vector field across the inertial frame test space was also used to introduce a constant force offset throughout the trajectory simulation. The force disturbance observer, from Eq:\ref{eq:abc-asymptotic-position}, has an estimate update rule such that:
 \begin{equation}
 \dot{\hat{D}}=-m_b^{-1}\Gamma_D\Big(\Gamma_1\vec{X}_e-\vec{v}_b\Big)
 \end{equation}
-Where $\vec{X}_e$ is the inertial position error transformed to the body frame, $\vec{X}_e=Q_b\otimes\vec{\mathcal{E}}_e\otimes Q_b^*$. Then $\Gamma_D$ is the force disturbance observer's adaptivity gain matrix. Using the coefficients $\Gamma_D=diag(4.203,~3.840,~3.971)$ the observer tracks a force disturbance acting on the vehicle over a range of $-4\rightarrow 8~[N]$. Fig:\ref{fig:force-observer} shows how the force observer adapts to the variable force turbulence applied, the plot is taken over an entire simulation (until $t=120~[\text{s}]$) to illustrate the vector field effects.
+Where $\vec{X}_e$ is the inertial position error transformed to the body frame, $\vec{X}_e=Q_b\otimes\vec{\mathcal{E}}_e\otimes Q_b^*$. Then $\Gamma_D$ is the force disturbance observer's adaptivity gain matrix. Using the coefficients $\Gamma_D=diag(4.20,~3.84,~3.97)$ the observer tracks a force disturbance acting on the vehicle over a range of $[-4:8]~[\text{N}]$. Fig:\ref{fig:force-observer} shows how the force observer adapts to the variable force turbulence applied, the plot is taken over an entire simulation (until $t=120~[\text{s}]$) to illustrate the vector field effects.
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
@@ -913,7 +913,7 @@ The position adaptive backstepping controller then tracks the inertial frame tra
 \section{Allocation Tests}
 \label{sec:simulation.allocator}
 %====================================================
-The various allocation rules, as derived in Ch:\ref{ch:allocation}, implement virtual control inputs to solve for explicit actuator positions. Each of the allocators tested here were compared with basic position and attitude Proportional Derivative controllers commanded a virtual input. 
+The various allocation rules, as derived in Ch:\ref{ch:allocation}, implement virtual control inputs to solve for explicit actuator positions. Each of the allocators tested here were compared with basic position and attitude Proportional Derivative controllers commanding a virtual input. 
 \par
 The abstraction applied to achieve an affine relationship required for inversion allocation (in Eq:\ref{eq:allocator-test}) meant that actuator transfer rates were independent from the allocation rule applied.
 \begin{subequations}\label{eq:allocator-test}
@@ -938,9 +938,9 @@ u\cdot i = \begin{bmatrix}
 The transfer rate at which physically commanded inputs implement virtually designed control inputs, $\vec{\nu}_c\rightarrow\vec{\nu}_d$, is affected by the thrust version equation $R^\dagger(\vec{\mathbf{x}},t)$, not allocation rules $B'(\vec{\mathbf{x}},t)$. The consequence of this is that, in the context of actuator transfer rates, each allocation rule performed almost identically. Inverse solutions to Eq:\ref{eq:allocation-quadratic} solve for the quadratic least squares minimized actuator positions. That means that each $|\vec{T}_i|$  within the $\mathbb{R}^{1\times 12}$ matrix $|\vec{T}_{1\rightarrow 4}|$ is minimized. The solution is an actuator cost efficient one. In general psuedo inversion, wieghted and priority normalized inverse allocators each stem from Eq:\ref{eq:inversion}: 
 \begin{subequations}
 \begin{equation}
-\underset{u\in\mathbb{U}}{\begin{bmatrix}
+\begin{bmatrix}
 \vec{T}_{1\rightarrow 4}
-\end{bmatrix}}
+\end{bmatrix}
 =\big(\mathbb{I}_{m\times m}-CB(\vec{\mathbf{x}},t)\big)\vec{T}_p+C\vec{\nu}_d
 \end{equation}
 \vspace{-10pt}
@@ -948,7 +948,7 @@ The transfer rate at which physically commanded inputs implement virtually desig
 C=W^{-1}B^T(\vec{\mathbf{x}},t)\big(B(\vec{\mathbf{x}},t)W^{-1}B^T(\vec{\mathbf{x}},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-A combined step of setpoints for attitude \emph{and} position is used to compare each allocation rule. A pseudo inversion allocator, Eq:\ref{eq:pseudo-inversion}, is used as the reference case to which subsequent allocator algorithms are evaluated against. The typical setpoint used for both position and attitude steps, with attitude in Euler angles $\vec{\eta}_d$ not quaternions $Q_d$, is:
+A combined step of setpoints for attitude \emph{and} position states is used to compare each allocation rule. A pseudo inversion allocator, Eq:\ref{eq:pseudo-inversion}, is used as the reference case to which subsequent allocator algorithms are evaluated against. The typical setpoint used for both position and attitude steps, with attitude in Euler angles $\vec{\eta}_d$ not quaternions $Q_d$, is:
 \begin{equation}\label{eq:simulation-state-step}
 \vec{\mathbf{x}}_d=\begin{bmatrix}
 \vec{\mathcal{E}}_d\\
@@ -967,7 +967,7 @@ A combined step of setpoints for attitude \emph{and} position is used to compare
 [\text{\textdegree}]
 \end{bmatrix}
 \end{equation}
-A pseudo inversion allocation solves for $\vec{T}_{1\rightarrow 4}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step responses. The combined attitude and position step response with a pseudo inverse allocator $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} plants in $t_{95}=5.6233~[\text{s}]$ from the state step. 
+A pseudo inverse allocation solves for $\vec{T}_{1\rightarrow 4}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step responses. The combined attitude and position step response with a pseudo inverse allocator $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} states in $t_{95}=5.6233~[\text{s}]$ from the state step. 
 \begin{figure}[hbtp]
 \vspace{-12pt}
 \centering
@@ -992,7 +992,7 @@ A pseudo inversion allocation solves for $\vec{T}_{1\rightarrow 4}$ using $B^\dd
 \vspace{-24pt}
 \end{figure}
 \par
-The preferred allocator positions, described in Sec:\ref{subsec:allocation.allocators.norminverse}, are hovering conditions defined with respect to either the inertial or body frames, $\mathcal{F}^{I}$ and $\mathcal{F}^{b}$. At steady state with an attitude at the origin, $Q_d=[1~\vec{0}]^T$; the controller commands the virtual control input:
+The preferred allocator positions, described in Sec:\ref{subsec:allocation.allocators.norminverse}, are hovering conditions defined with respect to either the inertial or body frames, $\mathcal{F}^{I}$ and $\mathcal{F}^{b}$. At steady state with an attitude at the origin, $Q_d=[1~\vec{0}\hspace{2pt}]^T$; the controller commands the virtual control input:
 \begin{equation}\label{eq:hover-actuator}
 \vec{\nu}_p=\begin{bmatrix}
 \vec{F}_p\\
@@ -1012,9 +1012,9 @@ The preferred allocator positions, described in Sec:\ref{subsec:allocation.alloc
 \end{bmatrix}~~~~\begin{bmatrix}
 [\text{N}]\\
 [\text{N.mm}]
-\end{bmatrix}^T~~~~\in\mathcal{F}^{b,I}
+\end{bmatrix}~~~~\in\mathcal{F}^{b,I}
 \end{equation}
-The small amount of control torque applied in Eq:\ref{eq:hover-actuator}, about the $\hat{Z}_{I/b}$ axis, is to compensate for net gravitational torque due to the eccentric center of gravity and resultant aerodynamic torque $\vec{\tau}_Q$ from the propellers rotational velocity. Applying the pseudo inverse allocation rule to the preferred input $\vec{\nu}_p$ gives the following actuator positions which effect hovering conditions:
+The small amount of control torque applied in Eq:\ref{eq:hover-actuator}, about the $\hat{Z}_{I/b}$ axis, is to compensate for net gravitational torque due to the eccentric center of gravity and resultant aerodynamic torque $\vec{\tau}_Q$ from the propellers rotational velocity. Applying the pseudo inverse allocation rule to the preferred input $\vec{\nu}_p$ in Eq:\ref{eq:hover-actuator}} produces the following actuator positions which command hovering conditions:
 \begin{subequations}\label{eq:preffered-hover-inertia}
 \begin{equation}
 \vec{T}_p^{I}=B^\ddagger(\mathbf{x},t)\vec{\nu}_p=\begin{bmatrix}
@@ -1044,7 +1044,7 @@ T_{1x}&T_{1Y}&T_{1Z}&\ldots~\ldots&T_{4x}&T_{4y}&T_{4z}
 \end{subequations}
 Testing the same attitude and position setpoint steps, but with preferred actuator hovering conditions relative to the inertial frame (illustrated in Fig:\ref{fig:hover-inertial}) produces a response shown in Fig:\ref{fig:inertial-norm-step}. The plant settles in $t_{95}=5.617~[\text{s}]$ with a practically identical response to the pseudo-inverse case presented before in Fig:\ref{fig:pseudo-inverse-step}.
 \begin{figure}[hbtp]
-\vspace{-12pt}
+\vspace{-11pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
@@ -1074,7 +1074,7 @@ Q_b\otimes\vec{F}_p\otimes Q_b^*\\
 Q_b\otimes\vec{\tau}_p\otimes Q_b^*
 \end{bmatrix}~~~~\in\mathcal{F}^{b}
 \end{equation}
-The hovering conditions are then always a function of the body's instantaneous attitude. However, because the control plant only tracks first order setpoints the control plant's response then always tends towards stability at each controller interval. As a result the control law always aims at tending towards hovering conditions, irrespective of the allocator rule applied. Again the plant settles in roughly the same time, $t_{95}=5.614~[\text{s}]$, with a response shown in Fig:\ref{fig:body-norm-step}.
+The hovering conditions are then always a function of the body's instantaneous attitude. However, because the control plant only tracks first order setpoints, the controller naturally tends towards stability at each controller interval, irrespective of the allocator rule applied. Again the plant settles in roughly the same time, $t_{95}=5.614~[\text{s}]$, with a response shown in Fig:\ref{fig:body-norm-step}. The difference between the two preferred allocator positions has no consequence on the performance of the control loop.
 \par
 \begin{figure}[hbtp]
 \centering
@@ -1099,7 +1099,7 @@ The hovering conditions are then always a function of the body's instantaneous a
 \vspace{-16pt}
 \end{figure}
 \par
-The weighted actuator allocation rule, proposed in Sec:\ref{subsec:allocation.allocators.weightedinverse}, prioritizes the use of different input thrust components in Eq:\ref{eq:allocator-test.a}. The weighting matrix is a $12\times 12$ set of coefficients which bias various allocators as illustrated in Fig:\ref{fig:weighted-matrix}. In order to reduce slack and ensure setpoint tracking , being the primary control objective, each weighting coefficient row and column was constrained to a normalized summation. Furthermore it was proposed that coefficients were selected based on an optimization as per the penalty function Eq:\ref{eq:actuator-penalty}. In practice the weighting coefficients have no bearing on the input plant settling time for each actuator module; to demonstrate a weighted actuator case the following weighting matrix was used for $C=W^{-1}B^T(B.W^{-1}.B^T)^{-1}$ from Eq:\ref{eq:allocation-inversion-eq}:
+The weighted actuator allocation rule, proposed in Sec:\ref{subsec:allocation.allocators.weightedinverse}, prioritizes the use of certain input thrust components in Eq:\ref{eq:allocator-test.a}. The weighting matrix is a $12\times 12$ set of coefficients which bias various allocators as illustrated in Fig:\ref{fig:weighted-matrix}. In order to reduce slack and ensure setpoint tracking , being the primary control objective, each weighting coefficient row and column was constrained to a normalized summation. Furthermore it was proposed that coefficients were selected based on an optimization as per the penalty function Eq:\ref{eq:actuator-penalty}. In practice the weighting coefficients have no bearing on the input plant settling time for each actuator module; to demonstrate a weighted actuator case the following weighting matrix was used for $C=W^{-1}B^T(B.W^{-1}.B^T)^{-1}$ from Eq:\ref{eq:allocation-inversion-eq}:
 \begin{equation}\label{eq:inversion-weights}
 W\triangleq
 \begin{bmatrix}
@@ -1200,7 +1200,7 @@ W\triangleq
 \end{bmatrix}
 \end{bmatrix}\times 10^{-3}
 \end{equation}
-The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} shows the minor differences between each of the above allocation rules. The final weighted inversion allocator applied with Eq:\ref{eq:inversion-weights} settled in $t_{95}=5.618$. The inversion based allocator's requirement for an affine effectiveness relationship meant that actuator transfer functions were separated from the allocation block, this made the actuator transfer rates independent from the allocation rule applied. Because of the requirements that each allocator still meets the slack variable requirements of setpoint tracking, each allocator's performance is much of the same. The 12 produced thrust component inputs are, within a margin of error, effectively the same across each allocation rule\ldots
+The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} shows the minor differences between each of the above allocation rules. The final weighted inversion allocator applied with Eq:\ref{eq:inversion-weights} settled in $t_{95}=5.618$. The inversion based allocator's requirement for an affine effectiveness relationship meant that actuator transfer functions were separated from the allocation block, this made the actuator transfer rates independent from the allocation rule applied. Because of the constraint that each allocator still meets the slack variable requirements of setpoint tracking, each allocator's performance is much of the same. The 12 produced thrust component inputs are, within a margin of error, effectively the same across each allocation rule\ldots
 \newpage
 \begin{figure}[hbtp]
 \centering
@@ -1228,7 +1228,7 @@ The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} shows t
 \section{Input Saturation}
 \label{sec:simulation.saturation}
 %====================================================
-The introduction of a rotational limit to the actuating servos was a design decision made previously in Sec:\ref{subsec:proto.design.transfer}. The $\pm 90\text{\textdegree}$ limit on the servos is something which can easily be solved by changing the mechanical design to incorporate continuous rotation actuators. The standard state setpoint step used thus far \emph{do not} command any of the actuators beyond their rotational limits, neither does the applied trajectory tracking loop. Alternatively, the following state setpoint is used:
+The introduction of a rotational limit to the actuating servos was a design decision made previously in Sec:\ref{subsec:proto.design.transfer}. The $\pm 90\text{\textdegree}$ limit on the servos is something which can easily be solved by changing the mechanical design to incorporate continuous rotation actuators. The standard state setpoint step used thus far \emph{does not} command any of the actuators beyond their rotational limits, neither does the applied trajectory tracking loop. Alternatively, the following state setpoint is used:
 \begin{equation}\label{eq:saturation-state-step}
 \vec{\mathbf{x}}_d\text{}\hspace{-2pt}'=
 \begin{bmatrix}
@@ -1279,7 +1279,7 @@ The attitude setpoint, $\vec{\eta}_d\text{}\hspace{-2pt}'$, was chosen because i
 \vspace{-10pt}
 \end{figure}
 \par
-Neither responses in Fig:\ref{fig:unsaturated-step} are anything unexpected. The rotational positions for all eight servos are shown in Fig:\ref{fig:unsaturated-servos}. Noting that each middle ring servo, $\alpha_i$, settles to both above and below the $\pi/2$ rotational limit.
+Neither responses in Fig:\ref{fig:unsaturated-step} are anything unexpected. The rotational positions for all eight servos are shown in Fig:\ref{fig:unsaturated-servos}. Noting that each middle ring servo, $\alpha_i$, settles to both above or below the $\pi/2$ rotational limit.
 \begin{figure}[hbtp]
 \vspace{-12pt}
 \centering
@@ -1290,7 +1290,7 @@ Neither responses in Fig:\ref{fig:unsaturated-step} are anything unexpected. The
 \vspace{-20pt}
 \end{figure}
 \par
-Then introducing that hard limit to the state step in Eq:\ref{eq:saturation-state-step} produces a step response in Fig:\ref{}. The response obviously never reaches a settling point and destabilizes when the actuator saturation limits are applied.
+Then introducing that hard limit to the state step in Eq:\ref{eq:saturation-state-step} produces a step response in Fig:\ref{fig:saturated-step}. The response obviously never reaches a settling point and destabilizes when the actuator saturation limits are applied.
 \begin{figure}[hbtp]
 \vspace{-12pt}
 \centering
@@ -1299,6 +1299,7 @@ Then introducing that hard limit to the state step in Eq:\ref{eq:saturation-stat
 \includegraphics[width=0.8\textwidth]{graphs/saturated-attitude-step}
 \vspace{-10pt}
 \caption{Attitude step}
+\label{fig:saturated-attitude}
 \vspace{-16pt}
 \end{subfigure}
 \vspace{-24pt}
@@ -1312,9 +1313,11 @@ Then introducing that hard limit to the state step in Eq:\ref{eq:saturation-stat
 \includegraphics[width=0.8\textwidth]{graphs/saturated-position-step}
 \vspace{-10pt}
 \caption{Position step}
+\label{fig:saturated-position}
 \end{subfigure}
 \vspace{-6pt}
 \caption{Step response with servo limits}
+\label{fig:saturated-step}
 \vspace{-18pt}
 \end{figure}
 \par
@@ -1326,16 +1329,17 @@ Fig:\ref{fig:saturated-servos} shows the limit cycles which the servos get stuck
 \vspace{-6pt}
 \caption{Servo inputs without limits}
 \label{fig:saturated-servos}
+\vspace{-24pt}
 \end{figure}
 %====================================================
 \section{State Estimation}
 \label{sec:simulation.state}
 %====================================================
-The final aspect of the control simulation to test is the effect state estimation will have on the setpoint tracking. It was proposed, in Ch:\ref{ch:proto}, that a 9-axis inertial measurement unit would produce inertial rates in the body frame. Then some form of filtration would fuse sensor measurements together to provide state estimation for the attitude. It is difficult to approximate position displacement in the inertial frame with only an IMU, that is why it was proposed that a motion camera VICON-like system, \cite{arnold} would track the vehicles position under testing conditions. 
+The final aspect of the control simulation to consider is the effect state estimation has on the controller's ability to track setpoints. It was proposed, in Ch:\ref{ch:proto}, that a 9-axis inertial measurement unit would produce angular rates and inertial accelerations in the body frame. Then some form of filtration would fuse sensor measurements together to provide state-estimation only for the vehicle's attitude. Position displacement in the inertial frame cannot be approximated only using an IMU due to massive ammounts of integral drift. For that reason a motion capture VICON-like system, \cite{arnold}, was proposed to track the vehicles position under testing conditions. 
 \par
-Such components of the control loop could indeed be constructed in simulation but, owing to the large amounts of noise a physical flight test would induce, would not prove useful in evaluating the efficacy of the net proposed control system. Given the amount of vibrations and disturbances the prototype will undergo, simulations won't be able to accurately approximate such affects. Instead it was deemed pertinent to only apply discretization effects onto the state feedback elements within the control loop.
+Such components of the embedded system loop could indeed be tested in simulation but, owing to the large amounts of noise a physical flight test would induce on those components, would not prove useful in evaluating the efficacy of the net proposed control system. Given the amount of vibrations and disturbances the prototype will undergo, simulations won't be able to accurately approximate such affects. Instead it was deemed pertinent to only apply discretization effects onto the state feedback elements within the control loop.
 \par
-Quaternion position, angular velocity and translational velocity signals were discretized and sampled at a rate of $70~[Hz]$ to emulate an IMU system based on the hardware proposed (Sec:\ref{sec:proto.layout}). In reality those signals would be processed by a Kalman filter and be subject to a relative degree of noise and integral drift. Then inertial position feedback was sampled at $50~[\text{Hz}]$ to emulate the proposed camera system \cite{arnold}.
+Quaternion position, angular velocity and translational velocity feedback terms were discretized and sampled at a rate of $70~[\text{Hz}]$ to emulate an IMU system based on the hardware proposed (Sec:\ref{sec:proto.layout}). In reality those signals would be processed by a Kalman filter and be subject to a relative degree of noise and integral drift. Then inertial position feedback was sampled at $50~[\text{Hz}]$ to emulate the proposed camera based state estimation from \cite{arnold}.
 \par
 Both position and attitude control loops, testing with the basic Proportional Derivative controllers in both cases, were stable for the above proposed sampling rates. In fact the entire system was stable for sample rates as slow as $5~[\text{Hz}]$, whose response for a typical attitude and position step (Eq:\ref{eq:simulation-state-step}) is plotted in Fig:\ref{fig:discrete_step}.
 \begin{figure}[hbtp]
@@ -1359,7 +1363,7 @@ Both position and attitude control loops, testing with the basic Proportional De
 \vspace{-12pt}
 \end{figure}
 \par
-Fig:\ref{fig:feasible-attitude} shows the range of feasible attitude setpoints achievable by the control loop when the actuator rotational limit is applied.
+Finally, when considering the rotational limit imposed the servo actuators; Fig:\ref{fig:feasible-attitude} shows the range of feasible attitude setpoints which can be commanded by the control loop without destabilizing the vehicle.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.4\textwidth]{figs/feasible-attitude}
