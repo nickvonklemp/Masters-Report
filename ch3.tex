@@ -1,10 +1,10 @@
-%****************************************************
+%====================================================
 %	CHAPTER 3 - Dynamics
-%****************************************************
+%====================================================
 \chapter{Kinematics \& Dynamics}
 \label{ch:dynamics}
 %====================================================
-The following generally applicable, rigid body dynamics are first derived with respect to net forces and torques acting on the vehicle. Following that, the dynamics are adapted to the non-linear, multibody case which incorporates constrained relative rotational motion between bodies is permitted; the same motion which the prototype can undergo. Aerodynamic effects are subsequently included in the plant's model. Finally a consolidated, quaternion based plant model is presented which is used for the later control plant development in Ch:\ref{ch:control}.
+The following generally applicable, rigid body dynamics are first developed with respect to generalized net forces and torques acting on the vehicle. Following that, dynamics are adapted to the nonlinear multibody case wherein constrained relative rotational actuation between interconnected bodies is incorporated; representing the actuator action which the prototype can undergo. Propeller aerodynamic effects are subsequently included into the model. Finally a consolidated quaternion based model is presented which is used for the controller development later in Ch:\ref{ch:control}.
 %====================================================
 \section{Rigid Body Dynamics}
 \label{sec:dynamics.rigidbody}
@@ -12,40 +12,39 @@ The following generally applicable, rigid body dynamics are first derived with r
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
 %====================================================
-Fundamentally any body, rigid or otherwise, can undergo two kinds of motion; namely rotational and translational. Often a Lagrangian approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom \cite{classicaldynamics,rotationrigidbody}. The Lagrangian principle ensures that (translational and rotational) energies are conserved throughout the system's state progression. When combined with Euler-Rotation equations, the Euler-Lagrangian formulation from \cite{lagrange-formalism} fully defines the aerospace 6-DOF equations.
+Fundamentally any body, rigid or otherwise, can undergo two kinds of motion; namely rotational and translational movement. Often a Lagrangian approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom, \cite{classicaldynamics,rotationrigidbody}. The Lagrangian principle ensures that (translational and rotational) energies are conserved throughout the system's state progression. When combined with Euler-Rotation equations, the Euler-Lagrangian formulation from \cite{lagrange-formalism} fully defines the aerospace 6-DOF equations.
 \par
-Lagrangian formulation is regarded as especially useful in non-Cartesian (\emph{spherical etc\ldots}) co-ordinate frames and with multi-body systems. With that being said, Cartesian co-ordinates were already defined (in Sec:\ref{subsec:proto.conventions.motoraxis}) for the plant. Alternatively; relative co-ordinates could be used for implicit-Euler based dynamics as in \cite{autonomousrobotseuler}.
-Rigid body dynamics in Cartesian co-ordinates do lend themselves to Newtonian mechanics. Both Newton-Euler and Euler-Lagrange formulations result in the same differential equations of motion, but follow different derivations. The Lagrangian operator, $\mathcal{L}$, is a scalar term defined as the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path co-ordinates $\vec{\mathbf{r}}(t)$ for a body, with both position $\vec{\xi}$ and attitude $\vec{H}$ terms included:
+Lagrangian formulation is regarded as especially useful in non-Cartesian (\emph{spherical etc\ldots}) coordinate frames and with multibody systems. With that being said, Cartesian coordinates were already defined (in Sec:\ref{subsec:proto.conventions.motoraxis}) for the plant. Alternatively; relative coordinates could be used for implicit-Euler based dynamics as in \cite{autonomousrobotseuler}. Rigid body dynamics in Cartesian coordinates do lend themselves to Newtonian mechanics. Both Newton-Euler and Euler-Lagrange formulations result in the same differential equations of motion, but follow different derivations. The Lagrangian operator $\mathcal{L}$ is a scalar term defined as the difference between kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path coordinates $\vec{\mathbf{r}}(t)$ for a body, with both position $\vec{\xi}$ and attitude $\vec{H}$ terms included:
 \begin{equation}\label{eq:generalpath}
 \vec{\mathbf{r}}(t)=\begin{bmatrix}
 \vec{\xi} & \vec{H}
 \end{bmatrix}^T~~~~\in\mathcal{F}^{\Lambda}
 \end{equation}
-Note that co-ordinates in Eq:\ref{eq:generalpath} are generalized and taken with respect to some hypothetical shared frame $\mathcal{F}^{\Lambda}$. Those generalized co-ordinates are later refined to Cartesian body co-ordinates with respect to the inertial frame. The Lagrangian is the difference of the trajectory's kinetic and potential energies, by definition:
+Note that coordinates in Eq:\ref{eq:generalpath} are \emph{generalized} and taken with respect to some hypothetical shared frame $\mathcal{F}^{\Lambda}$. Those generalized coordinates are later refined to Cartesian body coordinates with respect to the inertial frame. The Lagrangian is the difference of the trajectory's kinetic and potential energies, by definition:
 \begin{subequations}
 \vspace{-6pt}
 \begin{equation}\label{eq:lagrangian.a}
-\mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t\hspace{1pt}\big)=T\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\big)-U\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)
+\mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t\hspace{1pt}\big)\triangleq T\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\big)-U\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)
 \end{equation}
-Where the trajectory's kinetic and potential energy function(s) are $T$ and $U$ respectively. Introducing a rigid body's general (translational and rotational) kinetic and potential energies, both defined with respect to that shared reference frame $\mathcal{F}^\Lambda$\ldots
+Where the trajectory's kinetic and potential energy functions are $T$ and $U$ respectively. Introducing a rigid body's general (translational and rotational) kinetic and potential energies, both defined with respect to that shared reference frame $\mathcal{F}^\Lambda$\ldots
 \par
 Noting first that there is no attitude contribution for stored potential energy, so $U\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ consists entirely of gravitational potential energy. A gravitational acceleration vector in the inertial frame $\in\mathcal{F}^I$ is:
 \begin{equation}\label{eq:grav}
-\vec{G}_I=\begin{bmatrix} 0&0&-9.81 \end{bmatrix}^T~~~~[\text{m.s}^{\text{-}2}],~\in\mathcal{F}^I
+\vec{G}_I=\begin{bmatrix} 0&0&-9.81 \end{bmatrix}^T~~~~\text{m.s}^{\text{-}2},~\in\mathcal{F}^I
 \end{equation}
 Where $\vec{G}_I$ acts in the negative $\hat{Z}_I$, downward, direction. Substituting translational kinetic and potential energies into the Lagrangian yields the following scalar term:
 \begin{equation}\label{eq:lagrangian.b}
 \mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t)=\frac{1}{2}\dot{\vec{\xi}}^{~T}(m_b)\dot{\vec{\xi}}+\frac{1}{2}\dot{\vec{H}}^{~T}(J_b)\dot{\vec{H}}-m_b\vec{G}_{\Lambda}(h\cdot\vec{Z}_I)
 \end{equation}
 \end{subequations}
-The body's mass is $m_b$ and its generalized inertia matrix is similarly $J_b$, aligned and translated with respect to the common frame $\mathcal{F}^{\Lambda}$. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\vec{\mathbf{V}}$, acting on the system in frame $\Lambda$. In the rigid body motion case those \emph{generalized} forces are net forces $\vec{F}_{net}$ and net torques $\vec{\tau}_{net}$ in the shared frame $\in\mathcal{F}^{\Lambda}$.
+The body's mass is $m_b$ and its generalized inertia matrix is similarly $J_b$, aligned and translated with respect to the common frame $\mathcal{F}^{\Lambda}$. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\vec{\mathbf{V}}$, acting on the system in frame $\Lambda$. In the rigid body motion case those \emph{generalized} forces are net forces $\vec{F}_{\mu}$ and net torques $\vec{\tau}_{\mu}$ in the shared frame $\in\mathcal{F}^{\Lambda}$.
 \begin{equation}\label{eq:euler-lagrange}
 \frac{d}{dt}\bigg(\frac{\partial \mathcal{L}}{\partial \dot{\vec{\mathbf{r}}}}\bigg)-\frac{\partial \mathcal{L}}{\partial \vec{\mathbf{r}}} = \vec{\mathbf{V}} = \begin{bmatrix}
-\vec{F}_{net}\\
-\vec{\tau}_{net}
+\vec{F}_{\mu}\\
+\vec{\tau}_{\mu}
 \end{bmatrix}~~~~\in\mathcal{F}^{\Lambda}
 \end{equation}
-Evaluating symbolic partial derivatives of Eq:\ref{eq:lagrangian.b} with respect to the path co-ordinates $\vec{\mathbf{r}}(t)$ and path rates $\dot{\vec{\mathbf{r}}}(t)$ respectively produces the two following equations:
+Evaluating symbolic partial derivatives of Eq:\ref{eq:lagrangian.b} with respect to the path coordinates $\vec{\mathbf{r}}(t)$ and path rates $\dot{\vec{\mathbf{r}}}(t)$ respectively produces the two following equations:
 \begin{subequations}
 \begin{equation}\label{eq:partial.a}
 \frac{\partial \mathcal{L}}{\partial \vec{\mathbf{r}}}=\begin{bmatrix}
@@ -59,30 +58,30 @@ m_b\vec{G}_\Lambda\\
 \frac{d}{dt}m_b\dot{\vec{\xi}} ~~~ \frac{d}{dt}J_b\dot{\vec{H}}\bigg]^T~~~~\in\mathcal{F}^{\Lambda}
 \end{equation}
 \end{subequations}
-Where $\vec{G}_\Lambda$ is the gravitation force transformed to the common frame $\mathcal{F}^\Lambda$ which $\mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ is defined with respect to. The body mass $m_b$ and inertia $J_b$ could potentially have some non-zero time derivative, but for now are treated as constant. Time varying inertias are later defined in Sec:\ref{sec:proto.inertia} and incorporated into the dynamics subsequently in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Here only the general rigid body case is considered\ldots
+Where $\vec{G}_\Lambda$ is the gravitation force transformed to the common frame $\mathcal{F}^\Lambda$ which $\mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ is defined with respect to. The body mass $m_b$ and inertia $J_b$ could potentially have some non-zero time derivative, but for now are regarded as constants. Time varying inertias are later defined in Sec:\ref{sec:proto.inertia} and introduced to the dynamics subsequently in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Here only the general rigid body case is considered\ldots
 \par
 Any vector in some non-Newtonian rotating reference frame $\mathcal{F}^{a}$ has a time derivative, relative to another frame $\mathcal{F}^{b}$ with an angular velocity $\vec{\omega}_{a/b}$, as per the Reynolds Transportation Theorem\cite{reynolds}:
 \begin{equation}\label{eq:reynolds}
 \frac{d\vec{f}_b}{dt_a}=\frac{d\vec{f}_b}{dt_b}+\vec{\omega}_{a/b}\times\vec{f}_b
 \end{equation}
-Applying Eq:\ref{eq:reynolds} to those partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized co-ordinates $\big[\vec{\xi},~\vec{H}\hspace{1pt}\big]^T$ as 6-DOF Cartesian body co-ordinates with respect to the inertial frame $\mathcal{F}^I$ or the body frame $\mathcal{F}^b$.
+Applying Eq:\ref{eq:reynolds} to those partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized coordinates $\big[\vec{\xi},~\vec{H}\hspace{1pt}\big]^T$ as 6-DOF Cartesian body coordinates with respect to the inertial frame $\mathcal{F}^I$ or the body frame $\mathcal{F}^b$.
 \par
-Reiterating that the angular orientations $\vec{\xi}$ are with respect to a common frame $\mathcal{F}^{\Lambda}$, unlike Euler angles $\vec{\eta}\in\mathcal{F}^{v2,v1,I}$. Recalling the definition of attitude in a common frame $\vec{\eta}_b$ from Eq:\ref{eq:angular-rates.b}, where $\vec{\omega}_b=\dot{\vec{\eta}}_b$ and $\vec{\eta}_b\in\mathcal{F}^{b}$, the trajectory's definition is refined:
+Reiterating that the angular orientations $\vec{\xi}$ are with respect to a \emph{common frame} $\mathcal{F}^{\Lambda}$, unlike Euler angles $\vec{\eta}\in\mathcal{F}^{v2,v1,I}$. Recalling the definition of  an attitude in a shared frame $\vec{\eta}_b$ from Eq:\ref{eq:angular-rates.b}, where $\vec{\omega}_b=\dot{\vec{\eta}}_b$ and $\vec{\eta}_b\in\mathcal{F}^{b}$, the trajectory's definition is refined:
 \begin{subequations}\label{eq:path-def}
-\begin{equation}
+\begin{equation}\label{eq:path-def.a}
 \vec{\mathbf{r}}=\begin{bmatrix}
 \vec{\xi}&
 \vec{H}
 \end{bmatrix}^T
 \triangleq
 \begin{bmatrix}
-\vec{\mathcal{E}}_{\hspace{3pt}}\\
+\vec{\mathcal{E}_b}\\
 \vec{\eta}_{b}
-\end{bmatrix}
+\end{bmatrix}~~~~\in\mathcal{F}^b
 \end{equation}
-Which leads to the path rate definition $\dot{\vec{\mathbf{r}}}(t)$:
+Note that the position $\vec{\mathcal{E}}_b$ in Eq:\ref{eq:path-def.a} is the position in the \emph{body frame}, unlike Eq:\ref{eq:position-frame} which is in $\mathcal{F}^I$. The path rate $\dot{\vec{\mathbf{r}}}(t)$ is the defined as:
 \begin{equation}
-\rightarrow
+\therefore
 \dot{\vec{\mathbf{r}}}=
 \begin{bmatrix}
 \dot{\vec{\xi}} & \dot{\vec{H}}
@@ -90,38 +89,38 @@ Which leads to the path rate definition $\dot{\vec{\mathbf{r}}}(t)$:
 \triangleq
 \frac{d}{dt}
 \begin{bmatrix}
-{\vec{\mathcal{E}}}_{\hspace{3pt}}\\
+{\vec{\mathcal{E}}}_b\\
 \vec{\eta}_b
 \end{bmatrix}
 =
 \begin{bmatrix}
-\vec{v}\\
-\vec{\omega}
+\vec{v}_b\\
+\vec{\omega}_b
 \end{bmatrix}~~~~
 \in \mathcal{F}^b
 \end{equation}
 \end{subequations}
-Substituting the changed path co-ordiantes from Eq:\ref{eq:path-def} into the Lagrangian Eq:\ref{eq:lagrangian.b} yields a familiar Lagrangian scalar in the body frame $\mathcal{F}^b$:
+Substituting those changed path coordinates from Eq:\ref{eq:path-def} into the Lagrangian Eq:\ref{eq:lagrangian.b} yields a familiar Lagrangian scalar relative to the body frame $\mathcal{F}^b$:
 \begin{equation}\label{eq:3.7a}
 \mathcal{L}=\frac{1}{2}\vec{v}_b^{~T}(m_b)\vec{v}_b + \frac{1}{2}\vec{\omega}_b^{~T}(J_b)\vec{\omega}_b
--m_b\vec{G}_b z_I~~~~\in\mathcal{F}^b
+-m_b\vec{G}_b z_I
 \end{equation}
-With $\vec{G}_b$ being the gravitational force vector from Eq:\ref{eq:grav} transformed to the body frame $\mathcal{F}^b$ and $z_I$ as the vertical height of the vehicle (\underline{in the inertial frame}). The time derivative of the substituted path co-ordinates in the partial derivative Eq:\ref{eq:partial.b} is then: 
+With $\vec{G}_b$ being the gravitational force vector from Eq:\ref{eq:grav} transformed to $\mathcal{F}^b$ and $z_I$ being the vertical height of the vehicle (\underline{in the inertial frame}). The time derivative of the substituted path coordinates in the partial derivative Eq:\ref{eq:partial.b} is then: 
 \begin{subequations}
 \begin{equation}
 \frac{d}{dt}\bigg(\frac{\partial \mathcal{L}}{\partial \dot{\vec{\mathbf{r}}}}\bigg)=\bigg[
 m_b\frac{d}{dt}\vec{v}_b ~~~ J_b\frac{d}{dt}\vec{\omega}_b\bigg]^T
 \end{equation}
-With respective time derivatives using the Reynolds transportation theorem:
+With respective time derivatives of body frame vectors relative to the inertial frame, using the Reynolds transportation theorem:
 \begin{equation}
-\rightarrow m_b\frac{d}{dt}\vec{v}_b=m_b\dot{\vec{v}}_b+\vec{\omega}_{b/I}\times m_b\vec{v}_b
+\rightarrow m_b\frac{d}{dt}\vec{v}_b=m_b\dot{\vec{v}}_b+\vec{\omega}_{b/I}\times m_b\vec{v}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-\rightarrow J_b \frac{d}{dt}\vec{\omega}_b=J_b\dot{\vec{\omega}}_b+\vec{\omega}_{b/I}\times J_b\vec{\omega}_b
+\rightarrow J_b \frac{d}{dt}\vec{\omega}_b=J_b\dot{\vec{\omega}}_b+\vec{\omega}_{b/I}\times J_b\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Which, when substituted back into the Euler-Lagrange formulation Eq:\ref{eq:euler-lagrange}, produces the familiar Newton-Euler rigid body equations for translational and rotational motion:
+Which, when substituted back into the Euler-Lagrange formulation Eq:\ref{eq:euler-lagrange}, produces the familiar Newton-Euler rigid body differential equations of translational and rotational motion for general net force and torque inputs:
 \begin{subequations}\label{eq:newton}
 \begin{equation}
 \begin{bmatrix}
@@ -137,46 +136,46 @@ m_b\vec{G}_b\\
 \vec{\mathbf{V}}
 =
 \begin{bmatrix}
-\vec{F}_{net}\\
-\vec{\tau}_{net}
+\vec{F}_{\mu}\\
+\vec{\tau}_{\mu}
 \end{bmatrix}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:newton.a}
-\rightarrow\vec{F}_{net}=m_b\dot{\vec{v}}_b+\vec{\omega}_b\times m_b \vec{v}_b - m_bR_I^b(-\eta) \vec{G}_I~~~~[\text{N}],~\in\mathcal{F}^b
+\rightarrow\vec{F}_{\mu}=m_b\dot{\vec{v}}_b+\vec{\omega}_b\times m_b \vec{v}_b - m_bR_I^b(-\eta) \vec{G}_I~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:newton.b}
-\rightarrow\vec{\tau}_{net}=J_b\dot{\vec{\omega}}_b+\vec{\omega}_b\times J_b\vec{\omega}_b~~~~[\text{N.m}],~\in\mathcal{F}^b
+\rightarrow\vec{\tau}_{\mu}=J_b\dot{\vec{\omega}}_b+\vec{\omega}_b\times J_b\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Reiterating that $\vec{\eta}_b\not=\vec{\eta}$~~because each Euler Angle is defined in a sequentially rotated reference frame. Four equations are then needed to completely describe a body's position and attitude state dynamics:
+Reiterating that $\vec{\eta}_b\not=\vec{\eta}$~~because each Euler Angle is defined in a sequentially rotated reference frame. Four equations are then needed to completely describe a body's position and attitude state:
 \begin{subequations}\label{eq:states}
 \begin{equation}\label{eq:states.a}
-\dot{\vec{\mathcal{E}}}=R_b^I(-\eta)\vec{v}_b~~~~[\text{m.s}^{\text{-}1}],~\in\mathcal{F}^I
+\dot{\vec{\mathcal{E}}}_I=R_b^I(-\eta)\vec{v}_b~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-14pt}
 \begin{equation}\label{eq:states.b}
-\vec{F}_{net}=m_b\dot{\vec{v}}_b+\vec{\omega}_b\times m_b\vec{v}_b -m_b \vec{G}_b ~~~~[\text{N}],~\in\mathcal{F}^b
+\vec{F}_{\mu}=m_b\dot{\vec{v}}_b+\vec{\omega}_b\times m_b\vec{v}_b -m_b \vec{G}_b ~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:states.c}
-\dot{\vec{\eta}}=\Phi(\eta)\vec{\omega}_b~~~~[\text{rad.s}^{\text{-}1}],~\in\mathcal{F}^{v2,v1,I}
+\dot{\vec{\eta}}=\Phi(\eta)\vec{\omega}_b~~~~\in\mathcal{F}^{v2,v1,I}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:states.d}
-\vec{\tau}_{net}=J_b\dot{\vec{\omega}}_b+\vec{\omega}_b\times J_b\vec{\omega}_b~~~~[\text{N.m}],~\in\mathcal{F}^b
+\vec{\tau}_{\mu}=J_b\dot{\vec{\omega}}_b+\vec{\omega}_b\times J_b\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-Where $\Phi(\eta)$ is the Euler matrix defined previously in Eq:\ref{eq:angular-rates.c}. State differentials from Eq:\ref{eq:states} can be simplified to a set of two equations defined entirely in the reference frames of the state variables which they represent. The non-linear form of those equations substitutes $d\vec{\eta}/dt=\Phi(\eta)\vec{\omega}_b$ into the Lagrangian derivative, Eq:\ref{eq:partial.b}.
-\begin{equation}
+Where $\Phi(\eta)$ is the Euler matrix defined previously in Eq:\ref{eq:angular-rates.c}. State differentials from Eq:\ref{eq:states} can be simplified to a pair of equations defined entirely in the reference frames of the state variables which they represent. The nonlinear form of those equations substitutes $d\vec{\eta}/dt=\Phi(\eta)\vec{\omega}_b$ into the Lagrangian derivative, Eq:\ref{eq:partial.b}.
+\begin{equation}\label{eq:3.11}
 \frac{d}{dt}\bigg(\frac{\delta \mathcal{L}}{\delta \dot{\mathbf{r}}}\bigg)=\bigg[m_b\frac{d}{dt}\vec{v}_b~~~J_b\frac{d}{dt}\dot{\vec{\eta}}_b\bigg]^T\Rightarrow\bigg[m_b\frac{d}{dt}\vec{v}_b~~~J_b\frac{d}{dt}\Phi(\eta)\vec{\omega}_b\bigg]^T
 \end{equation}
-Which affects only the angular component because the two kinetic energies are independent of one another. Applying the differential chain rule yields:
+Which affects only the angular component because the two kinetic energies are independent of one another. Applying the differential chain rule to the angular component of Eq:\ref{eq:3.11} yields:
 \begin{equation}
-J_b\frac{d}{dt}\Phi(\eta)\vec{\omega}_b=J_b\big(\Phi\dot{(\eta)}\vec{\omega}_b+\Phi(\eta)\dot{\vec{\omega}}_b \big)
+J_b\frac{d}{dt}\Phi(\eta)\vec{\omega}_b=J_b\big(\dot{\Phi}(\eta)\vec{\omega}_b+\Phi(\eta)\dot{\vec{\omega}}_b \big)
 \end{equation}
-Drawing from \cite{autonomousrobotseuler} and recognizing that $J_b$ must be transformed to the common intermediate Euler axes, $J\triangleq\Psi(\eta)^TJ_b\Psi(\eta)$. The state differential equation for angular acceleration in Eq:\ref{eq:newton.b}, then defined in intermediate (non-inertial) Euler frames for each angle, becomes:
+Drawing from \cite{autonomousrobotseuler} and recognizing that $J_b$ must be transformed to the shared intermediate Euler axes, $J\triangleq\Psi(\eta)^TJ_b\Psi(\eta)$. The state differential for the Euler angle acceleration counterpart of Eq:\ref{eq:newton.b}, defined in intermediate (non-inertial) Euler frames for each respective Euler angle, then becomes:
 \begin{subequations}\label{eq:nonlinear}
 \begin{equation}\label{eq:nonlinear.a}
 M(\eta)\ddot{\vec{\eta}}+C(\eta,\dot{\eta})\dot{\vec{\eta}}=\Psi(\eta)\vec{\tau}_{\mu}~~~~\in\mathcal{F}^{v2,v1,I}
@@ -187,21 +186,22 @@ M(\eta)=\Psi(\eta)^TJ_b\Psi(\eta)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:nonlinear.c}
-C(\eta,\dot{\eta})=-\Psi(\eta)J_b\Psi\dot{(\eta)}+\Psi(\eta)^T \big[\Psi(\eta)\dot{\vec{\eta}}\big]_{\times}J_b\Psi(\eta)
+C(\eta,\dot{\eta})=-\Psi(\eta)J_b\dot{\Psi}(\eta)+\Psi(\eta)^T \big[\Psi(\eta)\dot{\vec{\eta}}\hspace{2pt}\big]_{\times}J_b\Psi(\eta)
 \end{equation}
 \end{subequations}
-The relationship $\dot{\Phi}\equiv\Phi\dot{\Psi}\Phi$ was used to simplify Eq:\ref{eq:nonlinear}, the singularity present in $\Phi$ remains. The equation in Eq:\ref{eq:nonlinear.a} completely describes the state derivative $\ddot{\vec{\eta}}$ in its own reference frame(s), $\mathcal{F}^{v2,v1,I}$. The two differential equations which fully describe the entire body's 6-DOF motion are:
+The relationship $\dot{\Psi}\equiv\Psi\dot{\Phi}\Psi$ was used to simplify Eq:\ref{eq:nonlinear}, the singularity present in $\Phi$ remains. The equation in Eq:\ref{eq:nonlinear.a} completely describes the state derivative $\ddot{\vec{\eta}}$ in its own reference frame(s), $\mathcal{F}^{v2,v1,I}$. The two differential equations which fully describe the entire body's 6-DOF motion are:
 \begin{subequations}\label{eq:rigid-frame}
 \begin{equation}\label{eq:rigid-frame.a}
-\vec{F}_{net}=m_b\dot{\vec{\mathcal{E}}}+R_b^I(-\eta)\vec{\omega}_b \times m_b \dot{\vec{\mathcal{E}}}-m_b\vec{G}_I~~~~\in\mathcal{F}^I
+\vec{F}_{\mu}=m_b\dot{\vec{\mathcal{E}}}_I+R_b^I(-\eta)\vec{\omega}_b \times m_b \dot{\vec{\mathcal{E}}}_I-m_b\vec{G}_I~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:rigid-frame.b}
-\vec{\tau}_{net}=\Psi(\eta)^{-1}M(\eta)\ddot{\vec{\eta}}+\Psi(\eta)^{-1}C(\eta,\dot{\eta})~~~~\in\mathcal{F}^{v2,v1,I}
+\vec{\tau}_{\mu}=\Psi(\eta)^{-1}M(\eta)\ddot{\vec{\eta}}+\Psi(\eta)^{-1}C(\eta,\dot{\eta})~~~~\in\mathcal{F}^{v2,v1,I}
 \end{equation}
 \end{subequations}
+In most cases the body frame counterparts in Eq:\ref{eq:states} are rather than Eq:\ref{eq:rigid-frame} when describing states. Eq:\ref{eq:rigid-frame} is superfluous when considering that inputs $\vec{F}_\mu$ and $\vec{\tau}_\mu$ both act in the body frame $\mathcal{F}^b$. Irrespective of the differential equation used; some singular transformation will still be performed by either $\Psi(\eta)$ from Eq:\ref{eq:angular-rates.d} or $\Phi(\eta)$ from Eq:\ref{eq:angular-rates.f}. 
 \par
-The generalized net forces and torques, $\vec{F}_{net}$ and $\vec{\tau}_{net}$ respectively, are due to the system's controllable inputs as well as any disturbances acting on the body. The control inputs are directly affected by the vehicle's actuators. How actuator positions produce the control forces and torques depends on the actuator's associated \emph{effectiveness} function. In the general case, which is expanded in Sec:\ref{sec:dynamics.aero}, the control inputs for a quadrotor (Fig:\ref{fig:net-force}) are as follows. 
+The generalized input forces and torques, $\vec{F}_{\mu}$ and $\vec{\tau}_{\mu}$ respectively, are produced by the system's controllable inputs but could include any external disturbances acting on the body. Those control inputs are directly affected by the vehicle's actuators. How actuator action produces the control inputs depends on the actuator's associated \emph{effectiveness} function. In the general case, which is expanded in Sec:\ref{sec:dynamics.aero}, the control inputs for a regular quadrotor (Fig:\ref{fig:net-force}) are as follows. 
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
@@ -211,24 +211,22 @@ The generalized net forces and torques, $\vec{F}_{net}$ and $\vec{\tau}_{net}$ r
 \vspace{-14pt}
 \end{figure}
 \par
-Typically $\vec{F}_{net}$ is the net heave or sum of all thrust forces produced by rotating propellers, as some function of those rotational speeds; $\vec{T}(\Omega_i)$.
+Typically $\vec{F}_{\mu}$ is the net heave acting on the center of motion. The net heave is the sum of all thrust forces produced by rotating propellers, as some function of those rotational speeds; $\vec{T}(\Omega_i)$.
 \begin{subequations}\label{eq:generalized-net-forces}
 \begin{equation}
-\vec{F}_{net} = \sum_{i=1}^4 \vec{T}(\Omega_i)~~~~[\text{N}],~\in\mathcal{F}^b
+\vec{F}_{\mu} = \sum_{i=1}^4 \vec{T}(\Omega_i)~~~~\in\mathcal{F}^b
 \end{equation}
-Similarly net torque $\vec{\tau}_{net}$ is the sum of all \emph{differential} torque arms produced from opposing propeller thrust vectors. Each torque arm $\vec{L}_{1\rightarrow 4}$ is relative to the origin of \emph{motion} $\vec{\mathbf{O}}_b$.
+Similarly net torque $\vec{\tau}_{\mu}$ is the sum of all \emph{differential} torques produced from opposing propeller thrust vectors. Each torque arm $\vec{L}_{1\rightarrow 4}$ is relative to the origin of \emph{motion} $\vec{\mathbf{O}}_b$.
 \begin{equation}
-\vec{\tau}_{net} = \sum_{i=1}^4 \vec{L}_i \times \vec{T}(\Omega_i)~~~~[\text{N.m}],~\in\mathcal{F}^{b}
+\vec{\tau}_{\mu} = \sum_{i=1}^4 \vec{L}_i \times \vec{T}(\Omega_i)~~~~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is a function of the $i^{th}$ motor's rotational velocity $\Omega_i$, fixed in the $\hat{Z}_b$ direction. Each thrust vector could potentially be $\in\mathbb{R}^3$ such as the redirected vector from Eq:\ref{eq:motor-module-force-redirect}. The displacement $\vec{l}_i$ is that thrust vector's perpendicular distance from the origin $\mathbf{O}_b$. All of the above equations are still applicable to any 6 DOF body; common simplifications applied to the system(s) for quadrotor control are explored in App:\ref{app:equations.standard}. Aerodynamic components pertinent for thrust and torque generation relative to Eq:\ref{eq:generalized-net-forces} are now introduced; obviously the contextual focus is on quadrotor and tilting quadrotor platforms\ldots
+In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is a function of the $i^{th}$ motor's rotational velocity $\Omega_i$, fixed in the $\hat{Z}_b$ direction. Each thrust vector could potentially be $\in\mathbb{R}^3$ such as the redirected vector from Eq:\ref{eq:motor-module-force-redirect}. The displacement $\vec{L}_i$ is that thrust vector's perpendicular distance from the origin $\mathbf{O}_b$. All of the above equations are still applicable to any 6-DOF body; common simplifications applied to the system for quadrotor control are explored in App:\ref{app:equations.standard}. Aerodynamic components pertinent for thrust and torque generation relative to Eq:\ref{eq:generalized-net-forces} are now introduced; obviously the contextual focus is on quadrotor with dual-tilting axis actuators\ldots
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-Aerodynamic effects described here and subsequent non-linear responses in Sec:\ref{sec:dynamics.nonlinearities} affect the net forces and torques acting on the body. The relationship between a propeller's rotational speed, $\Omega_i$ in $[\text{RPS}]$, and its perpendicular thrust vector, $\vec{T}(\Omega_i)$, is more complicated than the quadratic simplification taken at static conditions which most papers assume (e.g \cite{x4flyer,modelingquadcopter} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the component of the body velocity normal to that propeller. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag (and hence torque). 
-\par
-The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum (\emph{disc actuator}) theories equate an integral term generated across the propeller's length with the produced thrust or torque. A schedule of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories; vortex ring state and parasitic drag effects are not included as they will be approximately negligible given the aircraft's proposed flight envelope with low translational velocities.
+Aerodynamic effects detailed here and subsequent nonlinear multibody responses in Sec:\ref{sec:dynamics.nonlinearities} both affect the generalized forces and torques acting on the body. The relationship between a propeller's rotational speed $\Omega_i$, in revolutions per second or \emph{RPS}, and its perpendicular thrust vector $\vec{T}(\Omega_i)$ is more complicated than the quadratic simplification taken at static conditions which most papers assume (e.g \cite{x4flyer,modelingquadcopter} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the body velocity's component normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag (and hence torque). The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum (\emph{disc actuator}) theories equate an integral term generated across the propeller's length with the produced thrust or torque. A schedule of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories; vortex ring state and parasitic drag effects are not included as they will be approximately negligible given the aircraft's proposed flight envelope with low translational velocities.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
@@ -270,7 +268,7 @@ Where $\Delta v$ is the net change in fluid velocity caused by the propeller bla
 \label{fig:bem-flow}
 \vspace{-15pt}
 \end{figure}
-It is shown in \cite{bladesforquadrotors} that, using Bernoulli's pressure theorem, the net fluid flow through the propeller's plane is:
+It is shown in \cite{bladesforquadrotors} that at static conditions, using Bernoulli's pressure theorem, the net fluid flow through the propeller's plane is:
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
@@ -278,8 +276,9 @@ Stemming from classical disc actuator (fluid \emph{momentum}) theory \cite{fluid
 \begin{equation}\label{eq:prop-mass}
 T=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
-Where $R_b$ is the disc (propeller) radius in $[\text{m}]$ for the fluid stream under consideration, $A_b$ is the area of that propeller disc. The fluid density of that stream, $\rho$, is typically $1.225~[\text{ kg.m}^{-3}]$ at standard temperature and pressure (\emph{stp}). However, the desired form of thrust generated is as a function of propeller rotational velocity $T(\Omega_i)$ in $[\text{RPS}]$ or $[\text{rad.s}^{\text{-}1}]$, so Eq:\ref{eq:prop-mass} is not satisfactory. 
+Where $R_b$ is the disc (propeller) radius in $\text{m}$ for the fluid stream under consideration, $A_b$ is the area of that propeller disc. The fluid density of that stream, $\rho$, is typically $1.225~\text{ kg.m}^{-3}$ at standard temperature and pressure (\emph{stp}). However, the desired form of thrust generated is as a function of propeller rotational velocity $T(\Omega_i)$ in $\text{RPS}$, so Eq:\ref{eq:prop-mass} is not satisfactory. 
 \par
+%===================================== UP TO HERE ==============================================================================
 Eq:\ref{eq:prop-mass} can be solved as a function of the aerodynamic propulsive power expended, $\Delta P=T\Delta v$. Rotational kinetic energy of a propeller and its transferred propulsive power is difficult to quantify, with compound parasitic losses deteriorating the efficiency of the propeller. Furthermore, the local fluid velocity through the propeller is not purely normal to the propeller plane but is in fact a vector. 
 \par
 In reality fluid flow induced by the propeller's rotation, $v_i$, directly in front of its plane of rotation is not purely perpendicular but has axial \underline{and} tangential induced components, termed $a$ and $a'$ respectively. Those induced components for the fluid velocity can be abstracted to induction factors dependent on the incident fluid velocity to the propeller's plane of rotation:
@@ -484,7 +483,7 @@ Clockwise and counterclockwise propellers and rotations were used for both thrus
 \subsection{Hinged Propeller Conning \& Flapping}
 \label{subsec:dynamics.aero.flap}
 %====================================================
-Non-linear effects which adversly alter a propeller's performance have all been well documented in their own right; mostly in the context of helicopter aerodynamic and propeller fields\cite{basichelicopter,bramwell}. Typically such effects are more pronounced when observing hinged variable pitch propellers (Fig:\ref{fig:variable-pitch}), fixed pitch propellers have a diminished effect. Moreover, low translational velocities suppress such responses but they're worth mentioning.
+Nonlinear effects which adversly alter a propeller's performance have all been well documented in their own right; mostly in the context of helicopter aerodynamic and propeller fields\cite{basichelicopter,bramwell}. Typically such effects are more pronounced when observing hinged variable pitch propellers (Fig:\ref{fig:variable-pitch}), fixed pitch propellers have a diminished effect. Moreover, low translational velocities suppress such responses but they're worth mentioning.
 \par
 Conning and flapping are the two most significant aerodynamic effects encountered by a propeller. Other phenomenon like cyclic vortex ring states are deemed to not be applicable here and fall outside the scope of the investigation. 
 \par
@@ -829,7 +828,7 @@ Eq:\ref{eq:euler-quaternion} asserts that for each attitude in $\mathbb{R}^3$ th
 \end{equation}
 Or more simply that $Q_e\triangleq[|q_0|~\vec{q}\hspace{2pt}]^T$. The simplest solution adhering to that constraint, which is often used, is to neglect the quaternion scalar component altogether. Using a reduced error state, only the quaternion error vector as an argument for the control law; $h(\vec{q}_e,t)$. Such a solution is an oversimplification and would only ever be locally stable. 
 \par
-An alternative is to use only the absolute quaternion scalar, which ensures the error state represents a right-handed (clockwise) rotation and not necessarily the shortest path. If the resolution of trajectory co-ordinates generated is sufficiently fine the control plant won't encounter a problem.
+An alternative is to use only the absolute quaternion scalar, which ensures the error state represents a right-handed (clockwise) rotation and not necessarily the shortest path. If the resolution of trajectory coordinates generated is sufficiently fine the control plant won't encounter a problem.
 \par
 One proposal presented in \cite{nonlinearquadcopter} suggested using a \emph{signum} operator to design the controller coefficient sign for the desired virtual angular velocity, $\vec{\omega}_d$ control plant input. 
 \begin{subequations}\label{eq:signum-unwinding}
@@ -882,7 +881,7 @@ Drawing again from Lagrangian theory and considering only the angular energy com
 \vspace{-12pt}
 \end{figure}
 \par
-Deriving dynamic responses for changes in the $\lambda_i$ servo, acting on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$, requires a relative path co-ordinate to be defined. Seeing that the only path variable between the two frames is that servo's rotational position $\lambda_i$ about the $\hat{X}_{M_i}$ axis; the path co-ordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ are used to produce the Lagrangian for the inner ring's energy relative the middle ring frame, $\mathcal{L}_{M_i'}\in\mathcal{F}^{M_i'}$.
+Deriving dynamic responses for changes in the $\lambda_i$ servo, acting on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$, requires a relative path coordinate to be defined. Seeing that the only path variable between the two frames is that servo's rotational position $\lambda_i$ about the $\hat{X}_{M_i}$ axis; the path coordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ are used to produce the Lagrangian for the inner ring's energy relative the middle ring frame, $\mathcal{L}_{M_i'}\in\mathcal{F}^{M_i'}$.
 \par
 The inner ring assembly consists of two separate bodies (exploded in Fig:\ref{fig:response-inner}). Each with relative rotational motion and independent kinetic energies. Those bodies are; the rotor assembly with an inertia $J_{r}$ (defined earlier in Eq:\ref{eq:prop-inertia}) and the inner ring (\emph{sans} rotor assembly) which has an inertia $J_{ir}$.
 \begin{equation}
@@ -916,7 +915,7 @@ Then expanding the Lagrangian $\mathcal{L}_{M_i'}$ in Eq:\ref{eq:lagrange-inner.
 \rightarrow\mathcal{L}_{M_i'}=\frac{1}{2}\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\big(R_x(\lambda)\big(J_{r}\big)R_x^{-1}(\lambda)\big)\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)\\+\frac{1}{2}\dot{\vec{\lambda}}_i^{\hspace{2pt}T}\big(R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)\big)\dot{\vec{\lambda}}_i
 \end{multline}
 \end{subequations}
-The inner ring's inertia $J_{ir}$ is an independent body from the rotor assembly $J_{r}$. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} using path co-ordinates $\vec{\mathbf{u}}(t)$ for the inner ring frame, $\mathcal{F}^{M_i}$, relative to  the middle ring frame, $\mathcal{F}^{M_i'}$. The generalized (torque) forces $\vec{\mathbf{U}}$ acting on the middle ring are then:
+The inner ring's inertia $J_{ir}$ is an independent body from the rotor assembly $J_{r}$. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} using path coordinates $\vec{\mathbf{u}}(t)$ for the inner ring frame, $\mathcal{F}^{M_i}$, relative to  the middle ring frame, $\mathcal{F}^{M_i'}$. The generalized (torque) forces $\vec{\mathbf{U}}$ acting on the middle ring are then:
 \begin{equation}\label{eq:euler-lagrange-inner}
 \vec{\mathbf{U}}(\lambda)=\frac{d}{dt}\bigg(\frac{\partial \mathcal{L}_{M_i'}}{\partial \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial \mathcal{L}_{M_i'}}{\partial \vec{\mathbf{u}}}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
@@ -1082,7 +1081,7 @@ Finally the middle ring has an angular velocity $\vec{\omega}_{M_i'/M_i''}$ rela
 \begin{equation}\label{eq:middle-relative}
 \vec{\omega}_{M_i'/M_i''}\triangleq\frac{d\alpha}{dt}(\vec{\alpha}_i)=\dot{\vec{\alpha}}_i~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
-Using the relative path co-ordinate $\vec{\mathbf{v}}(t)$, the Lagrangian $\mathcal{L}_{M_i''}$ can be constructed for the combined motor module relative to the frame $\mathcal{F}^{M_i''}$ with kinetic energies of the rotor assembly, inner and middle ring structures respectively:
+Using the relative path coordinate $\vec{\mathbf{v}}(t)$, the Lagrangian $\mathcal{L}_{M_i''}$ can be constructed for the combined motor module relative to the frame $\mathcal{F}^{M_i''}$ with kinetic energies of the rotor assembly, inner and middle ring structures respectively:
 \begin{equation}\label{eq:alpha-lagrange}
 \mathcal{L}_{M_i''}=\frac{1}{2}\vec{\omega}_{r/M_i''}^{\hspace{2pt}T}\big(J_{r}''\big)\vec{\omega}_{r/M_i''}+\frac{1}{2}\vec{\omega}_{M_i/M_i''}^{\hspace{2pt}T}\big(J_{ir}''\big)\vec{\omega}_{M_i/M_i''}+\frac{1}{2}\vec{\omega}_{M_i'/M_i''}^{\hspace{2pt}T}\big(J_{m}'\big)\vec{\omega}_{M_i'/M_i''}
 \end{equation}
@@ -1379,7 +1378,7 @@ Where the term $m_b\vec{G}_b\cdot\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\bi
 \\
 +m_p\vec{G}_b\cdot\big(R_I^b(\eta)\vec{\mathcal{E}}+\Delta L_i\big)
 \end{multline}
-Applying partial derivatives of the Lagrangian formulation to $\mathcal{L}_{p_i}$ relative to the angular path co-ordinates $\vec{\eta}_b$ and $\vec{\omega}_b$ to find generalized forced $\vec{\mathbf{W}}(u\cdot i)$. Recalling $\vec{\eta}_b$ is the angular orientation from Eq:\ref{eq:angular-rates.b}, defined entirely in the body frame $\mathcal{F}^b$, and similarly assuming that $\partial/\partial\vec{\eta}_b\big(\Delta L_i\big)\approx 0$:
+Applying partial derivatives of the Lagrangian formulation to $\mathcal{L}_{p_i}$ relative to the angular path coordinates $\vec{\eta}_b$ and $\vec{\omega}_b$ to find generalized forced $\vec{\mathbf{W}}(u\cdot i)$. Recalling $\vec{\eta}_b$ is the angular orientation from Eq:\ref{eq:angular-rates.b}, defined entirely in the body frame $\mathcal{F}^b$, and similarly assuming that $\partial/\partial\vec{\eta}_b\big(\Delta L_i\big)\approx 0$:
 \begin{subequations}
 \begin{equation}\label{eq:lagrange-module-body}
 \frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{p_i}}{\partial\dot{\vec{\eta}}_b}\bigg)-\frac{\partial\mathcal{L}_{p_i}}{\partial\vec{\eta}_b}=\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{p_i}}{\partial\vec{\omega}_b}\bigg)-\frac{\partial\mathcal{L}_{p_i}}{\partial\vec{\eta}_b}=\vec{\mathbf{W}}(u\cdot i)=\hat{\tau}_M
@@ -1464,7 +1463,7 @@ The external torque $\hat{\tau}_{\mu}$ acting on the vehicle is as a result of p
 \begin{equation}\label{eq:3.110a}
 \hat{\tau}_\mu=\big(J_b\big)\dot{\vec{\omega}}_b+\vec{\omega}_b\times\big(J_b\big)\vec{\omega}_b+\hat{\tau}_b(u)-\vec{\tau}_g
 \end{equation}
-Defining a new response torque $\hat{\tau}_b$ which represents collective responses from internal rotations relative each body. It can be considered a  non-linear extension of the gyroscopic component of the torque $\vec{\omega}_b\times (J_b)\vec{\omega}_b$ acting on the system. That non-linear body torque is defined then as follows:
+Defining a new response torque $\hat{\tau}_b$ which represents collective responses from internal rotations relative each body. It can be considered a  nonlinear extension of the gyroscopic component of the torque $\vec{\omega}_b\times (J_b)\vec{\omega}_b$ acting on the system. That nonlinear body torque is defined then as follows:
 \begin{equation}\label{eq:net-body-response}
 \hat{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[R_z\hat{\tau}_\alpha(\lambda_i)+R_zR_y(\alpha_i)\hat{\tau}_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]
 \end{equation}
@@ -1551,7 +1550,7 @@ And similarly for the middle ring's net (kinetic) energy from Eq:\ref{eq:alpha-l
 +\frac{1}{2}\Big(\dot{\vec{\alpha}}_i\Big)^T\Big(R_y(\alpha)\big(J_m\big)R_y^{-1}(\alpha)\Big)\Big(\dot{\vec{\alpha}}_i\Big)
 \end{multline}
 \end{subequations}
-Solving for the generalized forces acting on each system requires application of Euler-Lagrange formulation, using partial derivatives relative to generalized path co-ordinates. Both the inner and middle ring systems were defined with relative co-ordinate paths for the angular servo position $\vec{\mathbf{u}}=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ and $\vec{\mathbf{v}}=\begin{bmatrix}0&\alpha_i&0\end{bmatrix}^T$ respectively. The generalized forces for both systems are then, using the Euler-Lagrange formulation:
+Solving for the generalized forces acting on each system requires application of Euler-Lagrange formulation, using partial derivatives relative to generalized path coordinates. Both the inner and middle ring systems were defined with relative coordinate paths for the angular servo position $\vec{\mathbf{u}}=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ and $\vec{\mathbf{v}}=\begin{bmatrix}0&\alpha_i&0\end{bmatrix}^T$ respectively. The generalized forces for both systems are then, using the Euler-Lagrange formulation:
 \begin{equation}\label{eq:sim-lagranges}
 \underbrace{\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i'}}{\partial\dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i'}}{\partial\vec{\mathbf{u}}}=\vec{\mathbf{U}}(\lambda_i)}_{\text{Inner ring}}~~\text{and}~~\underbrace{\frac{d}{dt}\bigg(\frac{\partial\mathcal{L}_{M_i''}}{\partial\dot{\vec{\mathbf{v}}}}\bigg)-\frac{\partial\mathcal{L}_{M_i''}}{\partial\vec{\mathbf{v}}}=\vec{\mathbf{V}}(\alpha_i,\lambda_i)}_{\text{Middle ring}}
 \end{equation}
@@ -1837,7 +1836,7 @@ The final simulated module is that of $\hat{\tau}_b$
 \section{Consolidated Model}
 \label{sec:dynamics.model}
 %====================================================
-Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ space using quaternions. Also introducing the non-linear inertial and gyroscopic responses to induced perturbations, $\hat{\tau}_\lambda$ and $\hat{\tau}_\alpha(\lambda_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with non-linear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}$ and $\vec{\tau}_{\mu}$ are control inputs to be designed by a higher level set-point tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation rules are explored thereafter in Ch:\ref{ch:allocation}.
+Reiterating the different aspects detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ space using quaternions. Also introducing the nonlinear inertial and gyroscopic responses to induced perturbations, $\hat{\tau}_\lambda$ and $\hat{\tau}_\alpha(\lambda_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with nonlinear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}$ and $\vec{\tau}_{\mu}$ are control inputs to be designed by a higher level setpoint tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation rules are explored thereafter in Ch:\ref{ch:allocation}.
 \par
 The vehicle's inertial position and \emph{body frame} velocity differential equations are:
 \begin{subequations}\label{eq:quaternion-states}
@@ -1881,7 +1880,7 @@ T(\Omega_i)= C_T(J)\rho\Omega_i^2D^4~~~~[\text{N}]
 Q(\Omega_i)= C_P(J)\rho\Omega_i^3D^5 \big(1/R\Omega\big)~~~~[\text{Nm}]
 \end{equation}
 \end{subequations}
-Reiterating that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The non-linear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as feedback compensation terms;
+Reiterating that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The nonlinear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as feedback compensation terms;
 \begin{equation}\label{eq:actuator-torque}
 \hat{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[\hat{\tau}'_\alpha(\lambda_i)+\hat{\tau}''_\lambda+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]~~~[\text{Nm}],~\in\mathcal{F}^b
 \end{equation}
