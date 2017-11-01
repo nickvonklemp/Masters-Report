@@ -193,23 +193,19 @@ R_I^{b}(\eta)=R_{I}^{b}(\phi,\theta,\psi)\triangleq R_z(\psi)R_y(\theta)R_x(\phi
 \end{equation}
 \vspace{-14pt}
 \begin{equation}\label{eq:inertialbodyrotation.b}
-\vec{\nu}^{\hspace{1pt}}\text{}'=R_I^b(\phi,\theta,\psi)\vec{\nu}
+\vec{\nu}^{\hspace{1pt}}\text{}'=R_I^b(\phi,\theta,\psi)\vec{\nu}~~~~\in\mathcal{F}^{I}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:inertialbodyrotation.c}
-\rightarrow\vec{\nu}^{\hspace{1pt}}\text{}'=R_z(\psi)R_y(\theta)R_x(\phi)\vec{\nu}
+=R_z(\psi)R_y(\theta)R_x(\phi)\vec{\nu}
 \end{equation}
 \end{subequations}
-It is important to note that in Eq:\ref{eq:inertialbodyrotation} both operand and output vectors are \emph{both} in the inertial frame, namely $\vec{\nu}^{\hspace{2pt}}\text{}'~,\vec{\nu}\in\mathcal{F}^I$. A \emph{transformation} of a vector from the inertial to the body frame is the negative counterpart of Eq:\ref{eq:inertialbodyrotation}, a distinction which is not always explicitly stated.
+It is important to note that in Eq:\ref{eq:inertialbodyrotation} both the operand $\vec{\nu}$ and output vector $\vec{\nu}\hspace{2pt}'$ are both in the inertial frame. A \emph{transformation} of a vector from the inertial to the body frame is the negative counterpart of Eq:\ref{eq:inertialbodyrotation}, a distinction which is not always explicitly specified.
 \begin{subequations}\label{eq:inertialbodytransformation}
 \begin{equation}\label{eq:inertialbodytransformation.a}
-\vec{\nu}_b=R_I^b(-\eta)\vec{\nu}_I=R_I^b(-\phi,-\theta,-\psi)\vec{\nu}_I
+\vec{\nu}_b=R_I^b(-\eta)\vec{\nu}_I=R_I^b(-\phi,-\theta,-\psi)\vec{\nu}_I~~~~\vec{\nu}_b\in\mathcal{F}^b,~~\vec{\nu}_I\in\mathcal{F}^I
 \end{equation}
-\vspace{-12pt}
-\begin{equation}\label{eq:inertialbodytransformation.b}
-\text{for}~~\vec{\nu}_b\in\mathcal{F}^b~\text{and}~~\vec{\nu}_I\in\mathcal{F}^I
-\end{equation}
-\vspace{-10pt}
+\vspace{-14pt}
 \begin{equation}\label{eq:inertialbodytransformation.c}
 \rightarrow \vec{\nu}_b=R_z(-\psi)R_y(-\theta)R_x(-\phi)\vec{\nu}_I
 \end{equation}
@@ -224,8 +220,14 @@ R_I^b=\big(R_b^I\big)^{-1}=\big(R_b^I\big)^T
 \end{subequations}
 The relationship in Eq:\ref{eq:inertialbodytransformation.e} is an inversion property (\emph{transpose}) of the rotation matrix. A rotation matrix's inverse can be used interchangeably with its negative counterpart to maintain a positive sense of the argument angle. To ensure clarity throughout this dissertation's mathematics, a negative angular sense implies a \emph{transformation} to a different reference frame. Where applicable, the order of rotation will indicate the sequence direction whilst the angular sign differentiates the rotation or transformation operations.
 \par
-The body frame's angular velocity is taken relative to the inertial frame, represented by $\vec{\omega}_{b/I}$ mostly just simplified to $\vec{\omega}_b$. Seeing that each Euler angle is measured with respect to an intermediary frame, a distinction must then be made between $d\vec{\eta}/dt$ and $\vec{\omega}_b$. All three Euler angles need to be transformed to a common frame to define the relationship between Euler and angular rates. Exploiting vehicle frames 1 \& 2, or rather $\mathcal{F}^{v1}$ \& $\mathcal{F}^{v2}$, as intermediary frames to retrospectively describe frames after $R_x(\phi)$ and $R_y(\theta)$ operations and using the rotation matrix derivative from Eq:\ref{eq:rotation-matrix-derivative}. The angular velocity $\vec{\omega}_b$ is the time derivative of Euler angles in the body frame:
+The body frame's angular velocity is taken relative to the inertial frame, represented by $\vec{\omega}_{b/I}$ mostly just simplified to $\vec{\omega}_b$. Seeing that each Euler angle is measured with respect to an intermediary frame, a distinction must then be made between $d\vec{\eta}/dt$ and $\vec{\omega}_b$. All three Euler angles need to be transformed to a common frame $\vec{\eta}_b\in\mathcal{F}^b$ to define the relationship between Euler and angular rates. Exploiting vehicle frames 1 \& 2, or rather $\mathcal{F}^{v1}$ \& $\mathcal{F}^{v2}$, as intermediary frames to retrospectively describe frames after $R_x(\phi)$ and $R_y(\theta)$ operations and using the rotation matrix derivative from Eq:\ref{eq:rotation-matrix-derivative}. The angular velocity $\vec{\omega}_b$ is the time derivative of Euler angles in the body frame:
 \begin{subequations}\label{eq:angular-rates-eq}
+\begin{equation}
+\vec{\eta}=\begin{bmatrix}
+\phi & \theta & \psi 
+\end{bmatrix}^T~~~~\in\mathcal{F}^{I,v_1,v_2}
+\end{equation}
+\vspace{-14pt}
 \begin{equation}\label{eq:angular-rates.a}
 \vec{\omega}_b=\begin{bmatrix}
 p & q & r
@@ -233,7 +235,7 @@ p & q & r
 \triangleq
 \frac{d}{dt_b}\vec{\eta}=\frac{d}{dt}\vec{\eta}_b~~~~\in\mathcal{F}^b
 \end{equation}
-\vspace{-8pt}
+\vspace{-6pt}
 \begin{equation}\label{eq:angular-rates.b}
 \vec{\eta}_b \triangleq R_{v_2}^b(\phi)\hspace{2pt}\vec{\phi}+R_{v_2}^b(\phi)R_{v_1}^{v_2}(\theta)\hspace{2pt}\vec{\theta}+R_{v_2}^b(\phi)R_{v_1}^{v_2}(\theta)R_I^{v_1}(\psi)\hspace{2pt}\vec{\psi}~~~~\in\mathcal{F}^b
 \end{equation}
@@ -293,7 +295,7 @@ r\\
 \end{equation}
 \end{subequations}
 \par
-The \emph{Euler} matrix, $\Psi(\eta)$, contains a well known and problematic singularity; at $\theta=\pm\pi/2$ where the determinant of the transformation matrix is zero. The mathematical manifestation of that singularity and its physical consequences are expanded on in Sec:\ref{subsec:dynamics.rigidbody.singularity}. The singularity is present in the middle roll angle $\theta$, which is a direct consequence of the chosen Z-Y-X rotation sequence adopted. Each Euler angle is potentially singular depending on the rotation order used. In later dynamics quaternions are used in lieu of Euler angles (Sec:\ref{subsec:dynamics.rigidbody.quaternion}). Attitude in $\mathbb{R}^3$, or $SO(3)$, is intuitive and well suited to the conventions defined here.
+The \emph{Euler} matrix, $\Psi(\eta)$, contains a well known and problematic singularity; at $\theta=\pm 90\text{\textdegree}$ where the determinant of the transformation matrix is zero. The mathematical manifestation of that singularity and its physical consequences are expanded on in Sec:\ref{subsec:dynamics.rigidbody.singularity}. The singularity is present in the middle roll angle $\theta$, which is a direct consequence of the chosen Z-Y-X rotation sequence adopted. Each Euler angle is potentially singular depending on the rotation order used. In later dynamics quaternions are used in lieu of Euler angles (Sec:\ref{subsec:dynamics.rigidbody.quaternion}). Attitude in $\mathbb{R}^3$, or $SO(3)$, is intuitive and well suited to the conventions defined here.
 \par
 Quaternions (Sec:\ref{subsec:dynamics.rigidbody.quaternion}), despite being in $\mathbb{R}^4$, are similarly constructed in the Z-Y-X order following a three rotation sequence. Combined quaternion operations are additive but non-commutative, as such the order is important. The constructed attitude quaternion order will produce the same resultant frame orientation however the quaternion, and its rotation path, will differ. A quaternion $Q_b$, representing the body's attitude, and some vector $\vec{\nu}_I$ in the inertial frame is related to the body frame $\mathcal{F}^b$ as follows:
 \begin{subequations}
