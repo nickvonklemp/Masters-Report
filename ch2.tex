@@ -1031,9 +1031,11 @@ Any STM32 microcontroller is programmed through a dedicated debugging device. Th
 %====================================================
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{figs/servo-position}
+\includegraphics[width=0.68\textwidth]{figs/servo-position}
+\vspace{-6pt}
 \caption{Servo transfer function test rig}
 \label{fig:servo-position}
+%\vspace{-20pt}
 \end{figure}
 The range and step transfer functions of an unloaded servo were evaluated with the test rig illustrated in Fig:\ref{fig:servo-position}. The servo's output shaft was mechanically coupled to a rotatory potentiometer which was sampled to measure the shaft's rotational position. Full scale deflection for the digital servos are in fact greater than their quoted 180\textdegree ~range, each having an input range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The prototype control loop commands each servo position in open loop; the major loop controller gains designed in Sec:\ref{sec:simulation.tuning} are expected to account for minor loop actuator dynamics. However, the simulation must accurately represent the servo's transfer characteristics for such an assumption to hold true. 
 \par
@@ -1102,14 +1104,14 @@ The plot in Fig:\ref{fig:servo-step} shows the step response, at the \emph{shaft
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
-\begin{subfigure}{0.7\textwidth}
+\begin{subfigure}{0.73\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/servo-inner}
 \vspace{-10pt}
 \caption{Inner ring servo rig}
 \label{fig:servo-inner}
 \end{subfigure}
-\\
+\par
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/servo-step-inner}
@@ -1126,21 +1128,22 @@ Fig:\ref{fig:servo-step-middle} plots the step response for the servo actuating 
 \begin{figure}[hbtp]
 \vspace{-4pt}
 \centering
-\begin{subfigure}{0.85\textwidth}
+\begin{subfigure}{0.88\textwidth}
 \centering
 \includegraphics[width=\textwidth]{figs/servo-middle}
 \vspace{-12pt}
 \caption{Middle ring servo test rig}
 \label{fig:servo-middle}
 \end{subfigure}
-\\
+\par
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/servo-step-middle}
-\vspace{-6pt}
+\vspace{-10pt}
 \caption{Servo response plot}
 \label{fig:servo-step-middle}
 \end{subfigure}
+\vspace{-8pt}
 \caption{Middle ring servo characteristics}
 \label{fig:servo-middle-character}
 \vspace{-18pt}
@@ -1154,7 +1157,7 @@ G(s)_{middle}=\frac{e^{-0.012s}(12.591)^2}{s^2+2(0.454)(12.591)s+(12.591)^2}
 Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve (plotted in Fig:\ref{fig:bldc-range}). This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (more on propeller aerodynamics in Sec:\ref{subsec:dynamics.aero.bem}).
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.44\textwidth]{figs/bldc-rpm}
+\includegraphics[width=0.48\textwidth]{figs/bldc-rpm}
 \caption{BLDC rpm speed calibration and transfer function rig}
 \label{fig:bldc-rpm}
 \vspace{-16pt}
@@ -1174,13 +1177,13 @@ y(x)=
 \end{equation}
 The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case $20~\text{A}$. Imposing $10~\text{A}$ current limit, a potential consequence of using lower power ESCs, is plotted {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}. The current limit significantly restricts the motor's transient and steady-state performance. 
 \begin{figure}[hbtp]
-\begin{subfigure}{0.48\textwidth}
+\begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=0.98\textwidth]{graphs/bldc-range}
-\caption{BLDC RPM range}
+\caption{BLDC input RPM range}
 \label{fig:bldc-range}
 \end{subfigure}
-\begin{subfigure}{0.48\textwidth}
+\begin{subfigure}{0.5\textwidth}
 \centering
 \includegraphics[width=0.98\textwidth]{graphs/BLDC-step}
 \caption{Cobra BLDC step response}
