@@ -7,7 +7,7 @@
 \section{Control Loop}
 \label{sec:control.loop}
 %====================================================
-The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero set-point tracking (for both \emph{attitude} and \emph{position} states) on a quadrotor by solving the problem of its inherent under-actuation. For the purposes of the subsequent controller development, the plant is described in the following typical non-linear state space form:
+The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero setpoint tracking (for both \emph{attitude} and \emph{position} states) on a quadrotor by solving the problem of its inherent under-actuation. For the intents and purposes of the subsequent controller development, the plant is described in the following typical nonlinear state-space form in the time domain:
 \begin{subequations}\label{eq:control-loop-states}
 \begin{equation}
 \frac{d}{dt}{\vec{\mathbf{x}}}=f(\vec{\mathbf{x}},t)+g(\vec{\mathbf{x}},\vec{\nu},t)
@@ -17,9 +17,9 @@ The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero se
 \vec{y} = c(\vec{\mathbf{x}},t)+d(\vec{\mathbf{x}},\vec{\nu},t)
 \end{equation}
 \end{subequations}
-Where the plant's dynamics are governed by state progression $f(\vec{\mathbf{x}},t)$ and the plant's input response $g(\vec{\mathbf{x}},\vec{\nu},t)$ for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\vec{\mathbf{x}},t)\vec{\nu}$. Set-point tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)\equiv\vec{\mathbf{x}}$. The control problem is then to design a stabilizing control law $H$ for some error state $\vec{\mathbf{x}}_e$:
+Where the plant's dynamics are governed by state progression $f(\vec{\mathbf{x}},t)$ and the plant's input response $g(\vec{\mathbf{x}},\vec{\nu},t)$ for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\vec{\mathbf{x}},t)\vec{\nu}$. Setpoint tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)\equiv\vec{\mathbf{x}}$. The control problem is then to design a stabilizing control law $\mathcal{H}$ for some error state $\vec{\mathbf{x}}_e$:
 \begin{equation}
-\vec{\nu}_d=H(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)=H(\vec{\mathbf{x}}_b,\dot{\vec{\mathbf{x}}}_b,\vec{\mathbf{x}}_d,\dot{\vec{\mathbf{x}}}_d,t)=\begin{bmatrix}
+\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)=\mathcal{H}(\vec{\mathbf{x}}_b,\dot{\vec{\mathbf{x}}}_b,\vec{\mathbf{x}}_d,\dot{\vec{\mathbf{x}}}_d,t)=\begin{bmatrix}
 \vec{F}_d\\
 \vec{\tau}_d
 \end{bmatrix}
@@ -28,51 +28,54 @@ Such that the controlled plant is asymptotically stabilizing or that $\lim_{t\ri
 \\
 \vspace{-5pt}
 \begin{equation}
-\vec{\mathbf{x}}=\begin{bmatrix}\vec{\mathcal{E}}&Q_b\end{bmatrix}^T
+\vec{\mathbf{x}}_b=\begin{bmatrix}\vec{\mathcal{E}}_I&Q_b\end{bmatrix}^T
 \end{equation}
-The body's trajectory is then fully described by $\vec{\mathbf{x}}(t)$. Separate control laws are developed for attitude and position tracking and hence those states are not combined in the context of this control project. However for the purposes of describing the control plant, a single major loop is considered.
+The body's trajectory is then fully described by $\vec{\mathbf{x}}_b(t)$. Separate control laws are developed for attitude and position tracking and hence those states are not combined in the context of this control project. However for the purposes of describing the control plant, a single major loop control is structure considered.
 \par
-Because of the plant's overactuatedness the control loop is split into two blocks; first a higher level \emph{set-point tracking} controller designs a virtual control input $\vec{\nu}_d$. That being net forces $\vec{F}_d$ and torques $\vec{\tau}_d$ to act on the body. A lower level \emph{allocator} then solves for explicit actuator positions from $\vec{\nu}_d$ to physically actuate that \emph{virtual} control input. The actuator set then implements a commanded control input $\vec{\nu}_c$ through its effectiveness function (Eq:\ref{eq:dynamic-plant-inputs})
+Because of the plant's overactuatedness the control loop is split into two blocks; first a higher level \emph{setpoint tracking} controller designs a virtual control input $\vec{\nu}_d$. That being net forces $\vec{F}_d$ and torques $\vec{\tau}_d$ to act on the body. A lower level \emph{allocator} then solves for explicit actuator positions from $\vec{\nu}_d$ to physically actuate that \emph{virtual} control input. The actuator set then implements a commanded control input $\vec{\nu}_c$ through its effectiveness function (Eq:\ref{eq:dynamic-plant-inputs}) with an actuator estimate $\hat{u}$:
 \begin{equation}\label{eq:control-effectiveness}
-\vec{\nu}_c=B(\vec{\mathbf{x}},u,t)
+\vec{\nu}_c=B(\vec{\mathbf{x}},\hat{u},t)
 \end{equation}
-The allocator solves for actuator values $u\in\mathbb{U}$ such that $\vec{\nu}_c\rightarrow\vec{\nu}_d$. That allocation function, $B^\dagger$, can be \emph{roughly} referred to as the effectiveness inverse:
+The allocator solves for commanded actuator values $u\in\mathbb{U}$ such that $\vec{\nu}_c\rightarrow\vec{\nu}_d$. That allocation function, $B^\dagger$, can be \emph{roughly} referred to as the effectiveness inverse:
 \begin{equation}
 \underset{\in\mathbb{U}}{u}=B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)
 \end{equation}
-This chapter derives higher level controllers for $\vec{\nu}_d=H(\vec{\mathbf{x}}_e,t)$; allocation rules are discussed next in Ch:\ref{ch:allocation}. A collection of attitude and position controllers are presented here whose stability is proven with Lyapunov theorem \cite{bojelayupanov,lyapunovstabilitytheorem,noteonlyapunov}. Each controller is compared in the context of an over actuated quadrotor plant, similarly a series of allocation schemes are presented. Controller comparisons, their details and efficacy are evaluated subsequently in Ch:\ref{ch:simulation}. 
+This chapter derives higher level controllers for $\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)$; allocation rules are discussed next in Ch:\ref{ch:allocation}. A collection of attitude and position controllers are presented here whose stability is proven with Lyapunov theorem \cite{bojelayupanov,lyapunovstabilitytheorem,noteonlyapunov}. Each controller is compared in the context of an over actuated quadrotor plant, similarly a series of allocation schemes are presented. For the most part, it is assumed errors between commanded actuator setpoints $u$ and their state estimates $\hat{u}$ affected by transfer functions $C(s)$ are negligible. That plant dependent error is small and diminishing over time but is later incorporated into adaptive control in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. Resultant controller comparisons, their details and efficacy are evaluated subsequently in Ch:\ref{ch:simulation}. 
 \par
-A generalized over-actuated control loop consists of a series of cascaded control blocks (Fig:\ref{fig:control-loop}). From the trajectory's error state $\vec{\mathbf{x}}_e$, a control law designs a virtual control input $\vec{\nu}_d$ which is applied to the allocation block. The allocation law $B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ solves for physical actuator positions $u\in\mathbb{U}$. Actuator positions command a physical input $\vec{\nu}_c=B(\vec{\mathbf{x}},u,t)$ which is an input to the state's dynamics, Eq:\ref{eq:control-loop-states}. Finally the output tracking state is estimated with some filter $\hat{\mathbf{x}}=A(\vec{\mathbf{x}},t)$ which is used to calculate the error state (Sec:\ref{sec:simulation.state}).
+A generalized overactuated control loop consists of a series of cascaded control blocks (Fig:\ref{fig:control-loop}). From the trajectory's error state $\vec{\mathbf{x}}_e$, a control law designs a virtual control input $\vec{\nu}_d$ which is applied to the allocation block. The allocation law $B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ solves for physical actuator positions $u\in\mathbb{U}$. Actuator positions command a physical input $\vec{\nu}_c=B(\vec{\mathbf{x}},\hat{u},t)$ which is an input to the state's dynamics, Eq:\ref{eq:control-loop-states}. Finally the output tracking state is estimated with some filter $\hat{\mathbf{x}}=A(\vec{\mathbf{x}},t)$ which is used to calculate the error state (Sec:\ref{sec:simulation.state}).
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{figs/control-loop}
+\vspace{-28pt}
 \caption{Generalized control loop with allocation}
-\vspace{-12pt}
+\vspace{-16pt}
 \label{fig:control-loop}
 \end{figure}
 \par
-Fig:\ref{fig:control-loop} is a generalized illustration of the control loop's structure; the plant's dynamics from Eq:\ref{eq:quaternion-states} include state derivative feedback. Moreover aspects of the state transfer function includes multi-body non-linearities dependent on actuator positions and rates as detailed in Sec:\ref{sec:dynamics.nonlinearities}. That generalized case is now refined in the context of an over-actuated quadcopter.
+Fig:\ref{fig:control-loop} is a generalized illustration of the control loop's structure; the plant's dynamics from Eq:\ref{eq:quaternion-states} include state derivative feedback. Moreover aspects of the state transfer function includes multi-body nonlinearities dependent on actuator positions and rates as detailed in Sec:\ref{sec:dynamics.nonlinearities}. That generalized case is now refined in the context of an overactuated quadcopter.
 %====================================================
 \section{Control Plant Inputs}
 \label{sec:control.inputs}
 %====================================================
-Control inputs for the differential state equations, from Eq:\ref{eq:quaternion-states}, have mostly been described with net forces and torques; $\vec{F}_\mu(u)$ and $\vec{\tau}_\mu(u)$. The relationship (\emph{effectiveness function}) between each propeller's rotational speed and servo positions with the produced thrust vector is calculated from Eq:\ref{eq:quaternion-inputs}.
+Control inputs for the differential state equations, from Eq:\ref{eq:quaternion-states}, have mostly been described with net forces and torques; $\vec{F}_\mu(\hat{u})$ and $\vec{\tau}_\mu(\hat{u})$. The relationship of the \emph{effectiveness function} between each propeller's rotational speed and servo positions with the produced thrust vector is calculated from Eq:\ref{eq:quaternion-inputs}.
 \begin{subequations}\label{eq:control-input}
 \begin{equation}
 \vec{\nu}_c\triangleq\begin{bmatrix}
-\vec{F}_\mu(u) & \vec{\tau}_\mu(u)
-\end{bmatrix}^T=B(\vec{\mathbf{x}},u,t)~~~~\in\mathbb{R}^6,~u\in\mathbb{U}
+\vec{F}_\mu(\hat{u}) & \vec{\tau}_\mu(\hat{u})
+\end{bmatrix}^T=B(\vec{\mathbf{x}},\hat{u},t)~~~~\in\mathbb{R}^6,~u\in\mathbb{U}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\vec{F}_\mu(u)=\sum_{i=1}^4 Q_{M_i}^*(\lambda_i,\alpha_i)\otimes T(\Omega_i)\otimes Q_{M_i}(\lambda_i,\alpha_i)~~~~\in\mathcal{F}^b
+\vec{F}_\mu(\hat{u})=\sum_{i=1}^4 Q_{M_i}^*(\lambda_i,\alpha_i)\otimes \vec{T}(\Omega_i)\otimes Q_{M_i}(\lambda_i,\alpha_i)~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-4pt}
 \begin{equation}
-\vec{\tau}_\mu(u)=\sum_{i=1}^4 \vec{L}_i\times\big(Q_{M_i}^*(\lambda_i,\alpha_i)\otimes T(\Omega_i)\otimes Q_{M_i}(\lambda_i,\alpha_i)\big)~~~~\in\mathcal{F}^b
+\vec{\tau}_\mu(\hat{u})=\sum_{i=1}^4 \vec{L}_i\times\big(Q_{M_i}^*(\lambda_i,\alpha_i)\otimes \vec{T}(\Omega_i)\otimes Q_{M_i}(\lambda_i,\alpha_i)\big)~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-As mentioned previously, a higher level controller designs desired net plant inputs $\vec{\nu}_d=\begin{bmatrix}\vec{F}_d&\vec{\tau}_d\end{bmatrix}^T$ whilst a lower level allocator commands physical inputs $u=B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$. This allows for independent comparison of proposed control and allocation laws. However, typical allocation rules like pseudo-inversion require an affine relationship between plant and control inputs (Sec:\ref{subsubsec:intro.lit.control.allocation}). The relationship in Eq:\ref{eq:control-input} is not reducible to a single multiplicative relationship with the actuator matrix $u\in\mathbb{U}$. So the effectiveness function needs an extra layer of abstraction to incorporate a multiplicative relationship. Rather than calculating explicit actuator positions directly from $\vec{\nu}_d$; a set of four 3-D thrust vectors $\vec{T}_{1\rightarrow 4}$ for each motor module are first calculated.
+As mentioned previously, a higher level controller designs desired net plant inputs $\vec{\nu}_d=\begin{bmatrix}\vec{F}_d&\vec{\tau}_d\end{bmatrix}^T$ whilst a lower level allocator commands physical inputs $u=B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$. This allows for independent comparison of proposed control and allocation laws. However, typical allocation rules like pseudo-inversion require an affine relationship between plant and control inputs (Sec:\ref{subsubsec:intro.lit.control.allocation}).
+\par
+The relationship in Eq:\ref{eq:control-input} is not reducible to a single multiplicative relationship with the actuator matrix $u\in\mathbb{U}$. So the effectiveness function needs an extra layer of abstraction to incorporate a multiplicative relationship. Rather than calculating explicit actuator positions directly from $\vec{\nu}_d$; a set of four 3-D thrust vectors $\vec{T}_{1\rightarrow 4}$ for each motor module are first calculated.
 \begin{subequations}\label{eq:4.7}
 \begin{equation}
 \vec{\nu}_c=\begin{bmatrix}
@@ -100,7 +103,7 @@ As mentioned previously, a higher level controller designs desired net plant inp
 \end{bmatrix}^T
 \end{equation}
 \end{subequations}
-Where $[\vec{L}_i]_\times$ is the cross product vector of the $i^{th}$ torque arm. Explicit actuator positions for each module, $[\Omega_i,\lambda_i,\alpha_i]^T$, can then be solved from those thrust vectors $\vec{T}_i$ for $i\in[1:4]$ with some trigonometry, "undoing" the transformation applied in Eq:\ref{eq:control-input}. That trigonometric inversion is detailed later in Sec:\ref{sec:allocation.inversion} but is described as the function $R^\dagger$:
+Where $[\vec{L}_i]_\times$ is the cross product vector of the $i^{th}$ torque arm from Eq:\ref{eq:cross-product-matrix}. Explicit actuator positions for each module, $[\Omega_i,\lambda_i,\alpha_i]^T$, can then be solved from those thrust vectors $\vec{T}_i$ for $i\in[1:4]$ with some trigonometry, ``undoing" the transformation applied in Eq:\ref{eq:control-input}. That trigonometric inversion is detailed later in Sec:\ref{sec:allocation.inversion} but is described as the function $R^\dagger$:
 \begin{equation}\label{eq:4.8}
 [\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
 \end{equation}
@@ -114,17 +117,17 @@ The generalized control loop illustrated in Fig:\ref{fig:control-loop} is extend
 \vspace{-16pt}
 \end{figure}
 \par
-In summary; each controller designs a net force and torque to act on the body. Allocation rules decompose that virtual input into four separate 3-D thrust vectors, or 12 directional components. The force components are an abstracted allocation layer in place of explicit actuator positions, which are subsequently solved for\ldots
+Certain blocks in Fig:\ref{fig:control-block} use actuator estimates $\hat{u}$ to calculate responses for feedback compensation, other blocks are affected by physical actuator positions $u$. The two are, for the most part, interchangeable as minor loop transfer dynamics of $C(s)$ in Sec:\ref{subsec:proto.design.transfer}. In summary; each controller designs a net force and torque to act on the body. Allocation rules decompose that virtual input into four separate 3-D thrust vectors, or 12 directional components. The force components are an abstracted allocation layer in place of explicit actuator positions, which are subsequently solved for\ldots
 \begin{equation}
 B^{\dagger}(\mathbf{x},\vec{\nu}_d,t)=\big[ T_{1x},~T_{1y},~T_{1z},~\ldots~T_{4x},~T_{4y},~T_{4z}\big]^T
 \end{equation}
-Each control law is co-dependent on an accompanying allocation algorithm. Traditional control loops (under-actuated or well matched) typically have a unity allocation rule and as such require no consideration so they're mostly disregarded. Separate control laws for attitude ad position control are presented in Section:\ref{sec:control.attitude} and \ref{sec:control.position} respectively. Thereafter a series of allocation rules are proposed in Ch:\ref{ch:allocation}. Although presented independently, the controller and allocation laws are mutually inclusive. The stability of each controller is proven objectively but explicit controller coefficients are optimized in the subsequent Ch:\ref{ch:simulation}, in Sec:\ref{sec:simulation.tuning}.
+Each control law is co-dependent on an accompanying allocation algorithm. Traditional control loops (underactuated or well matched) typically have a unity allocation rule and as such require no consideration so they're mostly disregarded. Separate control laws for attitude ad position control are presented in Section:\ref{sec:control.attitude} and \ref{sec:control.position} respectively. Thereafter a series of allocation rules are proposed in Ch:\ref{ch:allocation}. Although presented independently, the controller and allocation laws are mutually inclusive. The stability of each controller is proven objectively but explicit controller coefficients are optimized in the subsequent Ch:\ref{ch:simulation}, in Sec:\ref{sec:simulation.tuning}.
 \newpage
 %====================================================
 \section{Stability}
 \label{sec:control.stability}
 %====================================================
-Before undertaking the control plant derivations, it is worth outlining definitions of what the control objectives are. The research question aims to achieve non-zero set-point tracking of state's trajectory. A control loop then aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model} whilst tracking particular trajectories for attitude and position, $\vec{mathbf{x}}_d(t)=[\vec{\mathcal{E}}_d(t)~Q_d(t)]^T$. 
+Before undertaking the control plant derivations, it is worth outlining definitions of what the control objectives are. The research question aims to achieve non-zero setpoint tracking of state's trajectory. A control loop then aims to \emph{stabilize} the dynamics described previously in Sec:\ref{sec:dynamics.model} whilst tracking particular trajectories for attitude and position, $\vec{mathbf{x}}_d(t)=[\vec{\mathcal{E}}_d(t)~Q_d(t)]^T$. 
 \par
 The entire system's control loop was previously detailed in Sec:\ref{sec:control.loop}. Stability in the context of trajectory tracking must be defined. Generalized trajectory stability definitions are not uncommon in the context of energy based control design, or Lyapunov theorem (Sec:\ref{sec:control.lyapunov}). Stability definitions pertinent to Lyapunov's stability theorem are briefly presented here; the following is adapted from \cite{bojelayupanov,lyapunovstabilitytheorem}. In general for some autonomous trajectory $\vec{\mathbf{x}}(t)$, an equilibrium point $\vec{\mathbf{x}}(t_0)$ is said to be stable (\textbf{S}) if and only if (\emph{iff}) the following is true:
 \begin{subequations}\label{eq:basic-stability}
@@ -249,13 +252,13 @@ Initial equilibrium point conditions are dropped in Eq:\ref{eq:global-exponentia
 \section{Lyapunov Stability Theorem}
 \label{sec:control.lyapunov}
 %====================================================
-Lyapunov's stability theory is an important aspect of non-linear control design. An abundance of literature exists on the subject, included in almost every meritable textbook or control paper. If the reader is unfamiliar with Lyapunov's theorem,  \cite{noteonlyapunov,nonlinearsystems,bojelayupanov} all explain in detail the concept. The following is adapted from \cite{bojelayupanov} and \cite{lyapunovstabilitytheorem} and briefly outlines how Lyapunov's stability theorem is used to prove (\emph{global}) asymptotic stability for continuous time invariant systems, linear or otherwise.
+Lyapunov's stability theory is an important aspect of nonlinear control design. An abundance of literature exists on the subject, included in almost every meritable textbook or control paper. If the reader is unfamiliar with Lyapunov's theorem,  \cite{noteonlyapunov,nonlinearsystems,bojelayupanov} all explain in detail the concept. The following is adapted from \cite{bojelayupanov} and \cite{lyapunovstabilitytheorem} and briefly outlines how Lyapunov's stability theorem is used to prove (\emph{global}) asymptotic stability for continuous time invariant systems, linear or otherwise.
 \par
 The theory analyses a generalized energy function of a system's autonomous trajectory. If the trajectory has a negative energy derivative that implies the system's energy will always dissipate towards a stable equilibrium point. 
 \par
 Lyapunov analysis is a powerful method for stability verification, the system's trajectory itself need not be explicitly defined for stability to be ascertained. Proof of Lyapunov's theorem is done with a contradiction disproof and, as such, the theoretical underpinning is somewhat cumbersome.
 \par
-It's worth reiterating its fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control. A backstepping controller iteratively enforces Lyapunov stability criterion onto the system through the control structure, \cite{backstepping,adaptivebackstep,intelligentbackstep}. In general, given a non-linear time invariant system that follows some continually differentiable trajectory $\vec{\mathbf{x}}(t)$, typically the trajectory is going to progress subject to some rule:
+It's worth reiterating its fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control. A backstepping controller iteratively enforces Lyapunov stability criterion onto the system through the control structure, \cite{backstepping,adaptivebackstep,intelligentbackstep}. In general, given a nonlinear time invariant system that follows some continually differentiable trajectory $\vec{\mathbf{x}}(t)$, typically the trajectory is going to progress subject to some rule:
 \begin{equation}
 \dot{\vec{\mathbf{x}}}(t)=f\big(\vec{\mathbf{x}}(t),u\big)
 \end{equation}
@@ -290,7 +293,7 @@ The trajectory's asymptotic stability can be extended to exponential stability b
 %====================================================
 \section{Model Dependent \& Independent Controllers}
 %====================================================
-Two classes of controllers are included for a full state trajectory tracking control loop; both attitude and position control laws. Attitude set-point tracking is the primary focus of this research project (Sec:\ref{subsec:control.attitude.problem}) and incorporates a more detailed schedule of controller design and evaluation. 
+Two classes of controllers are included for a full state trajectory tracking control loop; both attitude and position control laws. Attitude setpoint tracking is the primary focus of this research project (Sec:\ref{subsec:control.attitude.problem}) and incorporates a more detailed schedule of controller design and evaluation. 
 \par
 The allocation law combines both virtual control inputs from attitude and position controllers, $\vec{\nu}_d=[\vec{F}_\mu(u)~\vec{\tau}_\mu(u)]^T$, to solve for explicit actuator positions. Controller dependency on the plant's state is as a consequence of the actuator responses and complex inertial dynamics, as derived previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Whilst not a prerequisite for stability, plant dependent compensation obviously improves controller performances. Independent and dependent cases are only considered for one type of controller; the most basic case PD controller in Section:\ref{subsubsec:control.attitude.controllers.pd} and tested in Sec:\ref{subsec:simulation.attitude.pd}. All other control laws compensate for unwanted plant dynamics in a feedback configuration.
 \par
@@ -302,7 +305,7 @@ The plant dependency makes backstepping controllers an effective controller choi
 \subsection{The Attitude Control Problem}
 \label{subsec:control.attitude.problem}
 %====================================================
-The set-point tracking control problem (\cite{attitudecontrolproblem}) for the attitude plant is to design a stabilizing control torque $\vec{\tau}_d=h(\vec{\mathbf{x}}_e,t)$ such that for any desired attitude quaternion, $\forall~Q_d\in\mathbb{Q}$, and an instantaneous attitude body quaternion, $Q_b(t)\in\mathbb{Q}$, the error state asymptotically stabilizes to the origin; $Q_e\rightarrow[1~\vec{0}~]^T$. Or that:
+The setpoint tracking control problem (\cite{attitudecontrolproblem}) for the attitude plant is to design a stabilizing control torque $\vec{\tau}_d=h(\vec{\mathbf{x}}_e,t)$ such that for any desired attitude quaternion, $\forall~Q_d\in\mathbb{Q}$, and an instantaneous attitude body quaternion, $Q_b(t)\in\mathbb{Q}$, the error state asymptotically stabilizes to the origin; $Q_e\rightarrow[1~\vec{0}~]^T$. Or that:
 \begin{equation}
 \vec{\tau}_d=h(Q_d,~\dot{Q}_d,~Q_b(t),~\dot{Q}_b(t))~~\text{such that}~~\underset{t\rightarrow\infty}{\lim}Q_b(t)\rightarrow Q_d
 \end{equation}
@@ -592,12 +595,12 @@ Interestingly a previous \cite{robustattitude} was the precursor for PD based at
 \begin{equation}\label{eq:control-auxp-pd}
 \vec{\tau}^{\hspace{3pt}'}_{_{XPD}}=-\frac{1}{2}\Big[\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\Gamma_1+\alpha\big(1-q_0\mathbb{I}_{3\times 3}\big)\Big]\vec{q}_e-\Gamma_2\vec{\omega}_b\in\mathcal{F}^b
 \end{equation} 
-Eq:\ref{eq:control-auxp-pd} could easily incorporate plant dependent compensation to accomodate for unwanted non-linear dynamics. Both exponentially stabilizing PD controllers, from Eq:\ref{eq:control-aux-pd} and above Eq:\ref{eq:control-auxp-pd}, bear a striking similarity to the ideal backstepping controllers derived in the sequel, Eq:\ref{eq:control-ibc}. 
+Eq:\ref{eq:control-auxp-pd} could easily incorporate plant dependent compensation to accommodate for unwanted nonlinear dynamics. Both exponentially stabilizing PD controllers, from Eq:\ref{eq:control-aux-pd} and above Eq:\ref{eq:control-auxp-pd}, bear a striking similarity to the ideal backstepping controllers derived in the sequel, Eq:\ref{eq:control-ibc}. 
 %====================================================
-\subsection{Non-linear Controllers}
+\subsection{Nonlinear Controllers}
 \label{subsec:control.attitude.nonlinear}
 %====================================================
-Backstepping controllers(\cite{satellitebackstepping,intelligentbackstep,backstepslidingmode},etc\ldots) are a popular choice for non-linear attitude control plants. The process, through iterative design, enforces Lyapunov stability criteria to ensure asymptotic stability. A report \cite{backstepping} surveys the fundamentals of backstepping procedure. Ideal backstepping control (\emph{IBC}) is a precise control solution which requires exact plant matching, something that is difficult to achieve in practice. Considering that some state estimate, $\hat{\mathbf{x}}(t)$ is used for feedback control. 
+Backstepping controllers(\cite{satellitebackstepping,intelligentbackstep,backstepslidingmode},etc\ldots) are a popular choice for nonlinear attitude control plants. The process, through iterative design, enforces Lyapunov stability criteria to ensure asymptotic stability. A report \cite{backstepping} surveys the fundamentals of backstepping procedure. Ideal backstepping control (\emph{IBC}) is a precise control solution which requires exact plant matching, something that is difficult to achieve in practice. Considering that some state estimate, $\hat{\mathbf{x}}(t)$ is used for feedback control. 
 \par
 The caveat of IBC control is poor robust stability performance; being especially susceptible to state dependent uncertainty. Unmodelled disturbances could easily drive the energy function away from stability conditions. The ideal backstepping algorithm can then be extended to incorporate such uncertainties. Adatively including disturbance and \emph{estimate} uncertainty into the LFC energy function improves the stability's robustness (Adaptive backstepping control, \emph{ABC}). By Lyapunov's theorem the respective estimation error terms are stabilized.
 %====================================================
@@ -779,7 +782,7 @@ Whilst stabilizing, the IBC controller is not globaly stable. The plant conditio
 \subsubsection{Adaptive Backstepping Controller}
 \label{subsubsec:control.attitude.nonlinear.adaptivebackstep}
 %====================================================
-A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a non-linear control system to the influence of unwanted disturbances; \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Considering only a lumped uncertainty/disturbance term for the adaptive case and assuming state dependent uncertainty can be included in such a term.A lumped $\vec{L}_b$., in the body frame, is then added into the angular acceleration dynamics:
+A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a nonlinear control system to the influence of unwanted disturbances; \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Considering only a lumped uncertainty/disturbance term for the adaptive case and assuming state dependent uncertainty can be included in such a term.A lumped $\vec{L}_b$., in the body frame, is then added into the angular acceleration dynamics:
 \begin{equation}
 \dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\hat{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q+\vec{L}_b+\vec{\tau}_{_{ABC}}\big)~~~~\in\mathcal{F}^{b}
 \end{equation}
