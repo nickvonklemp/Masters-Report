@@ -1823,9 +1823,26 @@ Steps performed in Fig:\ref{fig:middle-response-test} simply verify the middle r
 \end{figure}
 \par
 Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped together, Fig:\ref{} shows the true manifestation of the complex dynamics involved in a single motor modules actuator action. Each interval step is performed with $\Delta\lambda_i=\Delta\alpha_i$ for 
-
-
-
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/tau-alph-lam}
+\caption{Test rig results for $\hat{\Gamma}_\alpha$ with $\Delta\alpha=\Delta\lambda$}
+\label{fig:tau-alpha-lam}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/tau-alpha-r}
+\caption{Errors for $R^2_{\alpha}$}
+\label{fig:tau-alpha-lam-r}
+\end{subfigure}
+\vspace{-8pt}
+\caption{Combined middle ring response}
+\label{fig:tau-alpha-lam-response-test}
+\vspace{-16pt}
+\end{figure}
+\par
 , expected simulated torque values $\hat{\tau}_\alpha(\lambda)$ and resultant SimScape simulation values for $\tilde{\tau}_\alpha(\lambda)$. Tests are conducted with a constant propeller rotational velocity $\vec{\Omega}_i=6500~~[\text{RPM}]$ but differing rotational positions for the inner ring servo $\lambda_i$. That angular position affects the net encountered rotational inertial $J_\text{p}(\lambda)$.
 The final simulated module is that of $\hat{\tau}_b$
 \par
