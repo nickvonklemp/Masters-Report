@@ -1822,7 +1822,7 @@ Steps performed in Fig:\ref{fig:middle-response-test} simply verify the middle r
 \vspace{-16pt}
 \end{figure}
 \par
-Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped together, Fig:\ref{} shows the true manifestation of the complex dynamics involved in a single motor modules actuator action. Each interval step is performed with $\Delta\lambda_i=\Delta\alpha_i$ for 
+Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped together, Fig:\ref{fig:tau-alpha-lam-response-test} shows the manifestation of the complex dynamics involved in a single motor module's combined actuator action. Each interval step is performed with equal servo step sizes; $\Delta\lambda_i=\Delta\alpha_i$ for $\lambda_i,\alpha_i\in[\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$. Using a constant $\Omega_i=6000~\text{rpm}$, the introduction of gyroscopic torque begins to affect the step response shown in Fig:\ref{fig:tau-alpha-lam}. As $\lambda_i$ and $\alpha_i$ approach $\pi/2$ rad, the propeller's rotational aerodynamic torque begins to make a contribution towards Eq:\ref{eq:model-middle}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -1833,7 +1833,7 @@ Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped togeth
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
-\includegraphics[width=\textwidth]{graphs/tau-alpha-r}
+\includegraphics[width=\textwidth]{graphs/tau-alph-lam-r}
 \caption{Errors for $R^2_{\alpha}$}
 \label{fig:tau-alpha-lam-r}
 \end{subfigure}
@@ -1843,11 +1843,11 @@ Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped togeth
 \vspace{-16pt}
 \end{figure}
 \par
-, expected simulated torque values $\hat{\tau}_\alpha(\lambda)$ and resultant SimScape simulation values for $\tilde{\tau}_\alpha(\lambda)$. Tests are conducted with a constant propeller rotational velocity $\vec{\Omega}_i=6500~~[\text{RPM}]$ but differing rotational positions for the inner ring servo $\lambda_i$. That angular position affects the net encountered rotational inertial $J_\text{p}(\lambda)$.
-The final simulated module is that of $\hat{\tau}_b$
+The unsymmetrical inertia of a static motor module skews the response torque shapes, shown in Fig:\ref{fig:tau-alpha}. Combining both servos to be actuated at the same time further skews the torque response curve. Again the fast initial torque spike is damped by the test set-up bearings; resulting in an initial error plotted in Fig:\ref{fig:tau-alpha-lam-r}, which subsequently reduces very quickly. Because the inner ring has a center of gravity, $C.M_\text{n}$ in Eq:\ref{eq:body-net-inner.b}, very close to the module's center of rotation, steady state torque offsets from gravitational torque contributions to $\vec{\Gamma}_\alpha\hspace{-2pt}'(\lambda_i,\alpha_i)$ is almost independent of the inner ring $\lambda_i$ servo position. 
+\par
+\emph{color{Gray} Each step test was performed three times and the results were averaged over those three tests. What is shown above is the ten sample moving average of those combined data sets from the three independent tests.}
 \par
 \emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Chapter:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
-\par
 \newpage
 %====================================================
 \section{Consolidated Model}

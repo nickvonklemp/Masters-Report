@@ -1037,9 +1037,9 @@ Any STM32 microcontroller is programmed through a dedicated debugging device. Th
 \label{fig:servo-position}
 %\vspace{-20pt}
 \end{figure}
-The range and step transfer functions of an unloaded servo were evaluated with the test rig illustrated in Fig:\ref{fig:servo-position}. The servo's output shaft was mechanically coupled to a rotatory potentiometer which was sampled to measure the shaft's rotational position. Full scale deflection for the digital servos are in fact greater than their quoted 180\textdegree ~range, each having an input range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The prototype control loop commands each servo position in open loop; the major loop controller gains designed in Sec:\ref{sec:simulation.tuning} are expected to account for minor loop actuator dynamics. However, the simulation must accurately represent the servo's transfer characteristics for such an assumption to hold true. 
+The range and step transfer functions for an unloaded servo was evaluated with the test rig illustrated in Fig:\ref{fig:servo-position}. The servo's output shaft was mechanically coupled to a rotatory potentiometer which was sampled to measure the shaft's rotational position. Full scale deflection for the digital servos are in fact greater than their quoted 180\textdegree ~range, each having an input range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The prototype control loop commands each servo position in open loop; the major loop controller gains designed later in Sec:\ref{sec:simulation.tuning} are expected to account for such minor loop actuator dynamics. However, the simulation must first accurately represent the servo's transfer characteristics for such an assumption to hold true. 
 \par
-Considering the 180\textdegree ~servo limit was a design imposed constraint, one point of contention is the effect that such a constraint has on the feasible operating trajectories. The control algorithms derived in Ch:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics. Following that servo limitations are introduced and the constraints to feasibly achievable trajectories are investigated in Sec:\ref{sec:simulation.saturation}.
+Considering the 180\textdegree ~servo limit was a design imposed constraint, one point of contention is the effect that such a restriction has on the feasible operating trajectories. The control algorithms derived in Ch:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics. Following that the servo's rotational limitations are introduced and the constraints to feasibly achievable trajectories are investigated in Sec:\ref{sec:simulation.saturation}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -1060,17 +1060,17 @@ Considering the 180\textdegree ~servo limit was a design imposed constraint, one
 \vspace{-16pt}
 \end{figure}
 \par
-For the servos whose rotational range and step response are shown in Fig:\ref{fig:servo-no-load}, the relationship between the input pulse-width $x~\text{m.s}$ and the rotational output position $y$ is given by:
+For the servo whose particular rotational range and step response is shown in Fig:\ref{fig:servo-no-load}; the relationship between the input pulse-width $x~\text{in m.s}$ and the rotational output position $y~\text{in \textdegree}$ is governed by:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
-0\text{\textdegree} & ~~x<0.65~\text{ms}\\
-129.12x-82.64 & ~~0.64~\text{ms} \leq x \leq 2.46~\text{ms}\\
-230\text{\textdegree} & ~~x>2.46~\text{ms}\\
+0 & ~~x<0.65~\text{ms}\\
+129.12\hspace{1pt}x-82.64 & ~~0.64~\text{ms} \leq x \leq 2.46~\text{ms}\\
+230 & ~~x>2.46~\text{ms}\\
 \end{array}
 \end{cases}
 \end{equation}\par
-In practice the equation Eq:\ref{eq:servo-range} is changed such that 0\textdegree ~offset is taken at around a 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15~s$ or $400$ degrees per second with a dead time of $t_d\approx 1.2~\text{ms}$ and a (\emph{negligible}) mechanical deadband of $4~\mu\text{s}$. Each servo has an approximate (\emph{critically damped}) second order transfer function
+In practice Eq:\ref{eq:servo-range} is altered such that a  0\textdegree ~offset is taken at around 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15\hspace{2pt}s$ or $400$ degrees per second with a dead time of $t_d\approx 1.2~\text{ms}$ and a negligible mechanical deadband of $4~\mu\text{s}$. Each servo has an approximate \emph{critically damped} second order transfer function determined from Fig:\ref{fig:servo-step}:
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
 G(s)_{servo}=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
@@ -1078,7 +1078,7 @@ G(s)_{servo}=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
 \begin{equation}
 =\frac{e^{-0.012s}(14.869)^2}{s^2+2(1)(14.869)s+(14.869)^2}
 \end{equation}
-With saturation limits from $|U(s)|$ for the PWM input magnitude:
+With saturation limits from $|U(s)|$ for the PWM input magnitude in ms:
 \begin{equation}
 Y(s)_{servo}=
 \begin{cases}\begin{array}{ll}
@@ -1090,7 +1090,7 @@ G(s) & 0.65 \leq |U(s)| \leq 2.46\\
 \end{equation}
 \end{subequations}
 \par
-The net transfer block for the servo is shown in Fig:\ref{fig:servo-block}, including saturating nonlinearities but neglecting the afore mentioned mechanical deadband\ldots
+The net transfer block for a servo is shown in Fig:\ref{fig:servo-block}, including saturating nonlinearities but neglecting the afore mentioned mechanical deadband\ldots
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/servo-block}
@@ -1100,7 +1100,7 @@ The net transfer block for the servo is shown in Fig:\ref{fig:servo-block}, incl
 \vspace{-15pt}
 \end{figure}
 \par
-The plot in Fig:\ref{fig:servo-step} shows the step response, at the \emph{shaft output}, of an unloaded servo. The servo's transfer characteristics when rotating the inner ring assembly (Fig:\ref{fig:inertia-inner}) are determined from the test rig in Fig:\ref{fig:servo-inner}. Fig:\ref{fig:servo-step-inner} shows the servo's step response {\color{Blue}$\mathbf{y(t)}$}, which is unchanged from Eq:\ref{eq:servo-transfer}, it then follows that for the inner ring's transfer function $\therefore G(s)_{inner}=G(s)_{servo}$. Even when actuating a loaded inner ring assembly with a propeller rotational velocity of 6500 RPM, plotted {\color{Red}$\mathbf{y'(t)}$}; the transfer characteristics are the same despite further increasing the torque load of the assembly due to the gyroscopic response, Eq:\ref{eq:prop-inertia}.
+The plot in Fig:\ref{fig:servo-step} shows the step response, at the \emph{shaft output}, of an unloaded servo. The servo's transfer characteristics when rotating the inner ring assembly (illustrated in Fig:\ref{fig:inertia-inner}) are determined from the test rig in Fig:\ref{fig:servo-inner}. Fig:\ref{fig:servo-step-inner} shows the inner ring servo's step response {\color{Blue}$\mathbf{y(t)}$}, which is unchanged from Eq:\ref{eq:servo-transfer}. It then follows that for the inner ring's transfer function $\therefore G(s)_{inner}=G(s)_{servo}$. Even when actuating a loaded inner ring assembly with a propeller rotational velocity of 6000 RPM, plotted {\color{Red}$\mathbf{y'(t)}$}; the transfer characteristics are the same in spite of a further increased load on the assembly due to the gyroscopic response, Eq:\ref{eq:prop-inertia}.
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
@@ -1110,6 +1110,7 @@ The plot in Fig:\ref{fig:servo-step} shows the step response, at the \emph{shaft
 \vspace{-10pt}
 \caption{Inner ring servo rig}
 \label{fig:servo-inner}
+\vspace{3pt}
 \end{subfigure}
 \par
 \begin{subfigure}{0.49\textwidth}
@@ -1134,6 +1135,7 @@ Fig:\ref{fig:servo-step-middle} plots the step response for the servo actuating 
 \vspace{-12pt}
 \caption{Middle ring servo test rig}
 \label{fig:servo-middle}
+vspace{3pt}
 \end{subfigure}
 \par
 \begin{subfigure}{0.49\textwidth}
@@ -1211,7 +1213,7 @@ G(s) & 1.065 \leq |U(s)| \leq 1.655\\
 \vspace{-22pt}
 \par
 The net transfer characteristics for a complete motor module then includes Eq:\ref{eq:servo-transfer} for $\lambda_i$ steps, Eq:\ref{eq:servo-transfer-middle} for changes in $\alpha_i$ and lastly Eq:\ref{eq:bldc-transfer} for changes in $\Omega_i$. A single module's transfer function is then bundled in the transfer block $C(s)$:
-\begin{subequations}
+\begin{subequations}\label{eq:actuator-constraints}
 \begin{equation}
 u\cdot i = \begin{bmatrix}
 \Omega_i(s)\\
@@ -1235,4 +1237,9 @@ And the actuator space for the $i^{\text{th}}$ motor module, $u\cdot i \in \math
 \end{bmatrix*}
 \end{equation}
 \end{subequations}
+Later in this project instantaneous actuator positions are used to calculate response dynamics, in which case a $u\in\mathbb{U}$ is applied, subject to the transfer functions and saturations of Eq:\ref{eq:actuator-constraints}. In the case of control design and feedback compensation, \emph{error free} actuator estimates $\hat{u}$ are used, which represent sampled actuator states. A commanded actuator position $u_c$ is the instantaneously set actuator value as per some control function, in practice there's an actuator transfer error:
+\begin{equation}\label{eq:actuator-error}
+u_e=u_c-u\approx u_c-\hat{u}
+\end{equation}
+Which could lead to plant errors in inertia calculations dependent on those actuator positions, Sec:\ref{sec:proto.inertia}. Estimates for instantaneous inertial positions $\hat{u}$ are used for dynamic calculations, not the commanded actuator positions $u_c$. Moreover, the actuation error as a result of the minor loop transfer functions produce a deviation in expected actuation effort those being force and torque inputs. A robust controller with a well designed gain ought to account for those deviations and retain stability irrespective\ldots
 %====================================================
