@@ -1,6 +1,6 @@
-%****************************************************
+%====================================================
 %	CHAPTER 2 - Prototype Design
-%****************************************************
+%====================================================
 \chapter{Prototype Design}
 \label{ch:proto}
 %====================================================
@@ -39,7 +39,7 @@ The most important component of the design is the articulation for each of the f
 \end{subfigure}
 \caption{Tilting rotor design}
 \end{figure}
-Each motor module is positioned such that its produced thrust vector coincides with the intersection of its two rotational axes (Fig:\ref{fig:motor-assembly}). As a result there is only a perpendicular displacement of the thrust vector, $L_{arm}=195.16~\text{mm}$, co-planar to the body frame's X-Y-Z origin $\vec{\mathbf{O}}_b$ (see subsequent Fig:\ref{fig:motor-frame}). That length directly affects the differential torque plant; $\vec{\tau}_{diff}=\sum\vec{L}_i\times\vec{T}_i$. An eccentric thrust vector line would make the torque arm displacement a non-orthogonal vector. The center of gravity for each module is time varying and depends on the two servo rotational positions. It is more prudent to ensure intersection of the thrust vector with the rotational center than to balance the masses undergoing rotation. A thrust varying torque is harder to approximate and hence compensate for than a gravitational torque, given the complexity of modeling a propeller's aerodynamic thrust (Sec:\ref{subsec:dynamics.aero.bem}).
+Each motor module is positioned such that its produced thrust vector coincides with the intersection of its two rotational axes (Fig:\ref{fig:motor-assembly}). As a result there is only a perpendicular displacement of the thrust vector, $L_{arm}=195.16~\text{mm}$, co-planar to the body frame's X-Y-Z origin $\vec{\mathbf{O}}_b$ (see subsequent Fig:\ref{fig:motor-frame}). That length directly affects the differential torque plant; $\vec{\tau}_{diff}=\sum\vec{L}_i\times\vec{T}_i$. An eccentric thrust vector line would make the torque arm displacement a non-orthogonal vector. The center of gravity for each module is time varying and depends on the two servo rotational positions. It is more prudent to ensure intersection of the thrust vector with the rotational center than to balance the masses undergoing rotation. A thrust varying torque is harder to approximate and hence compensate for than a gravitational torque, given the complexity of modelling a propeller's aerodynamic thrust (Sec:\ref{subsec:dynamics.aero.bem}).
 \par
 The primary body structure is similar to a traditional quadcopter `+' configuration with adjacent propellers spinning in opposite directions. Each motor module's rotational assembly is suspended by silicone damping balls (Fig:\ref{fig:motor_support}). A smaller damping assembly in the center of the frame houses all the electronics and power distribution circuitry. All the mounting brackets affixing the motor module rings are 3D printed from CAD models using an Ultimaker V2+\cite{ultimaker}. A complete bill of materials for all parts used, including working drawings for each 3D printed bracket and the laser cut frame(s), is presented in App:\ref{app:bom}.
 \par
@@ -310,7 +310,7 @@ Quaternions (Sec:\ref{subsec:dynamics.rigidbody.quaternion}), despite being in $
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
-Q_b \triangleq Q_z \otimes Q_y \otimes Q_x~~\text{and it's inverse}~~Q_b^* \triangleq Q_x^*\otimes Q_y^*\otimes Q_z^*
+Q_b \triangleq Q_z \otimes Q_y \otimes Q_x~~\text{and its inverse}~~Q_b^* \triangleq Q_x^*\otimes Q_y^*\otimes Q_z^*
 \end{equation}
 \end{subequations}
 The symbol $\otimes$ represents the Hamilton product, or quaternion multiplication operator. Later the Hamilton product is used again for inertial tensor transformations (Sec:\ref{sec:proto.inertia}). Each quaternion, $Q_{\hat{\imath}}$, is always the \emph{unit} quaternion about the $\hat{\imath}^{th}$ axis. For the body quaternion, $Q_b$, it is the unit quaternion rotation about the body's Euler axis, \cite{rotationsequences}. A quaternion rotation operates on an argument vector with a zero quaternion scalar component. So then for some vector $\vec{\nu}$, the quaternion rotation operation in Eq:\ref{eq:quaternion-rotation-equivalence} is equivalent to;
@@ -651,7 +651,7 @@ Furthermore the rotation $R_{z}(\sigma_i)$ was defined as an orthogonal $\hat{Z}
 \therefore J_{\vec{\mathbf{M}}_i}(u\cdot i)=R_{z}R_{y}(\alpha_i)\big(J_\text{m}\big)R^{-1}_{y}(\alpha_i)R^{-1}_z+R_{z}R_{y}(\alpha_i)R_{x}(\lambda_i)\big(J_\text{n}\big)R^{-1}_{x}(\lambda_i)R^{-1}_{y}(\alpha_i)R^{-1}_z
 \end{equation}
 \end{subequations}
-\emph{\color{Gray}It's at this stage that, despite simplifications, the symbolic inertial equations all become overly cumbersome to include with numeric values\ldots~For the sake of brevity, exact calculated inertial values for the input dependent plant are omitted.}
+\emph{\color{Gray}It is at this stage that, despite simplifications, the symbolic inertial equations all become overly cumbersome to include with numeric values\ldots~For the sake of brevity, exact calculated inertial values for the input dependent plant are omitted.}
 \par
 Each module's rotational center, vectors $\vec{\mathbf{M}}_{1\rightarrow 4}$, are all equally spaced relative to the origin of motion, $\vec{\mathbf{O}}_b$, with a parallel axis arm $L_{arm}=195.16~~\text{mm}$ (Fig:\ref{fig:inertia-frame}). To avoid notational confusion the term $\vec{L}_i=\begin{bmatrix} \pm 195.16 & 0 & 0 \end{bmatrix}^T$ or $\begin{bmatrix} 0 & \pm 195.16 & 0
 \end{bmatrix}^T$ is used to represent the vector displacement between the origin $\vec{\mathbf{O}}_b$ and each motor modules center of rotation $\vec{\mathbf{M}}_{1\rightarrow 4}$. The net inertial equation $J_b(u)$, about the origin $\vec{\mathbf{O}}_b$ and depending on the actuator position matrix $u\in\mathbb{U}$, can be calculated as:
@@ -685,7 +685,7 @@ C.M_\text{n}=\begin{bmatrix}
 -1.44 & 0.0 & 5.14
 \end{bmatrix}^T~~~~\text{mm},~\in\mathcal{F}^{M_i}
 \end{equation}
-The inner ring's inertial matrix about it's center of mass (Fig:\ref{fig:inertia-inner}) is the constant:
+The inner ring's inertial matrix about its center of mass (Fig:\ref{fig:inertia-inner}) is the constant:
 \begin{equation}\label{eq:body-net-inner.c}
 \underset{C.M}{J_\text{n}}=\begin{bmatrix}
 496.6 & -31.7 & 6.6\\
@@ -1037,9 +1037,9 @@ Any STM32 microcontroller is programmed through a dedicated debugging device. Th
 \label{fig:servo-position}
 %\vspace{-20pt}
 \end{figure}
-The range and step transfer functions for an unloaded servo was evaluated with the test rig illustrated in Fig:\ref{fig:servo-position}. The servo's output shaft was mechanically coupled to a rotatory potentiometer which was sampled to measure the shaft's rotational position. Full scale deflection for the digital servos are in fact greater than their quoted 180\textdegree ~range, each having an input range of around 230\textdegree ~(Fig:\ref{fig:servo-range}). The prototype control loop commands each servo position in open loop; the major loop controller gains designed later in Sec:\ref{sec:simulation.tuning} are expected to account for such minor loop actuator dynamics. However, the simulation must first accurately represent the servo's transfer characteristics for such an assumption to hold true. 
+The range and step transfer functions for an unloaded servo was evaluated with the test rig, illustrated in Fig:\ref{fig:servo-position}. The servo's output shaft was mechanically coupled to a rotatory potentiometer which was sampled to measure the shaft's rotational position. Full scale deflection for the digital servos used are in fact greater than their quoted 180\textdegree ~range, each having an input range of around 230\textdegree ~plotted in Fig:\ref{fig:servo-range}. The prototype control loop commands each servo position in open loop; the major loop controller gains designed later in Sec:\ref{sec:simulation.tuning} are expected to account for such minor loop actuator dynamics. However, the simulation must first accurately represent the servo's transfer characteristics for such an assumption to hold true. 
 \par
-Considering the 180\textdegree ~servo limit was a design imposed constraint, one point of contention is the effect that such a restriction has on the feasible operating trajectories. The control algorithms derived in Ch:\ref{ch:control} are first tested with an ideal, continuous rotation servo actuator with similar rate limits and transfer characteristics. Following that the servo's rotational limitations are introduced and the constraints to feasibly achievable trajectories are investigated in Sec:\ref{sec:simulation.saturation}.
+Considering the servo's hard limit of 180\textdegree ~was a design imposed constraint, one point of contention is the effect such a restriction has on the feasible operating trajectories. The control algorithms derived in Ch:\ref{ch:control} are first tested with an ideal, continuous rotation servo limited by the rate and transfer characteristics. Following that, the servo's rotational limitations are imposed on the system and the constraints to feasibly achievable trajectories are investigated in Sec:\ref{sec:simulation.saturation}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -1060,7 +1060,7 @@ Considering the 180\textdegree ~servo limit was a design imposed constraint, one
 \vspace{-16pt}
 \end{figure}
 \par
-For the servo whose particular rotational range and step response is shown in Fig:\ref{fig:servo-no-load}; the relationship between the input pulse-width $x~\text{in m.s}$ and the rotational output position $y~\text{in \textdegree}$ is governed by:
+For the servo whose particular rotational range and step response is shown in Fig:\ref{fig:servo-no-load}; the relationship between the input pulse-width $x~\text{in m.s}$ and the rotational output position $y$ in degrees is governed by the hybrid system:
 \begin{equation}\label{eq:servo-range}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -1070,7 +1070,7 @@ y(x)=
 \end{array}
 \end{cases}
 \end{equation}\par
-In practice Eq:\ref{eq:servo-range} is altered such that a  0\textdegree ~offset is taken at around 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15\hspace{2pt}s$ or $400$ degrees per second with a dead time of $t_d\approx 1.2~\text{ms}$ and a negligible mechanical deadband of $4~\mu\text{s}$. Each servo has an approximate \emph{critically damped} second order transfer function determined from Fig:\ref{fig:servo-step}:
+In practice Eq:\ref{eq:servo-range} is altered such that a  0\textdegree ~offset is taken at around 50\% input, making its operational range $\pm 90$\textdegree . Each servo is mechanically rate limited to $60\text{\textdegree}/0.15\hspace{2pt}s$ or $400$ degrees per second with a dead time of $t_d\approx 1.2~\text{ms}$ and a negligible mechanical deadband of $4~\mu\text{s}$. Each servo has an approximate \emph{critically damped} second order transfer function, determined from Fig:\ref{fig:servo-step}:
 \begin{subequations}\label{eq:servo-transfer}
 \begin{equation}
 G(s)_{servo}=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
@@ -1078,7 +1078,7 @@ G(s)_{servo}=e^{-t_d s}\frac{w_n^2}{s^2+2\zeta w_n s + w_n^2}
 \begin{equation}
 =\frac{e^{-0.012s}(14.869)^2}{s^2+2(1)(14.869)s+(14.869)^2}
 \end{equation}
-With saturation limits from $|U(s)|$ for the PWM input magnitude in ms:
+With input saturation limits for the PWM input magnitude $|U(s)|$ in ms:
 \begin{equation}
 Y(s)_{servo}=
 \begin{cases}\begin{array}{ll}
@@ -1090,7 +1090,7 @@ G(s) & 0.65 \leq |U(s)| \leq 2.46\\
 \end{equation}
 \end{subequations}
 \par
-The net transfer block for a servo is shown in Fig:\ref{fig:servo-block}, including saturating nonlinearities but neglecting the afore mentioned mechanical deadband\ldots
+The net second order, critically damped transfer block for a servo is shown in Fig:\ref{fig:servo-block}, including saturating nonlinearities but neglecting the afore mentioned mechanical deadband\ldots
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.8\textwidth]{figs/servo-block}
@@ -1100,7 +1100,7 @@ The net transfer block for a servo is shown in Fig:\ref{fig:servo-block}, includ
 \vspace{-15pt}
 \end{figure}
 \par
-The plot in Fig:\ref{fig:servo-step} shows the step response, at the \emph{shaft output}, of an unloaded servo. The servo's transfer characteristics when rotating the inner ring assembly (illustrated in Fig:\ref{fig:inertia-inner}) are determined from the test rig in Fig:\ref{fig:servo-inner}. Fig:\ref{fig:servo-step-inner} shows the inner ring servo's step response {\color{Blue}$\mathbf{y(t)}$}, which is unchanged from Eq:\ref{eq:servo-transfer}. It then follows that for the inner ring's transfer function $\therefore G(s)_{inner}=G(s)_{servo}$. Even when actuating a loaded inner ring assembly with a propeller rotational velocity of 6000 RPM, plotted {\color{Red}$\mathbf{y'(t)}$}; the transfer characteristics are the same in spite of a further increased load on the assembly due to the gyroscopic response, Eq:\ref{eq:prop-inertia}.
+The plot in Fig:\ref{fig:servo-step} shows the step response, at the \emph{shaft output}, of an unloaded servo. The servo's transfer characteristics when rotating the inner ring assembly (illustrated in Fig:\ref{fig:inertia-inner}) are determined from the test rig in Fig:\ref{fig:servo-inner}. Fig:\ref{fig:servo-step-inner} shows the inner ring servo's step response {\color{Blue}$\mathbf{y(t)}$}, which is unchanged from Eq:\ref{eq:servo-transfer}. It then follows that for the inner ring's transfer function $\therefore G(s)_{inner}=G(s)_{servo}$. Even when actuating a loaded inner ring assembly with a propeller rotational velocity of $\Omega_i=6000$ RPM, plotted {\color{Red}$\mathbf{y'(t)}$}; the transfer characteristics are the same in spite of a further increased load on the assembly due to the induced gyroscopic response, Eq:\ref{eq:prop-inertia}.
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
@@ -1135,7 +1135,7 @@ Fig:\ref{fig:servo-step-middle} plots the step response for the servo actuating 
 \vspace{-12pt}
 \caption{Middle ring servo test rig}
 \label{fig:servo-middle}
-vspace{3pt}
+\vspace{3pt}
 \end{subfigure}
 \par
 \begin{subfigure}{0.49\textwidth}
@@ -1151,21 +1151,21 @@ vspace{3pt}
 \vspace{-18pt}
 \end{figure}
 \par
-The mechanical structure could indeed be strengthened to reduce the oscillations present in Fig:\ref{fig:servo-middle}. Strengthening the frame would,however, increase the mass of an already weight constrained system. Instead the under-damped transfer function is included into the plant, that transfer function is:
+The mechanical structure could indeed be strengthened to reduce the oscillations present in Fig:\ref{fig:servo-middle}. Strengthening the frame would, however, increase the mass of an already weight constrained system. Instead the under-damped transfer function is incorporated into the plant, that transfer function is:
 \begin{equation}\label{eq:servo-transfer-middle}
 G(s)_{middle}=\frac{e^{-0.012s}(12.591)^2}{s^2+2(0.454)(12.591)s+(12.591)^2}
 \end{equation}
 \subsubsection*{BLDC Transfer Functions}
-Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve (plotted in Fig:\ref{fig:bldc-range}). This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity (more on propeller aerodynamics in Sec:\ref{subsec:dynamics.aero.bem}).
+Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller has a quadratic speed curve (plotted in Fig:\ref{fig:bldc-range}). This is as a result of the propeller's opposing aerodynamic drag, \emph{appromixately} proportional to the square of the propellers angular velocity. Propeller aerodynamics are expanded on further in Sec:\ref{subsec:dynamics.aero.bem}.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.48\textwidth]{figs/bldc-rpm}
+\includegraphics[width=0.45\textwidth]{figs/bldc-rpm}
 \caption{BLDC rpm speed calibration and transfer function rig}
 \label{fig:bldc-rpm}
 \vspace{-16pt}
 \end{figure}
 \par
-Using the BLHeli interface the input range for the motor's speed controllers can be adjusted, but for the purposes of this project, were left unchanged. That relationship between input pulse-widths to the ESC and output RPM sensor signal is given by the hybrid state equations for input range limits:
+Using the BLHeli interface the input range for the motor's speed controllers can be adjusted, but for the purposes of this project were left unchanged. That relationship between input pulse-widths $x$ in ms applied to the ESC and output sensor signal $y$ in RPM is given by the hybrid state equations for input range limits:
 \begin{equation}
 y(x)=
 \begin{cases}\begin{array}{ll}
@@ -1174,10 +1174,9 @@ y(x)=
 16300 & ~~x>1.655~\text{ms}\\
 \end{array}
 \end{cases}
-~~~\Bigg\}~~~~\text{RPM}
 \label{eq:bldc-range}
 \end{equation}
-The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case $20~\text{A}$. Imposing $10~\text{A}$ current limit, a potential consequence of using lower power ESCs, is plotted {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}. The current limit significantly restricts the motor's transient and steady-state performance. 
+The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both governed by the ESC's maximum current limit; in this case $20~\text{A}$. Artificially imposing $10~\text{A}$ current limit, a potential consequence of using lower power ESCs, is plotted {\color{YellowGreen}$\mathbf{c(t)}$} in Fig:\ref{fig:bldc-step}. The current limit significantly restricts the motor's transient and steady-state performance. 
 \begin{figure}[hbtp]
 \begin{subfigure}{0.5\textwidth}
 \centering
@@ -1194,12 +1193,12 @@ The upper limit in Eq:\ref{eq:bldc-range} and the motor's step response are both
 \caption{BLDC motor characteristics}
 \end{figure}
 \par
-The motor's step response, {\color{Purple}$\mathbf{y(t)}$}, has a negligible dead time and 2\textsuperscript{nd} order dynamics, with a transient time constant far faster than the servo's plant. The motor's transfer function for speed in RPM is:
+The motor's step response, {\color{Purple}$\mathbf{y(t)}$}, has a negligible dead time and second order dynamics, with a transient time constant far faster than the servo's plant. The motor's transfer function for speed in RPM is:
 \begin{subequations}\label{eq:bldc-transfer}
 \begin{equation}
-G_{BLDC}(s)=\frac{1}{\big(1+1.7583s\times 10^{-3}\big)\big(1+1.7494s\times 10^{-3}\big)}~~~~[\text{RPM}]
+G_{BLDC}(s)=\frac{1}{\big(1+1.7583s\times 10^{-3}\big)\big(1+1.7494s\times 10^{-3}\big)}
 \end{equation}
-And saturation limits with input $|U(s)|$ for the PWM magnitude:
+And saturating input limits on $|U(s)|$ for the PWM input magnitude in ms:
 \begin{equation}
 Y_{BLDC}(s)=
 \begin{cases}\begin{array}{ll}
@@ -1211,11 +1210,11 @@ G(s) & 1.065 \leq |U(s)| \leq 1.655\\
 \end{equation}
 \end{subequations}
 \vspace{-22pt}
-\par
-The net transfer characteristics for a complete motor module then includes Eq:\ref{eq:servo-transfer} for $\lambda_i$ steps, Eq:\ref{eq:servo-transfer-middle} for changes in $\alpha_i$ and lastly Eq:\ref{eq:bldc-transfer} for changes in $\Omega_i$. A single module's transfer function is then bundled in the transfer block $C(s)$:
+\subsubsection*{Combined Actuator Transfer}
+The net transfer characteristics for a complete motor module then combines Eq:\ref{eq:servo-transfer} for the inner ring step in $\lambda_i$, Eq:\ref{eq:servo-transfer-middle} for changes in the middle ring $\alpha_i$ and finally Eq:\ref{eq:bldc-transfer} for changes in the propeller's rotational speed $\Omega_i$. A single module's transfer function is then bundled in the transfer block $C(s)$:
 \begin{subequations}\label{eq:actuator-constraints}
 \begin{equation}
-u\cdot i = \begin{bmatrix}
+u_i \triangleq \begin{bmatrix}
 \Omega_i(s)\\
 \lambda_i(s)\\
 \alpha_i(s)
@@ -1228,18 +1227,18 @@ M(s)_{middle}
 \end{bmatrix*}
 =C(s)
 \end{equation}
-And the actuator space for the $i^{\text{th}}$ motor module, $u\cdot i \in \mathbb{U}$, is limited by saturation conditions:
+Furthermore, the actuator space for the $i^{\text{th}}$ motor module $u_i \in \mathbb{U}$ is limited by input saturation conditions, where the inputs are \emph{not} in pulse width magnitudes:
 \begin{equation}
-\mathbb{U}\cdot i \triangleq \begin{bmatrix*}[c]
-0 : 16300\\
--90\text{\textdegree} :+90\text{\textdegree}\\
--90\text{\textdegree}:+90\text{\textdegree}
+\mathbb{U}_i \triangleq \begin{bmatrix*}[r]
+0 & : & 16300\\
+-90\text{\textdegree} & : & +90\text{\textdegree}\\
+-90\text{\textdegree} & : & +90\text{\textdegree}
 \end{bmatrix*}
 \end{equation}
 \end{subequations}
-Later in this project instantaneous actuator positions are used to calculate response dynamics, in which case a $u\in\mathbb{U}$ is applied, subject to the transfer functions and saturations of Eq:\ref{eq:actuator-constraints}. In the case of control design and feedback compensation, \emph{error free} actuator estimates $\hat{u}$ are used, which represent sampled actuator states. A commanded actuator position $u_c$ is the instantaneously set actuator value as per some control function, in practice there's an actuator transfer error:
+Where $\mathbb{U}_i$ is then extended to $\in\mathbb{R}^{12}$ for the entire actuator set. Later, instantaneous actuator positions are used to calculate response dynamics, in which case a commanded $u_c\in\mathbb{U}$ is applied, subject to the transfer functions and saturations of Eq:\ref{eq:actuator-constraints}. In the case of control design and feedback compensation, \emph{error free} actuator estimates $\hat{u}$ are used, which represent sampled actuator states. A commanded actuator position $u_c$ is the instantaneously set actuator value as per some control function, in practice there's an actuator transfer error:
 \begin{equation}\label{eq:actuator-error}
 u_e=u_c-u\approx u_c-\hat{u}
 \end{equation}
-Which could lead to plant errors in inertia calculations dependent on those actuator positions, Sec:\ref{sec:proto.inertia}. Estimates for instantaneous inertial positions $\hat{u}$ are used for dynamic calculations, not the commanded actuator positions $u_c$. Moreover, the actuation error as a result of the minor loop transfer functions produce a deviation in expected actuation effort those being force and torque inputs. A robust controller with a well designed gain ought to account for those deviations and retain stability irrespective\ldots
+Which could lead to plant errors in inertia calculations dependent on those actuator positions, Sec:\ref{sec:proto.inertia}. Estimates for instantaneous inertial positions $\hat{u}$ are further used for dynamic calculations, not the commanded actuator positions $u_c$. Moreover, the actuation error as a result of the minor loop transfer functions produce a deviation in expected actuation effort those being force and torque inputs. A robust controller with a well designed gain ought to account for those deviations and retain stability irrespective\ldots
 %====================================================
