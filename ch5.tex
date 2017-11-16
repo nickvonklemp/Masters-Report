@@ -4,7 +4,7 @@
 \chapter{Controller Allocation}
 \label{ch:allocation}
 %====================================================
-Higher level attitude and position controllers (from Sec:\ref{sec:control.attitude} and Sec:\ref{sec:control.position} respectively) design a virtual control input $H(\vec{\mathbf{x}}_e,t)=\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d]^T$ to be applied by the vehicles actuators. The system's over-actuation was previously described in Sec:\ref{sec:control.inputs}; this chapter aims to solve for explicit actuator positions from that virtual input. A simplified allocation block, reduced from Fig:\ref{fig:control-block},is shown in Fig:\ref{fig:allocation-block}.
+Higher level attitude and position controllers (from Sec:\ref{sec:control.attitude} and Sec:\ref{sec:control.position} respectively) design a virtual control input $H(\vec{\mathbf{x}}_e,t)=\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d]^T$ to be applied by the vehicles actuators. The system's overactuation was previously described in Sec:\ref{sec:control.inputs}; this chapter aims to solve for explicit actuator positions from that virtual input. A simplified allocation block, reduced from Fig:\ref{fig:control-block},is shown in Fig:\ref{fig:allocation-block}.
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
@@ -27,48 +27,50 @@ Higher level attitude and position controllers (from Sec:\ref{sec:control.attitu
 \vspace{-16pt}
 \end{figure}
 \par
-A distribution rule is needed to \emph{allocate} out physical actuator positions, $u_c\in\mathbb{U}$, to command that input $\vec{\nu}_c$, from Eq:\ref{eq:control-input}. As mentioned previously (pseudo) inversion based allocation requires an affine actuator effectiveness function; the allocator is abstracted to first solve for four thrust vectors which are applied by each motor module, Eq:\ref{eq:4.7}.
+A distribution rule is needed to \emph{allocate} out physical actuator positions $u_c\in\mathbb{U}$ to command that input $\vec{\nu}_c$, from Eq:\ref{eq:control-input}. As mentioned previously (pseudo) inversion based allocation requires an affine actuator effectiveness function; the allocator is abstracted to first solve for four thrust vectors which are applied by each motor module, Eq:\ref{eq:4.7}.
 \begin{equation}\label{eq:5.1}
-B^{\dagger}(\vec{\mathbf{x}},t)\vec{\nu}_d=\big[\vec{T}_1,~\vec{T}_2,~\vec{T}_3,~\vec{T}_4\big]^T
+B^{\dagger}(\vec{\mathbf{x}},t)\vec{\nu}_d=\begin{bmatrix}
+\vec{T}_1&\vec{T}_2&\vec{T}_3&\vec{T}_4
+\end{bmatrix}^T
 \end{equation}
-Each 3-D thrust vector is then used to solve for each module's propeller speed $[\text{RPM}]$ and both servo rotational positions $[\text{rad}]$; undoing rotation applied by the motor module's structure in Fig:\ref{fig:allocation-redirect}.
+Each 3-D thrust vector is then used to solve for each module's propeller speed in $\text{RPM}$ and both servo rotational positions in $\text{rad}$; undoing rotation applied by the motor module's structure in Fig:\ref{fig:allocation-redirect}.
 \begin{equation}
-u\cdot i = [\Omega_i,~\lambda_i,~\alpha_i]^T=R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
+u\cdot i = \begin{bmatrix}\Omega_i&\lambda_i&\alpha_i\end{bmatrix}^T=R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
 \end{equation}
 %====================================================
 \section{Generalized allocation}
 \label{sec:allocation.slack}
 %====================================================
-Regular, unconstrained control allocation is solved as an optimization problem; shown in \cite{allocation,controlallocation}. The aim is to minimize deviation (\emph{slack}) between the virtual and commanded control inputs, $\vec{\nu}_d$ and $\vec{\nu}_c$ respectively. For the control law's virtual input $\vec{\nu}_d=H(\vec{\mathbf{x}}_e,t)$ the optimization is then posed as:
+Regular, unconstrained control allocation is solved as an optimization problem; shown in \cite{allocation,controlallocation}. The aim is to minimize deviation (\emph{slack}) between the virtual and commanded control inputs, $\vec{\nu}_d$ and $\vec{\nu}_c$ respectively. For the control law's virtual input $\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,t)$ the optimization is then posed as:
 \begin{equation}\label{eq:allocation-slack}
-\underset{u\in\mathbb{U}^{m},~s\in\mathbb{R}^{n}}{min}\big(\norm{Q_s}\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=H(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},t,u)\triangleq s
+\underset{u\in\mathbb{U}^{m},~s\in\mathbb{R}^{n}}{min}\big(\norm{Q_s}\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=\mathcal{H}(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},t,u)\triangleq s
 \end{equation}
-Where $u\in\mathbb{U}^m$ is the dimension of the actuator set and $\vec{\mathbf{x}},~\vec{\nu}_d,~\vec{\nu}_c,~s$ are each the same dimension of virtual plant's input; $\in\mathbb{R}^{n}$ where $n$ is the degrees of freedom the state has. In this case $u\in\mathbb{U}^{12}$ for 12 actuators and $\vec{\mathbf{x}}\in\mathbb{R}^6$ for the 6-DOF rigid body.
+Where $u\in\mathbb{U}^m$ is the dimension of the actuator set and $\vec{\mathbf{x}},~\vec{\nu}_d,~\vec{\nu}_c,~s$ are each the same dimension of virtual plant's input; $\in\mathbb{R}^{n}$ where $n$ is the degrees of freedom the state has. In this case $u\in\mathbb{U}^{12}$ for twelve actuators and $\vec{\mathbf{x}}\in\mathbb{R}^6$ for the 6-DOF rigid body.
 \par
-In Eq:\ref{eq:allocation-slack}, $\norm{Q_s}$ is the cost function prioritizing the slack variable; $s$. Typically that cost is just the $L_2$ norm of the slack. Over-actuation asserts that there exists an entire set of suitable actuator values which are all solutions to Eq:\ref{eq:allocation-slack}. Solving for explicit actuator positions requires an introduction of a secondary cost function or control objective $J(\vec{\mathbf{x}},t,u)$ to refine the solution to of Eq:\ref{eq:allocation-slack}.
+In Eq:\ref{eq:allocation-slack}, $\norm{Q_s}$ is the cost function prioritizing the slack variable; $s$. Typically that cost is just the $L_2$ norm of the slack. Overactuation asserts that there exists an entire set of suitable actuator values which are all solutions to Eq:\ref{eq:allocation-slack}. Solving for explicit actuator positions requires an introduction of a secondary cost function or control objective $J(\vec{\mathbf{x}},t,u)$ to refine the solution to of Eq:\ref{eq:allocation-slack}.
 \begin{equation}\label{eq:allocation-problem}
-\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\vec{\mathbf{x}},u,t)\big)~~\text{such that}~~H(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},u,t)=s
+\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^{6}}{min}\big(||Q_s||+J(\vec{\mathbf{x}},u,t)\big)~~\text{such that}~~\mathcal{H}(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},u,t)=s
 \end{equation}
-That secondary control objective $J(\vec{\mathbf{x}},t,u)$ and its associated \emph{explicit} solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on over-allocation for aerospace vehicles outside the field of satellite attitude control (Sec:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduced such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
+That secondary control objective $J(\vec{\mathbf{x}},t,u)$ and its associated \emph{explicit} solution to Eq:\ref{eq:allocation-problem} is the subject of control allocation. Not much work has been done on overallocation for aerospace vehicles outside the field of satellite attitude control (Sec:\ref{subsubsec:intro.lit.control.allocation} for examples). Often satellites are over actuated for the sake of fault tolerance and redundancy\cite{FTCallocation,discreteFTC}. Actuator rate constraints can be further introduced such that $u$ is limited by $\Delta u$, constraining sequential actuator position changes.
 \begin{multline}
-\therefore\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^6}{min}\big(||Q_s||+J(\vec{\mathbf{x}},u,t)\big)~~\text{s.t}~~H(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},u,t)=s\\\text{and subject to}~~u=u_{n-1}+\Delta u,~\Delta u\in\mathbb{C}
+\therefore\underset{u\in\mathbb{U}^{12},~s\in\mathbb{R}^6}{min}\big(||Q_s||+J(\vec{\mathbf{x}},u,t)\big)~~\text{s.t}~~\mathcal{H}(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},u,t)=s\\\text{and subject to}~~u=u_{n-1}+\Delta u,~\Delta u\in\mathbb{C}
 \end{multline}
 Allocation \emph{inverts} the effectiveness of the actuator set, $B(\vec{\mathbf{x}},u,t)$ in Eq:\ref{eq:control-effectiveness}, to find actuator positions which satisfy the virtual control input. Inverting the allocation requires a linear, multiplicative relationship with the effectiveness function; hence the abstraction layer which was introduced previously in Eq:\ref{eq:4.7}. The allocator effectiveness function, when abstracted to an affine matrix, reduces to:
-\begin{equation}
+\begin{equation}\label{eq:5.6}
 \begin{bmatrix}
 \vec{F}_d\\
 \vec{\tau}_d
-\end{bmatrix}={\nu}_d=H(\vec{\mathbf{x}}_e,t)\Longleftrightarrow B(\vec{\mathbf{x}},u,t)=B'(\vec{\mathbf{x}},t)u=\vec{\nu}_c=\begin{bmatrix}
-\vec{F}_c(u)\\
-\vec{\tau}_c(u)
+\end{bmatrix}={\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,t)\Longleftrightarrow B(\vec{\mathbf{x}},u,t)=B'(\vec{\mathbf{x}},t)u_c=\vec{\nu}_c=\begin{bmatrix}
+\vec{F}_c(\hat{u})\\
+\vec{\tau}_c(\hat{u})
 \end{bmatrix}
 \end{equation}
-With $*\vec{\nu}_d,\vec{\nu}_c)\in\mathbb{R}^n,~u\in\mathbb{U}\in\mathbb{R}^m,~\text{and}~B\in\mathbb{R}^{m\times n}$. That assumption makes addressing the allocation conceptually simpler, accommodating the use of inversion based allocation laws (Sec:\ref{subsec:allocation.allocators.inverse}-\ref{subsec:allocation.allocators.weightedinverse}).
+The allocator commands an actuator setpoint $u_c$ which leads to actuator position estimates $\hat{u}_c=C(s)u_c$ from the actuator block transfer function defined in Eq:\ref{eq:actuator-constraints}. In Eq:\ref{eq:5.6} state dimensions are such that $(\vec{\nu}_d,\vec{\nu}_c)\in\mathbb{R}^n,\mathbb{U}\in\mathbb{R}^m,~\text{and}~B\in\mathbb{R}^{m\times n}$. That abstraction to a multiplicative $B'(\vec{\mathbf{x}},t)u_c$ in Eq:\ref{eq:4.7} makes addressing the allocation conceptually simpler, accommodating the use of inversion based allocation laws (Sec:\ref{subsec:allocation.allocators.inverse}-\ref{subsec:allocation.allocators.weightedinverse}).
 %====================================================
 \section{Thrust vector inversion}
 \label{sec:allocation.inversion}
 %====================================================
-The rotation \emph{inversion} function, $R^\dagger(\vec{\mathbf{x}},\vec{F}_i,t)$, to solve for physical actuator positions $(\Omega_i,\lambda_i,\alpha_i)$, is as yet undefined. Assuming for now there is some allocation rule that, from $\vec{\nu}_d$, designs well four decomposed stabilizing 3-D thrust vectors $\vec{T}_{1\rightarrow 4}$ to be actuated by each motor module. It then follows that each of those four thrust vectors relate to their individual associated actuator positions through a quaternion \emph{rotation}, not transformation:
+The rotation \emph{inversion} function $R^\dagger(\vec{\mathbf{x}},\vec{F}_i,t)$ to solve for physical actuator positions to be commanded $u_c(i)=[\Omega_i~\lambda_i~\alpha_i]^T$ is as yet undefined. Assuming for now there is some allocation rule that, from $\vec{\nu}_d$, designs well four decomposed stabilizing 3-D thrust vectors $\vec{T}_{1\rightarrow 4}$ to be actuated by each motor module. It then follows that each of those four thrust vectors relate to their individual associated actuator positions through a quaternion \emph{rotation}, not transformation:
 \begin{subequations}
 \begin{equation}\label{eq:quaternion-thrust-allocation}
 \vec{T}_i= Q_{M_i}\otimes\vec{T}(\Omega_i)\otimes Q_{M_i}^*~~~~\in\mathcal{F}^b
@@ -134,7 +136,7 @@ q_0\\
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Where Eq:\ref{eq:vector-quaternion} is adapted from the inherent quaternion definition which rotates a vector around a single Euler axis, Eq:\ref{eq:quaternion-euler-axis}, when applied to two unit vectors. That quaternion can indeed be used to solve for relative pitch, roll and yaw Euler angles (see App:\ref{app:equations.quaternions}). The problem is that Eq:\ref{eq:vector-quaternion} solves for the \textbf{most direct, shortest path} rotation from one vector to another. In most cases, a sequenced Z-Y-X rotation is by no means the shortest possible rotational path. The associated $[\phi,~\theta,~\psi]^T$ solutions to Eq:\ref{eq:app-quaternion-eule} are then of no consequence in trying to solve for the sequenced rotation angles $[\lambda_i,~\alpha_i,~\sigma_i]^T$, where $\sigma_i$ is already known to be an orthogonal multiplicate. Furthermore, when considering a sequenced Z-Y-X quaternion, angular operands cannot be extracted without applying significantly complex trigonometric inversions:
+Where Eq:\ref{eq:vector-quaternion} is a quaternion operator's definition, rotating a vector around a single Euler axis, Eq:\ref{eq:quaternion-euler-axis}, when applied to two unit vectors. That quaternion can indeed be used to solve for relative pitch, roll and yaw Euler angles (see App:\ref{app:equations.quaternions}). However, Eq:\ref{eq:vector-quaternion} solves for the \textbf{shortest rotational path} between the two vectors, a sequenced Z-Y-X rotation is by no means the shortest possible rotation. Associated $[\phi,~\theta,~\psi]^T$ solutions to Eq:\ref{eq:app-quaternion-eule} are of no consequence when solving for the sequentially applied rotation angles $[\lambda_i,~\alpha_i,~\sigma_i]^T$, where $\sigma_i$ is a known orthogonal multiplicate. Furthermore, when considering a sequenced Z-Y-X quaternion, angular operands cannot be extracted without applying significantly complex trigonometric inversions:
 \begin{subequations}
 \begin{equation}
 Q_b\triangleq\begin{bmatrix}
@@ -157,9 +159,6 @@ sin\frac{\phi}{2}\\
 0\\
 0
 \end{bmatrix}
-\end{equation}
-\vspace{-8pt}
-\begin{equation}
 =
 \begin{bmatrix}
 c\frac{\psi}{2}c\frac{\theta}{2}c\frac{\phi}{2}+s\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}\\
@@ -200,10 +199,10 @@ c\frac{\psi}{2}s\frac{\theta}{2}s\frac{\phi}{2}-s\frac{\psi}{2}c\frac{\theta}{2}
 \end{bmatrix}
 \end{equation}
 \end{subequations}
-Instead; returning to rotation matrices to resolve the inverse transformation and reiterating that Euler angle equivalents for the servos are; $[\phi,~\theta,~\psi]^T\iff [\lambda_i,~\alpha_i,~\sigma_i]^T$. The rotation matrix analogue to Eq:\ref{eq:thrust-vector-motor-transformation} is:
+Instead; returning to rotation matrices to resolve the inverse transformation and reiterating that Euler angle equivalents for the servos are; $[\phi,~\theta,~\psi]^T\iff [\lambda_i,~\alpha_i,~\sigma_i]^T$. The rotation matrix transformation from $\mathcal{F}^{M_i}$ to $\mathcal{F}^b$, analogous to Eq:\ref{eq:thrust-vector-motor-transformation}, is:
 \begin{subequations}
 \begin{equation}
-\vec{T}_i=R_z(\sigma_i)R_y(\alpha_i)R_x(\lambda_i)\vec{T}(\Omega_i)
+\vec{T}_i=R_z(\sigma_i)R_y(\alpha_i)R_x(\lambda_i)\vec{T}(\Omega_i)~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -236,7 +235,7 @@ s\sigma_i c\alpha_i & s\sigma_i s\alpha_i s\lambda_i + c\sigma_i c\lambda_i & s\
 T(\Omega_i)
 \end{bmatrix}
 \end{equation}
-Where $\sigma_i$ is an orthogonal multiple which applies a rotation about the $\hat{Z}_b$ axis (Fig:\ref{fig:body-frame}). The principle thrust vector $\vec{T}(\Omega_i)$ being only in the $\hat{Z}_{M_i}$ direction of the motor frame makes the solution for servo angles dramatically less complex.
+Where $\sigma_i$ is an orthogonal multiple applying a rotation about the $\hat{Z}_b$ axis (Fig:\ref{fig:body-frame}). Because the thrust vector $\vec{T}(\Omega_i)$ is only in the motor frame's $\hat{Z}_{M_i}$ direction, solving for servo angles is simplified.
 \begin{equation}\label{eq:rotation-inverse}
 \rightarrow
 \begin{bmatrix}
@@ -252,7 +251,7 @@ c\alpha_i c\lambda_i
 T(\Omega_i)~~~~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-Eq:\ref{eq:rotation-inverse} then reduces further with $R_z(\sigma_i)$ rotaitons defined in Eq:\ref{eq:motor-module-rotation.b}. The following four trigonometric relationships exist for each motor module respectively:
+Eq:\ref{eq:rotation-inverse} then reduces further with $R_z(\sigma_i)$ rotation matrices already defined in Eq:\ref{eq:motor-module-rotation.b}. The following four trigonometric relationships exist for each motor module respectively:
 \begin{equation}
 \begin{bmatrix}
 T_x\\
@@ -303,19 +302,19 @@ The use of a full quadrature arctangent function is to find solutions for Euler 
 Therefore, the secondary component of the control allocation block, $R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)$ from Fig:\ref{fig:control-block} is then summarized as a single rotation inversion function (in this case for $i=1$):
 \begin{equation}\label{eq:allocator-inersion}
 \begin{bmatrix}
-\Omega_i\\
-\lambda_i\\
-\alpha_i
+\Omega_1\\
+\lambda_1\\
+\alpha_1
 \end{bmatrix}
 =
-R^\dagger(\mathbf{x},\vec{T}_i,t)\triangleq
+R^\dagger(\mathbf{x},\vec{T}_1,t)\triangleq
 \begin{bmatrix}
 \Big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\Big)\text{}^{\frac{1}{2}}\\
-atan2(T_x\text{}^2,~||\vec{T}_i||\sqrt{||\vec{T}_i||\text{}^2-T_x\text{}^2})\\
--atan2(T_x,~T_z||\vec{T}_i||)
+atan2(-T_y\text{}^2,~||\vec{T}_1||\sqrt{||\vec{T}_1||\text{}^2-T_y\text{}^2})\\
+atan2(T_x,~T_z||\vec{T}_1||)
 \end{bmatrix}
 \end{equation}
-The complete control block only requires one final abstracted allocation algorithm, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$; which is now addressed\ldots
+Rotation inversion equations for the remaining motor modules are included in App:\ref{app:equations.inversion}. The complete control block only requires one final abstracted allocation algorithm, $B^\dagger(\mathbf{x},\vec{\nu}_d,t)$; which is now addressed\ldots
 %====================================================
 \section{Allocators}
 \label{sec:allocation.allocators}
@@ -327,11 +326,11 @@ The complete control block only requires one final abstracted allocation algorit
 The simplest control allocation solution to Eq:\ref{eq:allocation-problem} stems from what is categorized as \emph{inversion}, based on controller effort optimization \cite{allocation}. The requirements for inversion based allocation is that the effectiveness function $B(\vec{\mathbf{x}},u,t)$ is a linear relationship which can be abstracted to $B'(\vec{\mathbf{x}},t)u$. The objective is for some commanded control input $\vec{\nu}_c$ to find an inverted matrix $B^\dagger(\vec{\mathbf{x}},t)$ such that for a virtual control input $\vec{\nu}_d$:
 \begin{subequations}\label{eq:inversion-identity}
 \begin{equation}
-\vec{\nu}_d=H(\vec{\mathbf{x}}_e,t)\iff B'(\vec{\mathbf{x}},t)u=\vec{\nu}_c
+\vec{\nu}_d=H(\vec{\mathbf{x}}_e,t)\iff B'(\vec{\mathbf{x}},t)u_c=\vec{\nu}_c
 \end{equation}
 \vspace{-16pt}
 \begin{equation}
- \rightarrow u = B^\dagger(\vec{\mathbf{x}},t)\vec{\nu}_d
+ \rightarrow u_c = B^\dagger(\vec{\mathbf{x}},t)\vec{\nu}_d
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -343,16 +342,16 @@ B'(\vec{\mathbf{x}},t)B^\dagger(\vec{\mathbf{x}},t)=\mathbb{I}_{m\times m}
 \end{equation}
 {\color{Gray}\emph{Or more generally, and without the dependency of the affine linearity:}}
 \begin{equation}
-\color{Gray} u=B^\dagger(\vec{\mathbf{x}},\vec{\nu}_d,t)
+\color{Gray} u_c=B^\dagger(\vec{\mathbf{x}},\vec{\nu}_d,t)
 \end{equation}
 \end{subequations}
-In Eq:\ref{eq:inversion-identity}, the matrix $B'(\vec{\mathbf{x}},t)\in\mathbb{R}^{m\times n}$. In the case of overallocation there are more actuators than degrees of freedom, or that $m>n$ for $u\in\mathbb{R}^{m}$ and $\vec{\mathbf{x}}\in\mathbb{R}^{n}$. That implies that $B'$ has full rank, therefore the inversion of $B^\dagger(\mathbf{x},t)$ is not so trivial to find. Choosing the secondary control objective, $J(\vec{\mathbf{x}},u,t)$ in Eq:\ref{eq:allocation-problem}, to be a quadratic cost function; $u$ can be solved as a linear least squares problem. The quadratic least squares optimization aims to minimize controller effort (\emph{magnitude}):
+In Eq:\ref{eq:inversion-identity}, the multiplicative effectiveness matrix $B'(\vec{\mathbf{x}},t)$ has the dimension $\in\mathbb{R}^{m\times n}$. In the case of overallocation there are more actuators than degrees of freedom, or that $m>n$ for $u\in\mathbb{R}^{m}$ and $\vec{\mathbf{x}}\in\mathbb{R}^{n}$. That implies that $B'$ has full rank, therefore finding the inversion of $B^\dagger(\mathbf{x},t)$ is not trivial. Choosing the secondary control objective, $J(\vec{\mathbf{x}},u,t)$ in Eq:\ref{eq:allocation-problem}, to be a quadratic cost function; actuator positions $u_c$ to be commanded can be solved as a linear least squares problem. The quadratic least squares optimization aims to minimize controller effort (\emph{magnitude}):
 \begin{equation}\label{eq:allocation-quadratic}
-J(\vec{\mathbf{x}},u,t)=\underset{u\in\mathbb{U}}{min}\frac{1}{2}\big(u-u_p\big)^TW\big(u-u_p)~~\text{such that}~~\vec{\nu}_c=B'(\vec{\mathbf{x}},t)u
+J(\vec{\mathbf{x}},u_c,t)=\underset{u_c\in\mathbb{U}}{min}\frac{1}{2}\big(u_c-u_p\big)^TW\big(u_c-u_p)~~\text{such that}~~\vec{\nu}_c=B'(\vec{\mathbf{x}},t)u_c
 \end{equation}
-The least squares solution, \cite{matrixcomputations}, to Eq:\ref{eq:allocation-quadratic} then minimizes the actuator actuator effort, $\norm{u}$. This means that thrusts $\norm{\vec{T}_{1\rightarrow 4}}$ from Eq:\ref{eq:5.1} are minimized. The magnitude of each thrust vector commanded to a motor module is affected by the propeller's rotational speed $\Omega_i$. Effectively this results in an allocator that prioritizes pitching or rolling both servos $\lambda_i$ and $\alpha_i$ over adjusting the propeller's velocity. 
+The least squares solution, \cite{matrixcomputations}, to Eq:\ref{eq:allocation-quadratic} then minimizes the commanded actuator actuator effort, $\norm{u}_c$. This means that thrusts $\norm{\vec{T}_{1\rightarrow 4}}$ from Eq:\ref{eq:5.1} are minimized. The magnitude of each thrust vector commanded to a motor module is affected by the propeller's rotational speed $\Omega_i$. Effectively this results in an allocator that prioritizes pitching or rolling both servos $\lambda_i$ and $\alpha_i$ over adjusting the propeller's velocity. 
 \par
-The positive symmetrical weighting matrix on Eq:\ref{eq:allocation-quadratic}, $W$, biases certain actuators (thrust components in this case) and creates it's own class of inversion allocator, presented in Sec:\ref{subsec:allocation.allocators.weightedinverse}. Similarly $u_p$ is the preferred actuator value to which the system naturally tends; discussed in Sec:\ref{subsec:allocation.allocators.norminverse}. For an inversion matrix $B^\dagger(\vec{\mathbf{x}},t)$ actuator thrust components are found:
+The positive symmetrical weighting matrix $W$ in Eq:\ref{eq:allocation-quadratic} biases certain actuators (thrust components in this case) and creates its own class of inversion allocator, presented in Sec:\ref{subsec:allocation.allocators.weightedinverse}. Similarly $u_p$ is the preferred actuator value to which the system naturally tends; discussed in Sec:\ref{subsec:allocation.allocators.norminverse}. For an inversion matrix $B^\dagger(\vec{\mathbf{x}},t)$ actuator thrust components are found:
 \begin{subequations}\label{eq:inversion}
 \begin{equation}
 \underset{u\in\mathbb{U}}{\begin{bmatrix}
@@ -374,7 +373,7 @@ Where $\vec{T}_p\in\mathbb{R}^{1\times 12}$ are preferred thrust component value
 =B^\ddagger(\vec{\mathbf{x}},t) \vec{\nu}_d~~,B^\ddagger\in\mathbb{R}^{6\times 12}
 \end{equation}
 \end{subequations}
-The simplified case in Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B(\vec{\mathbf{x}},t)$, \cite{moorepenrose}. Pseudo-inversion is the simplest allocation rule to implement, in most cases controller effort optimization is a satisfactory constraint without any additional weights or preferred values. For an effectiveness $B(\vec{\mathbf{x}},t)$ matrix defined in Eq:\ref{eq:4.7}, the pseudo-inversion is:
+The simplified case in Eq:\ref{eq:pseudo-inversion} is termed a Moore-Penrose or pseudo-inversion of the actuator effectiveness matrix $B'(\vec{\mathbf{x}},t)$, \cite{moorepenrose}. Pseudo-inversion is the simplest allocation rule to implement, in most cases controller effort optimization is a satisfactory constraint without any additional weights or preferred values. For an effectiveness $B'(\vec{\mathbf{x}},t)$ matrix defined in Eq:\ref{eq:4.7}, the pseudo-inversion is:
 \begin{subequations}\label{eq:pseudo-bmatrix}
 \begin{equation}\label{eq:pseudo-bmatrix.a}
 B'(\vec{\mathbf{x}},t)=\begin{bmatrix}
@@ -384,9 +383,9 @@ B'(\vec{\mathbf{x}},t)=\begin{bmatrix}
 \end{equation}
 \vspace{-2pt}
 \begin{equation}
-\Rightarrow \vec{T}_{1\rightarrow 4}=B^T\big(B.B^T\big)^{-1}\vec{\nu}_d=B^{\ddagger}(\vec{\mathbf{x}},t)\vec{\nu}_d
+\therefore \vec{T}_{1\rightarrow 4}=B^T\big(B.B^T\big)^{-1}\vec{\nu}_d=B^{\ddagger}(\vec{\mathbf{x}},t)\vec{\nu}_d
 \end{equation}
-Recalling that each motor modules displacement is  at a distance$L_{arm}=195.16~[\text{mm}]$ from Fig:\ref{fig:inertia-frame}. Then each module has a vector $\vec{L}_{1,3}=\begin{bmatrix}
+Recalling that each motor modules displacement is  at a distance $L_{arm}=195.16~\text{mm}$ from Fig:\ref{fig:inertia-frame}. Then each module has a vector $\vec{L}_{1,3}=\begin{bmatrix}
 \pm 195.16 & 0 & 0
 \end{bmatrix}^T$ and $\vec{L}_{2,4}=\begin{bmatrix}
 0 & \pm 195.16 & 0
@@ -433,18 +432,18 @@ The numeric and constant pseudo-inverse matrix is then:
 \end{bmatrix*}
 \end{equation}
 \end{subequations}
-Pseudo-inversion allocation guarantees that $\vec{T}_{1\rightarrow}=B^\dagger(\vec{\mathbf{x}},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors, $\vec{T}_{1\rightarrow 4}$, for some virtual control input $\vec{\nu}_d=H(\vec{\mathbf{x}}_e,t)$.  Those thrust vectors, each $\vec{T}_{i}$, is then solved for as explicit actuator positions $[\Omega_i,\lambda_i,\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)$ using Eq:\ref{eq:allocator-inersion}. That constructs an actuator matrix $u\in\mathbb{U}\in\mathbb{R}^{12}$ which will physically command $\vec{\nu}_c=B(\vec{\mathbf{x}},t)u$. 
+Pseudo-inversion allocation guarantees that $\vec{T}_{1\rightarrow 4}=B^\dagger(\vec{\mathbf{x}},t)\vec{\nu}_d$ produces a feasible set of control thrust vectors $\vec{T}_{1\rightarrow 4}$ for some virtual control input $\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,t)$.  Those thrust vectors, each $\vec{T}_{i}$, is then solved for as explicit actuator positions $[\Omega_i,\lambda_i,\alpha_i]^T=R^\dagger(\mathbf{x},\vec{T}_i,t)$ using Eq:\ref{eq:allocator-inersion}. That constructs an actuator matrix $u_c\in\mathbb{U}\in\mathbb{R}^{12}$ which will physically command $\vec{\nu}_c=B(\vec{\mathbf{x}},t)u_c$. 
 \par
-The actuator's effectiveness matrix, $B(\vec{\mathbf{x}},t,u)$, does not necessarily have to be static (or affine) with respect to either the state vector $\vec{\mathbf{x}}$ or time $t$. However it was abstracted to such a static relationship to simplify the actuation process. Allocation in Eq:\ref{eq:pseudo-bmatrix} is the most simplified case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law.
+The actuator's effectiveness matrix $B(\vec{\mathbf{x}},t,u)$ does not necessarily have to be static (or affine) with respect to either the state vector $\vec{\mathbf{x}}$ or time $t$. However it was abstracted to such a static relationship to simplify the actuation process. Allocation in Eq:\ref{eq:pseudo-bmatrix} is the most simplified case of the least squares quadratically optimized equation for Eq:\ref{eq:allocation-problem} and is used as the base reference allocation law.
 \par
-The direct (\emph{pseudo}) inversion solution ensures the commanded virtual control input is met and that acutators aren't necessarily saturated. In certain cases it may be desired to completely saturate certain actuators before exploiting other actuator plant inputs. That would entail an iterative \emph{daisy chaining} allocation to be performed numerically online, enforcing saturation for atleast some actuators and achievement of control objectives, \cite{allocation}. Such an approach is avoided here as completely saturating any actuator isn't desirable; moreover online allocation is outside the scope of applied allocation rules here, static explicit allocation rules are only investigated\ldots
+The direct (\emph{pseudo}) inversion solution ensures the commanded virtual control input is met and that acutators are not necessarily saturated. In certain cases it may be desired to completely saturate certain actuators before exploiting other actuator plant inputs. That would entail an iterative \emph{daisy chaining} allocation to be performed numerically online, enforcing saturation for atleast some actuators and achievement of control objectives, \cite{allocation}. Such an approach is avoided here as completely saturating any actuator is not desirable; moreover online allocation is outside the scope of applied allocation rules here, static explicit allocation rules are only investigated\ldots
 %====================================================
 \subsection{Priority Norm Inverse Allocator}
 \label{subsec:allocation.allocators.norminverse}
 %====================================================
-Choosing a preferred actuator position from Eq:\ref{eq:allocation-problem} produces what is termed as a \emph{priority norm} allocator. Specifically when $u_p=\vec{T}_p\not=\vec{0}\in\mathbb{U}$. An obvious choice for that value are the conditions required for stable hovering, those which simply keep the quadcopter airborne. The desired effect is that the controller constantly tends towards stability with small first and second order rates. There are however some intricacies which must be discussed with respect to what hovering conditions are.
+Choosing a preferred actuator position from Eq:\ref{eq:allocation-problem} produces what is termed as a \emph{priority norm} allocator. Specifically when $u_p=\vec{T}_p\not=\vec{0}\in\mathbb{U}$. An obvious choice for that value are the conditions required for stable hovering, those which simply keep the quadcopter airborne. The desired effect is that the controller constantly tends towards stability with small first and second order rates. There are, however, some intricacies which must be discussed with respect to what hovering conditions are.
 \par
-For a vehicle with a weight $m_b$ a net gravitational force acts on the vehicle through it's centre of gravity in the inertial frame; $\vec{M}_I=[0, 0, -G.m_b]^T\in\mathcal{F}^I$. Assuming torques produced by the eccentric gravitational center (Eq:\ref{eq:consolidated-grav-torque}) at steady state are going to be constant, hovering conditions are then simply:
+For a vehicle with a weight $m_b$ a net gravitational force acts on the vehicle through its center of gravity in the inertial frame; $-m_b\vec{G}_I\in\mathcal{F}^I$. Assuming torques produced by the eccentric gravitational center (Eq:\ref{eq:consolidated-grav-torque}) at steady state are going to be constant, hovering conditions are then simply:
 \begin{equation}\label{eq:hover}
 \vec{\nu}_I=
 \begin{bmatrix}
@@ -453,12 +452,12 @@ For a vehicle with a weight $m_b$ a net gravitational force acts on the vehicle 
 \end{bmatrix}
 =
 \begin{bmatrix}
-\vec{M}_I\hspace{3pt}\\
-\Delta C.G \times \vec{M}_I
+m_b\vec{G}_I\hspace{3pt}\\
+\Delta C.G \times m_b\vec{G}_I
 \end{bmatrix}~~~~\in\mathcal{F}^I
 \end{equation}
 \par
-If the hover conditions are taken with respect to the inertial frame, Eq:\ref{eq:hover}, then the resultant preferred actuator positions are independent from the body's current or desired attitude set-point. The control loop then naturally tends towards a rest state attitude at $Q_d=[1~\vec{0}]^T$ with $\vec{\nu}_I\equiv\vec{\nu}_b$. The free body diagram in Fig:\ref{fig:hover-inertial} shows the tendency toward hovering conditions in the inertial frame.
+If the hover conditions are taken with respect to the inertial frame as in Eq:\ref{eq:hover} then the resultant preferred actuator positions are independent from the body's current or desired attitude setpoint. The control loop then naturally tends towards a rest state attitude at $Q_d=[1~\vec{0}\hspace{1pt}]^T$ with $\vec{\nu}_I\equiv\vec{\nu}_b$. The free body diagram in Fig:\ref{fig:hover-inertial} shows the tendency toward hovering conditions in the inertial frame.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{figs/hover-inertial}
@@ -470,7 +469,7 @@ If the hover conditions are taken with respect to the inertial frame, Eq:\ref{eq
 Alternatively the hover conditions can be defined with respect to the body frame, being a function of the body's attitude.(Fig:\ref{fig:hover-body}). The difference is that the body's preferred actuator positions are dependent on each instantaneous orientation. That attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions; irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory.
 \begin{subequations}\label{eq:hover-body}
 \begin{equation}
-\vec{M}_b\triangleq Q_b^*\otimes\vec{M}_I\otimes Q_b~~~~\in\mathcal{F}^{b}
+m_b\vec{G}_b\triangleq m_b Q_b^*\otimes\vec{G}_I\otimes Q_b~~~~\in\mathcal{F}^{b}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -480,8 +479,8 @@ Alternatively the hover conditions can be defined with respect to the body frame
 \vec{\tau}_p\hspace{3pt}
 \end{bmatrix}
 =\begin{bmatrix}
-\vec{M}_b\\
-\Delta C.M \times \vec{M}_b
+m_b\vec{G}_b\\
+\Delta C.G \times m_b\vec{G}_b
 \end{bmatrix}~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
@@ -516,7 +515,7 @@ Both actuator matrices are then applied to Eq:\ref{eq:inversion} and could be co
 C=W^{-1}B^T(\vec{\mathbf{x}},t)\big(B(\vec{\mathbf{x}},t)W^{-1}B^T(\vec{\mathbf{x}},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-Then applying the the inverse rotation operator $R^\dagger$ from Eq:\ref{eq:allocator-inersion} to the above solves for propeller speeds and servo rotational positions in both respective cases. The physical consequences of either preferred hovering codition and it's associated actuator positions are demonstrated in simulation in Sec:\ref{sec:simulation.allocator}. Priority actuator positions aren't tested together with weighting matrices, the two are compared independently\ldots
+Then applying the the inverse rotation operator $R^\dagger$ from Eq:\ref{eq:allocator-inersion} to the above solves for propeller speeds and servo rotational positions in both respective cases. The physical consequences of either preferred hovering codition and its associated actuator positions are demonstrated in simulation in Sec:\ref{sec:simulation.allocator}. Priority actuator positions are not tested together with weighting matrices, the two are compared independently\ldots
 %====================================================
 \subsection{Weighted Pseudo Inverse Allocator}
 \label{subsec:allocation.allocators.weightedinverse}
@@ -546,23 +545,4 @@ Selection of weighting coefficients needs to be designed as per some heuristic. 
 \begin{equation}\label{eq:actuator-penalty}
 \int_{t_0}^{\infty} \big(a\norm{t^{\nu_d-\nu_c}-1}+b\norm{s}\big).dt
 \end{equation}
-Where the integral is run over the time $t_0\rightarrow\infty$ for the length of a single simulation cycle. As such, the weighting matrix coefficients tries to reduce the transient time for the actuator block to settle whilst ensuring stability isn't compromised. However, the actuator rates are more dependent on the rotation inverse $R^\dagger(\vec{\mathbf{x}},t)$, so the effect of a weight matrix isn't expected to be significant\ldots
-\newpage
-\textbf{Unsure about the following two sections, will potentially include them if there's time}\ldots
-%====================================================
-\subsection{Non-linear Plant Control Allocation}
-\label{subsec:control.allocation.nonlinear}
-%====================================================
-Despite the added actuation, each complex dynamic response from an actuator excitation is not fully utilised. The dynamics of an actuator's motor module, Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}, have thus far been regarded as elements to be compensated for in feedback. Alternatively the mechanical structures torque responses to actuator position changes could be used as an additional non-linear actuator plant, similar to {tiltgasco,tiltrihani}. Those added actuator elements and their resultant dynamics could be introduced as additional dimensions to the actuator matrix $u\in\mathbb{U}$. 
-\par
-SUch an approach was achievable in \cite{tiltgasco,tiltrihani} because, despite the extra two degrees of freedom added to each actuator plant, the resultant propeller thrust was not regarded as a vector input. It was always treated as a simple quadcopter without redirected thrust vectors.
-\par
-The non-linear proposal here is to first calculate a Pseudo-inversion actuator solution \emph{without} plant compensation. That disregards the responses $\hat{\tau}_b$ from Eq:\ref{eq:actuator-torque}, $\vec{\tau}_g$ from Eq:\ref{eq:consolidated-grav-torque} and $\vec{\tau}_Q$ from Eq:\ref{eq:aerodynamic-torque}. Instead those undesirable fedback dynamics are used to alleviate the control plant requirement. Those responses are subtracted from the uncompensated control law to create a virtual control input, and cycled again until the control the control requirements are met.
-\par
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=0.6\textwidth]{figs/allocation}
-\caption{Allocation loop iteration}
-\label{fig:non-linear-allocation}
-\end{figure}
-Fig:\ref{fig:non-linear-allocation} illustrates the conceptualized iteration loop. The loop is to be run online for a set number of iterations, limiting the potential time delay spent trying to find a solution. In the loop, the block $B_u(\mathbf{x},u,t)$ is a combination of non-linear actuator response terms; $\hat{\tau}_b$, $\vec{\tau}_g$ and $\vec{\tau}_Q$. The settling point is then where possible a portion of the commanded control input $\vec{\nu}_d$ is achieved from the otherwise compensated for actuator response dynamics.
+Where the integral is run over the time $t_0\rightarrow\infty$ for the length of a single simulation cycle. As such, the weighting matrix coefficients tries to reduce the transient time for the actuator block to settle whilst ensuring stability isn't compromised. However, the actuator rates are more dependent on the rotation inverse $R^\dagger(\vec{\mathbf{x}},t)$, so the effect of a weight matrix is not expected to be significant\ldots
