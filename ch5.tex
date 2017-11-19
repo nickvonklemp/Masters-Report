@@ -457,16 +457,18 @@ m_b\vec{G}_I\hspace{3pt}\\
 \end{bmatrix}~~~~\in\mathcal{F}^I
 \end{equation}
 \par
-If the hover conditions are taken with respect to the inertial frame as in Eq:\ref{eq:hover} then the resultant preferred actuator positions are independent from the body's current or desired attitude setpoint. The control loop then naturally tends towards a rest state attitude at $Q_d=[1~\vec{0}\hspace{1pt}]^T$ with $\vec{\nu}_I\equiv\vec{\nu}_b$. The free body diagram in Fig:\ref{fig:hover-inertial} shows the tendency toward hovering conditions in the inertial frame.
+If preferred the hover conditions are taken with respect to the inertial frame as in Eq:\ref{eq:hover}, then the resultant preferred actuator positions are independent from the body's current or desired attitude setpoint. The control loop then naturally tends towards a rest state attitude at $Q_d=[1~\vec{0}\hspace{2pt}]^T$ with $\vec{\nu}_I\equiv\vec{\nu}_b$. The commanded body frame control input is equivalent to the inertial frame hovering conditions. The free body diagram in Fig:\ref{fig:hover-inertial} illustrates a preferred hovering condition in the inertial frame and its tendency toward a natural state at the attitude's origin.
 \begin{figure}[htbp]
+\vspace{-10pt}
 \centering
 \includegraphics[width=\textwidth]{figs/hover-inertial}
+\vspace{-12pt}
 \caption{Hover conditions W.R.T the inertial frame $\mathcal{F}^I$}
 \label{fig:hover-inertial}
 \vspace{-20pt}
 \end{figure}
 \par
-Alternatively the hover conditions can be defined with respect to the body frame, being a function of the body's attitude.(Fig:\ref{fig:hover-body}). The difference is that the body's preferred actuator positions are dependent on each instantaneous orientation. That attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions; irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory.
+Alternatively, the hover conditions could be defined with respect to the body frame; being a function of the body's attitude illustrated in Fig:\ref{fig:hover-body}. The difference is that the body's preferred actuator positions are dependent on each instantaneous orientation. That attitude stays constant whilst the actuators are redirected to produce inertial hovering conditions; irrespective of the attitude. The preferred hovering conditions are then always dependent on the commanded attitude trajectory.
 \begin{subequations}\label{eq:hover-body}
 \begin{equation}
 m_b\vec{G}_b\triangleq m_b Q_b^*\otimes\vec{G}_I\otimes Q_b~~~~\in\mathcal{F}^{b}
@@ -489,13 +491,13 @@ m_b\vec{G}_b\\
 \vspace{-12pt}
 \centering
 \includegraphics[width=\textwidth]{figs/hover-body}
-\vspace{-12pt}
+\vspace{-18pt}
 \caption{Hover conditions W.R.T the body frame $\mathcal{F}^b$}
 \label{fig:hover-body}
-\vspace{-8pt}
+\vspace{-10pt}
 \end{figure}
 \par
-Specific module thrust values are then solved for using Eq:\ref{eq:hover} and Eq:\ref{eq:hover-body} with pseudo inversion from Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
+Specific module thrust values to be commanded are then solved for using Eq:\ref{eq:hover} and Eq:\ref{eq:hover-body} with pseudo inversion from Eq:\ref{eq:pseudo-inversion}. The two solutions are then as follows:
 \begin{subequations}\label{eq:priority-norm}
 \begin{equation}\label{eq:priority-norm-inertial}
 \vec{T}_p^I=B^\dagger(\mathbf{x},\vec{\nu}_I,t)~~\text{for hover in Fig\ref{fig:hover-inertial}}
@@ -515,12 +517,12 @@ Both actuator matrices are then applied to Eq:\ref{eq:inversion} and could be co
 C=W^{-1}B^T(\vec{\mathbf{x}},t)\big(B(\vec{\mathbf{x}},t)W^{-1}B^T(\vec{\mathbf{x}},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-Then applying the the inverse rotation operator $R^\dagger$ from Eq:\ref{eq:allocator-inersion} to the above solves for propeller speeds and servo rotational positions in both respective cases. The physical consequences of either preferred hovering codition and its associated actuator positions are demonstrated in simulation in Sec:\ref{sec:simulation.allocator}. Priority actuator positions are not tested together with weighting matrices, the two are compared independently\ldots
+Applying the the inverse rotation operator $R^\dagger$ from Eq:\ref{eq:allocator-inersion} to the above solves for propeller speeds and servo rotational positions in both respective cases. The physical consequences of either preferred hovering condition and its associated actuator positions are demonstrated in simulation in Sec:\ref{sec:simulation.allocator}. Priority actuator positions are not tested together with weighting matrices, the two are compared independently\ldots
 %====================================================
 \subsection{Weighted Pseudo Inverse Allocator}
 \label{subsec:allocation.allocators.weightedinverse}
 %====================================================
-Adding weights to the inversion in Eq:\ref{eq:inversion} but regarding preferred actuator positions as negligible, or that $\vec{T}_p=\vec{0}$, produces a \emph{weighted pseudo inverse} allocator. The positive symmetrical weighting matrix is square with respect to the actuator dimension; here $W\in\mathbb{R}^{12\times 12}$, but more generally $W\in\mathbb{R}^{m\times m}$. The Moore-Penrose inversion (Eq:\ref{eq:pseudo-inversion}) assumes that each actuator is weighted equally. Such a case makes the weighting matrix $W$ purely diagonal; $W_\ddagger\triangleq\mathbb{I}_{m\times m}$. 
+Adding weights to the inversion in Eq:\ref{eq:inversion} but regarding preferred actuator positions as negligible, or that $\vec{T}_p=\vec{0}$, produces a \emph{weighted pseudo inverse} allocator. Each weight in $W$ biases a particular actuator's action in $u$, the positive symmetrical weighting matrix is square with respect to the actuator dimension here $W\in\mathbb{R}^{12\times 12}$ but more generally $W\in\mathbb{R}^{m\times m}$. The Moore-Penrose inversion (Eq:\ref{eq:pseudo-inversion}) assumes that each actuator is weighted equally. Such a case makes the weighting matrix $W$ purely diagonal; $W_\ddagger\triangleq\mathbb{I}_{m\times m}$. 
 \par
 A weighting matrix could change adaptively over time or state dependency; following control faults or actuator deterioration. The control objective of a weighted inversion is to design the explicit weighting coefficients as per some preferred heuristic or optimization. Adaptive weighting is not considered or discussed as that is out of the scope for this work and pertains more to FTC\cite{FTCallocation}.
 \par
@@ -535,14 +537,12 @@ A weighting matrix could change adaptively over time or state dependency; follow
 \end{figure}
 Each coefficient in $W$ determines how the least squares solution to Eq:\ref{eq:allocation-problem} preferentially biases a particular actuator; here the weighting matrix's divisions correlate to mixed module thrust vectors. Each $3\times 3$ diagonal group for $W_{1\rightarrow 4}$ relate to individual thrust component biasing ($T_{ix},T_{iy},T_{iz}$) whilst off-centre $3\times 3$ groupings mix separate thrust terms $\vec{T}_{1\rightarrow 4}$. 
 \par
-Pseudo-inversion exactly matches the virtual control input $\vec{\nu}_d=B(\mathbf{x},u,t)=\vec{\nu}_c$ so long as the actuators are not saturated. Biasing actuators could result in a slack within that control requirement. Such a case could potentially destabilize the trajectory tracking. Short of iteratively processing variable weights until a viable solution is found, a constraint on the nature of the weighting matrix needs to be introduced to avoid purposefully imposed control slack.
+Pseudo-inversion exactly matches the virtual control input $\vec{\nu}_d=B(\mathbf{x},u_c,t)=\vec{\nu}_c$~so long as the actuators are not saturated. Biasing actuators could result in a slack within that control requirement. Such a case could potentially destabilize the trajectory tracking. Short of iteratively processing variable weights until a viable solution is found, a constraint on the nature of the weighting matrix needs to be introduced to avoid purposefully imposed control slack.
 \par
 So long as each coefficient group's row and column vectors each sum to unity, the designed control inputs will be met. Namely $\sum (W_{row})=\sum (W_{col}) = 1$. Physically the resultant thrusts and torque (thrust differentials) would be balanced amongst similarly directed components. One final constraint on the weighting matrix is that only opposing module's thrust vectors can be mixed; $\vec{T}_1\text{\&}\vec{T}_3$ and $\vec{T}_2\text{\&}\vec{T}_4$.
 \par
-Priority biases for thrust vector components in the $\hat{X}_{b}$ and $\hat{Y}_{b}$ would, in theory, prioritizes using pitch or roll servos, $\lambda_i$ and $\alpha_i$, in lieu of changing the propeller's speed $\Omega_i$. However, given that a quadratic optimization on the actuator effort in Eq:\ref{eq:allocation-quadratic}, the weighting matrix's effect is in practice going to be diminished.
-\par
-Selection of weighting coefficients needs to be designed as per some heuristic. A suitable objective for the allocation block is to minimize each actuator's transfer rate, potentially improving the net actuator block's bandwidth. A proposed set of weighting coefficients could then be simulated and penalized from actuator slew rate times together with a slack variable norm to ensure that a control objective is still met:
+Priority biases for thrust vector components in the $\hat{X}_{b}$ and $\hat{Y}_{b}$ would, in theory, prioritizes using pitch or roll servos, $\lambda_i$ and $\alpha_i$, in lieu of changing the propeller's speed $\Omega_i$. However, given that a quadratic optimization on the actuator effort in Eq:\ref{eq:allocation-quadratic}, the weighting matrix's effect is in practice going to be diminished. Selection of weighting coefficients needs to be designed as per some heuristic. A suitable objective for the allocation block is to minimize each actuator's transfer rate, attempting to improve the net actuator block's bandwidth. A proposed set of weighting coefficients could then be simulated and penalized from actuator slew rate times together with a slack variable norm to ensure that a control objective is still met:
 \begin{equation}\label{eq:actuator-penalty}
 \int_{t_0}^{\infty} \big(a\norm{t^{\nu_d-\nu_c}-1}+b\norm{s}\big).dt
 \end{equation}
-Where the integral is run over the time $t_0\rightarrow\infty$ for the length of a single simulation cycle. As such, the weighting matrix coefficients tries to reduce the transient time for the actuator block to settle whilst ensuring stability isn't compromised. However, the actuator rates are more dependent on the rotation inverse $R^\dagger(\vec{\mathbf{x}},t)$, so the effect of a weight matrix is not expected to be significant\ldots
+Where the integral in Eq:\ref{eq:actuator-penalty} is run over the time $t_0\rightarrow\infty$ for the length of a single simulation cycle. As such, the weighting matrix coefficients aim to reduce the transient time for the actuator block to settle whilst ensuring stability is not compromised. However, actuator rates are more dependent on the rotation inverse $R^\dagger(\vec{\mathbf{x}},t)$, so the effect of a weighting matrix introduced to the allocation rule is not expected to be significant\ldots
