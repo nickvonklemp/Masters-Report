@@ -227,7 +227,7 @@ In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is 
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-Aerodynamic effects detailed here and subsequent nonlinear multibody responses in Sec:\ref{sec:dynamics.nonlinearities} both affect the generalized forces and torques acting on the body. The relationship between a propeller's rotational speed $\Omega_i$, in revolutions per second or \emph{RPS}, and its perpendicular thrust vector $\vec{T}(\Omega_i)$ is more complicated than the quadratic simplification taken at static conditions which most papers assume (e.g \cite{x4flyer,modelingquadcopter} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the body velocity's component normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag and hence torque. 
+Aerodynamic effects detailed here and subsequent nonlinear multibody responses in Sec:\ref{sec:dynamics.nonlinearities} both affect the generalized forces and torques acting on the body. The relationship between a propeller's rotational speed $\Omega_i$, in revolutions per second or \emph{RPS}, and its perpendicular thrust vector $\vec{T}(\Omega_i)$ is more complicated than the quadratic simplification taken at static conditions which most papers assume (e.g \cite{x4flyer} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the body velocity's component normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag and hence torque. 
 \par
 The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum or \emph{disc actuator} theories equate an integral term generated across the propeller's length with the produced thrust or torque. A schedule of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories; vortex ring state and parasitic drag effects are not included as they will be approximately negligible given the aircraft's proposed flight envelope with low translational velocities.
 %====================================================
@@ -647,7 +647,7 @@ Where the resultant in Eq:\ref{eq:gimbal} represents an $\hat{X}'$-axis rotation
 \subsection{Quaternion Dynamics}
 \label{subsec:dynamics.rigidbody.quaternion}
 %====================================================
-An algorithm proposed in \cite{euleranglesingularity} suggested a solution to avoid Euler Angle singularities. The heuristic proposed involved switching between sequence conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and compulationally exhaustive. Far more elegant is the use of \emph{quaternion} attitude representations in $\mathbb{R}^4$, used in \cite{rotationsequences,quaterniondynamics,spacecraftattitutdequaternions} amongst others but most notably made popular by \cite{shoemake} for use in animation.
+An algorithm proposed in \cite{euleranglesingularity} suggested a solution to avoid Euler Angle singularities. The heuristic proposed involved switching between sequence conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and compulationally exhaustive. Far more elegant is the use of \emph{quaternion} attitude representations in $\mathbb{R}^4$, used in \cite{rotationsequences,spacecraftattitutdequaternions} amongst others but most notably made popular by \cite{shoemake} for use in animation.
 \par
 A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. An $\mathbb{R}^3$ attitude is paramterized as one rotation $\theta$ about a single unit \emph{Euler} axis $\hat{u}$, demonstrated using the Rodriguez Formula in \cite{unwinding}. In brief a quaternion consists of a scalar component $q_0$ and complex vector component $\vec{q}\in \mathbb{C}^3$ such that:
 \begin{equation}
@@ -744,7 +744,7 @@ sin(\phi/2)\\
 0
 \end{bmatrix}
 \end{equation}
-A quaternion's time derivative, defined in \cite{quaterniondynamics}, with $Q_\omega$ being a quaternion with a vector component equal to angular velocity $\vec{\omega}_{b/I}$ and a zero scalar component, is:
+A quaternion's time derivative, defined in \cite{fullquaternion}, with $Q_\omega$ being a quaternion with a vector component equal to angular velocity $\vec{\omega}_{b/I}$ and a zero scalar component, is:
 \begin{subequations}\label{eq:quaternion-deriv}
 \begin{equation}
 \frac{d}{dt}Q_b=\frac{1}{2}Q_b\otimes Q_{\omega}=\frac{1}{2}Q_b\otimes\vec{\omega}_b
