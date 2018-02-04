@@ -12,34 +12,34 @@ The following generally applicable rigid body dynamics are first developed with 
 \subsection{Lagrange Derivation}
 \label{subsec:dynamics.rigidbody.lagrange}
 %====================================================
-Fundamentally any body, rigid or otherwise, can undergo two kinds of motion; namely rotational and translational movement. Often a Lagrangian approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom, \cite{classicaldynamics,rotationrigidbody}. The Lagrangian principle ensures that (translational and rotational) energies are conserved throughout the system's state progression. When combined with Euler-Rotation equations, the Euler-Lagrangian formulation from \cite{lagrange-formalism} fully defines the aerospace 6-DOF equations of motion.
+Fundamentally any body, rigid or otherwise, can undergo two kinds of motion; namely rotational and translational movement. Often a Lagrangian approach for combined angular and translational movements is used to derive the differential equations of motion for each degree of freedom, \cite{classicaldynamics}. The Lagrangian principle ensures that (translational and rotational) energies are conserved throughout the system's state progression. When combined with Euler-Rotation equations, the Euler-Lagrangian formulation from \cite{lagrange-formalism} fully defines the aerospace 6-DOF equations of motion.
 \par
 Lagrangian formulation is regarded as especially useful in non-Cartesian (\emph{spherical etc\ldots}) coordinate frames and with multibody systems. With that being said, Cartesian coordinates were already defined in Sec:\ref{subsec:proto.conventions.motoraxis} for the plant. Alternatively; relative coordinates could be used for implicit-Euler based dynamics as in \cite{autonomousrobotseuler}. Rigid body dynamics in Cartesian coordinates do lend themselves to Newtonian mechanics. Both Newton-Euler and Euler-Lagrange formulations produce the same resultant differential equations of motion, but follow conceptually different derivations. The Lagrangian operator $\mathcal{L}$ is a scalar term defined as the difference between a trajectory's kinetic and potential energies, $T$ and $U$ respectively. Considering some generalized path trajectory $\vec{\mathbf{r}}(t)$ for a body, with both position $\vec{\xi}$ and attitude $\vec{H}$ states:
 \begin{equation}\label{eq:generalpath}
 \vec{\mathbf{r}}(t)\triangleq\begin{bmatrix}
 \vec{\xi} & \vec{H}
-\end{bmatrix}^T~~~~\in\mathcal{F}^{\Lambda}
+\end{bmatrix}^T~~~~\in\mathcal{F}^{a}
 \end{equation}
-Coordinates in Eq:\ref{eq:generalpath} are \emph{generalized} and taken with respect to some hypothetical shared frame $\mathcal{F}^{\Lambda}$. The generalized coordinates are later refined to Cartesian body coordinates with respect to the inertial frame. The Lagrangian is the difference of the trajectory's kinetic and potential energies, by definition:
+Coordinates in Eq:\ref{eq:generalpath} are \emph{generalized} and taken with respect to some hypothetical shared frame $\mathcal{F}^{a}$. The generalized coordinates are later refined to Cartesian body coordinates with respect to the inertial frame. The Lagrangian is the difference of the trajectory's kinetic and potential energies, by definition:
 \begin{subequations}
 \vspace{-6pt}
 \begin{equation}\label{eq:lagrangian.a}
 \mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t\hspace{1pt}\big)\triangleq T\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)-U\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)
 \end{equation}
-Where the trajectory's kinetic and potential energy functions are $T$ and $U$ respectively. Introducing a rigid body's general (translational and rotational) kinetic and potential energies, both defined with respect to that shared reference frame $\mathcal{F}^\Lambda$\ldots
+Where the trajectory's kinetic and potential energy functions are $T$ and $U$ respectively. Introducing a rigid body's general (translational and rotational) kinetic and potential energies, both defined with respect to that shared reference frame $\mathcal{F}^a$.
 \par
-Noting first that there is no attitude contribution for stored potential energy, so $U\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ consists entirely of gravitational potential energy. Gravitational acceleration in the inertial frame $\in\mathcal{F}^I$ is:
+Noting first that there is no attitude contribution for stored potential energy, so $U\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ consists entirely of gravitational potential energy. The gravitational acceleration vector in the inertial frame $\mathcal{F}^I$ is:
 \begin{equation}\label{eq:grav}
-\vec{G}_I=\begin{bmatrix} 0&0&-9.81 \end{bmatrix}^T~~~~\text{m.s}^{-2},~\in\mathcal{F}^I
+\vec{G}_I=\begin{bmatrix} 0&0&-9.81 \end{bmatrix}^T~~~~[\text{m.s}^{-2}],~\in\mathcal{F}^I
 \end{equation}
 Where $\vec{G}_I$ acts in the negative $\hat{Z}_I$, downward, direction. Substituting translational kinetic and potential energies into the Lagrangian yields the following scalar term:
 \begin{equation}\label{eq:lagrangian.b}
-\mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t)=\frac{1}{2}\dot{\vec{\xi}}^{~T}(m_b)\dot{\vec{\xi}}+\frac{1}{2}\dot{\vec{H}}^{~T}(J_b)\dot{\vec{H}}-m_b\vec{G}_{\Lambda}(h\cdot\hat{Z}_I)
+\mathcal{L}(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}},t)=\frac{1}{2}\dot{\vec{\xi}}^{~T}(m_b)\dot{\vec{\xi}}+\frac{1}{2}\dot{\vec{H}}^{~T}(J_b)\dot{\vec{H}}-m_b\vec{G}_{a}(h\cdot\hat{Z}_I)
 \end{equation}
 \end{subequations}
-The vehicle's mass is $m_b$ and its generalized inertia matrix is similarly $J_b$, aligned and translated with respect to the common frame $\mathcal{F}^{\Lambda}$. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces, $\vec{\mathbf{V}}$, acting on the system in frame $\Lambda$. In the rigid body motion case those \emph{generalized forces} are net forces $\vec{F}_{\mu}$ and net torques $\vec{\tau}_{\mu}$ in the shared frame $\in\mathcal{F}^{\Lambda}$.
+The vehicle's mass is $m_b$ and its generalized inertia matrix is similarly $J_b$, aligned and translated with respect to the common frame $\mathcal{F}^{a}$. The Euler-Lagrange formulation equates partial derivatives of the Lagrangian to any generalized forces $\vec{\mathbf{R}}$ acting on the system in frame $a$. In the rigid body motion case those \emph{generalized forces} are net forces $\vec{F}_{\mu}$ and net torques $\vec{\tau}_{\mu}$ in the shared frame $\in\mathcal{F}^{a}$.
 \begin{equation}\label{eq:euler-lagrange}
-\frac{d}{dt}\bigg(\frac{\partial \mathcal{L}}{\partial \dot{\vec{\mathbf{r}}}}\bigg)-\frac{\partial \mathcal{L}}{\partial \vec{\mathbf{r}}} = \vec{\mathbf{V}} = \begin{bmatrix}
+\frac{d}{dt}\bigg(\frac{\partial \mathcal{L}}{\partial \dot{\vec{\mathbf{r}}}}\bigg)-\frac{\partial \mathcal{L}}{\partial \vec{\mathbf{r}}} = \vec{\mathbf{R}} = \begin{bmatrix}
 \vec{F}_{\mu}\\
 \vec{\tau}_{\mu}
 \end{bmatrix}~~~~\in\mathcal{F}^{\Lambda}
@@ -48,28 +48,26 @@ Evaluating symbolic partial derivatives of Eq:\ref{eq:lagrangian.b} with respect
 \begin{subequations}
 \begin{equation}\label{eq:partial.a}
 \frac{\partial \mathcal{L}}{\partial \vec{\mathbf{r}}}=\begin{bmatrix}
-m_b\vec{G}_\Lambda\\
+m_b\vec{G}_a\\
 0
-\end{bmatrix}~~~~\in\mathcal{F}^{\Lambda}
+\end{bmatrix}~~~~\in\mathcal{F}^{a}
 \end{equation}
 \vspace{-5pt}
 \begin{equation}\label{eq:partial.b}
 \frac{d}{dt}\bigg(\frac{\partial \mathcal{L}}{\partial \dot{\vec{\mathbf{r}}}}\bigg)=\bigg[
-\frac{d}{dt}m_b\dot{\vec{\xi}} ~~~ \frac{d}{dt}J_b\dot{\vec{H}}\bigg]^T~~~~\in\mathcal{F}^{\Lambda}
+\frac{d}{dt}m_b\dot{\vec{\xi}} ~~~ \frac{d}{dt}J_b\dot{\vec{H}}\bigg]^T~~~~\in\mathcal{F}^{a}
 \end{equation}
 \end{subequations}
-Where $\vec{G}_\Lambda$ is the gravitation force transformed to the common frame $\mathcal{F}^\Lambda$ which $\mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ is defined with respect to. The body mass $m_b$ and inertia $J_b$ could potentially have some non-zero time derivative, but for now are regarded as constants. Time varying inertias are later defined in Sec:\ref{sec:proto.inertia} and introduced to the dynamics subsequently in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Here only the general rigid body case is considered\ldots
-\par
-Any vector in some non-Newtonian rotating reference frame $\mathcal{F}^{a}$ has a time derivative, relative to another frame $\mathcal{F}^{b}$ with an angular velocity $\vec{\omega}_{a/b}$, as per the Reynolds Transportation Theorem\cite{reynolds}:
+Where $\vec{G}_a$ in the above is the gravitation force transformed to the common frame $\mathcal{F}^a$ which $\mathcal{L}\big(\vec{\mathbf{r}},\dot{\vec{\mathbf{r}}}\hspace{1pt}\big)$ is defined with respect to. The body mass $m_b$ and inertia $J_b$ could potentially have some non-zero time derivative, but for now are regarded as constants. Time varying inertias are later defined in Sec:\ref{sec:proto.inertia} and introduced to the dynamics subsequently in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Here only the general rigid body case is considered. Any vector in some non-Newtonian rotating reference frame $\mathcal{F}^{a}$ has a time derivative, relative to another frame $\mathcal{F}^{b}$ with an angular velocity $\vec{\omega}_{a/b}$, as per Rotating Reference Frame or Reynolds Transportation Theorems\cite{reynolds}:
 \begin{equation}\label{eq:reynolds}
 \frac{d\vec{f}_b}{dt_a}=\frac{d\vec{f}_b}{dt_b}+\vec{\omega}_{a/b}\times\vec{f}_b~~~~\in\mathcal{F}^b
 \end{equation}
 Applying Eq:\ref{eq:reynolds} to those partial derivatives in Eq:\ref{eq:partial.b} and further defining the generalized coordinates $\big[\vec{\xi},~\vec{H}\hspace{1pt}\big]^T$ as 6-DOF Cartesian body coordinates with respect to the inertial frame $\mathcal{F}^I$ or the body frame $\mathcal{F}^b$, described in Sec:\ref{sec:proto.conventions}.
 \par
-Reiterating that the angular orientations $\vec{H}$ are with respect to a \emph{common frame} $\mathcal{F}^{\Lambda}$, unlike Euler angles $\vec{\eta}\in\mathcal{F}^{v2,v1,I}$. Recalling the definition of  an attitude in a shared frame $\vec{\eta}_b$ from Eq:\ref{eq:angular-rates.b}, where $\vec{\omega}_b=\dot{\vec{\eta}}_b$ and $\vec{\eta}_b\in\mathcal{F}^{b}$, the trajectory's definition for $\vec{\mathbf{r}}$ is refined:
+Reiterating that the angular orientations $\vec{H}$ are with respect to a \emph{common frame} $\mathcal{F}^{a}$, unlike Euler angles $\vec{\eta}\in\mathcal{F}^{v2,v1,I}$. Recalling the definition of  an attitude in a shared frame $\vec{\eta}_b$ from Eq:\ref{eq:angular-rates.b}, where $\vec{\omega}_b\equiv\dot{\vec{\eta}}_b$ and $\vec{\eta}_b\in\mathcal{F}^{b}$, the trajectory's definition for $\vec{\mathbf{r}}$ is refined:
 \begin{subequations}\label{eq:path-def}
 \begin{equation}\label{eq:path-def.a}
-\vec{\mathbf{r}}=\begin{bmatrix}
+\vec{\mathbf{r}}(t)=\begin{bmatrix}
 \vec{\xi}&
 \vec{H}
 \end{bmatrix}^T
@@ -82,7 +80,7 @@ Reiterating that the angular orientations $\vec{H}$ are with respect to a \emph{
 Note that the position $\vec{\mathcal{E}}_b$ in Eq:\ref{eq:path-def.a} is the position in the \emph{body frame}, unlike $\vec{\mathcal{E}}_I\in\mathcal{F}^{I}$ from Eq:\ref{eq:position-frame}. The path rate $\dot{\vec{\mathbf{r}}}(t)$ is the defined as:
 \begin{equation}
 \therefore
-\dot{\vec{\mathbf{r}}}=
+\dot{\vec{\mathbf{r}}}(t)=
 \begin{bmatrix}
 \dot{\vec{\xi}} & \dot{\vec{H}}
 \end{bmatrix}^T
@@ -92,7 +90,7 @@ Note that the position $\vec{\mathcal{E}}_b$ in Eq:\ref{eq:path-def.a} is the po
 {\vec{\mathcal{E}}}_b\\
 \vec{\eta}_b
 \end{bmatrix}
-=
+\equiv
 \begin{bmatrix}
 \vec{v}_b\\
 \vec{\omega}_b
@@ -113,11 +111,11 @@ m_b\frac{d}{dt}\vec{v}_b ~~~ J_b\frac{d}{dt}\vec{\omega}_b\bigg]^T
 \end{equation}
 With respective time derivatives of body frame vectors relative to the inertial frame, using the Reynolds transportation theorem:
 \begin{equation}
-\rightarrow m_b\frac{d}{dt}\vec{v}_b=m_b\dot{\vec{v}}_b+\vec{\omega}_{b/I}\times m_b\vec{v}_b~~~~\in\mathcal{F}^b
+m_b\frac{d}{dt}\vec{v}_b=m_b\dot{\vec{v}}_b+\vec{\omega}_{b/I}\times m_b\vec{v}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-\rightarrow J_b \frac{d}{dt}\vec{\omega}_b=J_b\dot{\vec{\omega}}_b+\vec{\omega}_{b/I}\times J_b\vec{\omega}_b~~~~\in\mathcal{F}^b
+J_b \frac{d}{dt}\vec{\omega}_b=J_b\dot{\vec{\omega}}_b+\vec{\omega}_{b/I}\times J_b\vec{\omega}_b~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
 Which, when substituted back into the Euler-Lagrange formulation in Eq:\ref{eq:euler-lagrange}, yields familiar Newton-Euler rigid body differential equations of translational and rotational motion for generalized net force and torque inputs; $\vec{F}_\mu$ and $\vec{\tau}_\mu$ respectively.
@@ -133,7 +131,7 @@ m_b\vec{G}_b\\
 0
 \end{bmatrix}
 =
-\vec{\mathbf{V}}
+\vec{\mathbf{R}}
 =
 \begin{bmatrix}
 \vec{F}_{\mu}\\
@@ -217,19 +215,19 @@ Typically $\vec{F}_{\mu}$ is the net heave force acting on the center of motion 
 \begin{equation}
 \vec{F}_{\mu} = \sum_{i=1}^4 \vec{T}(\Omega_i)\cdot\hat{Z}_b~~~~\in\mathcal{F}^b
 \end{equation}
-Similarly net torque $\vec{\tau}_{\mu}$ is the sum of all \emph{differential} torques produced from opposing propeller thrust vectors. Each torque arm $\vec{L}_{1\rightarrow 4}$ is the thrust's orthogonal displacement relative to the origin of \emph{motion}.
+Similarly net torque $\vec{\tau}_{\mu}$ is the sum of all \emph{differential} torques produced from opposing propeller thrust vectors. Each torque arm $\vec{L}_{[1:4]}$ is the thrust's orthogonal displacement relative to the origin of \emph{motion}.
 \begin{equation}
 \vec{\tau}_{\mu} = \sum_{i=1}^4 \vec{L}_i \times \vec{T}(\Omega_i)\cdot\hat{Z}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is a function of the $i^{th}$ motor's rotational velocity $\Omega_i$, fixed in the $\hat{Z}_b$ direction. Each thrust vector could potentially be $\in\mathbb{R}^3$ such as the redirected vector from Eq:\ref{eq:motor-module-force-redirect}. All of the above equations are still applicable to any 6-DOF body; common simplifications applied to the system for quadrotor control are explored in App:\ref{app:equations.standard}. Aerodynamic components pertinent for thrust and torque generation relative to Eq:\ref{eq:generalized-net-forces} are now introduced; obviously the contextual focus is on quadrotor with dual-tilting axis actuators\ldots
+In Eq:\ref{eq:generalized-net-forces}, the thrust vector $\vec{T}(\Omega_i)$ is a function of the $i^{th}$ motor's rotational velocity $\Omega_i$, fixed in the $\hat{Z}_b$ direction. Each thrust vector could potentially be $\in\mathbb{R}^3$ such as the redirected vector from Eq:\ref{eq:motor-module-force-redirect}. All of the above equations are still applicable to any 6-DOF body; common simplifications applied to the system for quadrotor control are explored in App:\ref{app:equations.standard}. Aerodynamic components pertinent for thrust and torque generation relative to Eq:\ref{eq:generalized-net-forces} are now introduced; obviously the contextual focus is on quadrotor with dual-tilting axis actuators.
 %====================================================
 \section{Aerodynamics}
 \label{sec:dynamics.aero}
 %====================================================
-Aerodynamic effects detailed here and subsequent nonlinear multibody responses in Sec:\ref{sec:dynamics.nonlinearities} both affect the generalized forces and torques acting on the body. The relationship between a propeller's rotational speed $\Omega_i$, in revolutions per second or \emph{RPS}, and its perpendicular thrust vector $\vec{T}(\Omega_i)$ is more complicated than the quadratic simplification taken at static conditions which most papers assume (e.g \cite{x4flyer} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the body velocity's component normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag and hence torque. 
+Aerodynamic effects detailed here and subsequent nonlinear multibody responses in Sec:\ref{sec:dynamics.nonlinearities} both affect the generalized forces and torques acting on the body. The relationship between a propeller's rotational speed $\Omega_i$, in revolutions per second or [\emph{RPS}], and its perpendicular thrust vector $\vec{T}(\Omega_i)$ is more complicated than the quadratic simplification taken at static conditions which some papers assume (e.g \cite{x4flyer} etc\ldots). Produced thrust is mostly dependent on the incident air stream flowing through the propeller's rotational plane; typically being the body velocity's component normal to that propeller's plane. Fluid flowing \emph{tangentially} across the propeller's plane contributes toward in-plane aerodynamic drag and hence torque. 
 \par
-The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum or \emph{disc actuator} theories equate an integral term generated across the propeller's length with the produced thrust or torque. A schedule of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories; vortex ring state and parasitic drag effects are not included as they will be approximately negligible given the aircraft's proposed flight envelope with low translational velocities.
+The combination of aerodynamic blade-element\cite{bem,forwarddescent} and fluid-dynamics momentum or \emph{disc actuator} theories equate an integral term generated across the propeller's length with the produced thrust or torque. A schedule of all aerodynamic effects encountered by a quadrotor's propellers is thoroughly detailed in both \cite{bladesforquadrotors} and \cite{nonlineardynamics}. The following is a review of pertinent aerodynamic theories; vortex ring state and parasitic drag effects are omitted as they will be approximately negligible given the aircraft's proposed flight envelope with low translational velocities.
 %====================================================
 \subsection{Propeller Torque and Thrust}
 \label{subsec:dynamics.aero.bem}
@@ -260,11 +258,11 @@ To expedite the system identification process some simplifications are made on t
 \vspace{-18pt}
 \end{figure}
 \par
-A propeller's profile applies a perpendicular thrust force, $T$, onto the fluid in which it rotates. To build the following theoretical explanation propellers are first considered in terms of momentum theory; only perpendicular fluid flow through the propeller's plane is regarded. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident upstream velocity, $v_\infty$, and a resultant slip velocity, $v_s$, downstream relative to the rotational plane. The change of fluid flow as a result of the propeller's rotation can be given as:
+A propeller's profile applies a perpendicular scalar thrust force $T$ onto the fluid in which it rotates. To build the following theoretical explanation propellers are first considered in terms of momentum theory; only perpendicular fluid flow through the propeller's plane is regarded. That fluid stream (Fig:\ref{fig:bem-flow}) has an incident upstream velocity $v_\infty$ and a resultant slip velocity $v_s$ downstream relative to the rotational plane. The change of fluid flow as a result of the propeller's rotation can be given as:
 \begin{equation}
 v_s = \Delta v + v_\infty
 \end{equation}
-Where $\Delta v$ is the net change in fluid velocity caused by the propeller blade's rotating aerofoil profile. The propeller induces a velocity directly in front of its rotational plane, $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. That induced inflowing fluid velocity is different to the net velocity contribution of the propeller; $v_i\not=\Delta v$.
+Where $\Delta v$ is the net change in fluid velocity caused by the propeller blade's rotating aerofoil profile. The propeller induces a velocity directly in front of its rotational plane $v_i$, such that the net fluid flow into the plane is $v_b=v_i+v_\infty$. That induced inflowing fluid velocity is different to the net velocity contribution of the propeller; $v_i\not=\Delta v$.
 \par
 \begin{figure}[htbp]
 \centering
@@ -278,11 +276,11 @@ It is shown in \cite{bladesforquadrotors} that at static conditions, using Berno
 \begin{equation}\label{eq:bernoulli}
 v_b = \frac{1}{2} ( v_s - v_{\infty} ) = \frac{1}{2} \Delta v = \frac{1}{2} v_s \big|_{v_\infty=0}
 \end{equation}
-Stemming from classical disc actuator, or fluid \emph{momentum} theory \cite{fluidmomentum}, the scalar force $T(\Omega_i)$ acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity or \emph{pressure differential}:
+Stemming from classical disc actuator, or fluid \emph{momentum} theory \cite{fluidmomentum,propellers}, the scalar force $T(\Omega_i)$ acting on the fluid is calculated as a function of mass flow rate with respect to the change in fluid velocity or \emph{pressure differential}:
 \begin{equation}\label{eq:prop-mass}
 T=(A_b v_b)\Delta v = \rho \pi R_b^2v_b \Delta v = \rho \pi R_b^2(v_i+v_\infty)\Delta v = \frac{1}{2} \rho \pi R_b^2 \Delta v^2
 \end{equation}
-Where $R_b$ is the disc (propeller) radius in $\text{m}$ for the fluid stream under consideration, $A_b$ is the swept area of that propeller disc. The fluid density of that stream, $\rho$, is typically $1.225~\text{kg.m}^{-3}$ at standard temperature and pressure (\emph{stp}). However, the desired form of thrust generated is as a function of propeller rotational velocity, $T(\Omega_i)$ in $\text{RPS}$, so Eq:\ref{eq:prop-mass} is not yet satisfactory. 
+Where $R_b$ is the disc (propeller) radius in $\text{m}$ for the fluid stream under consideration, $A_b$ is the swept area of that propeller disc. The fluid density of that stream $\rho$ is typically $1.225~[\text{kg.m}^{-3}]$ at standard temperature and pressure (\emph{stp}). However, the desired form of thrust generated is as a function of propeller rotational velocity, $T(\Omega_i)$ in $[\text{RPS}]$, so Eq:\ref{eq:prop-mass} is not yet satisfactory. 
 \par
 Eq:\ref{eq:prop-mass} could be solved from the aerodynamic propulsive power expended; using $\Delta P=T\Delta v$. The relationship between rotational kinetic energy of a propeller and its transferred propulsive power is difficult to quantify, compound parasitic losses deteriorate the efficiency of the propeller and motor. Furthermore, the fluid velocity through the propeller's plane is not purely normal but is in fact a vector. 
 \par
@@ -354,11 +352,11 @@ dF_H=\frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\theta)+C_D cos(\theta)\big).
 \end{equation}
 \vspace{-5pt}
 \begin{equation}\label{eq:element-torque}
-\rightarrow dH = \frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\theta)+C_D cos(\theta)\big)r.dr
+\therefore dH = \frac{1}{2}\rho\vec{U}(r,\phi)^2c\big(C_L sin(\theta)+C_D cos(\theta)\big)r.dr
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:element-power}
-\rightarrow dP = \Omega r dF_H .dr
+\therefore dP = \Omega r dF_H .dr
 \end{equation}
 \end{subequations}
 \par
@@ -380,7 +378,7 @@ Firstly the lift coefficient curve gradient $a_L$ is shown in \cite{aerodynamics
 \begin{equation}\label{eq:lift-curve-gradient}
 C_L=2\pi(\theta-\phi)
 \end{equation}
-Secondly assuming tangentially induced velocities, $v_\theta$, are small when compared to the propeller's translational speed at radius $r$, $v(\Omega_i)=\Omega_i r$. The tangential induction factor $a'$ is then the ratio:
+Secondly, assuming tangentially induced velocities $v_\theta$ are small when compared to the propeller's translational speed at radius $r$, $v(\Omega_i)=\Omega_i r$. The tangential induction factor $a'$ is then the ratio:
 \begin{equation}
 a'=\frac{v_\theta}{\Omega_i r}<<1
 \end{equation}
@@ -403,11 +401,11 @@ C_T(J)\triangleq\frac{T}{\rho \Omega_i\hspace{-2pt}^2 D^4}
 C_P(J)\triangleq\frac{P}{\rho \Omega_i\hspace{-2pt}^3 D^5}
 \end{equation}
 \end{subequations}
-Where the propeller's diameter is $D$ in $\text{m}$, then $\Omega_i$ is the propeller's rotational speed in \emph{revolutions per second} (\emph{RPS}) and different from other inertial equations like Eq:\ref{eq:angular-rot}, with units $\text{rad.s}^{-1}$. For fixed pitch propellers the thrust and power coefficients are easily determined and remain consistent. Both Eq:\ref{eq:thrust-coefficient} and Eq:\ref{eq:power-coefficient} vary as a function of the dimensionless \emph{advance ratio} $J$.
+Where the propeller's diameter is $D$ in $[\text{m}]$, then $\Omega_i$ is the propeller's rotational speed in \emph{revolutions per second} [\emph{RPS}] and different from other inertial equations like Eq:\ref{eq:angular-rot}, with units $[\text{rad.s}^{-1}]$. For fixed pitch propellers the thrust and power coefficients are easily determined and remain consistent. Both Eq:\ref{eq:thrust-coefficient} and Eq:\ref{eq:power-coefficient} vary as a function of the dimensionless \emph{advance ratio} $J$.
 \begin{equation}\label{eq:advance}
 J\triangleq\frac{v_\infty}{\Omega_i R}
 \end{equation}
-Typically the net upstream velocity $v_\infty$ in Eq:\ref{eq:advance} is simply the perpendicular component (projected onto the plane's normal vector $\hat{n}$, shown later in Eq:\ref{eq:normal-fluid}) of the vehicle's translational velocity in the body frame; $\vec{v}_b\perp\hat{n}$. For the case of a zero advance ratio, $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values.
+Typically the net upstream velocity $v_\infty$ in Eq:\ref{eq:advance} is simply the perpendicular component (projected onto the plane's normal vector $\hat{n}$, shown later in Eq:\ref{eq:normal-fluid}) of the vehicle's translational velocity in the body frame; $\vec{v}_b\perp\hat{n}$. For the case of a zero advance ratio $J=0$, the conditions are regarded as static. Static thrust and power coefficients are nominal in their values.
 \par
 Propeller databases like \cite{UIUC} provide comprehensive coefficient values for a range of small and medium diameter propeller types at different advance ratios. Included in the database are blade profiles, pitch and chord lengths; all the results are outcomes of the investigation \cite{lowreynolds}. 
 \par
@@ -478,11 +476,11 @@ Advance ratios, Eq:\ref{eq:advance}, or rather the propeller incident fluid flow
 \begin{equation}\label{eq:normal-fluid}
 v_\infty = (\vec{v}_b\hspace{-1pt}' + \vec{L}_{arm}\times \vec{\omega}_b\hspace{-1pt}')\cdot \hat{n}(\lambda_i,\alpha_i)~~~~\in\mathcal{F}^{M_i}
 \end{equation}
-Where $\vec{v}_b\hspace{-1pt}'$ in $\text{m.s}^{-1}$ is the body's translational velocity and $\vec{\omega}_b\hspace{-1pt}'$ in $\text{rad.s}^{-1}$ is the body's angular velocity, both transformed to the propeller's frame, $\in\mathcal{F}^{M_i}$. Furthermore $\hat{n}(\lambda_i,\alpha_i)$ is the unit vector normal to the propeller's rotational plane, relative to the body velocity. Then $J$ is calculated from Eq:\ref{eq:advance}.
+Where $\vec{v}_b\hspace{-1pt}'$ in $[\text{m.s}^{-1}]$ is the body's translational velocity and $\vec{\omega}_b\hspace{-1pt}'$ in $[\text{rad.s}^{-1}]$ is the body's angular velocity, both transformed to the propeller's frame, $\in\mathcal{F}^{M_i}$. Furthermore $\hat{n}(\lambda_i,\alpha_i)$ is the unit vector normal to the propeller's rotational plane, relative to the body velocity. Then $J$ is calculated from Eq:\ref{eq:advance}.
 \par
 {\color{Gray}\emph{It is worth reiterating that the above static coefficients are indeed calculated from physical static tests. However advance ratio coefficient dependencies are linearly interpolated from the closest available matching data (APC Thin-Electric 8X6 propellers) cited from \cite{UIUC}}.}
 \par
-Clockwise and anti-clockwise propellers and rotations were used for both thrust and torque tests. Despite both test rigs  (Fig:\ref{fig:thrust-rig} and Fig:\ref{fig:torque-rig} respectively) having been designed to specifically isolate each response, results from opposing directional tests were averaged in the hopes that stray opposing effects were cancelled. Both clockwise and anti-clockwise rotational testing  results for thrust and torque measurements are included in App:\ref{app:thrust-torque}
+Clockwise and anti-clockwise propellers and rotations were used for both thrust and torque tests. Despite both test rigs  (Fig:\ref{fig:thrust-rig} and Fig:\ref{fig:torque-rig} respectively) having been designed to specifically isolate each response, results from opposing directional tests were averaged in the hopes that stray opposing effects would cancel. Both clockwise and anti-clockwise rotational testing  results for thrust and torque measurements are included in App:\ref{app:thrust-torque}
 \par
 {\color{Gray}\emph{Discrepancies which exist between the model or coefficient values derived can be accounted for with lumped uncertainty disturbance terms. Model uncertainty compensation can easily be incorporated into adaptive backstepping or $H_\infty$ control algorithms. The deviation of the modelled thrust or torques from their true values would be simple to incorporate into a plant dependent Lyapunov candidate function; Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}.}}
 %====================================================
@@ -539,7 +537,7 @@ Each drag coefficient's subscript; $\hat{\imath},\hat{\jmath}$ and $\hat{k}$ is 
 \end{equation}
 Due to the second order degree of translational velocity on the drag force; such terms can be relegated to a lumped disturbance terms to be compensated for in the control loop, Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep}. The time scale separation between velocity and wind drag effects within the control loop accommodates such an assumption. Analogous rotational drag-like effects opposing angular rates exist but, for the intents and purposes of most practical flight envelopes, can be disregarded. 
 \par
-In simulation; if the plant has sufficient disturbance rejection then the drag term in Eq:\ref{eq:distrubance} would be easily accounted for in an adaptive backstepping algorithm. Drag, much like wind turbulence, is shown later in Sec:\ref{sec:simulation.disturbance} to be not consequential enough to be destabilizing. Furthermore it is possible to physically test for the drag coefficients to attain a higher certainty model but, given the flight conditions proposed for this research, such effects will be small if not negligible. As such those tests are outside the scope of investigation here\ldots
+In simulation; if the plant has sufficient disturbance rejection then the drag term in Eq:\ref{eq:distrubance} would be easily accounted for in an adaptive backstepping algorithm. Drag, much like wind turbulence, is shown later in Sec:\ref{sec:simulation.disturbance} to be not consequential enough to be destabilizing. Furthermore it is possible to physically test for the drag coefficients to attain a higher certainty model but, given the flight conditions proposed for this research, such effects will be small if not negligible. As such those tests are outside the scope of investigation here.
 %====================================================
 \section{Quaternion Attitude}
 %====================================================
@@ -547,18 +545,18 @@ In simulation; if the plant has sufficient disturbance rejection then the drag t
 %====================================================
 The singularity inherent to Euler angle parametrization is often mentioned but far less common is the mathematical demonstration of how that singularity manifests itself.  In general, a singularity occurs for some matrix $A$ in $\vec{y}=A\vec{x}$ when the matrix has a zero determinate; losing rank and hence differentiability of $\vec{y}$ in terms of $\vec{x}$. The combined rotation matrix from the inertial frame $\mathcal{F}^{I}$ to the body frame $\mathcal{F}^{b}$ is the singular component of an Euler parametrized sequence. 
 \par
-Considering the case of a rotational 3-axis gimbal system, illustrated in Fig:\ref{fig:gimbal}, which mimics the sequential nature of the Euler set. When the intermediary sequenced rotational angle is at $\pi/2$ rad, the remaining two axes become co-linear, Fig:\ref{fig:gimbal-lock}. In a Z-Y-X rotation sequence, as adopted in this work, the singularity occurs from the rolling angle $\theta$ about the $\hat{Y}$ axis. Both the pitch $\phi$ and yaw $\psi$ rotations will subsequently have the same rotational effect. Such a situation results in as a loss of a degree of freedom.
+Considering the case of a rotational 3-axis gimbal system, illustrated in Fig:\ref{fig:gimbal}, which mimics the sequential nature of the Euler set. When the intermediary sequenced rotational angle is at $\pi/2$ rad, the remaining two axes become co-linear, Fig:\ref{fig:gimbal-lock}. In a ZYX rotation sequence, as adopted in this work, the singularity occurs from the rolling angle $\theta$ about the $\hat{Y}$ axis. Both the pitch $\phi$ and yaw $\psi$ rotations will subsequently have the same rotational effect. Such a situation results in as a loss of a degree of freedom.
 \newpage
 \begin{figure}[htbp]
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[clip, trim=16.5cm 8.5cm 16.5cm 6.7cm, width=0.95\textwidth]{pdfpages/gimbal}
+\includegraphics[clip, trim=16.5cm 8.5cm 16.5cm 6.7cm, width=0.93\textwidth]{pdfpages/gimbal}
 \caption{3-Axis gimbal}
 \label{fig:gimbal}
 \end{subfigure}
 \begin{subfigure}{0.5\textwidth}
 \centering
-\includegraphics[clip, trim=16.5cm 8.5cm 16.5cm 6.7cm, width=0.95\textwidth]{pdfpages/gimbal-lock}
+\includegraphics[clip, trim=16.5cm 8.5cm 16.5cm 6.7cm, width=0.93\textwidth]{pdfpages/gimbal-lock}
 \caption{Locked gimbal with loss of DOF}
 \label{fig:gimbal-lock}
 \end{subfigure}
@@ -587,13 +585,13 @@ r
 \end{equation}
 \vspace{-2pt}
 \begin{equation}
-\rightarrow det\big(\Phi(\eta)\big)=cos(\phi)\big(cos(\phi)sec(\theta)\big)+sin(\phi)\big(\sin(\phi)sec(\theta)\big)=sec(\theta)
+det\big(\Phi(\eta)\big)=cos(\phi)\big(cos(\phi)sec(\theta)\big)+sin(\phi)\big(\sin(\phi)sec(\theta)\big)=sec(\theta)
 \end{equation}
 \vspace{-6pt}
 \begin{equation}
 \therefore \underset{{\theta \rightarrow \pi /2}}{lim}|\Phi(\eta)|=sec(\theta)\rightarrow \infty
 \end{equation}
-The Euler matrix $\Phi(\eta)$ looses rank as $\theta\rightarrow\pi/2$ rad, loosing differentiability as well. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the Z-Y-X rotation (or transformation) matrices are formulated, from Eq:\ref{eq:rotationmatrix}.
+The Euler matrix $\Phi(\eta)$ looses rank as $\theta\rightarrow\pi/2$ rad, loosing differentiability as well. The physical consequence of this is the loss of a degree of freedom. More specifically, if one looks at how the ZYX rotation (or transformation) matrices are formulated, from Eq:\ref{eq:rotationmatrix}.
 \begin{subequations}
 \begin{equation}
 R_I^b(\eta)\triangleq R_z(\psi)R_y(\theta)R_x(\phi)=\begin{bmatrix}
@@ -639,7 +637,7 @@ R_I^b(\eta)=\begin{bmatrix}
 \end{equation}
 \vspace{-4pt}
 \begin{equation}\label{eq:gimbal}
-=R_{x'}(\phi-\psi)
+\therefore R_I^b(\eta)\big|_{\theta=\pi/2}\equiv R_{x'}(\phi-\psi)
 \end{equation}
 \end{subequations}
 Where the resultant in Eq:\ref{eq:gimbal} represents an $\hat{X}'$-axis rotation in a new intermediate frame, post a $\pi/2$ rotation about the $\hat{Y}$-axis. Through trigonometric double angles a degree of freedom is lost at $\theta=\pi/2$, when both $\phi$ and $\psi$ effect the same angle.
@@ -649,7 +647,7 @@ Where the resultant in Eq:\ref{eq:gimbal} represents an $\hat{X}'$-axis rotation
 %====================================================
 An algorithm proposed in \cite{euleranglesingularity} suggested a solution to avoid Euler Angle singularities. The heuristic proposed involved switching between sequence conventions (ZYX,ZYZ etc\ldots there are 12 in total) such that the singularity is always avoided. However the implementation of such an algorithm is cumbersome and compulationally exhaustive. Far more elegant is the use of \emph{quaternion} attitude representations in $\mathbb{R}^4$, used in \cite{rotationsequences,spacecraftattitutdequaternions} amongst others but most notably made popular by \cite{shoemake} for use in animation.
 \par
-A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. An $\mathbb{R}^3$ attitude is paramterized as one rotation $\theta$ about a single unit \emph{Euler} axis $\hat{u}$, demonstrated using the Rodriguez Formula in \cite{unwinding}. In brief a quaternion consists of a scalar component $q_0$ and complex vector component $\vec{q}\in \mathbb{C}^3$ such that:
+A quaternion is analogous to a rotation matrix in that it represents an attitude difference between two reference frames. An $\mathbb{R}^3$ attitude is paramterized as one rotation $\theta$ about a single unit \emph{Euler} axis $\hat{u}$, demonstrated using the Rodriguez Formula in \cite{unwinding}. In brief, a quaternion consists of a scalar component $q_0$ and complex vector component $\vec{q}\in \mathbb{C}^3$ such that:
 \begin{equation}
 Q\triangleq 
 \begin{bmatrix}
@@ -662,9 +660,10 @@ The relationship between an Euler angle rotation matrix $R_I^b(\eta)$ and a quat
 \begin{equation}\label{eq:rodriguez}
 R_I^b(\eta)\equiv R(Q_b)\triangleq \mathbb{I}_{3\times 3}+2q_0[\vec{q}\hspace{2pt}]_\times+2[\vec{q}\hspace{2pt}]_\times\text{}^2
 \end{equation}
-Where $[.]_\times$ is the cross-product matrix defined previously in Eq:\ref{eq:cross-product-matrix}. All quaternions, unless otherwise specified, are unit quaternions $Q\in\mathbb{Q}_u$. Quaternions with a unity magnitude ensure that rotational operations maintain the vector operand's magnitude. A unit quaternion is defined:
+Where $[.]_\times$ is the cross-product matrix, defined previously in Eq:\ref{eq:cross-product-matrix}, and $
+mathbb{I}_{3\times 3}$ is an identity matrix as per convention. All quaternions, unless otherwise specified, are unit quaternions $Q\in\mathbb{Q}_u$. Quaternions with a unity magnitude ensure that rotational operations maintain the vector operand's magnitude. A unit quaternion is defined as follows:
 \begin{equation}
-\norm{Q}=\sqrt{{q_0}^2+\vec{q}\text{}\hspace{2pt}^2}=1
+\norm{Q}\triangleq\sqrt{{q_0}^2+\vec{q}\text{}\hspace{2pt}^2}=1
 \end{equation}
 Quaternion multiplication is distributive and associative, but not commutative. Specifically a quaternion multiplication operator is equivalent to the Hamilton product. For two quaternions, $Q$ and $P$:
 \begin{subequations}
@@ -686,10 +685,10 @@ q_0\vec{p}+p_0\vec{q}+\vec{q}\times\vec{p}
 \end{bmatrix}
 \end{equation}
 \begin{equation}\label{eq:quaternion-product}
-=\underbrace{q_0 p_0 - \vec{q}\cdot \vec{p}}_{scalar}+\underbrace{p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}}{vector}
+=\underbrace{q_0 p_0 - \vec{q}\cdot \vec{p}}_{scalar}+\underbrace{p_0 \vec{q} + q_0 \vec{p} + \vec{q}\times\vec{p}}_{vector}
 \end{equation}
 \end{subequations}
-Because the vector component of a quaternion is complex valued, it is natural that a quaternion complex conjugate exists, defined:
+Because the vector component of a quaternion is complex valued, it is natural that a quaternion complex conjugate $Q^*$ exists, defined:
 \begin{equation}
 Q^*\triangleq\begin{bmatrix}
 q_0 \\
@@ -700,7 +699,7 @@ It follows that the fundamental quaternion identity is:
 \begin{equation}
 Q\otimes Q^* = \mathbb{I}_{4\times 4}
 \end{equation}
-A right handed quaternion rotation applied to a vector $\vec{\nu} \in\mathbb{R}^3$ involves multiplication by two unit quaternions. 
+A right handed quaternion rotation applied to some vector $\vec{\nu} \in\mathbb{R}^3$ involves multiplication by two unit quaternions $Q$ and its conjugate $Q^*$. 
 \begin{equation}
 \begin{bmatrix}
 0 \\
@@ -721,9 +720,9 @@ In the case of rigid body attitude parametrization using quaternions, $Q_b$ is t
 \begin{equation}
 \vec{\nu}_b=R_I^b(\eta)\vec{\nu}_I \underset{Q}{\iff} Q_b \otimes (\vec{\nu}_I) \otimes Q_b^*~~~~\in\mathcal{F}^b
 \end{equation}
-Since quaternions are non-commutative, the construction of a body quaternion $Q_b$ from an Euler angle set $\vec{\eta}$ is \emph{sequence dependent}. Euler angles, despite being singular, are conceptually simpler for describing a body's orientation. A Z-Y-X sequenced body quaternion $Q_b$ relative to the inertial frame can be constructed from its Euler angle counterparts using:
+Since quaternions are non-commutative, the construction of a body quaternion $Q_b$ from an Euler angle set $\vec{\eta}$ is \emph{sequence dependent}. Euler angles, despite being singular, are conceptually simpler for describing a body's orientation. A ZYX sequenced body quaternion $Q_b$ relative to the inertial frame can be constructed from its Euler angle counterparts using:
 \begin{equation}\label{eq:quaternion-sequence}
-Q_b=Q_z\otimes Q_y\otimes Qx=\begin{bmatrix}
+Q_b\triangleq Q_z\otimes Q_y\otimes Qx=\begin{bmatrix}
 cos(\psi/2)\\
 0\\
 0\\
@@ -747,7 +746,7 @@ sin(\phi/2)\\
 A quaternion's time derivative, defined in \cite{fullquaternion}, with $Q_\omega$ being a quaternion with a vector component equal to angular velocity $\vec{\omega}_{b/I}$ and a zero scalar component, is:
 \begin{subequations}\label{eq:quaternion-deriv}
 \begin{equation}
-\frac{d}{dt}Q_b=\frac{1}{2}Q_b\otimes Q_{\omega}=\frac{1}{2}Q_b\otimes\vec{\omega}_b
+\frac{d}{dt}Q_b\triangleq\frac{1}{2}Q_b\otimes Q_{\omega}=\frac{1}{2}Q_b\otimes\vec{\omega}_b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
@@ -760,22 +759,22 @@ A quaternion's time derivative, defined in \cite{fullquaternion}, with $Q_\omega
 Using quaternions to represent attitudes negates the need for an Euler Matrix, $\Phi(\eta)$ from Eq:\ref{eq:angular-rates.f}, to represent attitudes and their rates. A body quaternion is fully defined in the inertial frame with respect to the body frame or inversely so. The first quaternion time derivative replaces angular velocity rate differentials in Eq:\ref{eq:states.a} and Eq:\ref{eq:states.c} respectively:
 \begin{subequations}
 \begin{equation}
-\dot{\mathcal{E}}=R_b^I(-\eta)\vec{v}_b\underset{Q}{\iff}Q_b(-\eta)\otimes\vec{v}_b\otimes Q_b^*(-\eta)=Q_b^*\otimes \vec{v}_b \otimes Q_b~~~~\in\mathcal{F}^I
+\dot{\mathcal{E}}=R_b^I(-\eta)\vec{v}_b~~\in\mathcal{F}^I\underset{Q}{\iff}Q_b(-\eta)\otimes\vec{v}_b\otimes Q_b^*(-\eta)=Q_b^*\otimes \vec{v}_b \otimes Q_b
 \end{equation}
-\vspace{-10pt}
+\vspace{-14pt}
 \begin{equation}
-\dot{\eta}=\Phi(\eta)\vec{\omega}_b~~\in\mathcal{F}^{v2,v1,I}\underset{Q}{\iff}\dot{Q}_b=\frac{1}{2}Q_b\otimes \vec{\omega}_b
+\dot{\eta}\triangleq\Phi(\eta)\vec{\omega}_b~~\in\mathcal{F}^{v2,v1,I}\underset{Q}{\iff}\dot{Q}_b=\frac{1}{2}Q_b\otimes \vec{\omega}_b
 \end{equation}
 \end{subequations}
 Second order time derivatives for quaternion acceleration are not as useful as their higher order, velocity counterparts. The second order derivative is provided here for the sake of completeness. If at all possible, quaternion accelerations are avoided due to their complexity. The quaternion analogue for angular acceleration Eq:\ref{eq:rigid-frame.b}, dependent on net torque acting on a body $\vec{\tau}_{\mu}$, is given by:
 \begin{equation}
-\ddot{Q}\big(\dot{Q},Q,t)=\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[J_b^{-1}(\vec{\tau}_{\mu}-4(Q^*\otimes \dot{Q})\times(J_b(Q^*\otimes \dot{Q}))\big]
+\ddot{Q}\big(\dot{Q},Q,t)\triangleq\dot{Q}\otimes Q^* \otimes \dot{Q}+\frac{1}{2}Q\otimes \big[J_b^{-1}(\vec{\tau}_{\mu}-4(Q^*\otimes \dot{Q})\times(J_b(Q^*\otimes \dot{Q}))\big]
 \end{equation}
-An Euler angle attitude error state, used for control input, is defined as the subtracted error between a desired and an existing attitude orientation; $\vec{\eta}_d$ and $\vec{\eta}_b$ respectively. Where $\vec{\eta}_d$ is some attitude setpoint produced from a trajectory generator.
+An Euler angle attitude error state, used for control input, is defined as the subtracted error between a desired and an existing attitude orientation; $\vec{\eta}_d\in\mathcal{F}^d$ and $\vec{\eta}_b\in\mathcal{F}^b$ respectively. Where $\vec{\eta}_d$ is some attitude setpoint produced from a trajectory generator and both Euler sets are in shared frames.
 \begin{equation}\label{eq:euler-error}
 \vec{\eta}_e\triangleq\vec{\eta}_d-\vec{\eta}_b
 \end{equation}
-Quaternion attitude control and its stability goals are expanded upon subsequently in Sec:\ref{subsec:control.attitude.problem}. In contrast with Eq:\ref{eq:euler-error}, a quaternion attitude error is a multiplicative term defined as the difference between two quaternions $Q_d$ and $Q_b$;
+Quaternion attitude control and its stability goals are expanded upon subsequently in Sec:\ref{subsec:control.attitude.problem}. In contrast with Eq:\ref{eq:euler-error}, a quaternion attitude error is a multiplicative term defined as the difference between two quaternions $Q_d$ and $Q_b$:
 \begin{equation}\label{eq:quaternion-error}
 Q_e\triangleq Q_b^*\otimes Q_d
 \end{equation}
@@ -819,16 +818,16 @@ sin(\theta/2)\hat{u}
 \end{equation}
 \vspace{-4pt}
 \begin{equation}\label{eq:euler-quaternion}
-\vec{\eta}\in\mathbb{R}^3\underset{Q}{\iff}\begin{bmatrix}
+\therefore\vec{\eta}\in\mathbb{R}^3\underset{Q}{\iff}\begin{bmatrix}
 \pm q_0\\
 \vec{q}
 \end{bmatrix}
 \in\mathbb{R}^4
 \end{equation}
 \end{subequations}
-Eq:\ref{eq:euler-quaternion} asserts that for each attitude in $\mathbb{R}^3$ there are \emph{two} corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is that two possible error state trajectories exist for every attitude difference. Both a clockwise, $+\theta$, and an anticlockwise, $2\pi-\theta$, rotation points to the same quaternion attitude error state. This could lead to an erroneous and unnecessary ``unwinding" of a complete counter revolution. So for attitude controllers the requirement is that for positive and negative quaternion scalars the control input is consistent:
+Eq:\ref{eq:euler-quaternion} asserts that for each attitude in $\mathbb{R}^3$ there are \emph{two} corresponding quaternions in $\mathbb{R}^4$; $[\pm q_0~\vec{q}~]^T$. A consequence of this is that two possible error state trajectories exist for every attitude difference. Both a clockwise $+\theta$ and an anticlockwise $2\pi-\theta$ rotation points to the same quaternion attitude error state. This could lead to an erroneous and unnecessary ``unwinding" of a complete counter revolution. So for attitude controllers the requirement is that for positive and negative quaternion scalars the control input is consistent:
 \begin{equation}
-\vec{\tau}_d=h([q_0~\vec{q}\hspace{2pt}]^T,t)=h([-q_0~\vec{q}\hspace{2pt}]^T,t)
+\vec{\tau}_d=h([q_0~\vec{q}\hspace{2pt}]^T,t)\equiv h([-q_0~\vec{q}\hspace{2pt}]^T,t)
 \end{equation}
 Or more simply that $Q_e\triangleq[|q_0|~\vec{q}\hspace{2pt}]^T$. The simplest solution adhering to that constraint, which is often used, is to neglect the quaternion scalar component altogether. Using a reduced error state, only the quaternion error vector as an argument for the control law; $h(\vec{q}_e,t)$. Such a solution is an oversimplification and would only ever be locally stable. 
 \par
@@ -841,7 +840,7 @@ One proposal presented in \cite{nonlinearquadcopter} suggested using a \emph{sig
 \end{equation}
 With $\Gamma_1$ being a proportional error coefficient and signum defining the operator's sign:
 \begin{equation}
-sgn(q_0)=
+sgn(q_0)\triangleq
 \begin{cases}\begin{array}{ll}
 1 & ~~q_0\geq 0\\
 -1 & ~~q_0< 0\\
@@ -851,21 +850,19 @@ sgn(q_0)=
 \end{subequations}
 Eq:\ref{eq:signum-unwinding} was shown to be asymptotically stable but only locally in the case where the Euler-axis angle is constrained; $\theta\leq \pm\pi$. That control law  would still need the control torques to be calculated from that angular velocity $\vec{\omega}_d$ setpoint using Eq:\ref{eq:states.d}.
 \par
-In \cite{intelligentbackstep}, the authors used a backstepping controller with a trajectory using the absolute quaternion scalar. The resultant was a global asymptotically stable control law which tracked quaternion setpoints for a satellite's attitude. Controllers presented in Sec:\ref{subsec:control.attitude.nonlinear} all incorporate the signed quaternion scalars into the control law;  hence relying on the trajectory generation to provide the desired direction of the rotation path.
+In \cite{intelligentbackstep}, the authors used a backstepping controller with a trajectory using the absolute quaternion scalar. The resultant was a global asymptotically stable control law which tracked quaternion setpoints for a satellite's attitude. That satellite's stability proof was, however, difficult given the hybrid nature of the resulting equations. Controllers presented in Sec:\ref{subsec:control.attitude.nonlinear} all incorporate \emph{signed} quaternion scalars into the control law; the trajectory generation is assumed to specify the preferred quaternion rotational sense.
 \newpage
 %====================================================
 \section{Multibody Nonlinearities}
 \label{sec:dynamics.nonlinearities}
 %====================================================
-The unique component of the prototype's design which facilitates redirection of a propeller's thrust vector (Eq:\ref{eq:motor-module-force-redirect} and Sec:\ref{subsec:proto.design.actuation}) is also what makes finding the complete equations of motion drastically more complex. The relative (rotary) motion within the multibody system results in torque responses opposing those angular accelerations. Such induced responses, if left unmodelled, would almost definitely destabilize the attitude plant. Unmodelled inertia rate responses are shown to be destabilizing in \cite{inertiaspin}. Typically multibody dynamics are solved and simulated as a series of interacting torque and force constraints. There are different schools of thought on the subject, each proposing methodologies for stepping through the systems dynamics; \emph{e.g} Implicit Euler integration\cite{physicallybased,multibodydynamics}\ldots
+The unique component of the prototype's design which facilitates redirection of a propeller's thrust vector (Eq:\ref{eq:motor-module-force-redirect} and Sec:\ref{subsec:proto.design.actuation}) is also what makes finding the complete equations of motion drastically more complex. The relative (revolute) motion within the multibody system results in torque responses opposing those angular accelerations. Such induced responses, if left unmodelled, would almost definitely destabilize the attitude plant. Unmodelled inertia rate responses are shown to be destabilizing in \cite{inertiaspin}. Typically multibody dynamics are solved and simulated as a series of interacting torque and force constraints. There are different schools of thought on the subject, each proposing methodologies for stepping through the systems dynamics; \emph{e.g} Implicit Euler integration\cite{physicallybased,multibodydynamics}\ldots
 \par
-The prototype investigated here is a multibody system connected with revolute joints, which permit a single degree of relative rotation between each connected rigid body. There are no translational degrees of freedom between each body. Opposed to the angular accelerating actuator action on a body are \emph{gyroscopic} and \emph{inertial} Newtonian torque responses. The responses from each body are solved independently and those excitation induced torque constraints are introduced as additive external torques to the dynamic model derived in Sec:\ref{subsec:dynamics.rigidbody.lagrange}. 
-\par
-A distinction must be made between torque responses here and those previously in Eq:\ref{eq:states.d}. Recalling the classical differential equation of angular motion already derived:
+The prototype investigated here is a multibody system connected with revolute joints, which permit a single degree of relative rotation between each connected rigid body. There are no translational degrees of freedom between each body. Opposed to the angular accelerating actuator action on a body are \emph{gyroscopic} and \emph{inertia} Newtonian torque responses. The responses from each body are solved independently and those excitation induced torque constraints are introduced as additive external torques to the dynamic model derived in Sec:\ref{subsec:dynamics.rigidbody.lagrange}. A distinction must be made between torque responses here and those previously in Eq:\ref{eq:states.d}. Recalling the classical differential equation of angular motion already derived:
 \begin{equation}\label{eq:angular-multibody}
 \dot{\vec{\omega}}_b=J_b^{-1}\big(-\vec{\omega}_b\times J_b\vec{\omega}_b+\vec{\tau}_\mu\big)~~~~\in\mathcal{F}^b
 \end{equation}
-Eq:\ref{eq:angular-multibody} treats the entire body as rigid; included terms are as a result of the entire multibody's collective motion. What follows is an extension of that attitude state to incorporate relative movements between each connected body. The objective here is to model the multibody dynamic system with clear responses induced from servo rotations of inner and middle ring bodies, $\Delta\lambda_i$ and $\Delta\alpha_i$ respectively. The subsequent derivations are Lagrangian analytical dynamics applied to the multibody system under consideration. For the purposes of this derivation it is assumed that no potential energy can be stored within the structure from material flexure. The only potential energy contribution is as a result of gravitational potential energy.
+Eq:\ref{eq:angular-multibody} treats the entire body as rigid; included terms are as a result of the entire multibody's collective motion. What follows is an extension of that attitude state to incorporate relative movements between each connected body. The objective here is to model the multibody dynamic system with clear responses induced from servo rotations of inner and middle ring bodies, $\Delta\lambda_i$ and $\Delta\alpha_i$ respectively. The subsequent derivations are Lagrangian analytical dynamics applied to the multibody system under consideration. For the purposes of this derivation it is assumed that no potential energy can be stored within the structure from material flexure. The only potential energy contribution is as a result of gravitational potential energy. Moreover, each connected body is first solved as a closed energy system to ascertain the relative rotational response which is then incorporated in the overall multibody system.
 \par
 Alternatively the net dynamics could indeed be derived from a Lagrangian for the \emph{entire} 13 body dynamic system. Where those connected bodies are; four rotor/propeller bodies (Fig:\ref{fig:inertia-prop}), four inner ring bodies (Fig:\ref{fig:inertia-inner}), four middle ring bodies (Fig:\ref{fig:inertia-middle}) and finally the frame structure (Fig:\ref{fig:inertia-frame}) each with six degrees of freedom. Constraints on the assembly's joints would eventually reduce the degrees of freedom and simplify solving for net responses. The purpose here is to model the body's response to changes in the actuation servos' positions $\Delta\lambda_i$ and $\Delta\alpha_i$ so independent bodies are analyzed first. The final result is, in fact, a Lagrangian for those collective thirteen bodies, whose partial derivative with respect to the net angular velocity relative to the inertial frame $\partial\vec{\omega}_b$ produces the net torque acting on the system.
 %====================================================
@@ -876,73 +873,94 @@ Alternatively the net dynamics could indeed be derived from a Lagrangian for the
 \par
 Each of the four motor modules are symmetrical and so the induced torque response characteristics from one module can be extrapolated simply through a $\hat{Z}_b$ reference frame rotation. Each motor module is positioned relative to the body frame's center of motion $\vec{\mathbf{O}}_b$, as in Fig:\ref{fig:body-frame}. Because each relative rotation from the actuator set $u\in\mathbb{U}$ is actuated separately and upon a different body, their responses are calculated independently too.
 \par
-Drawing again from Lagrangian theory and considering only the angular energy component for the inner ring assembly attached to frame $\mathcal{F}^{M_i}$. There is no relative translational motion between each connected body and thus no translational kinetic energy contributions exist. The translational kinetic energy for each module is an extension of body's net kinetic energy in Eq:\ref{eq:3.7a} and independent of any actuator's position. The motor module's translational motion is incorporated in Eq:\ref{eq:rigid-frame.a} and not considered here. Regarding the $i^{th}$ motor module\ldots
+Drawing again from Lagrangian theory and considering only the angular energy component for the inner ring assembly attached to frame $\mathcal{F}^{M_i}$. There is no relative translational motion between each connected body and the origin of \emph{motion} $\vec{\mathbf{O}}_b$, the center of the body frame $\mathcal{F}^b$ from Fig:\ref{fig:body-frame} and Fig:\ref{fig:inertia-center}. Relative velocity of each body's center of gravity with respect to $\vec{\mathbf{O}}_b$, from each rotational actuation, is small in relation to the net vehicle's translational velocity. So translational kinetic energy for each module is treated as an extension of body's net kinetic energy in Eq:\ref{eq:3.7a} and assumed to be independent of any actuator's position. The following is with regards to the $i^{th}$ motor module, numerical subscripts are implied.
 \begin{figure}[htbp]
+\vspace{-12pt}
 \centering
-\includegraphics[width=0.78\textwidth]{figs/response-inner}
+\includegraphics[width=0.8\textwidth]{figs/response-inner}
+\vspace{-8pt}
 \caption{Exploded inner ring inertial bodies for $\vec{\tau}_\lambda(\lambda_i)$}
 \label{fig:response-inner}
-\vspace{-12pt}
+\vspace{-16pt}
 \end{figure}
 \par
-Deriving dynamic responses for changes in the $\lambda_i$ servo, acting on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$, requires a relative path coordinate to be defined. Seeing that the only path variable between the two frames is that servo's rotational position $\lambda_i$ about the $\hat{X}_{M_i}$ axis; the path coordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ are used to produce the Lagrangian for the inner ring's energy relative the middle ring frame, $\mathcal{L}_{n/m}\in\mathcal{F}^{M_i'}$.
+Deriving dynamic responses for changes in the $\lambda_i$ servo, acting on the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$, requires a relative path coordinate to be defined. The only path variable between the two frames is that servo's rotational position $\lambda_i$ about the $\hat{X}_{M_i}$ axis. Path coordinates $\vec{\mathbf{u}}(t)=\begin{bmatrix}\lambda_i&0&0\end{bmatrix}^T$ are then used to construct the inner ring's closed energy system Lagrangian with respect the middle ring frame $\mathcal{L}_{n/m}\in\mathcal{F}^{M_i'}$.
 \par
-The inner ring assembly consists of two separate bodies, exploded in Fig:\ref{fig:response-inner}. Each with relative rotational motion and independent kinetic energies. Those bodies are; the rotor assembly with an inertia $J_{r}$ defined earlier in Eq:\ref{eq:prop-inertia} and the inner ring which has an inertia $J_{ir}$ \emph{without including} the rotor assembly.
+The inner ring assembly consists of two separate bodies, exploded in Fig:\ref{fig:response-inner}, each has a relative rotational motion and independent kinetic energies. Those bodies are; the rotor assembly with an inertia $J_{r}$ defined earlier in Eq:\ref{eq:prop-inertia} and the inner ring which has an inertia $J_{ir}$ \emph{without including} the rotor assembly. Reiterating that the rotor's inertia $J_r$ is constant with respect to the propeller's rotational velocity $\Omega_i$, that inner ring inertia is given by:
 \begin{equation}
 J_{ir}\triangleq J_{n}-J_{r}
 \end{equation} 
 Where $J_n$ is the net inertia for the inner ring assembly, explicitly defined in Eq:\ref{eq:inertia.inner}. The rotor assembly has an angular velocity $\vec{\omega}_{r/m}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$ due to the BLDC motor's rotation $\Omega_i$ and the inner ring's servo rate $\dot{\lambda}_i$:
-\begin{subequations}\label{eq:angular-rot}
-\begin{equation}
-\vec{\omega}_{r/m}\triangleq R_x(\lambda)\vec{\Omega}_i+\frac{d\lambda}{dt}(\vec{\lambda}_i)~~~~\in\mathcal{F}^{M_i'}
+\begin{equation}\label{eq:angular-rot}
+\vec{\omega}_{r/m}\triangleq R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
-\vspace{-10pt}
-\begin{equation}
-=R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i
-\end{equation}
-\end{subequations}
-With the propeller's angular velocity vector; $\vec{\Omega}_i=\begin{bmatrix}0 & 0 & \Omega_i\end{bmatrix}^T\in\mathcal{F}^{M_i}$ and measured in $\text{rad.s}^{-1}$ not in \emph{revolutions per second}. The servo position is defined as a vector in the $\hat{X}_{M_i'}$ axis projected as $\vec{\lambda}_i\triangleq \lambda_i\cdot\hat{X}_{M_i'}=\begin{bmatrix}\lambda_i & 0 & 0\end{bmatrix}^T$ measured in $\text{rad}$. Next, the inner ring's angular velocity $\vec{\omega}_{n/m}$ relative to the middle ring $\mathcal{F}^{M_i'}$ is only as a result of $\dot{\lambda}_i$:
+With the propeller's angular velocity vector about the inner ring frame's $\hat{Z}_{M_i}$ axis $\vec{\Omega}_i\triangleq\begin{bmatrix}0 & 0 & \Omega_i\end{bmatrix}^T\in\mathcal{F}^{M_i}$ and measured in $[\text{rad.s}^{-1}]$ not in \emph{revolutions per second}. The servo position is defined as a vector in the $\hat{X}_{M_i'}$ axis projected as $\vec{\lambda}_i\triangleq \lambda_i\cdot\hat{X}_{M_i'}=\begin{bmatrix}\lambda_i & 0 & 0\end{bmatrix}^T$ measured in $[\text{rad}]$. Next, the inner ring's angular velocity $\vec{\omega}_{n/m}$ relative to the middle ring $\mathcal{F}^{M_i'}$ is only as a result of $\dot{\lambda}_i$:
 \begin{equation}\label{eq:angular-inner}
-\vec{\omega}_{n/m}\triangleq\frac{d\lambda}{dt}(\vec{\lambda}_i)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
+\vec{\omega}_{n/m}\triangleq\frac{d}{dt}(\vec{\lambda}_i)=\dot{\vec{\lambda}}_i~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
 \par
-The Lagrangian for the inner ring assembly's energy $\mathcal{L}_{n/m}$, relative to the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from angular velocities described in Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. The relative gravitation potential energy as a result of the rotated center of mass for the inner ring is neglected here as it is already included in Eq:\ref{eq:grav-torque} and is shown to simplify out subsequently in Eq:\ref{eq:3.109} when considering the entire system as a whole. The inner ring Lagrangian is:
+The Lagrangian for the inner ring's closed system energy $\mathcal{L}_{n/m}$, in the middle ring frame $\mathcal{F}^{M_i'}$, consists purely of rotational kinetic energy from angular velocities described in Eq:\ref{eq:angular-rot} and Eq:\ref{eq:angular-inner}. Stored gravitation potential energy as a result of the rotated center of mass for the inner ring is omitted here as it is already included in Eq:\ref{eq:grav-torque} and is shown to simplify out subsequently in Eq:\ref{eq:3.109} when considering the entire system as a whole. The inner ring's Lagrangian is:
 \begin{subequations}\label{eq:lagrange-inner}
 \begin{equation}\label{eq:lagrange-inner.a}
 \mathcal{L}_{n/m}=\frac{1}{2}\vec{\omega}_{r/m}\text{}^T\big(J_{r}'\big)\vec{\omega}_{r/m}+\frac{1}{2}\vec{\omega}_{n/m}\text{}^T\big(J_{ir}'\big)\vec{\omega}_{n/m}
 \end{equation}
-Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed to align with the middle ring frame $\mathcal{F}^{M_i'}$ using an $R_x(\lambda)$ rotation to align with the middle ring's frame $\mathcal{F}^{M_i'}$.
+Both inertias for the rotor and inner ring bodies, $J_r$ and $J_{ir}$ respectively, are transformed to align with the middle ring frame $\mathcal{F}^{M_i'}$ using an $R_x(\lambda_i)$ rotation to align with the middle ring's frame $\mathcal{F}^{M_i'}$.
 \begin{equation}
-J_r'= R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)~~\text{and}~~J_{ir}'= R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)
+J_r'= R_x(\lambda_i)\big(J_r\big)R_x^{-1}(\lambda_i)~~\text{and}~~J_{ir}'= R_x(\lambda_i)\big(J_{ir}\big)R_x^{-1}(\lambda+i)
 \end{equation}
 Then expanding the Lagrangian $\mathcal{L}_{n/m}$ in Eq:\ref{eq:lagrange-inner.a} with the above definitions for transformed inertias and relative angular velocities $\vec{\omega}_{r/m}$ and $\vec{\omega}_{n/m}$ yields:
 \begin{multline}\label{eq:lagrange-inner.b}
-\rightarrow\mathcal{L}_{n/m}=\frac{1}{2}\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\big(R_x(\lambda)\big(J_{r}\big)R_x^{-1}(\lambda)\big)\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)\\+\frac{1}{2}\dot{\vec{\lambda}}_i^{\hspace{2pt}T}\big(R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)\big)\dot{\vec{\lambda}}_i
+\therefore\mathcal{L}_{n/m}=\frac{1}{2}\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\big(R_x(\lambda_i)\big(J_{r}\big)R_x^{-1}(\lambda_i)\big)\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)\\+\frac{1}{2}\dot{\vec{\lambda}}_i^{\hspace{2pt}T}\big(R_x(\lambda_i)\big(J_{ir}\big)R_x^{-1}(\lambda_i)\big)\dot{\vec{\lambda}}_i
 \end{multline}
 \end{subequations}
-Again reiterating $J_{ir}$ is the inner ring's inertia independent from the rotor assembly $J_{r}$. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} using path coordinates $\vec{\mathbf{u}}(t)$ for the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$. The generalized (torque) forces $\vec{\mathbf{U}}$ acting on the middle ring are then:
+Reiterating, $J_{ir}$ is the inner ring's inertia independent from the rotor assembly $J_{r}$. Recalling the Euler-Lagrange formulation from Eq:\ref{eq:euler-lagrange} using path coordinates $\vec{\mathbf{u}}(t)$ for the inner ring frame $\mathcal{F}^{M_i}$ relative to the middle ring frame $\mathcal{F}^{M_i'}$. The generalized (torque) forces $\vec{\mathbf{U}}$ acting on the middle ring are then:
 \begin{equation}\label{eq:euler-lagrange-inner}
 \vec{\mathbf{U}}(\lambda_i)=\frac{d}{dt}\bigg(\frac{\partial \mathcal{L}_{n/m}}{\partial \dot{\vec{\mathbf{u}}}}\bigg)-\frac{\partial \mathcal{L}_{n/m}}{\partial \vec{\mathbf{u}}}~~~~\in\mathcal{F}^{M_i'}
 \end{equation}
-From \cite{rotationlinearize} the partial derivative of a rotation matrix $R_x(\lambda)$, and by extension the \emph{transformation matrix} $R_x(-\lambda)$, is linearized using a Taylor series expansion. It follows that for some small perturbation $\partial\theta$ away from the nominal angle $\bar{\theta}$, a generalized rotation matrix about an axis $\hat{u}$ by that angle $\theta$ becomes a first order approximation:
-\begin{equation}\label{eq:rotation-linear}
-R_u(\bar{\theta}+\partial\theta)\approx\underbrace{\big(1-[\Phi_u(\bar{\theta})\partial\theta]_\times\big)}_{\text{infinitesimal rot}}R_u(\bar{\theta})
+Considering first the partial derivative of the Lagrangian $\mathcal{L}_{n/m}$ but with respect to the generalized path coordinates $\partial\vec{\mathbf{u}}$. The latter part of the Euler-Lagrange formulation with respect to the inner ring in Eq:\ref{eq:euler-lagrange-inner} then expands from the differential product rule:
+\begin{multline}\label{eq:euler-lagrange-inner-partial}
+\frac{\partial\mathcal{L}_{n/m}}{\partial\vec{\mathbf{u}}}=\frac{1}{2}\Bigg[\bigg(\frac{\partial}{\partial\vec{\lambda}_i}R_x(\lambda_i)\vec{\Omega}_i\bigg)^T\big(J_r'\big)\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\bigg(\frac{\partial}{\partial\vec{\lambda}_i}J_r'\bigg)\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)
+\\
++\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)\big(J_r'\big)\bigg(\frac{\partial}{\partial\vec{\lambda}_i}R_x(\lambda_i)\bigg)\Bigg]+\frac{1}{2}\dot{\vec{\lambda}}_i^{\hspace{2pt}T}\bigg(\frac{\partial}{\partial\vec{\lambda}_i}J_{ir}'\bigg)\dot{\vec{\lambda}}_i
+\end{multline}
+Partial derivatives with respect to the chosen path variable, $\partial\vec{\mathbf{u}}=\partial\vec{\lambda}_i$ in Eq:\ref{eq:euler-lagrange-inner-partial}, only act on rotation matrices $R_x(\lambda_i)$. For the partial derivative of a generalized rotation matrix $R_{\hat{u}}(\theta)$, whose equation is given by Eq:\ref{eq:genrotationmatrix}, derived with respect to its angular operand $\partial\theta$:
+\begin{subequations}\label{eq:partial-rotation}
+\begin{equation}\label{eq:rotation-partial}
+\frac{\partial}{\partial\theta} R_{\hat{u}}(\theta)\triangleq [\hat{u}]_\times R_{\hat{u}}(\theta)
 \end{equation}
-Where $\Phi_u(\bar{\theta})$ is a generalized Euler matrix derivative from Eq:\ref{eq:angular-rates.f}. The consequence of Eq:\ref{eq:rotation-linear} is that transformed rotational inertias in Eq:\ref{eq:lagrange-inner}, both $R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)$ and $R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)$ can be approximated using their instantaneous transformation with no partial derivatives with respect to the relative path coordinate $\vec{\mathbf{u}}$.
-\begin{subequations}\label{eq:rot-linearization}
-\begin{equation}
-R_x(\lambda)\big(J_r\big)R_x^{-1}(\lambda)=J_r'\rightarrow \frac{\partial}{\partial\vec{\mathbf{u}}} J_r' = \frac{\partial}{\partial\vec{\lambda}_i}J_r'\approx 0
+Where $[\hat{u}]_\times$ in Eq:\ref{eq:rotation-partial} is the cross product matrix from Eq:\ref{eq:cross-product-matrix} of the unit vector $\hat{u}$ in the direction of the axis about which the rotation matrix applies its rotation. In the case of an $\hat{X}$ axis rotation matrix, as in Eq:\ref{eq:euler-lagrange-inner-partial}, the expanded partial derivative is:
+\begin{equation}\label{eq:rotation-xaxis-partial}
+\frac{\partial}{\partial\vec{\lambda}_i}R_x(\lambda_i)\triangleq [\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x(\lambda_i) = 
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & -1\\
+0 & 1 & 0
+\end{bmatrix}R_x(\lambda_i)
 \end{equation}
-\vspace{-8pt}
-\begin{equation}
-R_x(\lambda)\big(J_{ir}\big)R_x^{-1}(\lambda)=J_{ir}'\rightarrow \frac{\partial}{\partial\vec{\mathbf{u}}} J_{ir}' = \frac{\partial}{\partial\vec{\lambda}_i}J_{ir}'\approx 0
+And similarly, the same partial derivative of a rotation matrix transpose $R_x^T(\lambda_i)$ as follows:
+\begin{equation}\label{eq:rotation-xaxis-transpose-partial}
+\frac{\partial}{\partial\vec{\lambda}_i}R_x^T(\lambda_i)\triangleq -[\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x^T(\lambda_i)=\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 1\\
+0 & -1 & 0
+\end{bmatrix} R_x^T(\lambda_i)
 \end{equation}
 \end{subequations}
-Simplifications in Eq:\ref{eq:rot-linearization} are expanded upon and shown to be reasonable assumptions next in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests}. It follows that partial derivatives of the Lagrangian in Eq:\ref{eq:lagrange-inner} with respect to $\vec{\mathbf{u}}$ are negligible; or that $\partial\mathcal{L}_{n/m}/\partial\vec{\mathbf{u}}\approx 0$. Only the partial derivatives with respect to the path rate $\dot{\vec{\mathbf{u}}}$ remain:
+Applying Eq:\ref{eq:partial-rotation} to the Lagrangian's partial derivative in Eq:\ref{eq:euler-lagrange-inner-partial} reduces and simplifies:
+\begin{multline}\label{eq:euler-lagrange-inner-partial}
+\frac{\partial\mathcal{L}_{n/m}}{\partial\vec{\mathbf{u}}}=\frac{1}{2}\bigg[\Big([\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x(\lambda_i)\vec{\Omega}_i\Big)^T\big(R_x(\lambda_i)\big(J_{r}\big)R_x^{-1}(\lambda_i)\big)\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)
+\\
++\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)^T\big([\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x(\lambda_i)\big(J_r\big)R_x^{-1}(\lambda_i)-R_x(\lambda_i)\big(J_r\big)[\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x^{-1}(\lambda_i)\big)\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}\Big)
+\\
++\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}\Big)^T\big(R_x(\lambda_i)\big(J_r\big)R_x^{-1}(\lambda_i)\big)\Big([\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x(\lambda_i)\vec{\Omega}_i\Big)\bigg]
+\\
++\frac{1}{2}\dot{\vec{\lambda}}_i^{\hspace{2pt}T}\big([\hspace{2pt}\hat{i}\hspace{2pt}]_\times R_x(\lambda_i)\big(J_{ir}\big)R_x^{-1}(\lambda_i)-R_x(\lambda_i)\big(J_r\big)[\hspace{2pt}\hat{\i}\hspace{2pt}]_\times R_x(\lambda_i)\big)\dot{\vec{\lambda}}_i=0
+\end{multline}
+Fortunately the quadratic form of kinetic energies included in Eq:\ref{eq:lagrange-inner.b} resulted in symmetrical partial derivatives of rotation matrices in Eq:\ref{eq:euler-lagrange-inner-partial} simplifying out. So, after some mathematics it follows that partial derivatives of the Lagrangian in Eq:\ref{eq:lagrange-inner} with respect to $\vec{\mathbf{u}}$ are negligible; or that $\partial\mathcal{L}_{n/m}/\partial\vec{\mathbf{u}}= 0$. Only the partial derivatives with respect to the path rate $\dot{\vec{\mathbf{u}}}$ remain:
 \begin{equation}\label{eq:3.42b}
-\therefore\vec{\mathbf{U}}(\lambda_i)\approx\frac{d}{dt}\bigg(\frac{\partial \mathcal{L}_{n/m}}{\partial \dot{\vec{\mathbf{u}}}}\bigg)=\frac{d}{dt}\bigg(\big(J_{r}'\big)\Big(R_x(\lambda)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\big(J_{ir}'\big)\dot{\vec{\lambda}}_i\bigg)
+\vec{\mathbf{U}}(\lambda_i)=\frac{d}{dt}\bigg(\frac{\partial \mathcal{L}_{n/m}}{\partial \dot{\vec{\mathbf{u}}}}\bigg)=\frac{d}{dt}\bigg(\big(J_{r}'\big)\Big(R_x(\lambda_i)\vec{\Omega}_i+\dot{\vec{\lambda}}_i\Big)+\big(J_{ir}'\big)\dot{\vec{\lambda}}_i\bigg)
 \end{equation}
-Transformed inertial rates $\dot{J}_r'$ and $\dot{J}_{ir}'$ must first be defined before evaluating the reduced Lagrangian derivative in Eq:\ref{eq:3.42b}. Those inertial derivatives cannot be separated by time scale from the remainder of Eq:\ref{eq:3.42b} given that $\dot{\lambda}_i$ determines both inertial rates $\dot{J}_r'$ and $\dot{J}_{ir}'$ but is also a component of the kinetic energy in Eq:\ref{eq:lagrange-inner.b}.
+Transformed rates of change for inertias $\dot{J}_r'$ and $\dot{J}_{ir}'$ must first be defined before evaluating the simplified Lagrangian derivative in Eq:\ref{eq:3.42b}. Derivatives of those inertias cannot be separated by time scale from the remainder of Eq:\ref{eq:3.42b} given that $\dot{\lambda}_i$ determines both inertial rates $\dot{J}_r'$ and $\dot{J}_{ir}'$ but is also a component of the kinetic energy in Eq:\ref{eq:lagrange-inner.b}.
 \par
 Starting with the general case; for some transformed inertia $J$ to be aligned relative to a frame $\mathcal{F}^b$ where the inertia is originally defined with respect to a frame $\mathcal{F}^a$. If the two frames differ by some rotation angle $\theta$ about an Euler axis $\hat{u}$, the generalized rotation matrix from frame $\mathcal{F}^a$ to $\mathcal{F}^b$ is given by $R_{\hat{u}}(\theta)$ from Eq:\ref{eq:rotationoperator}. The transformed inertia is then calculated as:
 \begin{subequations}

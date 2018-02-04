@@ -53,7 +53,7 @@ M.~Bangura, M~Melega, R.~Naldi, and R.~Mahony.
 \newblock Aerodynamics of rotorblades for quadrotors.
 \newblock Report, Colaboration: Australian National University \& University of
   Bologna, 1 2016.
-\newblock ArXiv Published:\url{https://arxiv.org/abs/1601.00733}.
+\newblock Published:\url{https://arxiv.org/abs/1601.00733}.
 
 \bibitem{attitudedetermination}
 I.Y Bar-itzhack and Y.~Oshman.
@@ -61,12 +61,6 @@ I.Y Bar-itzhack and Y.~Oshman.
   estimation.
 \newblock In {\em Transactions on Aerospace and Electronic Systems}, volume~1,
   pages 128--137, N/A, 1 1985. IEEE.
-
-\bibitem{rotationlinearize}
-T.~Barfoot, J.~Forbes, and P.~Furgale.
-\newblock Pose estimation using linearized rotations and quaternion algebra.
-\newblock Report, University of Toronto, Institute for Aerospace Studies, 6
-  2011.
 
 \bibitem{intelligentbackstep}
 M.~Basri, A.~Husain, and K.~Danapalasingam.
@@ -155,15 +149,15 @@ S.~Bouabdallah and R.~Siegwart.
   volume N/A, pages 153--158, California, USA, 11 2007. AIAA.
 
 \bibitem{bramwell}
-A.R.S Bramwell, D.~Balmford, and G.~Done.
+A.~Bramwell, D.~Balmford, and G.~Done.
 \newblock {\em Bramwell's Helicopter Dynamics}, chapter 1-3, pages 1--144.
-\newblock Elsevier Ltd, 2 edition, 1999.
+\newblock Elsevier, 2 edition, 1999.
 
 \bibitem{UIUC}
 J.~Brandt, R.~Deters, G.~Ananda, and M.~Selig.
 \newblock Uiuc propeller data site.
 \newblock Univesity of Illinois Urbana-Champaign; Department of Aerospace
-  Engineering: \url{http://www.steadidrone.com/}, 2008.
+  Engineering: \url{http://m-selig.ae.illinois.edu/props/propDB.html}, 2008.
 \newblock [Accessed:2016-13-12].
 
 \bibitem{lowreynolds}
@@ -224,6 +218,12 @@ C.~Diao, B.~Xian, Q.~Yin, W.~Zeng, H.~Li, and Y.~Yang.
 \newblock In {\em Asian Control Conference Proceedings}, volume~8, pages
   223--228, Kaohsiung, Taiwan, 8 2011. ACC.
 
+\bibitem{rotationlinearize}
+T.~Drews, P.~Kry, J.~Forbes, and C.~Verbrugge.
+\newblock Sequential pose estimation using linearized rotation matrices.
+\newblock In {\em International Conference on Computer and Robot Vision},
+  volume N/A, pages 113--120, Saskatchewan. Canada, 5 2013. IEEE.
+
 \bibitem{inspire}
 DJI Drones.
 \newblock Dji inspire one.
@@ -247,7 +247,7 @@ H.~Du, G.~Fan, and G.~Yi.
 Honeywell Solid~State Electronics.
 \newblock Hmc5833 magnetometer datasheet.
 \newblock Advanced Information Data Sheet, 10 2010.
-\newblock Available From:\url{https://strawberry-linux.com/pub/HMC5883L.pdf}.
+\newblock \url{https://strawberry-linux.com/pub/HMC5883L.pdf}.
 
 \bibitem{atan2}
 Internation~Organization for Standardization/International
@@ -317,6 +317,11 @@ N.~Guenard, T.~Hamel, and V.~Moreau.
 \newblock Dynamic modelling and control strategy for an x4-flyer.
 \newblock In {\em International Conference on Control and Automation}, volume
   N/A, pages 141--146, Budapest, Hungary, 6 2005. IEEE.
+
+\bibitem{reynolds}
+L.~Hand and J.~Finch.
+\newblock {\em Analytical Mechanics}, chapter~7, pages 265--267.
+\newblock Cambridge University Press, 1 edition, 1998.
 
 \bibitem{planning}
 R.~He, S.~Prentice, and N.~Roy.
@@ -405,8 +410,8 @@ E.L Houghton and E.W Carpenter.
 InvenSense Inc.
 \newblock Mpu6050 6-axis gyroscope/accelerometer datasheet.
 \newblock Product Specification Data Sheet, 8 2013.
-\newblock Available
-  From:\url{https://www.cdiweb.com/datasheets/invensense/MPU-6050_DataSheet_V3%204.pdf}.
+\newblock
+  \url{https://www.cdiweb.com/datasheets/invensense/MPU-6050_DataSheet_V3%204.pdf}.
 
 \bibitem{ipopt}
 COIN-OR Initiative.
@@ -418,8 +423,8 @@ COIN-OR Initiative.
 Digi International.
 \newblock Xbee/xbee pro rf modules.
 \newblock Technical Data Sheet, 9 2009.
-\newblock Available
-  From:\url{https://www.sparkfun.com/datasheets/Wireless/Zigbee/XBee-Datasheet.pdf}.
+\newblock
+  \url{https://www.sparkfun.com/datasheets/Wireless/Zigbee/XBee-Datasheet.pdf}.
 
 \bibitem{lpvbackstepping}
 W.~Jia, Z.~Ming, Y.~Zhiwei, and L.~Bin.
@@ -451,9 +456,10 @@ S.M Joshi, A.G Keklar, and J.T Wen.
   October 1995.
 
 \bibitem{multibodydynamics}
-C.~Karen~Liu and S.~Jain.
+C.~Karen-Liu and S.~Jain.
 \newblock Tutorial on multibody dynamics.
-\newblock Georgia Institute of Technology: Online Course Content, N/A, 10 2012.
+\newblock Georgia Institute of Technology: Online Course Content, Georgia, USA,
+  10 2012.
 \newblock Available at:
   \url{http://www.cc.gatech.edu/~karenliu/Home_files/dynamics_1.pdf}.
 
@@ -490,11 +496,10 @@ Jack~B. Kuipers.
 \newblock Princeton University Press, 1 edition, 2002.
 
 \bibitem{inertiaspin}
-W.E. Lang and J.P Young.
-\newblock Effect of inertia properties on attitutde stability of npnrigid
+W.~Lang and J.~Young.
+\newblock Effect of inertia properties on attitutde stability of nonrigid
   spin-stabilized spacecraft.
-\newblock {\em National Aeronautics and Space Administaction}, pages 1--20,
-  1974.
+\newblock Report, National Aeronautics and Space Administaction, 4 1974.
 
 \bibitem{moorepenrose}
 A.~Laub.
@@ -616,16 +621,16 @@ A.~Nemati and M.~Kumar.
 \newblock In {\em American Control Conference}, volume N/A, pages 3077--3082,
   Oregon, USA, 5 2014. AACC.
 
+\bibitem{autonomousrobotseuler}
+K.~Nonami, F.~Kendoul, S.~Suzuki, W.~Wang, and D.~Nakazawa.
+\newblock {\em Autonomous Flying Robots: Unmanned Aerial Vehicles and Micro
+  Aerial Vehicles}, chapter~8, page 166.
+\newblock Springer Japan, 1 edition, 2010.
+
 \bibitem{autonomousrobotspitch}
 Kenzo Nonami, Farid Kendoul, Satoshi Suzuki, Wei Wang, and Daisuke Nakazawa.
 \newblock {\em Autonomous Flying Robots: Unmanned Aerial Vehicles and Micro
   Aerial Vehicles}, chapter~2, pages 44--48.
-\newblock Springer Japan, 1 edition, 2010.
-
-\bibitem{autonomousrobotseuler}
-Kenzo Nonami, Farid Kendoul, Satoshi Suzuki, Wei Wang, and Daisuke Nakazawa.
-\newblock {\em Autonomous Flying Robots: Unmanned Aerial Vehicles and Micro
-  Aerial Vehicles}, chapter~8, page 166.
 \newblock Springer Japan, 1 edition, 2010.
 
 \bibitem{civilquadcopter}
@@ -650,8 +655,8 @@ OrangeRx.
 \bibitem{forwarddescent}
 M.~Orsag and S.~Bogdan.
 \newblock Influence of forward and descent flight on quadrotor dynamics.
-\newblock Report, Department of Control and Computer Engineering, University of
-  Zagreb, Croatia, 2 2012.
+\newblock {\em Recent Advances in Aircraft Technology}, N/A(N/A):141--156, 2
+  2012.
 
 \bibitem{tiltrotorUAV}
 C.~Papachristos, K.~Alexis, and A.~Tzes.
@@ -708,20 +713,6 @@ A.~Pretorius and E.~Boje.
   system.
 \newblock In {\em International Federation of Automatic Control}, volume N/A,
   pages 1--6, Telouse, France, 8 2017. IEEE.
-
-\bibitem{rotationrigidbody}
-Dimitry Prof.~Garanin.
-\newblock Rotational motion of rigid bodies.
-\newblock Analytical Dynamics Course Notes, 11 2008.
-\newblock Content for City University of New York.
-
-\bibitem{fluidmomentum}
-G~Rajagopalan.
-\newblock Froudes’ momentum theory: (actuator disk theory).
-\newblock Technical report, Iowa State University, Department of Engineering, 7
-  2002.
-\newblock Course Notes cited from:
-  \url{http://www.public.iastate.edu/~aero442/unit2.pdf}.
 
 \bibitem{noteonlyapunov}
 F.~Ramponi and J.~Lygeros.
@@ -790,7 +781,7 @@ J.~Seddon.
 K.~Shoemake.
 \newblock Quaternions.
 \newblock Siggraph course lecture notes, Department of Computer and Information
-  Science; University of Pennsylvania, N/A 1987.
+  Science; University of Pennsylvania, "N/A" 1987.
 
 \bibitem{euleranglesingularity}
 P.~Singla, D.~Mortari, and J.~Junkins.
@@ -803,12 +794,17 @@ G.~Slabaugh.
 \newblock Computing euler angles from a rotation matrix.
 \newblock Lecture notes, City University, London, 5 1999.
 
+\bibitem{fluidmomentum}
+J.~Sorensen.
+\newblock {\em General Momentum Thoeory for Horizontal Axis Wind Turbines},
+  chapter~4, pages 265--267.
+\newblock Cambridge University Press, 1 edition, 1998.
+
 \bibitem{ms5611}
 Measurement Speacialties.
 \newblock Ms5611 barometric pressure sensor.
 \newblock Technical Data Sheet, 10 2012.
-\newblock Available
-  From:\url{http://www.amsys.info/sheets/amsys.en.ms5611_01ba03.pdf}.
+\newblock \url{http://www.amsys.info/sheets/amsys.en.ms5611_01ba03.pdf}.
 
 \bibitem{st-link}
 STMicroElectronics.
@@ -816,17 +812,10 @@ STMicroElectronics.
 
 \bibitem{stm32f303}
 STMicroElectronics.
-\newblock Rm0316 reference manual.
+\newblock Stm32f303 reference manual.
 \newblock Online Micro-Controller Reference Manual, 3 2016.
-\newblock Available
-  From:\url{http://www.st.com/content/st_com/en/products/microcontrollers/stm32-32-bit-arm-cortex-mcus/stm32f3-series/stm32f303.html?querycriteria=productId=LN1531}.
-
-\bibitem{reynolds}
-Prof~S. Tavoularis.
-\newblock Reynolds transportation theorem.
-\newblock Course Notes on MCG3350 - Fluid Mechanics 1, 2008.
-\newblock Fluid Mechanics notes, fall 2008,
-  \url{http://web.mit.edu/1.63/www/Lec-notes/chap1_basics/1-3trans-thm.pdf}.
+\newblock
+  \url{http://www.st.com/content/st_com/en/products/microcontrollers/stm32-32-bit-arm-cortex-mcus/stm32f3-series/stm32f303.html?querycriteria=productId=LN1531}.
 
 \bibitem{attitudestabilization}
 A.~Tayebi and S.~McGilvray.
@@ -834,15 +823,20 @@ A.~Tayebi and S.~McGilvray.
 \newblock {\em Transactions on Control Systems Technology}, 14(3):562--571, 5
   2006.
 
+\bibitem{propellers}
+T.~Theodorsen.
+\newblock Theory of propellers.
+\newblock McGraw-Hill, N/A 1948.
+
 \bibitem{configurationpropulsion}
 B.~Theys, G.~Dimitriadis, P.~Hendrick, and J.~De~Schutter.
 \newblock Influence of propeller configuration on propulsion system efficiency
   of multi-rotor unmanned aerial vehicles.
-\newblock In {\em International Conference on Unmanned Aircraft Systems}, pages
-  195--201, Arlington, Virginia, 6 2016. IEEE, IEEE 2016.
+\newblock In {\em International Conference on Unmanned Aircraft Systems},
+  volume N/A, pages 195--201, Virginia, USA, 6 2016. IEEE.
 
 \bibitem{classicaldynamics}
-Stephen~T. Thornton and Jerry~B. Marion.
+S.~Thornton and J.~Marion.
 \newblock {\em Classical Dynamics of Particles and Systems}, chapter~7, pages
   228--289.
 \newblock Thompson Brooks/Cole, 5 edition, 2003.
@@ -899,12 +893,11 @@ Tao Wang, Tao Zhao, Du~Hao, and Mingxi Wang.
 \bibitem{inertiafree}
 A~Weiss, I.~Kolmanovsky, D.S Bernstein, and A.~Sanyal.
 \newblock Inertia-free spacecraft attitude control using reaction wheels.
-\newblock In {\em Journal of Guidance, Control and Dynamics}, volume~36, pages
-  1425--1439. AIAA, 8 2013.
+\newblock {\em Guidance, Control and Dynamics}, 36(14):1425--1439, 8 2013.
 
 \bibitem{physicallybased}
 A.~Witkin and D.~Baraff.
-\newblock Physically based modeling: Principles and practice.
+\newblock Physically based modelling: Principles and practice.
 \newblock CMU: Online Siggraph Course notes, N/A, 9 1997.
 \newblock Course Notes cited from
   \url{http://www.cs.cmu.edu/~baraff/sigcourse/}.
