@@ -1878,13 +1878,39 @@ The unsymmetrical inertia of a motor module, even at rest and due to the unbalan
 \emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Ch:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
 \subsubsection{Body Response Simulation Tests}
 \label{subsubsec:dynamicsimulation}
-Tests goes here
+To corroborate and test the proposed dynamic model for the vehicle's movement (Eq:\ref{eq:3.109}) a series of experimental simulations are performed on that model and the subsequent results analyzed. The simulation environment used here is a simplified version of the one presented later in Sec:\ref{sec:simulation.block}. In some cases the plant inputs are reduced to net forces and torques; in other cases explicit propeller speeds and servo rotational positions are commanded.
+\par
+Unfortunately, short of performing physical flight tests, the model's response can only be regarded as a "best guess", such tests remain open to further research.
+\par
+Based on mass properties of the quadrotor design presented in Sec:\ref{sec:proto.design}, force and torque inputs for a stable hover to be actuated by the control plant are:
+\begin{equation}
+\vec{\nu}_h=\begin{bmatrix}
+\vec{F}_h\\
+\vec{\tau}_h
+\end{bmatrix}=m_b\begin{bmatrix}
+\vec{G}_b\\
+\vec{C}_b(u)\times \vec{G}_b
+\end{bmatrix}=\begin{bmatrix}
+\begin{bmatrix}
+0 & 0 & 15.45
+\end{bmatrix}^T
+\\
+\begin{bmatrix}
+0.25 & 0.50 & -18.94
+\end{bmatrix}^T
+\end{bmatrix}
+~~~~\begin{bmatrix}
+[\text{N}]\\
+[\text{N.mm}]
+\end{bmatrix}
+\end{equation}
+Running a simulation to test hover conditions won't provide any useful insight but it does, however, give a reasonable starting point.
 \newpage
 %====================================================
 \section{Consolidated Model}
 \label{sec:dynamics.model}
 %====================================================
-Reiterating the different responses detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ using quaternions. Also introducing the nonlinear inertial and gyroscopic responses to induced perturbations, $\vec{\tau}_\lambda(\lambda_i)$ and $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with nonlinear inertial matrix terms $J_b(u)$ from Section:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}(u)$ and $\vec{\tau}_{\mu}(u)$ are controllable inputs to be designed by a higher level setpoint tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation schemes are explored thereafter in Ch:\ref{ch:allocation}. The vehicle's inertial position and \emph{body frame} velocity differential equations are:
+Reiterating the different responses detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ using quaternions. Also introducing the nonlinear inertial and gyroscopic responses to induced perturbations, $\vec{\tau}_\lambda(\lambda_i)$ and $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with nonlinear inertial matrix terms $J_b(u)$ from Sec:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}(u)$ and $\vec{\tau}_{\mu}(u)$ are controllable inputs to be designed by a higher level setpoint tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation schemes are explored thereafter in Ch:\ref{ch:allocation}. The vehicle's inertial position and \emph{body frame} velocity differential equations are:
 \begin{subequations}\label{eq:quaternion-states}
 \begin{equation}\label{eq:quaternion-states-velocity}
 \dot{\vec{\mathcal{E}}}_I=Q_b^*\otimes\vec{v}_b\otimes Q_b~~~~\in\mathcal{F}^I
@@ -1930,13 +1956,13 @@ Scalar thrust $T(\Omega_i)$ is a function of the propeller's rotational velocity
 \vec{H}(\Omega_i)= C_P(J)\rho\Omega_i^3D^5 \big(1/R\Omega_i\big)\cdot\hat{Z}_{M_i}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \end{subequations}
-Reiterating that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $\text{RPS}$. The nonlinear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as terms for  feedback compensation, calculated from instantaneous actuator states:
+Recalling that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The nonlinear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as terms for  feedback compensation, calculated from instantaneous actuator states:
 \begin{equation}\label{eq:actuator-torque}
 \vec{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[\vec{\tau}_\alpha\hspace{-1pt}'(\lambda_i,\alpha_i)+\vec{\tau}_\lambda\hspace{-2pt}''(\lambda_i)+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]~~~~\in\mathcal{F}^b
 \end{equation}
 With $\vec{\tau}_\alpha\hspace{-2pt}'(\lambda_i,\alpha_i)$ and $\vec{\tau}_\lambda\hspace{-2pt}''(\lambda_i)$ both transformed to the body frame $\mathcal{F}^b$. Then including variable gravitational torque as a result of an eccentric center of gravity from Eq:\ref{eq:mass-center.b}; also dependent on the vehicles configuration:
 \begin{equation}\label{eq:consolidated-grav-torque}
-\vec{\tau}_g=\Delta C.G \times\vec{G}_b=\big(\vec{\mathbf{O}}_b-C.M_\text{b}(u)\big)\times\vec{G}_b~~~~\in\mathcal{F}^b
+\vec{\tau}_g=\Delta \vec{C}_G \times\vec{G}_b=\big(\vec{\mathbf{O}}_b-\vec{C}_\text{b}(u)\big)\times\vec{G}_b~~~~\in\mathcal{F}^b
 \end{equation}
 And finally the vehicles net rotational inertia, aligned and centered with the body frame. That inertia is calculated as a function of all actuator positions; taken from Eq:\ref{eq:body-net-2} and given as:
 \begin{equation}
