@@ -1782,7 +1782,7 @@ The plot illustrated in Fig:\ref{fig:tau-lambda} shows tests for the inner ring 
 \begin{subfigure}{0.495\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-lambda-r}
-\caption{$R^2_{\lambda}$ errors for $\vec{\tau}_\lambda\hspace{-1pt}'$}
+\caption{$\sqrt{R^2_{\lambda}}$ errors for $\vec{\tau}_\lambda\hspace{-1pt}'$}
 \label{fig:tau-lambda-r}
 \end{subfigure}
 \vspace{-4pt}
@@ -1793,37 +1793,41 @@ The plot illustrated in Fig:\ref{fig:tau-lambda} shows tests for the inner ring 
 \par
 The error between the physically measured $\vec{\tau}_\lambda\hspace{-1pt}'(\lambda_i)$ and modelled $\hat{\tau}_\lambda\hspace{-1pt}'(\lambda_i)$ torques are shown in Fig:\ref{fig:tau-lambda-r}. Peak induced torque as a result of a commanded rotation $\Delta\lambda_i$ increases proportionally with that step size. The co-axial support bearings on the test rig, despite being de-greased and cleaned ultrasonically, still dampened the faster elements of the transient torque response; moreover the overall small magnitude of measured signals meant samples were susceptible to vibration noise transformed through the mechanical structure. There is, however, a clear correlation between the simulated and physically measured signal. Within a margin of error, and considering the tolerances of the test rig, such step changes corroborate the proposed inner ring model in Eq:\ref{eq:model-inner}.
 \par
-Verification of the dynamics for the middle ring response requires more in-depth discussion. Unlike the inner ring's response, described in Eq:\ref{eq:model-inner}; the middle ring's torque $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-middle} is \emph{\textbf{not equivalent}} to the generalized torque response acting on the middle ring system $\vec{\mathbf{V}}(\lambda_i,\alpha_i)$, Eq:\ref{eq:3.86g}. As mentioned previously $\vec{\mathbf{V}}(\lambda_i,\alpha_i)$ includes a transformed component of the inner ring's generalized response $R_y(\alpha)\vec{\mathbf{U}}(\lambda_i)$ from Eq:\ref{eq:generalized-inner}, whilst the \emph{servo response torque} $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ \emph{\textbf{does not}}\ldots 
+Verification of the dynamics for the middle ring response requires more in-depth discussion. Unlike the inner ring's response, described in Eq:\ref{eq:model-inner}; the middle ring's torque $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-middle} is \emph{\textbf{not equivalent}} to the generalized torque response acting on the middle ring system $\vec{\mathbf{V}}(\lambda_i,\alpha_i)$, Eq:\ref{eq:3.86g}. As mentioned previously $\vec{\mathbf{V}}(\lambda_i,\alpha_i)$ includes a transformed component of the inner ring's generalized response $R_y(\alpha_i)\vec{\mathbf{U}}(\lambda_i)$ from Eq:\ref{eq:generalized-inner}, whilst the \emph{servo response torque} $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ \emph{\textbf{does not}}. 
 \par
-To differentiate the servo's response torque $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ and the physical (generalized) torque being considered and tested here, $\vec{\Gamma}_\alpha(\lambda_i,\alpha_i)$ is used to refer to the induced torque response from the middle ring assembly's net rotation. That torque is the measured component of the middle ring response and equivalent to the generalized torque response. Reiterating the equation for the expected generalized torque $\vec{\mathbf{V}}(\lambda_i,\alpha_i)$ from Eq:\ref{eq:3.86g}, now with an included gravitational and aerodynamic torque components and induced torques as a result of the inner ring's rotation:
+To differentiate the servo's response torque $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ and the physical (generalized) torque being considered and tested here, $\vec{\Gamma}_\alpha(\lambda_i,\alpha_i)$ is used to refer to the induced torque response from the middle ring assembly's net rotation. 
+\par
+That torque is the measured component of the middle ring response and equivalent to the generalized torque response. Reiterating the equation for the expected generalized torque $\vec{\mathbf{V}}(\lambda_i,\alpha_i)$ from Eq:\ref{eq:3.86g}, now with included gravitational and aerodynamic torque components and induced torques as a result of the inner ring's rotation:
 \begin{multline} \label{eq:model-middle}
-\vec{\Gamma}_\alpha(\lambda_i,\alpha_i)=R_y(\alpha)\vec{\mathbf{U}}(\lambda_i)+\big(\dot{J}_p'\big)\dot{\vec{\alpha}}_i+\Big(\dot{J}_n''-R_y(\alpha)\big(\dot{J}_n'\big)R_y^{-1}(\alpha)\Big)\dot{\vec{\lambda}}_i'+\Big(\dot{J}_r''-R_y(\alpha)\big(\dot{J}_r'\big)R_y^{-1}(\alpha)\Big)\vec{\Omega}_i''
+\vec{\Gamma}_\alpha(\lambda_i,\alpha_i)=R_y(\alpha_i)\vec{\mathbf{U}}(\lambda_i)+\big(\dot{J}_p'\big)\dot{\vec{\alpha}}_i+\Big(\dot{J}_n''-R_y(\alpha_i)\big(\dot{J}_n'\big)R_y^{-1}(\alpha_i)\Big)\dot{\vec{\lambda}}_i'+\Big(\dot{J}_r''-R_y(\alpha_i)\big(\dot{J}_r'\big)R_y^{-1}(\alpha_i)\Big)\vec{\Omega}_i''
 \\
-+\big(J_\text{p}'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \Big(\big(J_p'\big)\dot{\vec{\alpha}}_i+\big(J_n''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''\Big)+R_y(\alpha)R_x(\lambda)\big(Q(\Omega_i)\cdot\hat{Z}_{M_i}\big)+m_\text{p}C.M''_{\text{p}}(\alpha_i,\lambda_i)\times\vec{G}_{M_i''}
++\big(J_\text{p}'\big)\ddot{\vec{\alpha}}_i+\dot{\vec{\alpha}}_i\times \Big(\big(J_p'\big)\dot{\vec{\alpha}}_i+\big(J_n''\big)\dot{\vec{\lambda}}_i\hspace{-2pt}'+\big(J_r''\big)\vec{\Omega}_i\hspace{-2pt}''\Big)+R_y(\alpha_i)R_x(\lambda_i)\big(H(\Omega_i)\cdot\hat{Z}_{M_i}\big)+m_\text{p}\vec{C}_{\text{p}}\text{}\hspace{-2pt}''(\alpha_i,\lambda_i)\times\vec{G}_{M_i''}
 \\
 =\vec{\mathbf{V}}(\lambda_i,\alpha_i)~~~~\in\mathcal{F}^{M_i''}
 \end{multline}
-Where the term $C.M_{\text{p}}''(\alpha_i,\lambda_i)$ is the net rotated center of gravity for the entire motor module as a function of both servo positions:
+Where the term $\vec{C}_{\text{p}}\text{}\hspace{-2pt}''(\alpha_i,\lambda_i)$ is the net rotated center of gravity for the entire motor module as a function of both servo positions:
 \begin{equation}
-C.M_\text{p}''(\alpha_i,\lambda_i)=\frac{m_\text{n}R_y(\alpha)R_x(\lambda)C.M_\text{n}+m_\text{m}R_y(\alpha)C.M_\text{m}}{m_\text{m}+m_\text{n}}
+\vec{C}_\text{p}\text{}\hspace{-2pt}''(\alpha_i,\lambda_i)=\frac{m_\text{n}R_y(\alpha_i)R_x(\lambda_i)\vec{C}_\text{n}+m_\text{m}R_y(\alpha_i)\vec{C}_\text{m}}{m_\text{m}+m_\text{n}}
 \end{equation}
-With $m_\text{m}$ and $m_\text{n}$ being inner and middle ring structure's respective masses, $m_\text{m}=98~\text{g}$ and $m_\text{n}=92~\text{g}$ from Sec:\ref{sec:proto.inertia}.
+With $m_\text{m}$ and $m_\text{n}$ being inner and middle ring structure's respective masses, $m_\text{m}=98~[\text{g}]$ and $m_\text{n}=92~[\text{g}]$ from Sec:\ref{sec:proto.inertia}.
 Fig:\ref{fig:torque-middle} shows the test rig used to measure torque responses for the motor module assembly which containing both inner and middle ring assemblies. The inner ring servo $\lambda_i$ was tested both at a constant $\lambda_i=0$ and at intervals for steps of equivalent in inner and middle ring servo angles.
 \par
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.94\textwidth]{figs/torque-middle}
+\includegraphics[width=\textwidth]{figs/torque-middle}
 \vspace{-10pt}
 \caption{Middle ring torque test rig}
 \label{fig:torque-middle}
-\vspace{-16pt}
+\vspace{-6pt}
 \end{figure}
 \par
 The middle ring servo $\alpha_i$ applies an accelerating torque $\vec{\Gamma}_\alpha(\lambda_i,\alpha_i)$ to the assembly; the test rig isolates only the $\hat{Y}_{M_i''}$ component of that torque. Because the strain gauge encounters only that axial deflection, it then deflects proportionally to the physical torque :
 \begin{equation}
 \vec{\Gamma}_\alpha\text{}\hspace{-2pt}'(\lambda_i,\alpha_i)=\vec{\Gamma}_\alpha(\lambda_i\alpha_i)\cdot\hat{Y}_{M_i''}~~~~\in\mathcal{F}^{M_i''}
 \end{equation}
-Furthermore, the inner servo's torque contribution to Eq:\ref{eq:model-middle}, or $R_y(\alpha)\vec{\mathbf{U}}(\lambda_i)$, is small for any case where the propeller's rotational speed and the inner ring's servo speed are both roughly constant; $\dot{\Omega}_i\approx 0$ and $\dot{\lambda}_i\approx 0$. Fig:\ref{fig:tau-alpha} plots results for measured torque $\vec{\Gamma}_\alpha\text{}\hspace{-2pt}'(\lambda_i,\alpha_i)$ and expected torque estimate $\hat{\Gamma}_\alpha\text{}\hspace{-2pt}'(\lambda_i,\alpha_i)$ for a constant inner ring servo position $\lambda_i=0$. Again the propeller's rotational speed was kept constant at $\Omega_i=+6000~\text{RPM}$. The error deviation between the two measured and estimated torques is shown in Fig:\ref{fig:tau-alpha-r}, with larger fast torque spikes leading to damped errors of greater magnitude. Steps performed in Fig:\ref{fig:middle-response-test} at intervals $\Delta\alpha_i=\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$ simply verify the middle ring's inertial contribution to the model. With no inner ring servo velocity or $\dot\lambda\not=0$, the complex dynamics are not completely present. It is however worth noting the dis-symmetry in the shape of the torque's positive and negative responses resulting from unsymmetrical inertias in $J_p$ from Eq:\ref{eq:inertia.middle.b}\ldots
+Furthermore, the inner servo's torque contribution to Eq:\ref{eq:model-middle}, or $R_y(\alpha_i)\vec{\mathbf{U}}(\lambda_i)$, is small for any case where the propeller's rotational speed and the inner ring's servo speed are both roughly constant; $\dot{\Omega}_i\approx 0$ and $\dot{\lambda}_i\approx 0$. Fig:\ref{fig:tau-alpha} plots results for measured torque $\vec{\Gamma}_\alpha\text{}\hspace{-2pt}'(\lambda_i,\alpha_i)$ and expected torque estimate $\hat{\Gamma}_\alpha\text{}\hspace{-2pt}'(\lambda_i,\alpha_i)$ for a constant inner ring servo position $\lambda_i=0$. Again the propeller's rotational speed was kept constant at $\Omega_i=+6000~\text{RPM}$. 
+\par
+The error deviation between the two measured and estimated torques is shown in Fig:\ref{fig:tau-alpha-r}, with larger fast torque spikes leading to damped errors of greater magnitude. Steps performed in Fig:\ref{fig:middle-response-test} at intervals $\Delta\alpha_i=\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$ simply verify the middle ring's inertial contribution to the model. With no inner ring servo velocity; $\dot\lambda\not=0$, the complex dynamics are not completely present. It is however worth noting the dis-symmetry in the shape of the torque's positive and negative responses resulting from unsymmetrical inertias in $J_p$ from Eq:\ref{eq:inertia.middle.b}.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -1835,7 +1839,7 @@ Furthermore, the inner servo's torque contribution to Eq:\ref{eq:model-middle}, 
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-alpha-r}
-\caption{Errors for $R^2_{\alpha}$}
+\caption{Errors for $\sqrt{R^2_{\alpha}}$}
 \label{fig:tau-alpha-r}
 \end{subfigure}
 \vspace{-8pt}
@@ -1844,9 +1848,9 @@ Furthermore, the inner servo's torque contribution to Eq:\ref{eq:model-middle}, 
 \vspace{-16pt}
 \end{figure}
 \par
-The larger inertia being rotated by the $\alpha_i$ middle ring servo contributes towards a greater initial torque spike as a result of the angular acceleration from $\ddot{\alpha_i}$, in the order of $\times 10^{-1}~\text{Nm}$. The damping effect applied by the support bearing is more pronounced in the middle ring case, producing errors with sizable magnitudes in Fig:\ref{fig:tau-alpha-r}. Without introducing a step for the inner ring $\lambda_i$, the response in Fig:\ref{fig:middle-response-test} is mostly a scaled version of the inner ring response in Fig:\ref{fig:inner-ring-response-test}\ldots
+The larger inertia being rotated by the $\alpha_i$ middle ring servo contributes towards a greater initial torque spike as a result of the angular acceleration from $\ddot{\alpha_i}$, in the order of $\times 10^{-1}~\text{Nm}$. The damping effect applied by the support bearing is more pronounced in the middle ring case, producing errors with greater magnitudes in Fig:\ref{fig:tau-alpha-r}. Without introducing a step for the inner ring $\lambda_i$, the response in Fig:\ref{fig:middle-response-test} is mostly a scaled version of the inner ring response in Fig:\ref{fig:inner-ring-response-test}.
 \par
-Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped together, Fig:\ref{fig:tau-alpha-lam-response-test} shows the manifestation of the complex dynamics involved in a single motor module's combined actuator action. Each interval step is performed with equal servo step sizes; $\Delta\lambda_i=\Delta\alpha_i$ for $\lambda_i,\alpha_i\in\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$. Still using a constant propeller speed $\Omega_i=6000~\text{rpm}$, the introduction of gyroscopic torque begins to affect the step response shown in Fig:\ref{fig:tau-alpha-lam}. As $\lambda_i$ and $\alpha_i$ approach $\pi/2$ rad, the propeller's rotational aerodynamic torque begins to make a contribution towards Eq:\ref{eq:model-middle} as its rotational axis aligns with the measurement axis $\hat{Y}_{M_i''}$.
+Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped together, Fig:\ref{fig:tau-alpha-lam-response-test} shows the manifestation of the complex dynamics involved in a single motor module's combined actuator action. Each interval step is performed with equal servo step sizes; $\Delta\lambda_i=\Delta\alpha_i$ for $\lambda_i,\alpha_i\in\pm[1/12\pi,~2/12\pi~\ldots~5/12\pi,~6/12\pi]$. Still using a constant propeller speed $\Omega_i=+6000~\text{rpm}$, the introduction of gyroscopic torque begins to affect the step response shown in Fig:\ref{fig:tau-alpha-lam}. As $\lambda_i$ and $\alpha_i$ approach $\pi/2$ rad, the propeller's rotational aerodynamic torque begins to make a contribution towards Eq:\ref{eq:model-middle} as its rotational axis aligns with the measurement axis $\hat{Y}_{M_i''}$.
 \begin{figure}[htbp]
 \centering
 \begin{subfigure}{0.49\textwidth}
@@ -1858,7 +1862,7 @@ Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped togeth
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{graphs/tau-alph-lam-r}
-\caption{Errors for $R^2_{\alpha}$}
+\caption{Errors for $\sqrt{R^2_{\alpha}}$}
 \label{fig:tau-alpha-lam-r}
 \end{subfigure}
 \vspace{-8pt}
@@ -1867,9 +1871,9 @@ Finally, testing combined rotations of $\lambda_i$ and $\alpha_i$ stepped togeth
 \vspace{-16pt}
 \end{figure}
 \par
-The unsymmetrical inertia of a static motor module, due to the unbalanced servo weight in Fig:\ref{fig:inertia-middle}, skews the response torque; shown in previous tests in Fig:\ref{fig:tau-alpha}. Combining both servos to be actuated at the same time further skews the torque response curve. The induced gyroscopic product of both rotations both constructively and destructively affects Eq:\ref{eq:model-middle}. Only positive $\Delta\alpha_i=\Delta\lambda_i$ tests were performed, conversely $\Delta\alpha_i=-\Delta\lambda_i$ would have a reciprocal effect. Again the fast initial torque spike is damped by the test set-up bearings; resulting in an initial error plotted in Fig:\ref{fig:tau-alpha-lam-r}, which subsequently reduces very quickly. Because the inner ring has a center of gravity, $C.M_\text{n}$ in Eq:\ref{eq:body-net-inner.b}, very close to the module's center of rotation, steady state torque offsets from gravitational torque contributions to $\vec{\Gamma}_\alpha\hspace{-2pt}'(\lambda_i,\alpha_i)$ are almost independent of the inner ring $\lambda_i$ servo position. 
+The unsymmetrical inertia of a motor module, even at rest and due to the unbalanced servo weight in Fig:\ref{fig:inertia-middle}, skews the response torque; shown in previous tests in Fig:\ref{fig:tau-alpha}. Combining both servos to be actuated at the same time further skews the torque response curve. The induced gyroscopic product of both rotations constructively and destructively affects Eq:\ref{eq:model-middle} depending on the rotational sense. Only positive $\Delta\alpha_i=\Delta\lambda_i$ tests were performed, conversely $\Delta\alpha_i=-\Delta\lambda_i$ would have a reciprocal effect. Again the fast initial torque spike is damped by the test set-up bearings; resulting in an initial error plotted in Fig:\ref{fig:tau-alpha-lam-r}, which subsequently reduces very quickly. Because the inner ring has a center of gravity, $\vec{C}_\text{n}$ in Eq:\ref{eq:body-net-inner.b}, very close to the module's center of rotation, steady state torque offsets from gravitational torque contributions to $\vec{\Gamma}_\alpha\hspace{-2pt}'(\lambda_i,\alpha_i)$ are almost independent of the inner ring $\lambda_i$ servo position. 
 \par
-\emph{\color{Gray} Each of the above step tests in Fig:\ref{fig:inner-ring-response-test},Fig:\ref{fig:middle-response-test} and Fig:\ref{fig:tau-alpha-lam-response-test} were each performed three times and the resultant measured torques were averaged over those three tests. What plotted are the ten sample moving averages of those combined data sets from the three independent tests for each angular step.}
+\emph{\color{Gray} Each of the above step tests in Fig:\ref{fig:inner-ring-response-test},Fig:\ref{fig:middle-response-test} and Fig:\ref{fig:tau-alpha-lam-response-test} were each performed three times and the resultant measured torques were averaged over those three tests. What is plotted are the ten sample moving averages of those combined data sets from the three independent tests for each angular step.}
 \par
 \emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Ch:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
 \subsubsection{Body Response Simulation Tests}
