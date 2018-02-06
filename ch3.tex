@@ -1880,10 +1880,8 @@ The unsymmetrical inertia of a motor module, even at rest and due to the unbalan
 \label{subsubsec:dynamicsimulation}
 To corroborate and test the proposed dynamic model for the vehicle's movement (Eq:\ref{eq:3.109}) a series of experimental simulations are performed on that model and the subsequent results analyzed. The simulation environment used here is a simplified version of the one presented later in Sec:\ref{sec:simulation.block}. In some cases the plant inputs are reduced to net forces and torques; in other cases explicit propeller speeds and servo rotational positions are commanded.
 \par
-Unfortunately, short of performing physical flight tests, the model's response can only be regarded as a "best guess", such tests remain open to further research.
-\par
 Based on mass properties of the quadrotor design presented in Sec:\ref{sec:proto.design}, force and torque inputs for a stable hover to be actuated by the control plant are:
-\begin{equation}
+\begin{equation}\label{eq:basic-hover}
 \vec{\nu}_h=\begin{bmatrix}
 \vec{F}_h\\
 \vec{\tau}_h
@@ -1896,7 +1894,7 @@ Based on mass properties of the quadrotor design presented in Sec:\ref{sec:proto
 \end{bmatrix}^T
 \\
 \begin{bmatrix}
-0.25 & 0.50 & -18.94
+0.25 & 0.50 & -0.08
 \end{bmatrix}^T
 \end{bmatrix}
 ~~~~\begin{bmatrix}
@@ -1904,7 +1902,13 @@ Based on mass properties of the quadrotor design presented in Sec:\ref{sec:proto
 [\text{N.mm}]
 \end{bmatrix}
 \end{equation}
-Running a simulation to test hover conditions won't provide any useful insight but it does, however, give a reasonable starting point.
+Note that Eq:\ref{eq:basic-hover} does not include terms associated with rotational aerodynamic torque as such terms require feedback compensation. Running a simulation to test hover conditions won't provide any useful insight but it does, however, give a reasonable starting point to which input offsets can be applied. Introducing an additional $1~[\text{N}]$ of lift should apply approximately $0.635~[\text{m.s}^{-2}]$ acceleration to the body. Fig:\ref{fig:upward_accl} shows the model's response to the extra upward lift, starting from a height of $5~[\text{m}]$ the simulation reaches around $36.5~[\text{m}]$ after $10~[\text{s}]$.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.75\textwidth]{graphs/Upward_Accl}
+\caption{Upward lift test}
+\label{fig:upward_accl}
+\end{figure}
 \newpage
 %====================================================
 \section{Consolidated Model}
