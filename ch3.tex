@@ -1878,7 +1878,7 @@ The unsymmetrical inertia of a motor module, even at rest and due to the unbalan
 \emph{\color{Gray}The above responses are pertinent to simulation and plant dependent feedback compensation. The simulation environment is structured such that the torques are produced as responses from Newtonian movement at every step interval. In due course it would be more efficient (and less stiff) for the simulation to exploit an implicit Euler\cite{physicallybased,multibodydynamics} coordinate system in lieu of the cartesian response equations developed above. However this was not implemented in Ch:\ref{ch:simulation} and remains open to further testing and simulation\ldots}
 \subsubsection{Body Response Simulation Tests}
 \label{subsubsec:dynamicsimulation}
-To corroborate and test the presented dynamic model for the vehicle's movement (Eq:\ref{eq:3.109}) a series of experimental simulations are performed using the proposed  differential equations of motion and the subsequent results analyzed. The simulation environment used here is a simplified version of the one presented later in Sec:\ref{sec:simulation.block}. In some cases the plant inputs are reduced to net forces and torques; in other cases explicit propeller speeds and servo rotational positions are commanded. Based on mass properties of the quadrotor design in Sec:\ref{sec:proto.design}, force and torque inputs for a stable hover to be actuated by the control plant are as follows:
+To corroborate and test the presented dynamic model for the vehicle's net motion, described in Eq:\ref{eq:3.109}, a series of experimental simulations are performed using the proposed differential equations of motion and the subsequent results are discussed. The simulation environment used here is a simplified, open loop version of the one presented later in Sec:\ref{sec:simulation.block}. In some cases the plant inputs are reduced to net forces and torques, in other cases explicit propeller speeds and servo rotational positions are commanded as inputs. Considering the mass properties of the quadrotor design in Sec:\ref{sec:proto.design}, force and torque inputs for a stable hover to be actuated by the control plant are as follows:
 \begin{equation}\label{eq:basic-hover}
 \vec{\nu}_h=\begin{bmatrix}
 \vec{F}_h\\
@@ -1900,38 +1900,54 @@ To corroborate and test the presented dynamic model for the vehicle's movement (
 [\text{N.mm}]
 \end{bmatrix}
 \end{equation}
-Note that Eq:\ref{eq:basic-hover} does not include terms associated with rotational aerodynamic torque as such terms require feedback compensation. Simulating hover conditions won't provide any useful insight but the commanded plant inputs for hovering do provide a reasonable starting point to which input offsets can be applied. 
-\par
-Introducing an additional $1~[\text{N}]$ of lift should apply approximately $\approx 0.6~[\text{m.s}^{-2}]$ acceleration to the body. Fig:\ref{fig:upward_accl} shows the model's position response to that added lift. Starting from a height of $5~[\text{m}]$ the simulation reaches around $36.5~[\text{m}]$ after a simulated time of $10~[\text{s}]$, as expected.
+where the force input $\vec{F}_h$ acts to oppose the gravitational acceleration acting on the body and the torque $\vec{\tau}_h$ opposes the gravitational torque arm produced by the body's eccentric center of gravity. Note that Eq:\ref{eq:basic-hover} does not include terms associated with rotational aerodynamic torque from \ref{sec:dynamics.aero}, such terms require feedback compensation in closed loop. Simulating hover conditions will not provide any useful insight, but the commanded plant inputs for hovering do provide a suitable starting point to which input offsets can be applied. 
 \begin{figure}[hbtp]
+\vspace{-12pt}
 \centering
-\includegraphics[width=0.7\textwidth]{graphs/Upward_Accl}
+\includegraphics[width=0.8\textwidth]{graphs/upward_acceleration}
+\vspace{-10pt}
 \caption{Upward lift test}
 \label{fig:upward_accl}
 \end{figure}
 \par
-Applying a small ($1\%$) difference between the rotational speed's of propellers 1 and 3, still offset from hovering conditions, results in a small differential torque $0.3\hat{\j}~[\text{N.mm}]$ applied about the origin of motion. If propeller 1 has the smaller of the two rotational speeds, the net torque applied is positive about the body's $\hat{Y}_b$ axis, which should force the vehicle to pitch forward.
+Adding an extra $1~[\text{N}]$ of lift should result in $\approx 0.6~[\text{m.s}^{-2}]$ of upward acceleration being applied to the body. Fig:\ref{fig:upward_accl} shows the simulation's position response to that added lift force where height is the only affected state variable. Starting from a height of $5~[\text{m}]$, the simulated vehicle rises to around $36.5~[\text{m}]$ after a time of $10~[\text{s}]$, as expected.
+\par
+Testing the differential torque inputs and attitude response, a small ($1\%$) difference between the rotational speed's of propellers 1 and 3 is applied. The differential speeds are offset from hovering conditions which command $\Omega_{1,3}=+10540~[\text{RPM}]$ and $\Omega_{2,4}=-10540~[\text{RPM}]$. If the first motor module's propeller speed is reduced and the third motor module's propeller speed is increased then the net torque applied is a positive pitching torque about the body's $\hat{Y}_b$ axis, forcing the vehicle's pitch attitude $\theta$ to increase. The applied speed offset is $\pm 51~[\text{RPM}]$ which produces an approximate differential torque $+0.3\cdot\hat{\j}~[\text{N.mm}]$ about the body frame's origin $\vec{\mathbf{O}}_b$. 
 \begin{figure}[htbp]
+\vspace{-8pt}
 \centering
-\includegraphics[width=0.6\textwidth]{graphs/Prop_speeds}
+\includegraphics[width=0.8\textwidth]{graphs/propeller_differential}
+\vspace{-6pt}
 \caption{Differential torque input}
 \label{fig:differential_prop}
+\vspace{-10pt}
 \end{figure}
 \par
-Fig:\ref{fig:differential_prop} shows the XZ cross section of the vehicles position following a small differential torque input. Starting at a position $\vec{\mathcal{E}}_0=[5~5~5]^T~[\text{m}]$, the small applied torque slowly pitches the body's normal away from its origin whilst the $\hat{X}$ axis displacement increases. Each normal vector is plotted at a time interval of $10~[\text{s}]$. 
+Fig:\ref{fig:differential_prop} shows the XZ plot of the vehicles position following the differential propeller/torque input. The simulation starts at position $\vec{\mathcal{E}}_0=[5~5~5]^T~[\text{m}]$. Over the course of a $10~[\text{s}]$ simulation, the applied torque slowly pitches the body's normal away from its origin whilst the $\hat{X}$ axis displacement increases. Each normal vector is plotted at a regular time interval of $1~[\text{s}]$. 
 \par
-Applying a small rotation servo rotation to the first and third motor modules of $\lambda_{1,3}=3\text{\textdegree}$ will redirect the produced thrust vectors away from their stable hovering positions, subsequently applying an effective yaw moment about the $\hat{Z}_b$ axis. Redirecting those two thrust vectors without increasing their magnitudes (propeller speeds) will adversely affect the hovering altitude's stability.
+Then applying module servo rotations to the first and third motor modules. Using $\lambda_{1,3}=1\text{\textdegree}$ to redirect the produced thrust vectors away from their stable hovering positions, this rotation applies an effective yaw moment about the $\hat{Z}_b$ axis. The redirection of the two thrust vectors away from their stable hovering positions without increasing their magnitudes (propeller speeds) will adversely affect the hovering altitude's stability. The motor module rotation reduces the net lift force to $\approx 15.4~[\text{N}]$ and applies an $\approx-26.3\cdot\hat{k}~[\text{N.mm}]$ yaw torque.
 \begin{figure}[hbtp]
+\vspace{-8pt}
 \centering
-\includegraphics[width=0.6\textwidth]{graphs/Spin}
-\caption{Yawing spin torque}
+\includegraphics[width=0.8\textwidth]{graphs/spin_quaternion}
+\vspace{-6pt}
+\caption{Quaternion from yaw torque}
+\vspace{-10pt}
 \label{fig:spin}
 \end{figure}
-A differential torque about the $\hat{Z}_b$ axis only affects the yaw angle $\psi$ of the body's attitude. Fig:\ref{fig:spin} shows how a yaw torque created by redirecting motor module's thrust vectors results in an oscillatory motion.
-
-
-
- Without laboring the point, the model responds as expected, however the expected response is based from intuition derived from the mathematics and equations governing the dynamic model. Unfortunately, the only way to ascertain the true accuracy of the model is to perform physical flight tests on the prototype, which is beyond the scope of this investigation.
+\par
+The differential torque about the $\hat{Z}_b$ axis only affects the attitude's yaw angle $\psi$. Fig:\ref{fig:spin} shows how that yaw torque, created by redirecting motor module's thrust vectors, produces an oscillatory motion in the attitude plant. The reduced lift force from redirection of the two motor module thrust vectors causes the vehicle to slowly descend from its hovering height of $5~[\text{m}]$, shown in Fig:\ref{fig:spin_position}. This particular test shows that minor perturbations away from a stable hover point cause large deviations in state variables, especially in the attitude plant. This indicates that open loop hovering stability is extremely fragile and necessitates the need for closed loop position control to achieve the desired goal of attitude and position setpoint tracking.
+\begin{figure}[htbp]
+\centering
+\vspace{-8pt}
+\includegraphics[width=0.8\textwidth]{graphs/spin_position}
+\vspace{-6pt}
+\caption{Position descent from yaw spin}
+\vspace{-10pt}
+\label{fig:spin_position}
+\end{figure}
+\par
+Whilst none of the simulated results are wholly unexpected, especially considering all the dynamics are derived from established fundamental theorems, the above simulations and physical tests performed do provide a degree of certainty to proposed model for the multibody system. The only way to ascertain the absolute accuracy of the equations of motion is to compare them to physical flight test data which is, however, beyond the scope of this investigation.
 %====================================================
 \section{Consolidated Model}
 \label{sec:dynamics.model}

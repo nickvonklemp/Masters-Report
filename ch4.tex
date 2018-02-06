@@ -7,7 +7,7 @@
 \section{Control Loop}
 \label{sec:control.loop}
 %====================================================
-The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero setpoint tracking (for both \emph{attitude} and \emph{position} states) on a quadrotor by solving the problem of its inherent underactuation. For the intents and purposes of the subsequent controller development, the plant for some state $\vec{\mathbf{x}}$ is described in the following typical nonlinear state-space form in the time domain:
+The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero setpoint tracking (for both \emph{attitude} and \emph{position} states) on a quadrotor by solving the problem of its inherent underactuation. For the purposes of the subsequent controller development, the plant for some state $\vec{\mathbf{x}}$ is described in the following typical nonlinear state-space form in the time domain:
 \begin{subequations}\label{eq:control-loop-states}
 \begin{equation}
 \frac{d}{dt}{\vec{\mathbf{x}}}=f(\vec{\mathbf{x}},t)+g(\vec{\mathbf{x}},\vec{\nu},t)
@@ -17,22 +17,20 @@ The control problem is, as outlined in Ch:\ref{ch:intro}, to achieve non-zero se
 \vec{y} = c(\vec{\mathbf{x}},t)+d(\vec{\mathbf{x}},\vec{\nu},t)
 \end{equation}
 \end{subequations}
-Where the plant's dynamics are governed by state progression $f(\vec{\mathbf{x}},t)$ and the plant's input response $g(\vec{\mathbf{x}},\vec{\nu},t)$ for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\vec{\mathbf{x}},t)\vec{\nu}$. Setpoint tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)\equiv\vec{\mathbf{x}}$. The control problem is then to design a stabilizing control law $\mathcal{H}$ for some error state $\vec{\mathbf{x}}_e$:
+where the plant's dynamics are governed by state progression $f(\vec{\mathbf{x}},t)$ and the plant's input response $g(\vec{\mathbf{x}},\vec{\nu},t)$ for a given control input $\vec{\nu}$. The latter could take the affine form; $g(\vec{\mathbf{x}},t)\vec{\nu}$. Setpoint tracking aims for the output to track the plant's state; namely $\vec{y} = c(\vec{\mathbf{x}},t)\equiv\vec{\mathbf{x}}$. The control problem is then to design a stabilizing control law $\mathcal{H}$ for some error difference between the desired and current state references, $\vec{\mathbf{x}}_e=\vec{\mathbf{x}}_d-\vec{\mathbf{x}}_b$:
 \begin{equation}
 \vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)=\mathcal{H}(\vec{\mathbf{x}}_b,\dot{\vec{\mathbf{x}}}_b,\vec{\mathbf{x}}_d,\dot{\vec{\mathbf{x}}}_d,t)=\begin{bmatrix}
 \vec{F}_d\\
 \vec{\tau}_d
 \end{bmatrix}
 \end{equation}
-Such that the controlled plant is asymptotically stabilizing or that $\lim_{t\rightarrow\infty}\vec{\mathbf{x}}_e=0$. Trajectory stability conditions are defined next in Sec:\ref{sec:control.stability}. Note that it is possible to combine attitude and position states into a single common trajectory state such that:
+such that the controlled plant's error is asymptotically stabilized, or that $\lim_{t\rightarrow\infty}\vec{\mathbf{x}}_e=0$. Trajectory stability conditions are defined next in Sec:\ref{sec:control.stability}. Note that it is possible to combine attitude and position states into a single common trajectory reference such that:
 \\
 \vspace{-5pt}
 \begin{equation}
 \vec{\mathbf{x}}_b=\begin{bmatrix}\vec{\mathcal{E}}_I&Q_b\end{bmatrix}^T
 \end{equation}
-The body's trajectory is then fully described by $\vec{\mathbf{x}}_b(t)$. Separate control laws are developed for attitude and position tracking and hence those states are not combined in the context of this control project. However for the purposes of describing the control plant, a single major loop control is structure considered.
-\par
-Because of the plant's overactuatedness the control loop is split into two blocks; first a higher level \emph{setpoint tracking} controller designs a virtual control input $\vec{\nu}_d$. That being net forces $\vec{F}_d$ and torques $\vec{\tau}_d$ to act on the body. A lower level \emph{allocator} then solves for explicit actuator positions from $\vec{\nu}_d$ to physically actuate that \emph{virtual} control input. The actuator set then implements a commanded control input $\vec{\nu}_c$ through its effectiveness function (Eq:\ref{eq:dynamic-plant-inputs}) with an actuator estimate $\hat{u}$ subject to transfer functions $C(s)$:
+The body's trajectory is then fully described by $\vec{\mathbf{x}}_b(t)$ and $dot{\vec{\mathbf{x}}}_b(t)$. Separate control laws are developed for attitude and position tracking and hence the states are not combined in the context of this control project. Because the plant is overactuated, the control loop is split into two blocks; first a higher level \emph{setpoint tracking} controller designs a virtual control input $\vec{\nu}_d$, being net forces $\vec{F}_d$ and torques $\vec{\tau}_d$ to act on the body. Next, a lower level \emph{allocator} solves for explicit actuator positions using $\vec{\nu}_d$ to physically actuate that \emph{virtual} control input. The actuator set commands control input $\vec{\nu}_c$ through its effectiveness function (Eq:\ref{eq:dynamic-plant-inputs}), where the $\vec{\nu}_c$ is calculated from actuator estimates $\hat{u}$ that subject to transfer functions $C(s)$:
 \begin{equation}\label{eq:control-effectiveness}
 \vec{\nu}_c=B(\vec{\mathbf{x}},\hat{u},t)=\begin{bmatrix}
 \vec{F}_c(u) & \vec{\tau}_c(u)
