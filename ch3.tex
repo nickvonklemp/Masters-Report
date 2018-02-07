@@ -1900,7 +1900,7 @@ To corroborate and test the presented dynamic model for the vehicle's net motion
 [\text{N.mm}]
 \end{bmatrix}
 \end{equation}
-where the force input $\vec{F}_h$ acts to oppose the gravitational acceleration acting on the body and the torque $\vec{\tau}_h$ opposes the gravitational torque arm produced by the body's eccentric center of gravity. Note that Eq:\ref{eq:basic-hover} does not include terms associated with rotational aerodynamic torque from \ref{sec:dynamics.aero}, such terms require feedback compensation in closed loop. Simulating hover conditions will not provide any useful insight, but the commanded plant inputs for hovering do provide a suitable starting point to which input offsets can be applied. 
+where the force input $\vec{F}_h$ acts to oppose the gravitational acceleration acting on the body and the torque $\vec{\tau}_h$ opposes the gravitational torque arm produced by the body's eccentric center of gravity. Note that Eq:\ref{eq:basic-hover} does not include terms associated with rotational aerodynamic torque $\vec{H}(\Omega_i,\lambda_i,\alpha_i)$ from \ref{sec:dynamics.aero}, such terms require feedback compensation in closed loop. Simulating hover conditions will not provide any useful insight, but the commanded plant inputs for a hovering state do provide a suitable starting values to which input offsets can be applied. 
 \begin{figure}[hbtp]
 \vspace{-12pt}
 \centering
@@ -1910,22 +1910,22 @@ where the force input $\vec{F}_h$ acts to oppose the gravitational acceleration 
 \label{fig:upward_accl}
 \end{figure}
 \par
-Adding an extra $1~[\text{N}]$ of lift should result in $\approx 0.6~[\text{m.s}^{-2}]$ of upward acceleration being applied to the body. Fig:\ref{fig:upward_accl} shows the simulation's position response to that added lift force where height is the only affected state variable. Starting from a height of $5~[\text{m}]$, the simulated vehicle rises to around $36.5~[\text{m}]$ after a time of $10~[\text{s}]$, as expected.
+Adding an extra $1~[\text{N}]$ of lift should result in $\approx 0.6~[\text{m.s}^{-2}]$ of upward acceleration being applied to the body. Fig:\ref{fig:upward_accl} shows the simulation's position response to that added lift force where height is the only affected state variable. Starting from a height of $5~[\text{m}]$, the simulated vehicle rises to around $36.5~[\text{m}]$ after a time of $10~[\text{s}]$, as expected. A simple upward thrust test confirms the effect gravity and linear acceleration has on the model.
 \par
-Testing the differential torque inputs and attitude response, a small ($1\%$) difference between the rotational speed's of propellers 1 and 3 is applied. The differential speeds are offset from hovering conditions which command $\Omega_{1,3}=+10540~[\text{RPM}]$ and $\Omega_{2,4}=-10540~[\text{RPM}]$. If the first motor module's propeller speed is reduced and the third motor module's propeller speed is increased then the net torque applied is a positive pitching torque about the body's $\hat{Y}_b$ axis, forcing the vehicle's pitch attitude $\theta$ to increase. The applied speed offset is $\pm 51~[\text{RPM}]$ which produces an approximate differential torque $+0.3\cdot\hat{\j}~[\text{N.mm}]$ about the body frame's origin $\vec{\mathbf{O}}_b$. 
+Testing differential torque inputs and subsequent attitude responses, a small ($1\%$) difference between the rotational speed's of propellers 1 and 3 is applied. The differential speeds are offset from hovering conditions which command $\Omega_{1,3}=+10540~[\text{RPM}]$ and $\Omega_{2,4}=-10540~[\text{RPM}]$. If the first motor module's propeller speed is reduced and the third motor module's propeller speed is increased then the net torque applied is a positive pitching torque about the body's $\hat{Y}_b$ axis, forcing the vehicle's pitch attitude $\theta$ to increase. The applied speed offset is $\pm 53~[\text{RPM}]$ which produces an approximate differential torque $+0.3\cdot\hat{\j}~[\text{N.mm}]$ about the body frame's origin $\vec{\mathbf{O}}_b$. 
 \begin{figure}[htbp]
 \vspace{-8pt}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/propeller_differential}
+\includegraphics[width=0.75\textwidth]{graphs/propeller_differential}
 \vspace{-6pt}
 \caption{Differential torque input}
 \label{fig:differential_prop}
 \vspace{-10pt}
 \end{figure}
 \par
-Fig:\ref{fig:differential_prop} shows the XZ plot of the vehicles position following the differential propeller/torque input. The simulation starts at position $\vec{\mathcal{E}}_0=[5~5~5]^T~[\text{m}]$. Over the course of a $10~[\text{s}]$ simulation, the applied torque slowly pitches the body's normal away from its origin whilst the $\hat{X}$ axis displacement increases. Each normal vector is plotted at a regular time interval of $1~[\text{s}]$. 
+Fig:\ref{fig:differential_prop} shows the XZ plot of the vehicle's position following the differential propeller/torque input. The simulation starts at position $\vec{\mathcal{E}}_0=[5~5~5]^T~[\text{m}]$. Over the course of a $10~[\text{s}]$ simulation, the applied torque slowly pitches the body's normal away from its origin whilst the $\hat{X}$ axis displacement increases. Each normal vector is plotted at a regular time interval of $1~[\text{s}]$. 
 \par
-Then applying module servo rotations to the first and third motor modules. Using $\lambda_{1,3}=1\text{\textdegree}$ to redirect the produced thrust vectors away from their stable hovering positions, this rotation applies an effective yaw moment about the $\hat{Z}_b$ axis. The redirection of the two thrust vectors away from their stable hovering positions without increasing their magnitudes (propeller speeds) will adversely affect the hovering altitude's stability. The motor module rotation reduces the net lift force to $\approx 15.4~[\text{N}]$ and applies an $\approx-26.3\cdot\hat{k}~[\text{N.mm}]$ yaw torque.
+Then applying module servo rotations to the first and third motor modules. Using $\lambda_{1,3}=1\text{\textdegree}$ to redirect the produced thrust vectors away from their stable hovering positions, this rotation applies an effective yaw moment about the $\hat{Z}_b$ axis. The redirection of the two thrust vectors away from their stable hovering positions without increasing their magnitudes (propeller speeds) will adversely affect the hovering altitude's. The net lift force will be reduced by the thrust vector redirection, reducing the net lift force to $\approx 15.4~[\text{N}]$ and applying an $\approx-26.3\cdot\hat{k}~[\text{N.mm}]$ yaw torque.
 \begin{figure}[hbtp]
 \vspace{-8pt}
 \centering
@@ -1936,7 +1936,7 @@ Then applying module servo rotations to the first and third motor modules. Using
 \label{fig:spin}
 \end{figure}
 \par
-The differential torque about the $\hat{Z}_b$ axis only affects the attitude's yaw angle $\psi$. Fig:\ref{fig:spin} shows how that yaw torque, created by redirecting motor module's thrust vectors, produces an oscillatory motion in the attitude plant. The reduced lift force from redirection of the two motor module thrust vectors causes the vehicle to slowly descend from its hovering height of $5~[\text{m}]$, shown in Fig:\ref{fig:spin_position}. This particular test shows that minor perturbations away from a stable hover point cause large deviations in state variables, especially in the attitude plant. This indicates that open loop hovering stability is extremely fragile and necessitates the need for closed loop position control to achieve the desired goal of attitude and position setpoint tracking.
+The differential torque about the $\hat{Z}_b$ axis only affects the attitude's yaw angle $\psi$, pitch $\phi$ and roll $\theta$ remain unchanged. Fig:\ref{fig:spin} shows how that yaw torque, created by redirecting motor module's thrust vectors, produces an oscillatory motion in the attitude plant. The reduced lift force from redirection of the two motor module thrust vectors causes the vehicle to slowly descend from its hovering height of $5~[\text{m}]$, shown in Fig:\ref{fig:spin_position}. This particular test shows that minor perturbations away from a stable hover point causes large deviations in state variables, especially in the attitude plant. Leading to the conclusion that open loop hovering stability is extremely fragile and necessitates the need for closed loop position control to achieve the desired goal of attitude and position setpoint tracking.
 \begin{figure}[htbp]
 \centering
 \vspace{-8pt}
@@ -1947,19 +1947,19 @@ The differential torque about the $\hat{Z}_b$ axis only affects the attitude's y
 \label{fig:spin_position}
 \end{figure}
 \par
-Whilst none of the simulated results are wholly unexpected, especially considering all the dynamics are derived from established fundamental theorems, the above simulations and physical tests performed do provide a degree of certainty to proposed model for the multibody system. The only way to ascertain the absolute accuracy of the equations of motion is to compare them to physical flight test data which is, however, beyond the scope of this investigation.
+Whilst none of the above simulated results are entirely unexpected, especially considering all the dynamics are derived from established fundamental theorems, the simulations and physical tests performed provide some degree of certainty to proposed model for the multibody system. The only way to truly ascertain the absolute accuracy of the equations of motion is to compare them to physical flight test data which is, unfortunately, beyond the scope of this investigation.
 %====================================================
 \section{Consolidated Model}
 \label{sec:dynamics.model}
 %====================================================
-Reiterating the different responses detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ using quaternions. Also introducing the nonlinear inertial and gyroscopic responses to induced perturbations, $\vec{\tau}_\lambda(\lambda_i)$ and $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with nonlinear inertial matrix terms $J_b(u)$ from Sec:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}(u)$ and $\vec{\tau}_{\mu}(u)$ are controllable inputs to be designed by a higher level setpoint tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation schemes are explored thereafter in Ch:\ref{ch:allocation}. The vehicle's inertial position and \emph{body frame} velocity differential equations are:
+Reiterating the different responses detailed above and consolidating the state equations from Eq:\ref{eq:states.a}-\ref{eq:states.d}. Then lifting the attitude states to $\mathbb{Q}\in\mathbb{R}^4$ using quaternions. Also introducing the nonlinear inertial and gyroscopic responses to induced perturbations, $\vec{\tau}_\lambda(\lambda_i)$ and $\vec{\tau}_\alpha(\lambda_i,\alpha_i)$ from Eq:\ref{eq:torque-induced-inner} and Eq:\ref{eq:torque-induced-middle} respectively, with nonlinear inertial matrix terms $J_b(\vec{u})$ from Sec:\ref{sec:proto.inertia}. Net forces and torques $\vec{F}_{\mu}(\vec{u})$ and $\vec{\tau}_{\mu}(\vec{u})$ are controllable inputs to be designed by a higher level setpoint tracking controller discussed next in Ch:\ref{ch:control}. The exact actuator effectiveness and allocation schemes are explored thereafter in Ch:\ref{ch:allocation}. The vehicle's \emph{inertial frame} position and \emph{body frame} velocity differential equations are:
 \begin{subequations}\label{eq:quaternion-states}
 \begin{equation}\label{eq:quaternion-states-velocity}
 \dot{\vec{\mathcal{E}}}_I=Q_b^*\otimes\vec{v}_b\otimes Q_b~~~~\in\mathcal{F}^I
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:quaternion-states-acceleration}
-\dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+Q_b\otimes m_b\vec{G}_I\otimes Q_b^*+\vec{F}_\mu(u)\big)~~~~\in\mathcal{F}^b
+\dot{\vec{v}}_b=m_b^{-1}\big(-\vec{\omega}_b\times m_b\vec{v}_b+Q_b\otimes m_b\vec{G}_I\otimes Q_b^*+\vec{F}_\mu(\hat{u})\big)~~~~\in\mathcal{F}^b
 \end{equation}
 Similarly the vehicle's attitude quaternion rate and angular acceleration are respectively:
 \begin{equation}\label{eq:quaternion-states-quaternion}
@@ -1967,11 +1967,11 @@ Similarly the vehicle's attitude quaternion rate and angular acceleration are re
 \end{equation}
 \vspace{-10pt}
 \begin{equation}\label{eq:quaternion-states-angular}
-\dot{\vec{\omega}}_b=J_b(u)^{-1}\big(-\vec{\omega}_b \times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{\mu}(u)\big)~~~~\in\mathcal{F}^b
+\dot{\vec{\omega}}_b=J_b(\hat{u})^{-1}\big(-\vec{\omega}_b \times J_b(\hat{u})\vec{\omega}_b-\vec{\tau}_b(\hat{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{\mu}(\hat{u})\big)~~~~\in\mathcal{F}^b
 \end{equation}
-The actuator space $u$ is defined as per Eq:\ref{eq:actuator-space}, where each actuator has its own transfer function $C(s)$ described in Sec:\ref{subsec:proto.design.transfer}, leading to an actuator state estimate $\hat{u}$ used for control inputs $\vec{F}_\mu(\hat{u})$ and $\vec{\tau}_{\mu}(\hat{u})$, later compensation feedback terms.
+The actuator space $\vec{u}$ is defined as per Eq:\ref{eq:actuator-space}, where each actuator has its own transfer function $C(s)$ described in Sec:\ref{subsec:proto.design.transfer}, leading to an actuator state estimate $\hat{u}$ used for control inputs $\vec{F}_\mu(\hat{u})$ and $\vec{\tau}_{\mu}(\hat{u})$ and feedback compensation terms.
 \begin{equation}
-u\triangleq\big[\Omega_1^+,~\lambda_1,~\alpha_1,~\ldots~\Omega_4^-,~\lambda_4,~\alpha_4 \big]~~~~\in\mathbb{U}\in\mathbb{R}^{12}
+\vec{u}\triangleq\big[\Omega_1^+,~\lambda_1,~\alpha_1,~\ldots~\Omega_4^-,~\lambda_4,~\alpha_4 \big]~~~~\in\mathbb{U}\in\mathbb{R}^{12}
 \end{equation}
 \end{subequations}
 Control force and torque plant inputs, $\vec{F}_\mu(\hat{u})$ and $\vec{\tau}_\mu(\hat{u})$ respectively, are a combination of Eq:\ref{eq:generalized-net-forces} with three dimensional thrust vectors $\vec{T}(\Omega_i)$ as per the quaternion analogue of Eq:\ref{eq:motor-module-force-redirect}. Both are later abstracted to virtual control inputs later in the control allocation design Ch:\ref{ch:allocation}.
@@ -1998,16 +1998,16 @@ Scalar thrust $T(\Omega_i)$ is a function of the propeller's rotational velocity
 \vec{H}(\Omega_i)= C_P(J)\rho\Omega_i^3D^5 \big(1/R\Omega_i\big)\cdot\hat{Z}_{M_i}~~~~\in\mathcal{F}^{M_i}
 \end{equation}
 \end{subequations}
-Recalling that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The nonlinear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as terms for  feedback compensation, calculated from instantaneous actuator states:
+Recalling that $\Omega_i$ for aerodynamic calculations in Eq:\ref{eq:aerodynamic-thrust} and Eq:\ref{eq:aerodynamic-torque} has units $[\text{RPS}]$. The nonlinear torque responses from multibody configuration changes in Eq:\ref{eq:net-body-response} are introduced as terms for  feedback compensation, calculated from instantaneous actuator estimates:
 \begin{equation}\label{eq:actuator-torque}
-\vec{\tau}_b(u)\triangleq\dot{J}_b(u)\vec{\omega}_b+\sum_{i=1}^{4}\Big[\vec{\tau}_\alpha\hspace{-1pt}'(\lambda_i,\alpha_i)+\vec{\tau}_\lambda\hspace{-2pt}''(\lambda_i)+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]~~~~\in\mathcal{F}^b
+\vec{\tau}_b(\hat{u})\triangleq\dot{J}_b(\hat{u})\vec{\omega}_b+\sum_{i=1}^{4}\Big[\vec{\tau}_\alpha\hspace{-1pt}'(\lambda_i,\alpha_i)+\vec{\tau}_\lambda\hspace{-2pt}''(\lambda_i)+\vec{\omega}_b\times\Big(\big(J_p''\big)\dot{\vec{\alpha}}_i'+\big(J_n'''\big)\dot{\vec{\lambda}}_i''+\big(J_r'''\big)\vec{\Omega}_i'''\Big)\Big]~~~~\in\mathcal{F}^b
 \end{equation}
-With $\vec{\tau}_\alpha\hspace{-2pt}'(\lambda_i,\alpha_i)$ and $\vec{\tau}_\lambda\hspace{-2pt}''(\lambda_i)$ both transformed to the body frame $\mathcal{F}^b$. Then including variable gravitational torque as a result of an eccentric center of gravity from Eq:\ref{eq:mass-center.b}; also dependent on the vehicles configuration:
+with $\vec{\tau}_\alpha\hspace{-2pt}'(\lambda_i,\alpha_i)$ and $\vec{\tau}_\lambda\hspace{-2pt}''(\lambda_i)$ both transformed to the body frame $\mathcal{F}^b$. Then including variable gravitational torque as a result of an eccentric center of gravity from Eq:\ref{eq:mass-center.b}; also dependent on the vehicles configuration:
 \begin{equation}\label{eq:consolidated-grav-torque}
-\vec{\tau}_g=\Delta \vec{C}_G \times\vec{G}_b=\big(\vec{\mathbf{O}}_b-\vec{C}_\text{b}(u)\big)\times\vec{G}_b~~~~\in\mathcal{F}^b
+\vec{\tau}_g=\Delta \vec{C}_\text{G} \times\vec{G}_b=\big(\vec{\mathbf{O}}_b-\vec{C}_\text{b}(u)\big)\times\vec{G}_b~~~~\in\mathcal{F}^b
 \end{equation}
 And finally the vehicles net rotational inertia, aligned and centered with the body frame. That inertia is calculated as a function of all actuator positions; taken from Eq:\ref{eq:body-net-2} and given as:
 \begin{equation}
-\underset{\vec{\mathbf{O}}_b}{J_b(u)}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}(u_i)}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}(u_i)}~~~~u\in\mathbb{U}
+\underset{\vec{\mathbf{O}}_b}{J_b(\hat{u})}=\underset{\vec{\mathbf{O}}_b}{J'_\text{y}}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{n}(\hat{u}_i)}+\sum_{i=1}^{4} \underset{\vec{\mathbf{O}}_b}{J_\text{m}(\hat{u}_i)}~~~~u\in\mathbb{U}
 \end{equation}
-Both attitude (either euler angles $\vec{\eta}$ or quaternions $Q_b$) and translational position states $\vec{\mathcal{E}_I}$ could indeed be combined into a single state $\vec{\mathbf{x}}_b$. That could then be used for a complete state feedback control law which could potentially exploit or linearize the cross-coupling between the angular and translational plants. Such an approach would, however, dramatically increase the complexity in tuning actual control parameters (see Sec:\ref{sec:simulation.tuning}). Controllers for attitude and position loops are designed and optimized independently.
+where $\vec{u}_i$ is the $\text{i}^{th}$ motor module's actuator position: $\vec{u}_i\triangleq [\Omega_i~\lambda_i~\alpha_i]^T$ and $\hat{u}_i$ is the position estimate subject to those actuator's transfer functions. Both attitude (either euler angles $\vec{\eta}$ or quaternions $Q_b$) and translational position states $\vec{\mathcal{E}_I}$ could indeed be combined into a single state $\vec{\mathbf{x}}_b$. That could then be used for a complete state feedback control law which could potentially exploit or linearize the cross-coupling between the angular and translational plants. Such an approach would, however, dramatically increase the complexity in tuning actual control parameters (see Sec:\ref{sec:simulation.tuning}). Controllers for attitude and position loops are designed and optimized independently.
