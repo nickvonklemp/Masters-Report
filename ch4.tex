@@ -314,11 +314,9 @@ The trajectory's asymptotic stability can be extended to exponential stability b
 %====================================================
 \section{Model Dependent \& Independent Controllers}
 %====================================================
-Two classes of controllers are included for the trajectory tracking control loop; both attitude and position control laws. Attitude setpoint tracking is the primary focus of this research project (Sec:\ref{subsec:control.attitude.problem}) and incorporates a more detailed schedule of controller design and evaluation. 
+Two classes of controllers are included for the trajectory tracking control loop; both attitude and position control laws. Attitude setpoint tracking is the primary focus of this research project (Sec:\ref{subsec:control.attitude.problem}) and incorporates a more detailed schedule of controller design and evaluation. The allocation law combines both virtual control inputs from attitude and position controllers, $\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d]^T$, to solve for explicit actuator positions. 
 \par
-The allocation law combines both virtual control inputs from attitude and position controllers, $\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d]^T$, to solve for explicit actuator positions. Controller dependency on the plant's state is as a consequence of the actuator responses and complex inertial dynamics, as derived previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Whilst not a prerequisite for stability, plant dependent compensation obviously improves controller performances.
-\par
-Independent and dependent cases are only considered for one type of controller; the most basic case proportional-derivative controller in Section:\ref{subsubsec:control.attitude.controllers.pd} and tested in Sec:\ref{subsec:simulation.attitude.pd}. All other control laws compensate for unwanted plant dynamics in a feedback configuration.
+Controller dependency on the plant's state is as a consequence of the actuator responses and complex inertial dynamics, as derived previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Whilst not a prerequisite for stability, plant dependent compensation obviously improves controller performances. Independent and dependent cases are only considered for one type of controller; the most basic case proportional-derivative controller in Section:\ref{subsubsec:control.attitude.controllers.pd} and tested in Sec:\ref{subsec:simulation.attitude.pd}. All other control laws compensate for unwanted plant dynamics in a feedback configuration.
 \par
 The plant dependency makes backstepping controllers an effective controller choice for this dissertation's context. The proposed plant dependent control laws compensate for undesirable dynamics by design, basic PD and PID control structures (\emph{and the like}) will not. The first and most basic control solution, used as a reference case, is a PD controller for attitude and position with direct-inversion (Pseudo or Moore-Penrose inversion) allocation. 
 %====================================================
@@ -357,15 +355,17 @@ The time derivative for the quaternion error state is calculated from the quater
 \subsubsection{PD Controller}
 \label{subsubsec:control.attitude.controllers.pd}
 %====================================================
-The following control law is used as a reference case for comparing the subsequent designed controllers. It is a simple proportional-derivative (\emph{PD}) attitude controller, adapted from \cite{fullquaternion} and following a stability proof similar to the one derived in \cite{attitudecontrolproblem}. An attitude PD controller is proportional only to the \emph{vector quaternion error}, so that the error is the same dimension as the angular velocity error; $\vec{q}_e\in\mathbb{R}^3$. A PD controller generates the commanded torque input:
+The following control law is used as a reference case for comparing the subsequent designed controllers.
+\par
+It is a simple proportional-derivative (\emph{PD}) attitude controller, adapted from \cite{fullquaternion} and following a stability proof similar to the one derived in \cite{attitudecontrolproblem}. An attitude PD controller is proportional only to the \emph{vector quaternion error}, so that the error is the same dimension as the angular velocity error; $\vec{q}_e\in\mathbb{R}^3$. A PD controller generates the commanded torque input:
 \begin{equation}\label{eq:independent-pd}
 \vec{\tau}_{_{PD}}=J_b(u)\big(K_d\vec{\omega}_e+K_p\vec{q}_e\big)~~~~\in\mathcal{F}^b
 \end{equation}
-where both $K_d$ and $K_p$ are \emph{positive symmetrical} $3\times 3$ gain coefficient matrices to be determined at a later stage. The positive symmetry constraint on coefficients in Eq:\ref{eq:independent-pd} is a requirement of the stability proof that follows, not necessarily a prerequisite. Eq:\ref{eq:independent-pd} neglects the quaternion scalar error and is therefore susceptible to unwinding and the \emph{proven stability is only local} for $0\leq q_0 \leq 1$. Using a positive-definite Lyapunov function candidate $V_{_{PD}}$ for the attitude trajectory:
+where both $K_d$ and $K_p$ are \emph{positive symmetrical} $3\times 3$ gain coefficient matrices to be determined at a later stage. The positive symmetry constraint on coefficients in Eq:\ref{eq:independent-pd} is a requirement of the stability proof that follows, not necessarily a prerequisite. Eq:\ref{eq:independent-pd} neglects the quaternion scalar error and is therefore susceptible to unwinding. Using a positive-definite Lyapunov function candidate $V_{_{PD}}$ for the attitude trajectory:
 \begin{equation}\label{eq:lyapunov-pd}
-V_{_{PD}}(Q_e,\vec{\omega}_e)=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}\vec{\omega}_e\text{}^TK_p^{-1}\vec{\omega}_e~~>0,~\forall(Q_e,\vec{\omega}_e)\not = \vec{0}
+V_{_{PD}}(Q_e,\vec{\omega}_e)=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}\vec{\omega}_e\text{}^TK_p^{-1}\vec{\omega}_e>0~~\forall(Q_e,\vec{\omega}_e)\not = \vec{0}
 \end{equation}
-Note also that the origin is an equilibrium point $V_{_{PD}}([1~\vec{0}\hspace{1pt}]^T,\vec{0}\hspace{1pt})=0$, making it a suitable Lyapunov function candidate. Exploiting the unit quaternion's inherent magnitude property, it follows that:
+Note that the origin is an equilibrium point $V_{_{PD}}([1~\vec{0}\hspace{1pt}]^T,\vec{0}\hspace{1pt})=0$, making it a suitable Lyapunov function candidate but \emph{only locally} when $q_0\in[0:1]$. Exploiting the unit quaternion's inherent magnitude property, it follows that:
 \begin{equation}\label{eq:4.171}
 \norm{Q}=\vec{q}\text{}^{\hspace{3pt}T}\vec{q}+q_0\text{}^2=\vec{q}\text{}^{\hspace{3pt}2}+q_0\text{}^2=1
 \end{equation}
@@ -449,14 +449,20 @@ $\vec{\tau}_g=\approx\vec{0}$
 \vspace{-8pt}
 \end{center}
 \end{enumerate}
-All of the above assumptions are made under extraneous circumstances, the subsequent stability obviously breaks down if any of assumptions 1 through 3 fail. Stability achieved using a plant independent control law is only local will not hold true for most of the prototype's flight envelope, which involves time varying angular velocities $\vec{\omega}_b\not = \vec{0}$. The plant independent case is considered and simulated in Sec:\ref{subsubsec:simulation.atttiude.pd.independent} only to demonstrate the need for plant dependent compensation. If each of the assumptions hold true, then the extra dynamics are negligible or $\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q\big)\approx 0$ making the Lyapunov function's derivative negative definite. The stability proof for that very local trajectory is then:
+All of the above assumptions are made under extraneous circumstances, the subsequent stability obviously breaks down if any of assumptions 1 through 3 fail. Stability achieved using a plant independent control law is only local will not hold true for most of the prototype's flight envelope, which involves time varying angular velocities $\vec{\omega}_b\not = \vec{0}$. 
+\par
+The plant independent case is considered and simulated in Sec:\ref{subsubsec:simulation.atttiude.pd.independent} only to demonstrate the need for plant dependent compensation. If each of the assumptions hold true, then the extra dynamics are negligible or $\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q\big)\approx 0$ making the Lyapunov function's derivative negative definite. The stability proof for that very local trajectory is then:
 \begin{subequations}
 \begin{equation}
 \therefore\dot{V}_{_{PD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^TK_p^{-1}\big(-K_d\vec{\omega}_b+K_p\vec{q}_e\big)
 \end{equation}
 \vspace{-14pt}
+\begin{equation}
+=-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b
+\end{equation}
+\vspace{-14pt}
 \begin{equation}\label{eq:pd-local-stability}
-=-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b=-K_p^{-1}K_d\norm{\vec{\omega}_b}\text{}^2~~<0,~\exists~(K_p^{-1},K_d)>0
+=-K_p^{-1}K_d\norm{\vec{\omega}_b}\text{}^2<0~~\forall(\vec{q}_e,\vec{\omega}_e),~~q_0\in[0:1],~~\exists~(K_p^{-1},K_d)>0
 \end{equation}
 \end{subequations}
 From Lyapunov stability theorem there then exists the following limits: 
@@ -473,26 +479,25 @@ If $q_0\in[0:1]$ then the quaternion error stabilizes $Q_e\rightarrow[1~\vec{0}\
 \begin{equation}\label{eq:dependent-pd}
 \vec{\tau}_{_{PD}}=\underbrace{K_p\vec{q}_e+K_d\vec{\omega}_e}_{\text{Independent}}+\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_Q}_{\text{Compensation}}
 \end{equation}
-Obviously controller errors and compensation terms rely on \emph{state estimates}, whereas inertias and torque responses are calculated using sampled $\hat{u}_c$ commanded actuator positions. Moreover the quaternion attitude and angular velocity states $\hat{Q}_b$ and $\hat{\omega}_b$ are both estimates and so a small degree of uncertainty exists. Robust stability in the case of plant dependent uncertainty is investigated in Sec:\ref{sec:simulation.disturbance}, but for now the estimates are \emph{assumed to be free of errors and dynamics}.
 \par
-The resultant stability proof for the plant dependent case Eq:\ref{eq:dependent-pd} is much the same as that for the independent controller, Eq:\ref{eq:independent-pd}. The same LFC from Eq:\ref{eq:lyapunov-pd} shows that Eq:\ref{eq:pd-local-stability} holds globally:
+Obviously controller errors and compensation terms rely on \emph{state estimates}, whereas inertias and torque responses are calculated using sampled $\hat{u}_c$ commanded actuator positions. Moreover the quaternion attitude and angular velocity states $\hat{Q}_b$ and $\hat{\omega}_b$ are both estimates and so a small degree of uncertainty exists. Robust stability in the case of plant dependent uncertainty is investigated in Sec:\ref{sec:simulation.disturbance}, but for now the estimates are \emph{assumed to be free of errors and dynamics}. The resultant stability proof for the plant dependent case Eq:\ref{eq:dependent-pd} is much the same as that for the independent controller, Eq:\ref{eq:independent-pd}. The same LFC from Eq:\ref{eq:lyapunov-pd} shows that Eq:\ref{eq:pd-local-stability} holds globally:
 \begin{subequations}\label{eq:dependent-global-stability}
 \begin{equation}\label{eq:4.40a}
 \dot{V}_{_{PD}}=-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:4.40b}
-=-K_pK_d\norm{\vec{\omega}_b}\text{}^2<\vec{0},~~\forall(Q_e,\vec{\omega}_b),~~\exists~(K_p^{-1},K_d)>0
+=-K_pK_d\norm{\vec{\omega}_b}\text{}^2<0~~\forall(q_e,\vec{\omega}_e),~~q_0\in[0:1],~~\exists~(K_p^{-1},K_d)>0
 \end{equation}
 \end{subequations}
-Note that the inverse qualifier of $K_p^{-1}$ in Eq:\ref{eq:4.40a} is redundant given that $K_p$ is a symmetrical coefficient matrix. Similarly because both coefficient matrices are symmetric, they're diagonalizable and so the reduction in Eq:\ref{eq:4.40b} is valid. 
-\par
-The plant dependent controller compensates for the unwanted dynamics which the independent control otherwise assumes are inconsequential to achieve the same stability. Dynamic compensation in Eq:\ref{eq:dependent-pd} is simple to implement considering the unwanted dynamics have already been quantified and corroborated in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} together with state estimate terms in Sec:\ref{subsec:proto.design.transfer}.
+Note that the inverse qualifier of $K_p^{-1}$ in Eq:\ref{eq:4.40a} is redundant given that $K_p$ is a symmetrical coefficient matrix. Similarly because both coefficient matrices are symmetric, they're diagonalizable and so the reduction in Eq:\ref{eq:4.40b} is valid. The plant dependent controller compensates for the unwanted dynamics which the independent control otherwise assumes are inconsequential to achieve the same stability. Dynamic compensation in Eq:\ref{eq:dependent-pd} is simple to implement considering the unwanted dynamics have already been quantified and corroborated in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} together with state estimate terms in Sec:\ref{subsec:proto.design.transfer}.
 %====================================================
 \subsubsection{Auxiliary Plant Controller}
 \label{subsubsec:control.attitude.controllers.auxpd}
 %====================================================
-Expanding on what has, in practice (Table:\ref{tab:controllers} from Sec:\ref{subsec:intro.lit.related}), proven to be a popular and effective controller for attitude stabilization, \cite{attitudestabilization} proposed an auxiliary plant term to a PD attitude controller which has been adapted to fit the control problem here. Most significantly, the altered PD controller adds auxiliary terms proportional to the quaternion error's derivative (Eq:\ref{eq:quaternion-deriv}). Moreover part of the auxiliary plant is proportional to the \emph{quaternion scalar} $q_0$, a term that is otherwise neglected in the previous PD control law (Sec:\ref{subsubsec:control.attitude.controllers.pd}) and ensures unwinding is avoided when incorporated. The \emph{auxilliarly} PD control torque is a function of errors states:
+Expanding on what has, in practice (Table:\ref{tab:controllers} from Sec:\ref{subsec:intro.lit.related}), proven to be a popular and effective controller for attitude stabilization, \cite{attitudestabilization} proposed an auxiliary plant term to a PD attitude controller which has been adapted to fit the control problem here. Most significantly, the altered PD controller adds auxiliary terms proportional to the quaternion error's derivative (Eq:\ref{eq:quaternion-deriv}). 
+\par
+Moreover part of the auxiliary plant is proportional to the \emph{quaternion scalar} $q_0$, a term that is otherwise neglected in the previous PD control law (Sec:\ref{subsubsec:control.attitude.controllers.pd}) and ensures unwinding is avoided when incorporated. The \emph{auxilliarly} PD control torque is a function of errors states:
 \begin{equation}\label{eq:control-aux-pd}
 \vec{\tau}_{_{XPD}}=\underbrace{\Gamma_2{\widetilde{\Omega}}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}}_{\text{Independent}}+\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H}_{\text{Compensation}}
 \end{equation}
@@ -522,9 +527,9 @@ The second auxiliary term $\widetilde{\Omega}$ is proportional to both quaternio
 \end{subequations}
 Using an LFC similar to the basic $V_{_{PD}}$ function candidate from Eq:\ref{eq:lyapunov-pd}, but substituting an auxiliary term $\widetilde{\Omega}$ for the body's angular velocity $\vec{\omega}_b$ into the LFC $V_{_{XPD}}$.
 \begin{equation}\label{eq:lyapunov-xpd}
-V_{_{XPD}}\big(Q_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}~~>0,~\forall(Q_e,\widetilde{\Omega})
+V_{_{XPD}}\big(Q_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}~~>0,~\forall(Q_e,\widetilde{\Omega})\not = \vec{0}
 \end{equation}
-At the trajectory's origin the energy function Eq:\ref{eq:lyapunov-xpd} is zero, or $V_{_{XPD}}([\pm 1~\vec{0}\hspace{1pt}]^T,\vec{0}\hspace{1pt})=0$. Again using the simplification from a quaternion's inherent properties in Eq:\ref{eq:4.17}, the LFC from Eq:\ref{eq:lyapunov-xpd} then simplifies with the following derivative:
+Again, the stability proof limits the attitude quaternion's scalar $q_0\in[0:1]$, making the trajectory's energy function zero at the origin, or $V_{_{XPD}}([1~\vec{0}\hspace{1pt}]^T,\vec{0}\hspace{1pt})=0$, in order to meet the constraints of a positive definite LFC. Using the simplification from a quaternion's inherent properties in Eq:\ref{eq:4.17}, the LFC from Eq:\ref{eq:lyapunov-xpd} then simplifies with the following derivative:
 \begin{subequations}
 \vspace{-5pt}
 \begin{equation}
@@ -539,7 +544,7 @@ V_{_{XPD}}=2(1-q_0)+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Ga
 \dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \end{subequations}
-It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, the auxiliary plant's derivative $\dot{\widetilde{\Omega}}$ is:
+It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, the auxiliary derivative term $\dot{\widetilde{\Omega}}$ is:
 \begin{subequations}
 \vspace{-6pt}
 \begin{equation}
@@ -547,26 +552,26 @@ It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, 
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-\rightarrow\dot{\vec{\omega}}_b=J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)
+\dot{\vec{\omega}}_b=J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
 \therefore\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)-\dot{\bar{\Omega}}
 \end{equation}
-Substituting the auxiliary PD control law, $\vec{\tau}_{_{XPD}}$ from Eq:\ref{eq:control-aux-pd}, into the auxiliary derivative $\dot{\widetilde{\Omega}}$:
+Substituting the auxiliary PD control law, $\vec{\tau}_{_{XPD}}$ from Eq:\ref{eq:control-aux-pd}, into the auxiliary derivative term $\dot{\widetilde{\Omega}}$ is:
 \begin{equation}
-\rightarrow\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\Big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}\Big)-\dot{\bar{\Omega}}
+\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\Big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}\Big)-\dot{\bar{\Omega}}
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
 =J_b^{-1}(u)\Big(-\Gamma_2\widetilde{\Omega}-\Gamma_3\vec{q}_e\Big)
 \end{equation}
 \end{subequations}
-From the \emph{approximately} diagonal inertial matrix $J_b(u)$, combined Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min}, and the positive symmetric or \emph{diagonal} properties of the coefficient matrices $\Gamma_1$,$\Gamma_2$ and $\Gamma_3$; the auxiliary plant $\dot{\widetilde{\Omega}}$ has a transpose:
+From the \emph{approximately} symmetric inertia matrix $J_b(u)$, combined Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min}, and the positive symmetric and \emph{diagonal} constraints imposed on the coefficient matrices $\Gamma_1$,$\Gamma_2$ and $\Gamma_3$, the auxiliary plant $\dot{\widetilde{\Omega}}$ has a transpose:
 \begin{equation}
-\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}=J_b^{-1}\Big(-\Gamma_2\widetilde{\Omega}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)
+\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}=J_b^{-1}(u)\Big(-\Gamma_2\widetilde{\Omega}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)
 \end{equation}
-The PD auxiliary plant component(s) in the LFC derivative $\dot{V}_{_{XPD}}$ in Eq:\ref{eq:lyapunov-xpd} simplifies:
+Splitting the PD auxiliary plant's LFC derivative, $\dot{V}_{_{XPD}}$ in Eq:\ref{eq:lyapunov-xpd}, into components and then simplifying each individually, it follows:
 \begin{subequations}
 \begin{equation}
 \frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\Gamma_2\widetilde{\Omega}\text{}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)\Gamma_3^{-1}\widetilde{\Omega}
@@ -577,7 +582,7 @@ The PD auxiliary plant component(s) in the LFC derivative $\dot{V}_{_{XPD}}$ in 
 \end{equation}
 Substituting Eq:\ref{eq:aux-pd-2} for $\vec{q}_e\text{}^T\widetilde{\Omega}$ into Eq:\ref{eq:4.48b}:
 \begin{equation}\label{eq:4.48c}
-\rightarrow\frac{1}{2}\dot{\widetilde{\Omega}}^T\Big(\Gamma_3^{-}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}+\vec{q}_e\text{}^T\vec{\omega}_b-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e\Big)\Big|_{\vec{q}_e\text{}^{T}\widetilde{\Omega}=-\vec{q}_e\text{}^{T}\vec{\omega}_b+\Gamma_1\vec{q}_e\text{}^{T}}
+\therefore\frac{1}{2}\dot{\widetilde{\Omega}}^T\Big(\Gamma_3^{-}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}+\vec{q}_e\text{}^T\vec{\omega}_b-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e\Big)\Big|_{\vec{q}_e\text{}^{T}\widetilde{\Omega}=-\vec{q}_e\text{}^{T}\vec{\omega}_b+\Gamma_1\vec{q}_e\text{}^{T}}
 \end{equation}
 Similarly, for the transposed counterpart of Eq:\ref{eq:4.48c} in Eq:\ref{eq:4.34c}:
 \begin{equation}
@@ -586,21 +591,21 @@ Similarly, for the transposed counterpart of Eq:\ref{eq:4.48c} in Eq:\ref{eq:4.3
 Which, when substituted back into Eq:\ref{eq:4.34c}, then simplifies the LFC derivative to negative definite:
 \end{subequations}
 \begin{equation}
-\Rightarrow\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}~~<0,~\forall(\vec{q}_e,\widetilde{\Omega}),~\exists(\Gamma_1,\Gamma_2,\Gamma_3)>0
+\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}<0~~\forall(\vec{q}_e,\widetilde{\Omega}),~~q_0\in[0:1],~~\exists(\Gamma_1,\Gamma_2,\Gamma_3)>0
 \end{equation}
-As such, the control law $\vec{\tau}_{_{XPD}}$ asymptomatically stabilizes the attitude plant globally. Both $\widetilde{\Omega}$ and $\vec{q}_e$ tend to $\vec{0}$, or more specifically the following global stability limits exist:
+As such, the control law $\vec{\tau}_{_{XPD}}$ asymptomatically stabilizes the attitude plant locally for $q_0\in[0:1]$. Both $\widetilde{\Omega}$ and $\vec{q}_e$ tend to $\vec{0}$, or more specifically the following global stability limits exist:
 \begin{subequations}
 \begin{equation}
-\underset{t\rightarrow\infty}{\lim}\vec{q}_e=0~~\text{and}~~\underset{t\rightarrow\infty}{\lim}\widetilde{\Omega}=0
+\underset{t\rightarrow\infty}{\lim}\vec{q}_e=\vec{0}~~\text{and}~~\underset{t\rightarrow\infty}{\lim}\widetilde{\Omega}=\vec{0}
 \end{equation}
 Then, from the auxiliary plant definition(s) in Eq:\ref{eq:aux-pd-2}, the extended limits present themselves;
 \begin{equation}
 \underset{t\rightarrow\infty}{\lim}\vec{\omega}_b=\vec{0}\Big|_{\vec{\omega}_d=\vec{0}}~~~\text{and}~~~\underset{t\rightarrow\infty}{\lim}\bar{\Omega}=\vec{0}
 \end{equation}
 \end{subequations}
-Whilst global asymptotic stability is indeed satisfactory, faster exponential stability is obviously more desirable. The stability proof for $V_{_{XPD}}$ can be extended to a stabilizing exponentially bounded trajectory. From a quaternion's inherent definition it follows that $0\leq |q_0| \leq 1$. It can then be stated that:
+Whilst asymptotic stability is indeed satisfactory, faster exponential stability is obviously more desirable. The stability proof for $V_{_{XPD}}$ can be extended to a stabilizing, exponentially bounded trajectory. From a unit quaternion's inherent definition and the constraint applied to the quaternion scalar $0\leq |q_0| \leq 1$, it can be stated that:
 \begin{equation}\label{eq:4.34}
-1-|q_0|\leq 1-q_0^2=\norm{\vec{q}_e}^2
+1-q_0\leq 1-q_0^2=\norm{\vec{q}_e}^2~~q_0\in[0:1]
 \end{equation}
 Exponential stability is a maximum boundedness proof; the relationship Eq:\ref{eq:4.34} can then replace the quaternion scalar term $2(1-q_0)$ in $V_{_{XPD}}$ as an upper bound. The LFC is then rewritten in terms of its component's norm(s) to produce a bounding inequality:
 \begin{subequations}\label{eq:xpd-ibc}
@@ -609,7 +614,7 @@ V_{_{XPD}}=\vec{q}_e\text{}^T\vec{q}_e+(q_0-1)^2+\frac{1}{2}\widetilde{\Omega}\t
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\rightarrow V_{_{XPD}}\leq 2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\Gamma_3^{-1}J_b(u)||\widetilde{\Omega}||\text{}^2
+\therefore V_{_{XPD}}\leq 2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\Gamma_3^{-1}J_b(u)||\widetilde{\Omega}||\text{}^2
 \end{equation}
 Similarly the LFC's derivative can be written in terms of its norms as:
 \begin{equation}
@@ -624,23 +629,23 @@ Where the function $\lambda_{max}$ represents the maximum eigenvalue of its argu
 \begin{equation}
 \dot{V}_{_{XPD}} \leq -min \big\{ \lambda_{min}(\Gamma_1),\lambda_{min}(\Gamma_2\Gamma_3\text{}^{-1})\big\}\big(\norm{\vec{q}_e}\text{}^2+||\widetilde{\Omega}||^2 \big)
 \end{equation}
-Therefore there exists some ratio $\alpha>0$ that satisfies the relationship requirement between the LCF and its derivative; $\dot{V}_{_{XPD}}\leq -\alpha V_{_{XPD}}$, where $\alpha$ is defined as the ratio:
+Therefore there exists some ratio $\alpha>0$ that satisfies the relationship requirement between the LCF and its derivative; $\dot{V}_{_{XPD}}< -\alpha V_{_{XPD}}$, where $\alpha$ is defined as the ratio:
 \begin{equation}
 \alpha=\frac{min\big\{\lambda_{min}(\Gamma_1),\lambda_{min}(\Gamma_2\Gamma_3\text{}^{-1})\big\}}{max\big\{2,\frac{\lambda_{max}(\Gamma_3\text{}^{-1}J_b(u))}{2}\big\}}
 \end{equation}
 The attitude trajectory $\big(\vec{q}_e(t),\widetilde{\Omega}(t)\big)$ is then exponentially bounded by:
 \begin{equation}\label{eq:exponential-pd}
-\big(\norm{\vec{q}_e(t)},||\widetilde{\Omega}(t)||\big)\leq Me^{-\alpha t/2}\big(\norm{\vec{q}_e(0)},||\widetilde{\Omega}(0)||\big)
+\big(\norm{\vec{q}_e(t)},||\widetilde{\Omega}(t)||\big)\leq Me^{-\alpha t}\big(\norm{\vec{q}_e(0)},||\widetilde{\Omega}(0)||\big)
 \end{equation}
 The bounding exponential coefficient $\alpha$ can be found using maximum Eigen values for the maximum inertia $J_b(u_{\Lambda})$ from Eq:\ref{eq:inertia-max}. Using the relationship in Eq:\ref{eq:exponential-pd} and testing proposed controller coefficients for $\Gamma_1,~\Gamma_2,~\Gamma_3$ the settling rate can be optimized.
 \par
 \emph{\color{Gray}The above stability proof for the auxiliary attitude controller was expanded upon and derived from \cite{attitudestabilization}, adapted to fit attitude setpoint tracking. Introduction of the quaternion error, which is dependent on the quaternion scalar, dramatically improves controller performance. The exponential stability notably improves settling times and overshoot errors, demonstrated in Sec:\ref{subsec:simulation.attitude.xpd}.}
-\newpage
+\par
 Interestingly, a previous \cite{robustattitude} was the precursor for PD based attitude plants with asymptotic exponential stability. That first proposed control law did not make use of any defined \emph{auxiliary plants}, unlike Eq:\ref{eq:control-aux-pd}; however equivalent terms were effectively incorporated. The control law was developed for spacecraft attitude tracking and proposed a very similar exponentially stabilizing control scheme to that of $\vec{\tau}_{_{XPD}}$. That controller, when changed to the notational convention used here, designs body torque as:
 \begin{equation}\label{eq:control-auxp-pd}
 \vec{\tau}^{\hspace{3pt}'}_{_{XPD}}=-\frac{1}{2}\Big[\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\Gamma_1+\alpha\big(1-q_0\mathbb{I}_{3\times 3}\big)\Big]\vec{q}_e-\Gamma_2\vec{\omega}_b\in\mathcal{F}^b
 \end{equation} 
-Eq:\ref{eq:control-auxp-pd} could easily incorporate plant dependent compensation to accommodate for unwanted nonlinear dynamics. Both exponentially stabilizing PD controllers, from Eq:\ref{eq:control-aux-pd} and above Eq:\ref{eq:control-auxp-pd}, bear a striking similarity to the ideal backstepping controllers derived in the sequel, Eq:\ref{eq:control-ibc}. 
+Eq:\ref{eq:control-auxp-pd} could easily incorporate plant dependent compensation to accommodate for unwanted nonlinear dynamics. Both exponentially stabilizing PD controllers, from Eq:\ref{eq:control-aux-pd} and above Eq:\ref{eq:control-auxp-pd}, carries a striking similarity to the ideal backstepping controllers derived in the sequel, Eq:\ref{eq:control-ibc}. 
 %====================================================
 \subsection{Nonlinear Controllers}
 \label{subsec:control.attitude.nonlinear}
