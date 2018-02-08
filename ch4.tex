@@ -296,7 +296,7 @@ An LFC could simply be positive semi-definite over the trajectory's path, the qu
 \nabla V(\vec{\mathbf{x}})\triangleq\bigg[\frac{\partial V(\vec{\mathbf{x}})}{\partial x_1}~\frac{\partial V(\vec{\mathbf{x}})}{\partial x_2}~\ldots~\frac{\partial V(\vec{\mathbf{x}})}{\partial x_n}\bigg]~~~~\vec{\mathbf{x}}\in\mathbb{R}^n
 \end{equation}
 The energy function's derivative, otherwise referred to as the \emph{Lie derivative}, is calculated from partial derivatives in Eq:\ref{eq:4.20} as follows:
-\begin{equation}
+\begin{equation}\label{eq:lyapunov-derivative}
 \dot{V}(\vec{\mathbf{x}})\triangleq\nabla V(\vec{\mathbf{x}})^Tf(\vec{\mathbf{x}})=\frac{\partial V(\vec{\mathbf{x}})}{\partial x_1}f_1(x_1)+\frac{\partial V(\vec{\mathbf{x}})}{\partial x_2}f_2(x_2)+~\ldots~+\frac{\partial V(\vec{\mathbf{x}})}{\partial x_n}f_n(x_b)
 \end{equation}
 Lyapunov's theorem states that if the candidate function $V(\vec{\mathbf{x}})$ is positive definite with $V(\vec{0})=0$ and its derivative is strictly negative; $\dot{V}(\vec{\mathbf{x}})< 0~~\forall \vec{\mathbf{x}}(t) \not= 0$, the system has global uniform asymptotic stability ($\mathbf{GUAS}$ from Eq:\ref{eq:asymptotic-stability}). Mathematically that means, for any $\vec{\mathbf{x}}(t)$ with $t\geq t_0$:
@@ -718,173 +718,191 @@ Starting with the ideal case for the first proposed backstepping controller (sim
 \begin{equation}\label{eq:ibc-lfc-1}
 V_1(Q_e)=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2>0~~\forall(Q_e)\not = 0
 \end{equation}
-The first proposed LFC is positive definite from constraints imposed on the quaternion error trajectory in Eq\ref{eq:constrained-quaternion-error}. After substituting in the quaternion rates but \emph{without} using the quaternion reduction proposed in Eq:\ref{eq:4.18}, $V_1(Q_e)$ has a Lie derivative:
+The first proposed LFC is positive definite using constraints imposed on the quaternion error trajectory in Eq\ref{eq:constrained-quaternion-error}. After substituting in the quaternion rates but \emph{without} using the quaternion reduction proposed in Eq:\ref{eq:4.18}, $V_1(Q_e)$ has a derivative using Eq:\ref{eq:lyapunov-derivative}:
 \begin{subequations}
 \begin{equation}
-\dot{V}_1=2\vec{q}_e\text{}^T\frac{1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-2\big(1-q_0\big)\dot{q}_0
+\dot{V}_1(Q_e)=2\vec{q}_e\text{}^T\frac{1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-2\big(1-q_0\big)\dot{q}_0
 \end{equation}
-\vspace{-5pt}
+\vspace{-8pt}
 \begin{equation}
 =\vec{q}_e\text{}^T\Big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\Big)\vec{\omega}_e+\big(1-q_0\big)\vec{q}_e\text{}^T\vec{\omega}_e
 \end{equation}
-Simplifying further and then substituting the angular velocity set point; $\vec{\omega}_e=\vec{\omega}_d-\vec{\omega}_b=-\vec{\omega}_b$:
+Substituting the angular velocity set point $\vec{\omega}_e=-\vec{\omega}_b\big|_{\vec{\omega}_e=\vec{0}}$ from Eq:\ref{eq:4.27c}:
 \begin{equation}
-=\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\omega}_e+\vec{q}_e\text{}^T\vec{\omega}_e
+\therefore\dot{V}_1=\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\omega}_e+\vec{q}_e\text{}^T\vec{\omega}_e
 \end{equation}
-\vspace{-5pt}
-\begin{equation}
+\vspace{-8pt}
+\begin{equation}\label{eq:4.66b}
 =-\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\omega}_b-\vec{q}_e\text{}^T\vec{\omega}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \end{subequations}
-Then choosing the first virtual backstepping control input $\gamma_d$. Note that $\gamma_d$ is used here to \emph{differentiate the backstepping design} variable from the trajectory commanded $\vec{\omega}_d$, Eq:\ref{eq:angular-error}. Choosing $\gamma_d$ such that the first LFC Eq:\ref{eq:ibc-lfc-1} is negative definite, $\dot{V}_1<0$:
+Then choosing a stabilizing backstepping control input $\vec{\gamma}_d$, which is a backstepping commanded input body rate for $\vec{\omega}_b$ in Eq:\ref{eq:4.66b}. Convention would have it that a backstepping stabilizing input for $\vec{\omega}_b$ would be $\vec{\omega}_d$, however $\vec{\gamma}_d$ is used here to \emph{differentiate the backstepping stabilizing input} from the trajectory commanded angular velocity $\vec{\omega}_d$, Eq:\ref{eq:angular-error}.
+\par 
+Then selecting the stabilizing backstepping input $\vec{\gamma}_d$ such that the Lyapunov function candidate's derivative $\dot{V}_1$ in Eq:\ref{eq:ibc-lfc-1} is negative definite when $\vec{\gamma}_d$ is substituted for $\vec{\omega}_b$.
 \begin{equation}
-\vec{\omega}_b\Rightarrow\gamma_d=\Gamma_1\vec{q}_e
+\vec{\gamma}_d\triangleq\Gamma_1\vec{q}_e
 \end{equation}
-Where $\Gamma_1$ is the first symmetric positive definite gain matrix, a fact that is important to stress due to positive definite matrix's invertability. That backstepping input simplifies the LFC derivative $\dot{V}_1$ to the negative definite term:
+Where $\Gamma_1$ is a symmetric positive definite gain matrix, a fact that is important to stress due to positive definite matrix's invertability. 
+\par
+That backstepping input simplifies the LFC derivative $\dot{V}_1$ to the negative definite term:
 \begin{subequations}
 \begin{equation}
-\dot{V}_1=-\vec{q}_e\text{}^T[\vec{q}_e]_\times\gamma_d-\vec{q}_e\text{}^T\gamma_d
+\therefore\dot{V}_1=-\vec{q}_e\text{}^T[\vec{q}_e]_\times\vec{\gamma}_d-\vec{q}_e\text{}^T\vec{\gamma}_d\Big|_{\vec{\omega}_b=\vec{\gamma}_d}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
 =-\vec{q}_e\text{}^T[\vec{q}_e]_\times\Gamma_1\vec{q}_e-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e
 \end{equation}
-And considering a vector cross product with itself has a zero resultant, $\vec{q}_e\text{}^T[\vec{q}_e]_\times=\vec{0}$, $\dot{V}_1$ then reduces:
+Considering a vector cross product with itself has a zero resultant it follows that $\vec{q}_e\text{}^T[\vec{q}_e]_\times=\vec{0}$. The LFC derivative $\dot{V}_1$ reduces:
 \begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e<0
+\therefore\dot{V}_1=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e<0~~\forall(Q_e),~~\exists\Gamma_1>0
 \end{equation}
 \end{subequations}
-However, that backstepping input $\gamma_d$ has its own associated error. A stabilizing law $z_1$ needs to control that error:
+The stabilizing backstepping input $\vec{\gamma}_d$ then has its own associated error $\vec{z}_1$ because of differences between $\vec{\omega}_b$ and $\vec{\gamma}_d$.
 \begin{subequations}
 \begin{equation}
-z_1\triangleq\gamma_d-\vec{\omega}_b=\Gamma_1\vec{q}_e-\vec{\omega}_b\Big|_{\gamma_d=\Gamma_1\vec{q}_e}
+\vec{z}_1\triangleq\vec{\gamma}_d-\vec{\omega}_b=\Gamma_1\vec{q}_e-\vec{\omega}_b\Big|_{\vec{\gamma}_d=\Gamma_1\vec{q}_e}
+\end{equation}
+Defining a variable substitution for the body angular velocity $\vec{\omega}_d$ with the stabilizing backstepping input $\vec{\gamma}_d$ and its error $\vec{z}_1$:
+\begin{equation}\label{eq:backstepping-substitution}
+\vec{\omega}_b=\Gamma_1\vec{q}_e-z_1
+\end{equation}
+Substituting Eq:\ref{eq:backstepping-substitution} back into the LFC derivative:
+\begin{equation}
+\therefore\dot{V}_1=-\vec{q}_e\text{}^T[\vec{q}_e]_\times\big(\vec{\gamma}_d-\vec{z}_1\big)-\vec{q}_e\text{}^T\big(\vec{\gamma}_d-\vec{z}_1\big)
+\end{equation}
+\vspace{-16pt}
+\begin{equation}
+=-\vec{q}_e\text{}^{T}\big(\Gamma_1\vec{q}_e-z_1\big)\Big|_{\vec{\gamma}_d=\Gamma_1\vec{q}_e}
 \end{equation}
 \vspace{-8pt}
-\begin{equation}
-\rightarrow\vec{\omega}_b=\Gamma_1\vec{q}_e-z_1
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
-\therefore\dot{V}_1=-\vec{q}_e\text{}^{T}\vec{\omega}_b=-\vec{q}_e\text{}^{T}\big(\Gamma_1\vec{q}_e-z_1\big)\Big|_{\vec{\omega}_b\Rightarrow\gamma_d}
-\end{equation}
-\vspace{-10pt}
-\begin{equation}
+\begin{equation}\label{eq:4.67e}
 =-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+\vec{q}_e\text{}^{T}z_1
 \end{equation}
 \end{subequations}
-Introducing that error $z_1$ into a second LCF, which expands the first proposed $V_1$. And exploiting the fact that $\Gamma_1$ is symmetrical:
-\begin{subequations}
+Introducing that error $\vec{z}_1$ into a second Lyapunov candidate function which extends from the first proposed energy candidate function $V_1$.
+\begin{subequations}\label{eq:second-function-candidate}
 \begin{equation}\label{eq:ibc-lfc}
-V_2(Q_e,z_1)=V_1(\vec{q}_e)+\frac{1}{2}z_1\text{}^Tz_1
-\end{equation}
-\vspace{-6pt}
-\begin{equation}
-=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1~~>0,~\forall(Q_e,z_1)
-\end{equation}
-\end{subequations}
-That first error $z_1$ has its own time derivative, and recalling the body's angular acceleration $\dot{\vec{\omega}}_b$ from earlier with an undefined input $\vec{\tau}_{_{IBC}}$, which still has plant dependency compensation.
-\begin{subequations}
-\begin{equation}
-\dot{z}_1=\Gamma_1\dot{\vec{q}}_e-\dot{\vec{\omega}}_b
+V_2(Q_e,z_1)=V_1(Q_e)+\frac{1}{2}z_1\text{}^Tz_1
 \end{equation}
 \vspace{-12pt}
 \begin{equation}
+=\vec{q}_e\text{}^T\vec{q}_e+(1-q_0)^2+\frac{1}{2}z_1\text{}^Tz_1>0~~\forall(Q_e,z_1)\not = 0
+\end{equation}
+\end{subequations}
+That first error $z_1$ has its own rate which, using the body's angular acceleration $\dot{\vec{\omega}}_b$ from earlier with but undefined input $\vec{\tau}_{_{IBC}}$, is:
+\begin{subequations}
+\begin{equation}
+\dot{\vec{z}}_1=\Gamma_1\dot{\vec{q}}_e-\dot{\vec{\omega}}_b
+\end{equation}
+\vspace{-14pt}
+\begin{equation}
 =\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_e-\dot{\vec{\omega}}_b
 \end{equation}
-\vspace{-10pt}
+\vspace{-8pt}
 \begin{equation}
 =-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-\dot{\vec{\omega}}_b\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
-\vspace{-4pt}
+\vspace{-6pt}
 \begin{equation}\label{eq:z-deriv}
 =-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)
 \end{equation}
 \end{subequations}
-So then, following from Eq:\ref{eq:z-deriv}, finding the derivative of $\dot{V}_2$, with $\dot{V}_1=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)$:
+So then, using stabilizing backstepping input's error rate $\dot{\vec{z}}_1$ from Eq:\ref{eq:z-deriv} to find the second LFC's derivative $\dot{V}_2$ where $\dot{V}_1=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{q}_e\text{}^T\vec{z}_1$ from Eq:\ref{eq:4.67e}, gives:
 \begin{subequations}\label{eq:ibc-deriv}
+\begin{equation}
+\therefore\dot{V}_2=\dot{V}_1+\vec{z}_1\text{}^T\dot{\vec{z}}_1=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{q}_e\text{}^T\vec{z}_1+\vec{z}_1\text{}^T\dot{\vec{z}}_1
+\end{equation}
+\vspace{-28pt}
 \begin{multline}
-\dot{V}_2=-\vec{q}_e\text{}^T\big(\Gamma_1\vec{q}_e-z_1\big)+z_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{q}_e\text{}^T\vec{z}_1+\vec{z}_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
 \\
 -J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)\bigg)
 \end{multline}
-\vspace{-25pt}
-\begin{multline}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
+\vspace{-26pt}
+\begin{multline}\label{eq:4.70c}
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{z}_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
 \\
 -J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)
 \bigg)
 \end{multline}
 \end{subequations}
-So then proposing the exactly matched stabilizing backstepping control law using state estimes:
+Then proposing the precisely matched stabilizing backstepping control law, using state estimates:
 \begin{subequations}\label{eq:control-ibc}
 \begin{equation}
-\vec{\tau}_{_{IBC}}=J_b(\hat{u})\vec{q}_e-\frac{J_b(\hat{u})\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b+J_b(\hat{u})\Gamma_2z_1+\hat{\omega}_b\times J_b(\hat{u})\vec{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H
+\vec{\tau}_{_{IBC}}=J_b(\hat{u})\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b+\Gamma_2\vec{z}_1\bigg)+\hat{\omega}_b\times J_b(\hat{u})\vec{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H
 \end{equation}
-Noting that $z_1=\Gamma_1\vec{q}_e-\vec{\omega}_b$ and using the quaternion rate's vector definition, Eq:\ref{eq:quat-derivative}, the IBC torque law reduces:
+where $\Gamma_2$ is another positive-definite symmetric coefficient matrix. Recalling that $\vec{z}_1=\Gamma_1\vec{q}_e-\vec{\omega}_b$ and using the quaternion rate's vector definition from Eq:\ref{eq:control-quat-derivative}, the ideal backstepping torque control law simplifies to:
 \begin{equation}
-=\underbrace{J_b(\hat{u})\Big((\Gamma_1\Gamma_2+1)\vec{q}_e-\Gamma_2\hat{\omega}_b+\Gamma_1\dot{\vec{q}}_e \Big)}_{\text{Ideal backstepping}}
+\therefore\vec{\tau}_{IBC}=\underbrace{J_b(\hat{u})\Big((\Gamma_1\Gamma_2+1)\vec{q}_e-\Gamma_2\hat{\omega}_b+\Gamma_1\dot{\vec{q}}_e \Big)}_{\text{Ideal backstepping}}
 +\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H}_{\text{Compenstation}}~~~~\in\mathcal{F}^{b}
 \end{equation}
 \end{subequations}
-With $\Gamma_2$ being another positive-definite symmetric coefficient matrix. Then with the control law $\vec{\tau}_{_{IBC}}$ introduced into the LCF derivative and assuming state estimates have negligible errors, $\dot{V}_2$ simplifies to negative definite:
+Substituting the backstepping control law $\vec{\tau}_{_{IBC}}$ into the Lyapunov candidate function's derivative $\dot{V}_2$ in Eq:\ref{eq:4.70c} and assuming that state estimate errors are negligible, $\dot{V}_2$ simplifies to negative definite:
 \begin{subequations}
 \begin{multline}
-\dot{V}_2=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+z_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
+\therefore\dot{V}_2=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+\vec{z}_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\Big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\Big)\vec{\omega}_b
 \\
--J_b^{-1}(u)\big(J_b(\hat{u})(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(\hat{u})\Gamma_2\hat{\omega}_b+J_b(\hat{u})\Gamma_1\dot{\vec{q}}_e\big)\bigg)
+-J_b^{-1}(u)\Big(J_b(\hat{u})(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(\hat{u})\Gamma_2\hat{\omega}_b+J_b(\hat{u})\Gamma_1\dot{\vec{q}}_e\Big)\bigg)
 \end{multline}
 \vspace{-12pt}
 \begin{equation}
-\therefore\dot{V}_2=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+z_1\text{}^T\big(\Gamma_1\Gamma_2\vec{q}_e-\Gamma_2\hat{\omega}_b\big)
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{z}_1\text{}^T\Gamma_2\Big(\Gamma_1\vec{q}_e-\hat{\omega}_b\Big)
 \end{equation}
 \vspace{-10pt}
-\begin{equation}
-=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1~~<0,~\forall~(Q_e,z_1),~\exists(\Gamma_1,\Gamma_2)>0
+\begin{equation}\label{eq:4.72c}
+=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1<0~~\forall~(\vec{q}_e,z_1),~~q_0\in[0:1],~~\exists(\Gamma_1,\Gamma_2)>0
 \end{equation}
 \end{subequations}
-As such $\vec{q}_e\rightarrow 0$ and $q_0\rightarrow 1$ as $t\rightarrow\infty$. Similarly $z_1\rightarrow 0$, which leads to the limit:
+Because Eq:\ref{eq:4.72c} is negative definite, the following stabilizing limits then exist:
+\begin{subequations}
 \begin{equation}
-\underset{t\rightarrow\infty}{\lim}(\Gamma_1\vec{q}_e-\vec{\omega}_b)=\vec{0}
-\end{equation} 
-Because the quaternion error vector already tends to $0$;$~\vec{q}_e\rightarrow \vec{0}$, it follows that $\vec{\omega}_b\rightarrow \vec{0}$ as well. It can also be said that, from the definition of $\vec{\omega}_e$, that the angular velocity error stabilizes too. There is a distinct similarity in the structure of $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc} and that of the auxiliary PD controller presented in Eq:\ref{eq:control-aux-pd}. Expanding $\vec{\tau}_{_{XPD}}$ into state terms using the definitions of each auxiliary plant, $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$:
+\underset{t\rightarrow\infty}{\lim}Q_e = \begin{bmatrix}
+1 & \vec{0}\hspace{2pt}
+\end{bmatrix}^T
+\end{equation}
+Furthermore, the stabilizing backstepping input error $\vec{z}_1$ is limited:
+\begin{equation}
+\underset{t\rightarrow\infty}{\lim}\vec{z}_1=\Gamma_1\vec{q}_e-\vec{\omega}_b = \vec{0}
+\end{equation}
+\end{subequations}
+Because the quaternion error vector is stabilized $\vec{q}_e\rightarrow \vec{0}$, it follows that the angular velocity is stabilized as well $\vec{\omega}_b\rightarrow \vec{0}$. From the definition of the angular velocity error $\vec{\omega}_e$, that error is stabilized too. There is a distinct similarity in the structure of $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc} and that of the auxiliary PD controller presented in Eq:\ref{eq:control-aux-pd}. Expanding $\vec{\tau}_{_{XPD}}$ into state terms using the definitions of each auxiliary plant, $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$:
 \begin{equation}\label{eq:simplified-auxpd}
 \vec{\tau}_{_{XPD}}=\big(\Gamma_1\Gamma_2+\Gamma_3\big)\vec{q}_e-\Gamma_2\hat{\omega}_b-\frac{\Gamma_1J_b(\hat{u})}{2}([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3})\hat{\omega}_b
 \end{equation}
-Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof is proposed in the sequel. Recalling Eq:\ref{eq:4.34}:
+Furthermore, using the same reasoning from Eq:\ref{eq:xpd-ibc}, the exponential stability proof is proposed in the sequel. Recalling the unit quaternion bounding identity Eq:\ref{eq:4.34}:
 \begin{subequations}
 \begin{equation}
-q_0-1\leq 1 - q_0^{2} = \norm{\vec{q_e}}^2
+1-q_0\leq 1 - q_0^{2} = \norm{\vec{q_e}}^2
 \end{equation}
-\vspace{-15pt}
+The ideal backstepping Lyapunov function candidate $V_2$ from Eq:\ref{eq:second-function-candidate} is then bound from above by:
 \begin{equation}
-V_{_{IBC}}\leq V_{_{IBC}}\hspace{-2pt}'=2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\norm{z_1}\text{}^2
+V_{_{IBC}}=2\big(1-q_0)+\frac{1}{2}\vec{z}_1\text{}^T\vec{z}_1\leq 2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\norm{z_1}\text{}^2
 \end{equation}
-\vspace{-15pt}
+That LFC's derivative is similarly bound from below by:
 \begin{equation}
-\dot{V}_{_{IBC}}\leq\dot{V}_{_{IBC}}\hspace{-2pt}'=-\Gamma_1\norm{\vec{q}_e}\text{}^2-\Gamma_2\norm{z_1}\text{}^2
+\dot{V}_{_{IBC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-\vec{z}_1\text{}^T\Gamma_2\vec{z}_1\leq\dot{V}_{_{IBC}}\hspace{-2pt}'=-\Gamma_1\norm{\vec{q}_e}\text{}^2-\Gamma_2\norm{z_1}\text{}^2
 \end{equation}
 \end{subequations}
 Then both the energy function and its derivative are bounded respectively by the following Eigen value limits:
 \begin{subequations}
 \begin{equation}
-V_{_{IBC}}\leq \bigg\{2,~\frac{1}{2}\bigg\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
+V_{_{IBC}}\leq max\bigg\{2,~\frac{1}{2}\bigg\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
 \dot{V}_{_{IBC}}\leq -min\big\{\lambda_{min}(\Gamma_1),~\lambda_{min}(\Gamma_2)\big\}(\norm{\vec{q}_e}\text{}^2+\norm{z_1}\text{}^2)
 \end{equation}
 \end{subequations}
-Which then leads to a similar exponential stability trajectory boundedness such that:
-\begin{subequations}
+The positive ratio $\alpha$ can then be found that proportionally relates the Lyapunov energy function $V_{_{IBC}}$ with its derivative $\dot{V}_{_{IBC}}$ such that $\dot{V}_{_{IBC}} \leq -\alpha V_{_{IBC}}$. That ratio $\alpha$ is found:
 \begin{equation}
-\dot{V}_{_{IBC}} \leq -\alpha V_{_{IBC}}
+\alpha=frac{min\big\{\lambda_{min}(\Gamma_1),\lambda_{min}(\Gamma_2)\big\}}{2}
 \end{equation}
-\vspace{-15pt}
+which exponentially limits the attitudes trajectory:
 \begin{equation}
 \therefore V\big(\norm{\vec{q}_e(t)},\norm{z_1(t)}\big)\leq Me^{-\alpha t/2}V\big(\norm{\vec{q}_e(0)},\norm{z_1(0)}\big)
 \end{equation}
-\end{subequations}
-Whilst stabilizing, the IBC controller is not globaly stable. The plant conditions require exact plant matching and account for no unmodelled disturbances or measurement uncertainty. In practice the introduction of some disturbance torque $\vec{L}$ could potentially drive Eq:\ref{eq:ibc-deriv} away from negative-definite such that stability is lost.
+The plant conditions require exact plant matching and account for no unmodelled disturbances or measurement uncertainty. In practice the introduction of some disturbance torque $\vec{\tau}_L$ could potentially drive Eq:\ref{eq:ibc-deriv} away from negative-definite such that stability is lost.
 %====================================================
 \subsubsection{Adaptive Backstepping Controller}
 \label{subsubsec:control.attitude.nonlinear.adaptivebackstep}
