@@ -4,7 +4,7 @@
 \chapter{Controller Allocation}
 \label{ch:allocation}
 %====================================================
-Higher level attitude and position controllers (from Sec:\ref{sec:control.attitude} and Sec:\ref{sec:control.position} respectively) design a virtual control input $H(\vec{\mathbf{x}}_e,t)=\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d]^T$ to be applied by the vehicles actuators. The system's overactuation was previously described in Sec:\ref{sec:control.inputs}; this chapter aims to solve for explicit actuator positions from that virtual input. A simplified allocation block, reduced from Fig:\ref{fig:control-block},is shown in Fig:\ref{fig:allocation-block}.
+Higher level attitude and position controllers (from Sec:\ref{sec:control.attitude} and Sec:\ref{sec:control.position} respectively) design a virtual control input $\mathcal{H}(\vec{\mathbf{x}}_e,t)=\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d]^T$ to be applied by the vehicle's actuators. The system's overactuation was previously described in Sec:\ref{sec:control.inputs}, this chapter aims to solve for explicit actuator commands using controller generated virtual input $\vec{\nu}_d$. A simplified allocation block, reduced from Fig:\ref{fig:control-block}, is shown in Fig:\ref{fig:allocation-block}.
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
@@ -27,21 +27,21 @@ Higher level attitude and position controllers (from Sec:\ref{sec:control.attitu
 \vspace{-16pt}
 \end{figure}
 \par
-A distribution rule is needed to \emph{allocate} out physical actuator positions $u_c\in\mathbb{U}$ to command that input $\vec{\nu}_c$, from Eq:\ref{eq:control-input}. As mentioned previously (pseudo) inversion based allocation requires an affine actuator effectiveness function; the allocator is abstracted to first solve for four thrust vectors which are applied by each motor module, Eq:\ref{eq:4.7}.
+A distribution rule is needed to \emph{allocate} physical actuator positions $\vec{u}_c\in\mathbb{U}$ to command that input $\vec{\nu}_c$, from Eq:\ref{eq:control-input}. As mentioned previously (pseudo) inversion based allocation uses an affine actuator effectiveness function, it is worth mentioning a multiplicative effectiveness function is \emph{convenient} but not crucial to allocation. The allocator is abstracted to first solve for four thrust vectors which are applied by each motor module, Eq:\ref{eq:4.7}.
 \begin{equation}\label{eq:5.1}
-B^{\dagger}(\vec{\mathbf{x}},t)\vec{\nu}_d=\begin{bmatrix}
+\vec{T}_{[1:4]}=B^{\dagger}(\vec{\mathbf{x}},t)\vec{\nu}_d=\begin{bmatrix}
 \vec{T}_1&\vec{T}_2&\vec{T}_3&\vec{T}_4
 \end{bmatrix}^T
 \end{equation}
-Each 3-D thrust vector is then used to solve for each module's propeller speed in $\text{RPM}$ and both servo rotational positions in $\text{rad}$; undoing rotation applied by the motor module's structure in Fig:\ref{fig:allocation-redirect}.
+Each 3-D thrust vector is then used to solve for each module's propeller speed in $[\text{RPM}]$ and both servo rotational positions in $[\text{rad}]$, undoing rotation applied by the motor module's structure in Fig:\ref{fig:allocation-redirect}.
 \begin{equation}
-u\cdot i = \begin{bmatrix}\Omega_i&\lambda_i&\alpha_i\end{bmatrix}^T=R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
+u_i = \begin{bmatrix}\Omega_i&\lambda_i&\alpha_i\end{bmatrix}^T=R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~~~\text{for}~i\in[1:4]
 \end{equation}
 %====================================================
 \section{Generalized allocation}
 \label{sec:allocation.slack}
 %====================================================
-Regular, unconstrained control allocation is solved as an optimization problem; shown in \cite{allocation,controlallocation}. The aim is to minimize deviation (\emph{slack}) between the virtual and commanded control inputs, $\vec{\nu}_d$ and $\vec{\nu}_c$ respectively. For the control law's virtual input $\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,t)$ the optimization is then posed as:
+Regular, unconstrained control allocation is solved as an optimization problem, shown in \cite{allocation,controlallocation}. The aim is to minimize deviation (\emph{slack}) between the virtual and commanded control inputs, $\vec{\nu}_d$ and $\vec{\nu}_c$ respectively. For the control law's virtual input $\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,t)$ the optimization is then posed as:
 \begin{equation}\label{eq:allocation-slack}
 \underset{u\in\mathbb{U}^{m},~s\in\mathbb{R}^{n}}{min}\big(\norm{Q_s}\big)~~\text{such that}~~\vec{\nu}_d-\vec{\nu}_c=\mathcal{H}(\vec{\mathbf{x}}_e,t)-B(\vec{\mathbf{x}},t,u)\triangleq s
 \end{equation}
