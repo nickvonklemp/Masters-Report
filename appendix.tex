@@ -242,69 +242,6 @@ arctan2\big(2(q_0q_z+q_xq_y),~1-2(q_y\text{}^2+q_z\text{}^2)\big)
 \end{bmatrix}
 \end{equation}
 %-----------------------------------------------------
-\section{Solving for Actuator Positions from Thrust Vectors}
-\label{app:equations.inversion}
-%-----------------------------------------------------
-Expanding on Eq:\ref{eq:allocator-inersion} from Sec:\ref{sec:allocation.inversion} to solve for discrete propeller and servo positions $[\Omega_i~\lambda_i~\alpha_i]^T$ from allocated thrust vectors $\vec{T}_{1\rightarrow 4}$, the following equations solve for actuator positions for \emph{each} motor module $i\in[1:4]$. For motor module 1 when $\sigma_1=0$\textdegree~ :
-\begin{subequations}
-\begin{equation}
-\begin{bmatrix}
-\Omega_1\\
-\lambda_1\\
-\alpha_1
-\end{bmatrix}
-=
-R^\dagger(\mathbf{x},\vec{T}_1,t)\triangleq
-\begin{bmatrix}
-\Big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\Big)\text{}^{\frac{1}{2}}\\
-atan2(-T_y\text{}^2,~||\vec{T}_1||\sqrt{||\vec{T}_1||\text{}^2-T_y\text{}^2})\\
-atan2(T_x,~T_z||\vec{T}_1||)
-\end{bmatrix}
-\end{equation}
-\begin{equation}
-\begin{bmatrix}
-\Omega_2\\
-\lambda_2\\
-\alpha_2
-\end{bmatrix}
-=
-R^\dagger(\mathbf{x},\vec{T}_2,t)\triangleq
-\begin{bmatrix}
-\Big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\Big)\text{}^{\frac{1}{2}}\\
-atan2(T_x\text{}^2,~||\vec{T}_2||\sqrt{||\vec{T}_2||\text{}^2-T_x\text{}^2})\\
-atan2(T_y,~T_z||\vec{T}_2||)
-\end{bmatrix}
-\end{equation}
-\begin{equation}
-\begin{bmatrix}
-\Omega_3\\
-\lambda_3\\
-\alpha_3
-\end{bmatrix}
-=
-R^\dagger(\mathbf{x},\vec{T}_3,t)\triangleq
-\begin{bmatrix}
-\Big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\Big)\text{}^{\frac{1}{2}}\\
-atan2(T_y\text{}^2,~||\vec{T}_2||\sqrt{||\vec{T}_2||\text{}^2-T_y\text{}^2})\\
-atan2(-T_x,~T_z||\vec{T}_2||)
-\end{bmatrix}
-\end{equation}
-\begin{equation}
-\begin{bmatrix}
-\Omega_4\\
-\lambda_4\\
-\alpha_4
-\end{bmatrix}
-=
-R^\dagger(\mathbf{x},\vec{T}_4,t)\triangleq
-\begin{bmatrix}
-\Big(\sqrt{T_x\text{}^2+T_y\text{}^2+T_z\text{}^2}/C_T(J)\rho D^4\Big)\text{}^{\frac{1}{2}}\\
-atan2(-T_x\text{}^2,~||\vec{T}_4||\sqrt{||\vec{T}_4||\text{}^2-T_x\text{}^2})\\
-atan2(-T_y,~T_z||\vec{T}_4||)
-\end{bmatrix}
-\end{equation}
-\end{subequations}
-%-----------------------------------------------------
 \chapter{Design Bill of Materials}
 \label{app:bom}
 %-----------------------------------------------------
