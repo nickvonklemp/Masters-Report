@@ -803,7 +803,6 @@ The improved performance from the position Ideal Backstepping controller is due 
 None of the proposed attitude or position controllers are unstable, each one achieves the goal of setpoint tracking in the context of stepped inputs. To corroborate dynamic setpoint tracking an increasing (\emph{chirp}) trajectory is commanded, illustrated in Fig:\ref{fig:trajectory}. The trajectory applies an increasing frequency rate of $1/60~[\text{Hz}.s^{-1}]$ starting from zero, such that at $t=60~[\text{s}]$ the trajectory orbits a central point $\vec{C}_0$ and completes a single orbit every minute. Eventually the increasing orbital frequency will push each controller beyond their tracking limit. Only two Proportional Derivative \emph{attitude} controllers are tested here, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}), to compare the effects of plant dependent compensation. It was shown previously that symmetric gain coefficients yield no performance improvements for the PD case, so only diagonal coefficient matrices were used. 
 \par
 Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independent controllers result in steady state errors, the same is shown to be true for trajectory tracking. Adaptive backstepping controllers and their disturbance rejection properties are only discussed next in Sec:\ref{sec:simulation.disturbance}. Each attitude controller is tested together with a common PD position controller, tracking the orbital XYZ position. Similarly each position controller is tested using a simple diagonal PD controller to track the attitude. The attitude controllers have an initial step to reach the orbital attitude from their starting attitude, $Q_0=[+1~\vec{0}\hspace{2pt}]^T$. Each controller's trajectory setpoint response and its respective tracking error are plotted together in pairs.
-\pagecolor{Yellow}
 \begin{figure}[htbp]
 \centering
 \vspace{-10pt}
@@ -870,44 +869,25 @@ Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independ
 \vspace{-10pt}
 \caption{Auxiliary PD attitude controller}
 \end{figure}
-
-
-
-
-
-
-\newpage
-\begin{figure}[hbtp]
-\begin{subfigure}{\textwidth}
-\vspace{-3pt}
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/PD_Diagonal_Dependent_Trajectory}
-\vspace{-11pt}
-\caption{Dependent Proportional Derivative Attitude Controller}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
-\vspace{-3pt}
-\centering
-\includegraphics[width=0.8\textwidth]{graphs/XPD_Trajectory}
-\vspace{-11pt}
-\caption{Auxiliary Plant Attitude Controller}
-\end{subfigure}
-\vspace{-24pt}
-\end{figure}
-\par
-\begin{figure}[hbtp]\ContinuedFloat
-\vspace{-6pt}
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[width=0.8\textwidth]{graphs/IBC_Trajectory}
-\vspace{-11pt}
-\caption{Ideal Backstepping Controller}
-\label{fig:attitude-trajectory-ibc-tracking}
-\end{subfigure}
 \vspace{-8pt}
-\caption{Attitude Trajectory Tracking}
-\label{fig:attitude-trajectory-tracking}
+\begin{subfigure}{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/IBC_Trajectory}
+\vspace{-18pt}
+\caption{Attitude trajectory}
+\label{fig:backstepping_trajectory}
+\end{subfigure}
+\begin{subfigure}{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/IBC_Error}
+\vspace{-18pt}
+\caption{Attitude trajectory error}
+\label{fig:backstepping_error}
+\end{subfigure}
 \vspace{-10pt}
+\caption{Ideal backstepping attitude controller}
 \end{figure}
 Each control law was successful in tracking a given trajectory each with little to no error, except of course for the plant independent attitude controller, Fig:\ref{fig:independent_diagonal_trjaectory}. Trajectory errors could be improved further with application of higher order state derivative in each controller (wherein $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$). The only notable difference between each attitude controller in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial attitude step, the Ideal Backstepping attitude controller (Fig:\ref{fig:attitude-trajectory-ibc-tracking}) oscillates whilst settling due to it's more aggressive response. The independent PD controller actually tracks some trajectory, but with a significant steady state error.
 \par
