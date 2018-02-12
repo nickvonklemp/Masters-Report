@@ -1229,7 +1229,7 @@ An ideal backstepping control law, assuming that $\vec{F}_D$ is known without er
 =m_b\Big(\big(1+\Gamma_1\Gamma_2\big)\vec{\zeta}_1-\big(\Gamma_1+\Gamma_2\big)\hat{v}_b\big)\Big)+\hat{\omega}_b\times m_b\hat{v}_b-m_b\vec{G}_b-\vec{F}_D
 \end{equation}
 where $\Gamma_2$ is another symmetric positive definite $[3\times 3]$ coefficient gain matrix. When that backstepping control law is substituted back into $\dot{V}_2$, the LFC derivative becomes negative definite:
-\begin{equation}
+\begin{equation}\label{eq:4.109c}
 \therefore\dot{V}_{_{IBC}}=\dot{V}_2=-\vec{\zeta}_1\text{}^T\Gamma_1\vec{\zeta}_1-\vec{\zeta}_2\text{}^T\Gamma_2\vec{\zeta}_2<0~~\forall(\vec{\zeta}_1,\vec{\zeta}_2),~\exists(\Gamma_1,\Gamma_2)>0
 \end{equation}
 \end{subequations}
