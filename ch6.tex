@@ -395,7 +395,7 @@ The $[3\times 3]$ symmetric controller's coefficients in Eq:\ref{eq:optimized-pd
 \end{subfigure}
 \vspace{-8pt}
 \caption{Increased gain PD}
-\vspace{-26pt}
+\vspace{-16pt}
 \end{figure}
 \par
 It is worth discussing the constrained quaternion error's scalar limited to $q_0\in[0:1]$. That constraint was imposed during the control stability proof (Sec:\ref{subsec:control.attitude.problem}) where the constrained quaternion ensured that each proposed Lyapunov function candidate was always positive definite. Commanding the same quaternion step from Eq:\ref{eq:attitude-step-position}, however using the negative counterpart of the quaternion error's scalar  $q_0\in[-1:0]$, gives a step response shown in Fig:\ref{fig:PD_Quaternion_Step}. No difference is produced from using $Q_e=[\pm q_0~\vec{q}_e]^T$, despite the requirements of the stability proof. A positive definite LFC \emph{ensures} suitable stability but is by no means the \emph{only condition} at which stability is achieved.
@@ -405,6 +405,7 @@ It is worth discussing the constrained quaternion error's scalar limited to $q_0
 \vspace{-6pt}
 \caption{Unconstrained Error Quaternion attitude step}
 \label{fig:PD_Quaternion_Step}
+\vspace{-10pt}
 \end{figure}
 %====================================================
 \subsection{Auxiliary Plant Controller}
@@ -770,25 +771,54 @@ Similar to the attitude backstepping controller, the position ideal backstepping
 \vspace{-20pt}
 \end{figure}
 \par
-Fig:\ref{fig:IBC_Position_Step} shows the step response to a change in translational position setpoint. Note that the position plotted in Fig:\ref{fig:IBC_Position_Step} is the relative position in the inertial frame $\mathcal{F}^{I}$, not the backstepping input $\vec{X}_e$. The Ideal Backstepping controller settles in $t_{95}=2.987~\text{s}$; demonstrating the improvement exponential stability has over asymptotic stability achieved by a PD controller previously\ldots
+Fig:\ref{fig:IBC_Position_Step} shows how the Ideal Backstepping controller stabilizes and tracks a step change to the translational position setpoint. Note that the position plotted in Fig:\ref{fig:IBC_Position_Step} is the relative position in the inertial frame $\mathcal{F}^{I}$, not the backstepping input $\vec{X}_e\in\mathcal{F}^b$. The Ideal Backstepping controller settles in $t_{95}=2.987~[\text{s}]$, faster than a regular proportional-derivative position controller. The exponentially bound error trajectory improves the controller's performance but, not unexpectedly, commands greater input forces (Fig:\ref{fig:IBC_Position_Force}) from larger spikes in the propeller's rotational speed, shown in Fig:\ref{fig:IBC_Input}. 
 \par
-It is not unexpected that with faster settling times greater input forces are commanded, the virtual and commanded input forces in Fig:\ref{fig:IBC_Position_Force} spike to a larger degree than those previously in Fig:\ref{fig:PD_Position_Force}. The velocity step, in Fig:\ref{fig:IBC_Position_Velocity}, follows a smooth rate change.
+The improved performance from the position Ideal Backstepping controller is due to the change in structure, increasing the PD controller's gain by a scale factor of 2 (analogous to the test performed in Fig:\ref{fig:PD_Diagonal_Gain_Step}) \emph{decreases} the step's settling time from $t_{95}=4.007~[\text{s}]$ to $4.379~[\text{s}]$. So improving even the conceptually simpler force position control loop is not as easy as simply adding more gain to the control plant. 
+\begin{figure}[htbp]
+\vspace{-12pt}
+\centering
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{graphs/PD_Position_Gain_Step}
+\vspace{-6pt}
+\caption{Position step}
+\label{fig:PD_Position_Gain_Step}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\vspace{-4pt}
+\centering
+\includegraphics[width=0.59\textwidth]{graphs/PD_Position_Gain_Input}
+\vspace{-8pt}
+\caption{Plant actuator inputs}
+\label{fig:PD_Position_Gain_Input}
+\end{subfigure}
+\vspace{-8pt}
+\caption{Increased gain PD position}
+\vspace{-36pt}
+\end{figure}
 %====================================================
 \section{Setpoint Control Results}
 \label{sec:simulation.autopilot}
 %====================================================
-Each proposed attitude or position controllers was respectively stable in its own right. The trajectory used to corroborate dynamic setpoint tracking (Fig:\ref{fig:trajectory}) is not a complicated one, using a slow orbital velocity of $\dot{\theta}=0.5~\text{Hz}$ such that a single orbit around $\vec{C}_0$ was completed every $120~\text{s}$. Two Proportional Derivative \emph{attitude} controllers are tested, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}) to compare the effects of plant dependent compensation. It was shown previously that symmetric gain coefficients yield no performance improvements for the PD case, so only diagonal coefficient matrices were used. Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independent controllers result in steady state errors, the same is shown to be true for trajectory tracking. Adaptive backstepping controllers and their disturbance rejection properties are only discussed next in Sec:\ref{sec:simulation.disturbance}. 
+None of the proposed attitude or position controllers are unstable, each one achieves the goal of setpoint tracking in the context of stepped inputs. To corroborate dynamic setpoint tracking an increasing (\emph{chirp}) trajectory is commanded, illustrated in Fig:\ref{fig:trajectory}. The trajectory applies an increasing frequency rate of $1/60~[\text{Hz}.s^{-1}]$ starting from zero, such that at $t=60~[\text{s}]$ the trajectory orbits a central point $\vec{C}_0$ and completes a single orbit every minute. Eventually the increasing orbital frequency will push each controller beyond their tracking limit. Only two Proportional Derivative \emph{attitude} controllers are tested here, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}), to compare the effects of plant dependent compensation. It was shown previously that symmetric gain coefficients yield no performance improvements for the PD case, so only diagonal coefficient matrices were used. 
 \par
-Each attitude controller was tested together with a common PD position controller, tracking the orbital XYZ position. Similarly each position controller is tested using a simple diagonal PD controller to track the attitude. The attitude controllers have an initial step to reach the orbital attitude from their starting attitude; $Q_0=[1~\vec{0}\hspace{2pt}]^T$. Each control law was successful in tracking a given trajectory each with little to no error, except of course for the plant independent attitude controller, Fig:\ref{fig:independent_diagonal_trjaectory}. Trajectory errors could be improved further with application of higher order state derivative in each controller (wherein $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$).
-\begin{figure}[hbtp]
+Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independent controllers result in steady state errors, the same is shown to be true for trajectory tracking. Adaptive backstepping controllers and their disturbance rejection properties are only discussed next in Sec:\ref{sec:simulation.disturbance}. Each attitude controller is tested together with a common PD position controller, tracking the orbital XYZ position. Similarly each position controller is tested using a simple diagonal PD controller to track the attitude. The attitude controllers have an initial step to reach the orbital attitude from their starting attitude, $Q_0=[+1~\vec{0}\hspace{2pt}]^T$. Each controller's trajectory setpoint response and its respective tracking error are plotted together in pairs.
+\pagecolor{Yellow}
+\begin{figure}[htbp]
+\centering
 \vspace{-10pt}
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/PD_Diagonal_Independent_Trajectory}
+\includegraphics[width=\textwidth]{graphs/PD_Diagonal_Independent_Trajectory}
 \vspace{-11pt}
-\caption{Independent Proportional Derivative Attitude Controller}
+\caption{Independent PD Attitude Controller}
 \label{fig:independent_diagonal_trjaectory}
 \end{subfigure}
+\end{figure}
+
+
+\newpage
+\begin{figure}[hbtp]
 \begin{subfigure}{\textwidth}
 \vspace{-3pt}
 \centering
@@ -820,7 +850,7 @@ Each attitude controller was tested together with a common PD position controlle
 \label{fig:attitude-trajectory-tracking}
 \vspace{-10pt}
 \end{figure}
-The only notable difference between each attitude controller in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial attitude step, the Ideal Backstepping attitude controller (Fig:\ref{fig:attitude-trajectory-ibc-tracking}) oscillates whilst settling due to it's more aggressive response. The independent PD controller actually tracks some trajectory, but with a significant steady state error.
+Each control law was successful in tracking a given trajectory each with little to no error, except of course for the plant independent attitude controller, Fig:\ref{fig:independent_diagonal_trjaectory}. Trajectory errors could be improved further with application of higher order state derivative in each controller (wherein $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$). The only notable difference between each attitude controller in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial attitude step, the Ideal Backstepping attitude controller (Fig:\ref{fig:attitude-trajectory-ibc-tracking}) oscillates whilst settling due to it's more aggressive response. The independent PD controller actually tracks some trajectory, but with a significant steady state error.
 \par
 \begin{figure}[hbtp]
 \vspace{-11pt}
