@@ -1057,7 +1057,7 @@ A combined step of setpoints for attitude \emph{and} position states is used to 
 [\text{\textdegree}]
 \end{bmatrix}
 \end{equation}
-A pseudo inverse allocation solves for $\vec{T}_{[1:4]}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step responses. The combined attitude and position step response with a pseudo inverse allocator $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} states in $t_{95}=5.62~\text{s}$ from the state step. The commanded actuator inputs as per the pseudo inverse allocator are shown in Fig:\ref{fig:pseudo_inverse_input}.
+A pseudo inverse allocation solves for $\vec{T}_{[1:4]}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step responses. The combined attitude and position step response with a pseudo inverse allocator $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} states in $t_{95}=5.658~\text{s}$ from the state step. The commanded actuator inputs, as per the pseudo inverse allocator, are shown in Fig:\ref{fig:pseudo_inverse_input}.
 \begin{figure}[hbtp]
 \centering
 \begin{subfigure}{\textwidth}
@@ -1080,7 +1080,6 @@ A pseudo inverse allocation solves for $\vec{T}_{[1:4]}$ using $B^\ddagger(\vec{
 \vspace{-12pt}
 \end{figure}
 \par
-\pagecolor{Yellow}
 \begin{figure}[htbp]
 \ContinuedFloat
 \begin{subfigure}{\textwidth}
@@ -1094,7 +1093,7 @@ A pseudo inverse allocation solves for $\vec{T}_{[1:4]}$ using $B^\ddagger(\vec{
 \caption{Pseudo inverse step response}
 \vspace{-16pt}
 \end{figure}
-The preferred allocator positions, described in Sec:\ref{subsec:allocation.allocators.norminverse}, are hovering conditions defined with respect to either the inertial or body frames, $\mathcal{F}^{I}$ and $\mathcal{F}^{b}$. At steady state with an attitude at the origin, $Q_d=[1~\vec{0}\hspace{2pt}]^T$; the controller commands the virtual control input:
+The preferred allocator positions, described in Sec:\ref{subsec:allocation.allocators.norminverse}, are hovering conditions defined with respect to either the inertial or body frames, $\mathcal{F}^{I}$ and $\mathcal{F}^{b}$ respectively. At steady state with an attitude at the origin, $Q_d=[+1~\vec{0}\hspace{2pt}]^T$, the controller commands the virtual control input:
 \begin{equation}\label{eq:hover-actuator}
 \vec{\nu}_p=\begin{bmatrix}
 \vec{F}_p\\
@@ -1141,20 +1140,24 @@ T_{1x}&T_{1Y}&T_{1Z}&\ldots~\ldots&T_{4x}&T_{4y}&T_{4z}
 \begin{bmatrix}
 -0.02 & 0 & 3.86
 \end{bmatrix}
-\end{bmatrix}^T~~~~\text{N}
+\end{bmatrix}^T~~~~[\text{N}]
 \end{equation}
 \end{subequations}
-Testing the same attitude and position setpoint steps, but with preferred actuator hovering conditions relative to the inertial frame (illustrated in Fig:\ref{fig:hover-inertial}) produces a response shown in Fig:\ref{fig:inertial-norm-step}. The plant settles in $t_{95}=5.617~\text{s}$ with a practically identical response to the pseudo-inverse case presented before in Fig:\ref{fig:pseudo-inverse-step}.
+Testing the same attitude and position setpoint steps, but with preferred actuator hovering conditions relative to the inertial frame (illustrated in Fig:\ref{fig:hover-inertial}) produces a response shown in Fig:\ref{fig:inertial-norm-step}. The plant settles in $t_{95}=5.619~[\text{s}]$ with a marginally faster but practically identical step response to the pseudo-inverse case presented before in Fig:\ref{fig:pseudo-inverse-step}. Note that, whilst the attitude and position responses were identical, the commanded actuator inputs in Fig:\ref{fig:inertia_norm_input} are slightly less aggressive in the step's transition.
 \begin{figure}[hbtp]
-\vspace{-11pt}
+\vspace{-8pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/inertial_norm_attitude}
-\vspace{-12pt}
+\vspace{-6pt}
 \caption{Attitude Step}
 \label{fig:inertial_norm_attitude}
 \end{subfigure}
+\end{figure}
+\newpage
+\begin{figure}[htbp]
+\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \vspace{-2pt}
 \centering
@@ -1162,11 +1165,18 @@ Testing the same attitude and position setpoint steps, but with preferred actuat
 \vspace{-6pt}
 \caption{Position Step}
 \label{fig:inertia_norm_position}
-\vspace{-8pt}
 \end{subfigure}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.6\textwidth]{graphs/inertial_norm_input}
+\vspace{-6pt}
+\caption{Pseudo inverse actuator commands}
+\label{fig:inertia_norm_input}
+\end{subfigure}
+\vspace{-10pt}
 \caption{Inertial hover preferred actuator step response}
 \label{fig:inertial-norm-step}
-\vspace{-18pt}
+\vspace{-6pt}
 \end{figure}
 \par
 Transformation of those hovering conditions in Eq:\ref{eq:hover-actuator} from the inertial frame to the body frame is applied through an instantaneous quaternion transformation:
@@ -1176,32 +1186,44 @@ Q_b\otimes\vec{F}_p\otimes Q_b^*\\
 Q_b\otimes\vec{\tau}_p\otimes Q_b^*
 \end{bmatrix}~~~~\in\mathcal{F}^{b}
 \end{equation}
-The hovering conditions are then always a function of the body's instantaneous attitude. However, because the control plant only tracks first order setpoints, the controller naturally tends towards stability at each controller interval, irrespective of the allocator rule applied. Again the plant settles in roughly the same time, $t_{95}=5.614~\text{s}$, with a response shown in Fig:\ref{fig:body-norm-step}. The difference between the two preferred allocator positions has no consequence on the performance of the control loop.
-\par
+Hovering conditions are then always a function of the body's instantaneous attitude. The plant settles in a slightly improved time, $t_{95}=5.603~[\text{s}]$, with a step response plotted in Fig:\ref{fig:body-norm-step}. The difference between the two preferred allocator positions has a small consequence on the performance of the control loop. The change in commanded actuator inputs in Fig:\ref{fig:body_norm_input} is almost identical to the inertial frame defined hover case. With a preferred actuator position defined in the body frame, the actuator commands are around $2\%$ greater.
 \begin{figure}[hbtp]
+\vspace{-6pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/body_norm_attitude}
-\vspace{-12pt}
+\vspace{-4pt}
 \caption{Attitude Step}
 \label{fig:body_norm_attitude}
 \end{subfigure}
+\vspace{-12pt}
+\end{figure}
+\newpage
+\begin{figure}[htbp]
+\ContinuedFloat
 \begin{subfigure}{\textwidth}
 \vspace{-3pt}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/body_norm_position}
-\vspace{-12pt}
+\includegraphics[width=0.78\textwidth]{graphs/body_norm_position}
+\vspace{-4pt}
 \caption{Position Step}
 \label{fig:body_norm_position}
 \end{subfigure}
 \vspace{-8pt}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.58\textwidth]{graphs/body_norm_input}
+\vspace{-4pt}
+\caption{Pseudo inverse actuator commands}
+\label{fig:body_norm_input}
+\end{subfigure}
 \caption{Body frame hover preferred actuator step response}
 \label{fig:body-norm-step}
-\vspace{-16pt}
+\vspace{-10pt}
 \end{figure}
 \par
-The weighted actuator allocation rule, proposed in Sec:\ref{subsec:allocation.allocators.weightedinverse}, prioritizes the use of certain input thrust components in Eq:\ref{eq:allocator-test.a}. The weighting matrix is a $12\times 12$ set of coefficients which bias various allocators as illustrated in Fig:\ref{fig:weighted-matrix}. In order to reduce slack and ensure setpoint tracking , being the primary control objective, each weighting coefficient row and column was constrained to a normalized summation. Furthermore it was proposed that coefficients were selected based on an optimization as per the penalty function Eq:\ref{eq:actuator-penalty}. In practice the weighting coefficients have no bearing on the input plant settling time for each actuator module; to demonstrate a weighted actuator case the following weighting matrix was used for $C=W^{-1}B^T(B.W^{-1}.B^T)^{-1}$ from Eq:\ref{eq:allocation-inversion-eq}:
+The weighted actuator allocation rule, proposed in Sec:\ref{subsec:allocation.allocators.weightedinverse}, prioritizes the use of certain input thrust components in Eq:\ref{eq:allocator-test.a}. The weighting matrix is a $[12\times 12]$ set of coefficients which biases various allocators as illustrated in Fig:\ref{fig:weighted-matrix-allocation}. Note that the weighting matrix \emph{does not} preferentially bias certain servos, it biases components of the abstracted allocation input $\vec{T}_{[1:4]}$ from Eq:\ref{eq:5.1}. The control allocators main object is to reduce the slack between a controller designed input $\vec{\tau}_d$ and a phsyically commanded input by the actuator plant $\vec{\tau}_c(\hat{u}_c)$. If the weighting matrix does not have unity Eigenvalues, it then applies a gain of its own to the control input which could potentially alter the controllers response. Each weighting row and column in the matrix is constrained to a normalized sum, furthermore it was proposed that coefficients are selected based on an optimization as per the penalty function in Eq:\ref{eq:actuator-penalty}. The optimized allocator weighting matrix, used for $C=W^{-1}B^T(B.W^{-1}.B^T)^{-1}$ from Eq:\ref{eq:allocation-inversion-eq}, is found:
 \begin{equation}\label{eq:inversion-weights}
 W\triangleq
 \begin{bmatrix}
@@ -1302,30 +1324,37 @@ W\triangleq
 \end{bmatrix}
 \end{bmatrix}\times 10^{-3}
 \end{equation}
-The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} shows the minor differences between each of the above allocation rules. The final weighted inversion allocator applied with Eq:\ref{eq:inversion-weights} settled in $t_{95}=5.618$. The inversion based allocator's requirement for an affine effectiveness relationship meant that actuator transfer functions were separated from the allocation block, this made the actuator transfer rates independent from the allocation rule applied. Because of the constraint that each allocator still meets the slack variable requirements of setpoint tracking, each allocator's performance is much of the same. The twelve produced thrust component inputs are, within a margin of error, effectively the same across each allocation rule\ldots
 \newpage
+The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} does not change its trajectory response at all from previous allocation rules. Furthermore the commanded actuator inputs in Fig:\ref{fig:weighted_inverse_input} are much the same as the actuators which commanded a preferred actuator position. The final weighted inversion allocator applied with Eq:\ref{eq:inversion-weights} settled from the attitude and position setpoint step in $t_{95}=5.595~[\text{s}]$.
 \begin{figure}[hbtp]
 \centering
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/weighted_inverse_attitude}
-\vspace{-10pt}
+\vspace{-12pt}
 \caption{Attitude Step}
 \label{fig:weighted_inverse_attitude}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\vspace{-3pt}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/weighted_inverse_position}
-\vspace{-10pt}
+\includegraphics[width=0.8\textwidth]{graphs/body_norm_position}
+\vspace{-2pt}
 \caption{Position Step}
 \label{fig:weighted_inverse_position}
 \end{subfigure}
 \vspace{-8pt}
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.6\textwidth]{graphs/body_norm_input}
+\caption{Pseudo inverse actuator commands}
+\label{fig:weighted_inverse_input}
+\end{subfigure}
 \caption{Weighted actuator allocation step response}
 \label{fig:weighted-inverse-step}
 \vspace{-16pt}
 \end{figure}
+\par
+It is not altogether unexpected that the allocation rules react in the same way. The static allocators ensure to command actuator positions which meet the control input requirement, thereby reducing the allocation slack. As a result, each allocation will perform roughly in the same way given that they apply the same secondary cost function. Moreover, pseud inversion's requirement for an affine effectiveness relationship meant that actuator transfer functions were separated from the allocation block, this made the actuator transfer rates independent from the allocation rule applied.
 %====================================================
 \section{Input Saturation}
 \label{sec:simulation.saturation}
@@ -1364,7 +1393,6 @@ The attitude setpoint, $\vec{\eta}_d\text{}\hspace{-2pt}'$, was chosen because i
 \end{subfigure}
 \vspace{-18pt}
 \end{figure}
-\newpage
 \begin{figure}[htbp]
 \vspace{-12pt}
 \centering
