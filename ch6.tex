@@ -949,55 +949,53 @@ Despite deriving adaptive control laws in Sec:\ref{subsubsec:control.attitude.no
 \subsection{Torque Disturbance Rejection}
 \label{subsec:simulation.disturbance.torque}
 %====================================================
-Torque turbulences are difficult to define without in-depth accompanying statistical and mathematical analysis. To expedite the stability/disturbance evaluation process, torque turbulences were approximated using a Dryden Gust model,\cite{optimalgust,discretegustmodel}. Alternatively the Von Karman aerospace disturbance model(s) could be implemented but that model is computationally more exhaustive.
+Torque turbulences are difficult to define without in-depth accompanying statistical and mathematical analysis. To expedite the stability/disturbance evaluation process, torque turbulences were approximated using a Dryden Gust model,\cite{optimalgust,discretegustmodel}. That gust/wind turbulence model is designed for helicopters in hovering conditions, but the propeller span dimension was scaled accordingly. Alternatively the Von Karman aerospace disturbance model(s) could be implemented but that model is computationally more exhaustive. The accuracy of the turbulence model is not particularly important given that this section aims to evaluate the adaptive backstepping observer's performance at estimating a \emph{general} disturbance. Consideration of more applicable wind and disturbance models similar to \cite{nonlineardynamics} remains open to further research.
 \par
-Without going into too much detail, the Dryden Wind model produces turbulence signals from white noise filtered through a specified Dryden power spectrum. That power spectrum varies as per an aircraft's orientation, altitude and translational velocity. For the aircraft and trajectory under consideration here such a disturbance model is sufficient for simulating small interference patterns. Recalling then the torque disturbance observer derived for the attitude backstepping plant, from Eq:\ref{eq:asymptotic-disturbance}:
+Without deliberating on the details of the model, in short the Dryden Wind model produces turbulence signals from white noise filtered through a specified power spectrum. That power spectrum varies as per an aircraft's orientation, altitude and translational velocity. For the aircraft and trajectory under consideration here such a disturbance model is sufficient for simulating small interference patterns. Recall the torque disturbance observer derived for the attitude backstepping plant, from Eq:\ref{eq:asymptotic-disturbance}:
 \begin{equation}\label{eq:stability-torque-overserver}
-\dot{\hat{L}}=-\Gamma_L J_b^{-1}(u)\big(\Gamma_1\vec{q}_e-\vec{\omega_b}\big)
+\dot{\hat{\tau}}_L=-\Gamma_L J_b^{-1}(u)\big(\Gamma_1\vec{q}_e-\hat{\omega_b}\big)
 \end{equation}
-The gain adaptivity matrix $\Gamma_L$ was tuned on steady state such that the observer's error deviation from an applied torque $\vec{L}$ was minimized. That resulted in the diagonal adaptivity matrix of $\Gamma_L=diag(29.58,~28.43,~4.60)$. The approximator tracks an applied disturbance as shown in Fig:\ref{fig:torque-observer} over a disturbance range of $\pm 0.2~\text{N.m}$, 20\% of a stepped attitude's control input magnitude, for a short steady state test. Both pitch and roll torque approximator channels ($\phi$ and $\theta$) track the torque with a relatively small error. Greater deviation from the applied torque does, however, occur in the $\psi$ channel about the $\hat{Z}_b$ axis\ldots
+The gain adaptivity matrix $\Gamma_L$ is tuned using a PSO iteration loop, simulated in steady state with a cost function to minimize the observer's error $\Delta\hat{\tau}_L$ over the course of a $t=60~[\text{s}]$ simulation. The resultant \emph{diagonal} $[3\times 3]$ adaptivity matrix is $\Gamma_L=diag(29.58,~28.43,~4.60)$. The approximator tracks an applied disturbance as shown in Fig:\ref{fig:torque-observer} over a disturbance range of $\pm 0.2~\text{N.m}$, 20\% of a typical controller's commanded input for a stepped attitude from Eq:\ref{eq:attitude-step-position}, for a short steady state test. Both pitch $\phi$ and roll $\theta$ torque approximator channels track the torque with a relatively small error, averaged $16\%$ and $15\%$ respectively. Greater deviation from the applied torque occurs in the $\psi$ channel about the $\hat{Z}_b$ axis, approximate $36\%$ averaged over the short steady state.
 \begin{figure}[htbp]
-\vspace{-12pt}
+\vspace{-10pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/torque-observer}
-\vspace{-12pt}
+\vspace{-10pt}
 \caption{Attitude torque disturbance observer}
-\vspace{-16pt}
+\vspace{-18pt}
 \label{fig:torque-observer}
 \end{figure}
 \par
-Fig:\ref{fig:ABC_trajectory} then shows the Adaptive Backstepping controller's attitude response over the entire orbital trajectory whilst experiencing a fluctuating torque turbulence. The addition of a torque observer for compensation produces a slight improvement over an uncompensated IBC controller; shown in Fig:\ref{fig:app-attitude-ibc-dist} from App:\ref{app:disturbance}. 
+Fig:\ref{fig:ABC_trajectory} shows the Adaptive Backstepping controller's attitude response over a constant orbital trajectory whilst undergoing torque turbulence. The addition of a torque observer for compensation produces a slight improvement over an uncompensated IBC controller, included in Fig:\ref{fig:app-attitude-ibc-dist} from App:\ref{app:disturbance}. The improvement a torque observer yields is diminished given that in an Ideal Backstepping case the actuators were being rate limited (Fig:\ref{fig:IBC_Input}). Higher bandwidth torque inputs will not see much improvement given that the actuators cannot apply the commanded input at a sufficient rate.
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/ABC_trajectory}
-\vspace{-12pt}
+\vspace{-10pt}
 \caption{Adaptive backstepping attitude trajectory tracking}
 \label{fig:ABC_trajectory}
 \vspace{-16pt}
 \end{figure}
-\par
-The cost of the disturbance approximator in the attitude plant is obviously more aggressive and greater bandwidth fluctuating input torques applied to the control plant. That could potentially reach actuator rate saturation, but for the trajectories tested here, were not saturation inducing.
 %====================================================
 \subsection{Disturbance Force Rejection}
 \label{subsec:simulation.disturbance.force}
 %====================================================
-Force disturbances are similarly emulated in simulation using a Dryden Gust model for wind turbulent velocity generation. Additionally, a wind vector field across the inertial frame test space was also used to introduce a constant force offset throughout the trajectory simulation. The force disturbance observer, from Eq:\ref{eq:abc-asymptotic-position}, has an estimate update rule such that:
+Force disturbances are similarly emulated in simulation using a Dryden Gust model for wind turbulent velocity generation. Additionally, a wind vector field across the inertial frame test space is also used to introduce a constant force offset throughout the trajectory simulation. The force disturbance observer, from Eq:\ref{eq:abc-asymptotic-position}, has an estimate update rule such that:
 \begin{equation}
-\dot{\hat{D}}=-m_b^{-1}\Gamma_D\Big(\Gamma_1\vec{X}_e-\vec{v}_b\Big)
+\dot{\hat{F}}_D=-m_b^{-1}\Gamma_D\Big(\Gamma_1\vec{X}_e-\vec{v}_b\Big)
 \end{equation}
-Where $\vec{X}_e$ is the inertial position error transformed to the body frame, $\vec{X}_e=Q_b\otimes\vec{\mathcal{E}}_e\otimes Q_b^*$. Then $\Gamma_D$ is the force disturbance observer's adaptivity gain matrix. Using the coefficients $\Gamma_D=diag(4.20,~3.84,~3.97)$ the observer tracks a force disturbance acting on the vehicle over a range of $[-4:8]~\text{N}$. Fig:\ref{fig:force-observer} shows how the force observer adapts to the variable force turbulence applied, the plot is taken over an entire simulation (until $t=120~\text{s}$) to illustrate the vector field effects.
+Where $\vec{X}_e$ is the inertial position error transformed to the body frame, $\vec{X}_e=Q_b\otimes\vec{\mathcal{E}}_e\otimes Q_b^*$. Then $\Gamma_D$ is the force disturbance observer's adaptivity $[3\times 3]$ gain matrix. The gain matrix is chosen to minimize the force disturbance observer's error over a steady state simulation. Using the optimized coefficients $\Gamma_D=diag(4.20,~3.84,~3.97)$ the observer tracks a force disturbance acting on the vehicle over a range of $[-4:8]~\text{N}$. Fig:\ref{fig:force-observer} shows how the force observer adapts to the variable force turbulence applied, the plot is taken over an entire simulation (until $t=120~\text{s}$) to illustrate the vector field effects. Each observer channel ($F_x$,$F_y$ and $F_z$) averaged between $5\%$ and $10\%$ error over the course of the simulation.
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/force-observer}
-\vspace{-12pt}
+\vspace{-10pt}
 \caption{Position force disturbance observer}
 \label{fig:force-observer}
-\vspace{-16pt}
+\vspace{-18pt}
 \end{figure}
 \par
-The position adaptive backstepping controller then tracks the inertial frame trajectory as shown in Fig:\ref{fig:ABC_Position_Trajectory}. Again improving the trajectory tracking performance slightly when compared to the Ideal backstepping case from Fig:\ref{fig:app-position-ibc-dist}; but even without adaptive disturbance compensation, the plant is stable throughout the trajectory albeit somewhat noisy. The addition of a vector force field results in a fluctuating offset error from the trajectory, despite the adaptive compensation applied to the control loop.
+The position adaptive backstepping controller then tracks the inertial frame trajectory as shown in Fig:\ref{fig:ABC_Position_Trajectory}. The trajectory tracking performance is improved marginally when compared to the Ideal backstepping case from Fig:\ref{fig:app-position-ibc-dist}. Even without adaptive disturbance compensation, the plant is stable throughout the trajectory albeit somewhat noisy. The drawback of this particular adaptive compensation approach is that each observer is an extracted signal from existing state variables, as a result no new information is being used to compensate the plant and as such the small signal stability is largely unaffected. The vector force field produces an oscillating error from the trajectory, despite the adaptive compensation applied to the control loop, shown in Fig:\ref{fig:ABC_Position_Trajectory}.
 \begin{figure}[hbtp]
 \vspace{-6pt}
 \centering
@@ -1013,18 +1011,14 @@ The position adaptive backstepping controller then tracks the inertial frame tra
 %====================================================
 The various allocation rules, as derived in Ch:\ref{ch:allocation}, implement virtual control inputs to solve for explicit actuator positions. Each of the allocators tested here were compared with basic position and attitude Proportional Derivative controllers commanding a virtual input. 
 \par
-The abstraction applied to achieve an affine relationship required for inversion allocation (in Eq:\ref{eq:allocator-test}) meant that actuator transfer rates were independent from the allocation rule applied.
+The abstraction applied to achieve an affine relationship required for inversion allocation (in Eq:\ref{eq:allocator-test}) meant that actuator transfer rates were independent from the allocation rule applied. As a result the affect of different allocation laws is depreciated.
 \begin{subequations}\label{eq:allocator-test}
 \begin{equation}\label{eq:allocator-test.a}
 \vec{\nu}_c=B'(\vec{\mathbf{x}},t)u=\begin{bmatrix}
 \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3}\\
 [\vec{L}_1]_\times & [\vec{L}_2]_\times & [\vec{L}_3]_\times & [\vec{L}_4]_\times
 \end{bmatrix}
-\begin{bmatrix}
-\vec{T}_1&
-\ldots&
-\vec{T}_4
-\end{bmatrix}^T
+\vec{T}_{[1:4]}^T
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
@@ -1033,12 +1027,10 @@ u_i = \begin{bmatrix}
 \end{bmatrix}^T = R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~\text{for}~i\in[1:4]
 \end{equation}
 \end{subequations}
-The transfer rate at which physically commanded inputs implement virtually designed control inputs, $\vec{\nu}_c\rightarrow\vec{\nu}_d$, is affected by the thrust version equation $R^\dagger(\vec{\mathbf{x}},t)$, not allocation rules $B'(\vec{\mathbf{x}},t)$. The consequence of this is that, in the context of actuator transfer rates, each allocation rule performed almost identically. Inverse solutions to Eq:\ref{eq:allocation-quadratic} solve for the quadratic least squares minimized actuator positions. That means that each $|\vec{T}_i|$  within the $\mathbb{R}^{1\times 12}$ matrix $|\vec{T}_{1\rightarrow 4}|$ is minimized. The solution is an actuator cost efficient one. In general psuedo inversion, wieghted and priority normalized inverse allocators each stem from Eq:\ref{eq:inversion}: 
+The transfer rate at which physically commanded inputs implement virtually designed control inputs, $\vec{\nu}_c\rightarrow\vec{\nu}_d$, is affected by the thrust inversion relationship $R^\dagger(\vec{\mathbf{x}},t)$, not allocation rules $B'(\vec{\mathbf{x}},t)$. The consequence of this is that, in the context of actuator transfer rates, each allocation rule performed almost identically. Inverse solutions to Eq:\ref{eq:allocation-quadratic} solve for the quadratic least squares minimized actuator positions. That means that each $|\vec{T}_i|$  within the $\mathbb{R}^{1\times 12}$ matrix $|\vec{T}_{[1:4]}|$ is minimized. The solution is a cost efficient one minimizing actuator effort. In general psuedo inversion, weighted and priority normalized inverse allocators each stem from Eq:\ref{eq:inversion}: 
 \begin{subequations}
 \begin{equation}
-\begin{bmatrix}
-\vec{T}_{1\rightarrow 4}
-\end{bmatrix}
+\vec{T}_{[1:4]}
 =\big(\mathbb{I}_{m\times m}-CB(\vec{\mathbf{x}},t)\big)\vec{T}_p+C\vec{\nu}_d
 \end{equation}
 \vspace{-10pt}
@@ -1046,7 +1038,7 @@ The transfer rate at which physically commanded inputs implement virtually desig
 C=W^{-1}B^T(\vec{\mathbf{x}},t)\big(B(\vec{\mathbf{x}},t)W^{-1}B^T(\vec{\mathbf{x}},t)\big)^{-1}
 \end{equation}
 \end{subequations}
-A combined step of setpoints for attitude \emph{and} position states is used to compare each allocation rule. A pseudo inversion allocator, Eq:\ref{eq:pseudo-inversion}, is used as the reference case to which subsequent allocator algorithms are evaluated against. The typical setpoint used for both position and attitude steps, with attitude in Euler angles $\vec{\eta}_d$ not quaternions $Q_d$, is:
+A combined step of setpoints for attitude \emph{and} position states is used to compare each allocation rule. A pseudo inverse allocator from Eq:\ref{eq:pseudo-inversion} is used as the reference case against which subsequent allocator algorithms are evaluated. The typical setpoint used for both position and attitude steps with attitude in Euler angles, $\vec{\eta}_d$ not quaternions $Q_d$, is:
 \begin{equation}\label{eq:simulation-state-step}
 \vec{\mathbf{x}}_d=\begin{bmatrix}
 \vec{\mathcal{E}}_d\\
@@ -1065,14 +1057,13 @@ A combined step of setpoints for attitude \emph{and} position states is used to 
 [\text{\textdegree}]
 \end{bmatrix}
 \end{equation}
-A pseudo inverse allocation solves for $\vec{T}_{1\rightarrow 4}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step responses. The combined attitude and position step response with a pseudo inverse allocator $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} states in $t_{95}=5.6233~\text{s}$ from the state step. 
+A pseudo inverse allocation solves for $\vec{T}_{[1:4]}$ using $B^\ddagger(\vec{\mathbf{x}},t)\vec{\nu}_d$, from Eq:\ref{eq:pseudo-inversion}. Fig:\ref{fig:pseudo-inverse-step} shows the combined position and attitude step responses. The combined attitude and position step response with a pseudo inverse allocator $B^\ddagger(\vec{\mathbf{x}},t)$ settles for \emph{both} states in $t_{95}=5.62~\text{s}$ from the state step. The commanded actuator inputs as per the pseudo inverse allocator are shown in Fig:\ref{fig:pseudo_inverse_input}.
 \begin{figure}[hbtp]
-\vspace{-12pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/pseudo_inverse_attitude}
-\vspace{-12pt}
+\vspace{-4pt}
 \caption{Attitude Step}
 \label{fig:pseudo_inverse_attitude}
 \end{subfigure}
@@ -1080,16 +1071,29 @@ A pseudo inverse allocation solves for $\vec{T}_{1\rightarrow 4}$ using $B^\ddag
 \vspace{-3pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/pseudo_inverse_position}
-\vspace{-12pt}
 \caption{Position Step}
 \label{fig:pseudo_inverse_position}
 \end{subfigure}
-\vspace{-8pt}
-\caption{Pseudo-Inverse step response}
+\vspace{-2pt}
+\caption{Pseudo inverse step response}
 \label{fig:pseudo-inverse-step}
-\vspace{-24pt}
+\vspace{-12pt}
 \end{figure}
 \par
+\pagecolor{Yellow}
+\begin{figure}[htbp]
+\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[width=0.6\textwidth]{graphs/pseudo_inverse_input}
+\vspace{-6pt}
+\caption{Pseudo inverse actuator commands}
+\label{fig:pseudo_inverse_input}
+\end{subfigure}
+\vspace{-10pt}
+\caption{Pseudo inverse step response}
+\vspace{-16pt}
+\end{figure}
 The preferred allocator positions, described in Sec:\ref{subsec:allocation.allocators.norminverse}, are hovering conditions defined with respect to either the inertial or body frames, $\mathcal{F}^{I}$ and $\mathcal{F}^{b}$. At steady state with an attitude at the origin, $Q_d=[1~\vec{0}\hspace{2pt}]^T$; the controller commands the virtual control input:
 \begin{equation}\label{eq:hover-actuator}
 \vec{\nu}_p=\begin{bmatrix}
