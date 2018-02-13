@@ -1359,7 +1359,7 @@ It is not altogether unexpected that the allocation rules react in the same way.
 \section{Input Saturation}
 \label{sec:simulation.saturation}
 %====================================================
-The introduction of a rotational limit to the actuating servos was a design decision made previously in Sec:\ref{subsec:proto.design.transfer}. The $\pm 90\text{\textdegree}$ limit on the servos is something which can easily be solved by changing the mechanical design to incorporate continuous rotation actuators. The standard state setpoint step used thus far \emph{does not} command any of the actuators beyond their rotational limits, neither does the applied trajectory tracking loop. Alternatively, the following state setpoint is used:
+The introduction of a rotational limit to the actuating servos is an explicit design decision (Sec:\ref{subsec:proto.design.transfer}), the limited $\pm 90\text{\textdegree}$ servos could easily be changed in the mechanical design to continuous rotation actuators. To review the effects of a non-linear saturation limit imposed on the actautor plant, a commanded setpoint must actually induce actuator saturation. The standard state setpoint step used thus far \emph{does not} result in the servo actuators commanded beyond their $\pm 90\text{\textdegree}$ limit. Each controller tested in Sec:\ref{sec:simulation.attitude} and Sec:\ref{sec:simulation.position} commands actuators to well within their limits, even without an imposed rotational saturation. Furthermore, at no point in the applied trajectory tracking loop do any of the actuators near their saturation limit. Alternatively, the following state setpoint is used:
 \begin{equation}\label{eq:saturation-state-step}
 \vec{\mathbf{x}}_d\text{}\hspace{-2pt}'=
 \begin{bmatrix}
@@ -1374,53 +1374,55 @@ The introduction of a rotational limit to the actuating servos was a design deci
 \begin{bmatrix}
 -142 & 35 & -45
 \end{bmatrix}^T
-\end{bmatrix}
-~~~~\begin{bmatrix}
+\end{bmatrix}~~\begin{bmatrix}
 [\text{m}]\\
 [\text{\textdegree}]
+\end{bmatrix}\underset{Q}{\iff}\begin{bmatrix}
+\begin{bmatrix}
+7.5 & 4 & 3
+\end{bmatrix}^T\\
+\begin{bmatrix}
+0.1894 & -0.874 & -0.2649 & -0.3605
+\end{bmatrix}^T
 \end{bmatrix}
 \end{equation}
-The attitude setpoint, $\vec{\eta}_d\text{}\hspace{-2pt}'$, was chosen because it commands each servo beyond their rotational limit. When using Proprotional Derivative controllers for both position and attitude control loops, Fig:\ref{fig:unsaturated-step} shows that step response for attitude and positions collectively.
+The alternative attitude setpoint $\vec{\eta}_d\text{}\hspace{-2pt}'$ is chosen because it commands each servo beyond its $\pm \pi/2$ rotational limit. Fig:\ref{fig:unsaturated-step} shows the step response for that commanded attitude and position setpoint when using a simple PD controller for both the position and attitude control loops.
 \begin{figure}[hbtp]
-\vspace{-4pt}
+\vspace{-2pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/unsaturated-attitude-step}
-\vspace{-6pt}
+\includegraphics[width=0.82\textwidth]{graphs/unsaturated-attitude-step}
 \caption{Attitude step}
 \label{fig:unsaturated-attitude-step}
 \end{subfigure}
-\vspace{-18pt}
-\end{figure}
-\begin{figure}[htbp]
-\vspace{-12pt}
-\centering
+\vspace{-4pt}
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/unsaturated-position-step}
-\vspace{-8pt}
+\includegraphics[width=0.82\textwidth]{graphs/unsaturated-position-step}
 \caption{Position step}
 \label{fig:unsaturated-position-step}
 \end{subfigure}
-\vspace{-10pt}
 \caption{Step response without servo limits}
 \label{fig:unsaturated-step}
+\vspace{-8pt}
+\end{figure}
+\par
+Neither attitude nor position responses in Fig:\ref{fig:unsaturated-step} are unexpected, even the basic PD control laws for both state tracking loops have been shown to correctly track a given setpoint. Fig:\ref{fig:unsaturated-servos} shows all twelve \emph{unconstrained} actuator positions throughout the stepped trajectory, with highlighted $\pi/2$ rotational limits for the servos. 
+\par
+Each middle ring servo $\alpha_i$ for $i\in[1:4]$ settles to both above and below the $\pm\pi/2$ rotational limit. Another point to take note of is that such a large step in the servos rotational position results in a rate limited angular velocity being reached. That, however, is a consequence of the servos themselves and can only be addressed by applying closed loop BLDC motor control in place of the servos for rotational actuation of each motor module.
+\newpage
+\begin{figure}[hbtp]
+\vspace{-6pt}
+\centering
+\includegraphics[width=0.67\textwidth]{graphs/unsaturated-servos}
+\vspace{-10pt}
+\caption{Servo inputs without limits}
+\label{fig:unsaturated-servos}
 \vspace{-10pt}
 \end{figure}
 \par
-Neither responses in Fig:\ref{fig:unsaturated-step} are anything unexpected. The rotational positions for all eight servos are shown in Fig:\ref{fig:unsaturated-servos}. Noting that each middle ring servo $\alpha_i$ for $i\in[1:4]$ settles to both above or below the $\pm\pi/2$ rotational limit.
-\begin{figure}[hbtp]
-\vspace{-12pt}
-\centering
-\includegraphics[width=0.67\textwidth]{graphs/unsaturated-servos}
-\vspace{-12pt}
-\caption{Servo inputs without limits}
-\label{fig:unsaturated-servos}
-\vspace{-20pt}
-\end{figure}
-\par
-Then introducing that hard limit to the state step in Eq:\ref{eq:saturation-state-step} produces a step response in Fig:\ref{fig:saturated-step}. The response obviously never reaches a settling point and destabilizes when the actuator saturation limits are applied.
+Introducing the mechanical hard actuator limit to the state step in Eq:\ref{eq:saturation-state-step} produces a step response as illustrated in Fig:\ref{fig:saturated-step}. The response obviously never reaches a settling point and destabilizes when the actuator saturation limits are applied.
 \begin{figure}[hbtp]
 \vspace{-12pt}
 \centering
@@ -1432,12 +1434,7 @@ Then introducing that hard limit to the state step in Eq:\ref{eq:saturation-stat
 \label{fig:saturated-attitude}
 \vspace{-16pt}
 \end{subfigure}
-\vspace{-24pt}
-\end{figure}
-\newpage
-\begin{figure}\ContinuedFloat
 \vspace{-8pt}
-\centering
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/saturated-position-step}
