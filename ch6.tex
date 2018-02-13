@@ -570,6 +570,7 @@ To avoid that reduction, $\Gamma_1$ is prioritized to control the quaternion vec
 \end{subfigure}
 \vspace{-8pt}
 \caption{Ideal backstepping controller}
+\label{fig:IBC_controller_result}
 \vspace{-10pt}
 \end{figure}
 \par
@@ -1424,31 +1425,29 @@ Each middle ring servo $\alpha_i$ for $i\in[1:4]$ settles to both above and belo
 \par
 Introducing the mechanical hard actuator limit to the state step in Eq:\ref{eq:saturation-state-step} produces a step response as illustrated in Fig:\ref{fig:saturated-step}. The response obviously never reaches a settling point and destabilizes when the actuator saturation limits are applied.
 \begin{figure}[hbtp]
-\vspace{-12pt}
+\vspace{-8pt}
 \centering
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/saturated-attitude-step}
-\vspace{-10pt}
+\vspace{-6pt}
 \caption{Attitude step}
 \label{fig:saturated-attitude}
-\vspace{-16pt}
 \end{subfigure}
 \vspace{-8pt}
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/saturated-position-step}
-\vspace{-10pt}
+\vspace{-6pt}
 \caption{Position step}
 \label{fig:saturated-position}
 \end{subfigure}
-\vspace{-6pt}
 \caption{Step response with servo limits}
 \label{fig:saturated-step}
-\vspace{-18pt}
+\vspace{-24pt}
 \end{figure}
 \par
-Fig:\ref{fig:saturated-servos} shows the limit cycles which the servos get stuck in when an attitude step which exceeds their hard limit is commanded.
+Fig:\ref{fig:saturated-servos} shows commanded actuator inputs during the attitude and position steps. The servos reach their mechanical $\pi/2$ rotational limit, thereafter the control loop commands illegal force input commands which induce saturation of the BLDC motor blocks. The propeller speed inputs are set to their saturating limits and the actuators begin oscillating attempting to recover. It is not the simulation that prevents the control loop from recovering, the control loop itself oscillated out and began commanding force and torque inputs far outside the feasible limits of saturation.
 \begin{figure}[hbtp]
 \vspace{-8pt}
 \centering
@@ -1456,20 +1455,21 @@ Fig:\ref{fig:saturated-servos} shows the limit cycles which the servos get stuck
 \vspace{-6pt}
 \caption{Servo inputs without limits}
 \label{fig:saturated-servos}
-\vspace{-24pt}
+\vspace{-14pt}
 \end{figure}
 %====================================================
 \section{State Estimation}
 \label{sec:simulation.state}
 %====================================================
-The final aspect of the control simulation to consider is the effect state estimation has on the controller's ability to track setpoints. It was proposed, in Ch:\ref{ch:proto}, that a 9-axis inertial measurement unit would produce angular rates and inertial accelerations in the body frame. Then some form of filtration would fuse sensor measurements together to provide state-estimation only for the vehicle's attitude. Position displacement in the inertial frame cannot be approximated only using an IMU due to massive ammounts of integral drift. For that reason a motion capture VICON-like system, \cite{arnold}, was proposed to track the vehicles position under testing conditions. 
+The final aspect of the control simulation to consider is the effect that state estimation has on the controller's ability to track setpoints. It was proposed, in Ch:\ref{ch:proto}, that a 9-axis inertial measurement unit would sample angular rates and inertial accelerations in the body frame. Then some form of filter would fuse sensor measurements together to provide state estimates only for the vehicle's attitude. Position in the inertial frame is not approximated using only an IMU due to sensor drift. For that reason, an already availalbe motion capture system, \cite{arnold}, is proposed to track the vehicles position under testing conditions. 
 \par
-Such components of the embedded system loop could indeed be tested in simulation but, owing to the large amounts of noise a physical flight test would induce on those components, would not prove useful in evaluating the efficacy of the net proposed control system. Given the amount of vibrations and disturbances the prototype will undergo, simulations won't be able to accurately approximate such affects. Instead it was deemed pertinent to only apply discretization effects onto the state feedback elements within the control loop.
+Such components of the embedded system loop could indeed be tested in simulation but, owing to the large amounts of noise a physical flight test would induce on those components, would not prove useful in evaluating the efficacy of the net proposed control system. Given the amount of vibrations and disturbances the prototype will undergo, simulations will not be able to accurately approximate such affects. Instead a suitable, approximated discretization is applied to the simulation's state variables used for feedback in the control loop.
 \par
-Quaternion position, angular velocity and translational velocity feedback terms were discretized and sampled at a rate of $70~\text{Hz}$ to emulate an IMU system based on the hardware proposed (Sec:\ref{sec:proto.layout}). In reality those signals would be processed by a Kalman filter and be subject to a relative degree of noise and integral drift. Then inertial position feedback was sampled at $50~\text{Hz}$ to emulate the proposed camera based state estimation from \cite{arnold}.
+Quaternion position, angular velocity and translational velocity feedback terms are discretized and sampled at a rate of $70~[\text{Hz}]$ with a $5~[\mu s]$ sample delay to emulate a perferct IMU system derived from the hardware proposed (Sec:\ref{sec:proto.layout}). In reality those signals would be processed by an online Kalman filter and be subject to a relative degree of noise and integral drift. The inertial position feedback is sampled at $50~\text{Hz}$ to emulate the proposed camera based state estimation from \cite{arnold} with a propagation delay of $40~[\mu s]$.
 \par
 Both position and attitude control loops, testing with the basic Proportional Derivative controllers in both cases, were stable for the above proposed sampling rates. In fact the entire system was stable for sample rates as slow as $5~\text{Hz}$, whose response for a typical attitude and position step (Eq:\ref{eq:simulation-state-step}) is plotted in Fig:\ref{fig:discrete_step}.
-\begin{figure}[hbtp]
+\newpage
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}{\textwidth}
 \centering

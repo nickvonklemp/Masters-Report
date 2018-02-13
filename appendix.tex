@@ -529,57 +529,6 @@ Torque tests in Fig:\ref{app:torque-test} shows thrust deflection in the rotatio
 \justifying
 \parskip	= 10pt						% Paragraph spacing
 \parindent 	= 0pt						% No para. indent
-%-----------------------------------------------------
-\section{Combined Simulated Torque Responses}
-\label{app:tau-comb}
-%-----------------------------------------------------
-The process in Sec:\ref{subsec:dynamics.nonlinearities.torque-tests} applied simulation tests to the generalized torque responses derived in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. Previous simulations only considered separate singular perturbations in either $\lambda_i$ or $\alpha_i$ rotational positions alone. The generalized torque response $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$, from Eq:\ref{eq:3.86g}, acts as a response to \emph{net motor module} rotations of both inner and middle ring servos $\lambda_i$ and $\alpha_i$ respectively.
-\par
-The plot in Fig:\ref{fig:tau-com-lambda} shows varying steps for $\Delta\lambda_i$ with a constant $\Delta\alpha_i=\pi/4$ step. The error between an estimated value $\hat{V}(\alpha_i,\lambda)$, with a linearized rotation partial derivative, and the true $\widetilde{V}(\alpha,\lambda)$ is shown in Fig:\ref{fig:tau-comb-lam-r}. That error is mostly of the order $\times 10^{-4}~[\text{N.m}]$; whilst both $\hat{V}(\alpha_i,\lambda_i)$ and $\widetilde{V}(\alpha_i,\lambda_i)$ are in the order of $\times 10^{-1}~[\text{N.m}]$.
-\begin{figure}[htbp]
-\vspace{-10pt}
-\centering
-\begin{subfigure}{0.49\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/tau-comb-lam}
-\caption{Torque response $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ to steps in $\Delta\lambda_i$ only}
-\label{fig:tau-comb-lam}
-\end{subfigure}
-\begin{subfigure}{0.49\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/tau-comb-lam-r}
-\caption{Error for $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ for steps in $\Delta\lambda_i$ only}
-\label{fig:tau-comb-lam-r}
-\end{subfigure}
-\vspace{-6pt}
-\caption{Step changes in $\Delta\lambda_i$ with constant $\Delta\alpha_i=\pi/4$}
-\label{fig:tau-com-lambda}
-\vspace{-16pt}
-\end{figure}
-\par
-Similarly, Fig:\ref{fig:tau-comb-alph} shows the same tests run for varying step sizes of $\Delta\alpha_i$ with a constant step size for $\Delta\lambda_i=\pi/4$. Again, the plot Fig:\ref{fig:tau-comb-alph-r} shows the error which, on average, is in the order of $\times 10^{-4}~[\text{N.m}]$. The error between a simplified $\hat{V}(\alpha_i,\lambda_i)$ and the true $\widetilde{V}(\alpha_i,\lambda_i)$ only becomes significant as the step size $\Delta\alpha_i$ tends to $\pi/2$.
-\begin{figure}[htbp]
-\vspace{-10pt}
-\centering
-\begin{subfigure}{0.49\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/tau-comb-alph}
-\caption{Torque response $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ to steps in $\Delta\alpha_i$ only}
-\label{fig:tau-comb-alph}
-\end{subfigure}
-\begin{subfigure}{0.49\textwidth}
-\centering
-\includegraphics[width=\textwidth]{graphs/tau-comb-alph-r}
-\caption{Error for $\vec{\mathbf{V}}(\alpha_i,\lambda_i)$ for steps in $\Delta\alpha_i$ only}
-\label{fig:tau-comb-alph-r}
-\end{subfigure}
-\vspace{-6pt}
-\caption{Step changes in $\Delta\alpha_i$ with constant $\Delta\lambda_i=\pi/4$}
-\label{fig:tau-comb-alpha}
-\vspace{-16pt}
-\end{figure}
-\par
-It is interesting to note that positive and negative step directions are not symmetrical in their responses for Fig:\ref{fig:tau-comb-lam} and Fig:\ref{fig:tau-comb-alph}. This is as a result of the gyroscopic cross product in the calculations for $\hat{V}(\alpha_i,\lambda_i)$. Both tests shown in Fig:\ref{fig:tau-com-lambda} and Fig:\ref{fig:tau-comb-alpha} further corroborate the model proposed previously in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}.
 \newpage
 %-----------------------------------------------------
 \section{Controller Disturbance Rejection}
