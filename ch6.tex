@@ -822,6 +822,7 @@ Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independ
 \end{subfigure}
 \vspace{-10pt}
 \caption{Independent PD attitude controller}
+\label{fig:independent}
 \end{figure}
 \begin{figure}[htbp]
 \centering
@@ -842,6 +843,7 @@ Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independ
 \end{subfigure}
 \vspace{-10pt}
 \caption{Dependent PD attitude controller}
+\label{fig:dependent}
 \end{figure}
 \begin{figure}[hbtp]
 \centering
@@ -868,6 +870,7 @@ Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independ
 \end{subfigure}
 \vspace{-10pt}
 \caption{Auxiliary PD attitude controller}
+\label{fig:auxiliary}
 \end{figure}
 \begin{figure}[htbp]
 \centering
@@ -888,36 +891,60 @@ Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated plant independ
 \end{subfigure}
 \vspace{-10pt}
 \caption{Ideal backstepping attitude controller}
+\label{fig:backstepping}
 \end{figure}
-Each control law was successful in tracking a given trajectory each with little to no error, except of course for the plant independent attitude controller, Fig:\ref{fig:independent_diagonal_trjaectory}. Trajectory errors could be improved further with application of higher order state derivative in each controller (wherein $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$). The only notable difference between each attitude controller in Fig:\ref{fig:attitude-trajectory-tracking} is that, at the initial attitude step, the Ideal Backstepping attitude controller (Fig:\ref{fig:attitude-trajectory-ibc-tracking}) oscillates whilst settling due to it's more aggressive response. The independent PD controller actually tracks some trajectory, but with a significant steady state error.
+Interestingly, even the uncompensated (still compensating for gravitational force however) controller can still track the generated trajectory. The independent PD controller, illustrated in Fig:\ref{fig:independent}, has a \emph{roughly} constant quaternion error which oscillates with the trajectory setpoint. Only beyond an orbital rate of $\approx 1~[\text{Hz}]$, at $t=60~[\text{s}]$, does the trajectory begin to lose its stability, where the quaternion errors start to drift. Introducing plant compensation in Fig:\ref{fig:dependent} reduces the trajectory's initial error. The plant dependent PD controller begins to show oscillatory tracking errors at the same $\approx 1~[\text{Hz}]$ point and slowly drifts from its setpoint.
 \par
-\begin{figure}[hbtp]
-\vspace{-11pt}
-\begin{subfigure}{\textwidth}
+The exponentially stable controllers performed better and maintained approximately zero error trajectory tracking for longer. The auxiliary PD controller, Fig:\ref{fig:auxiliary}, starts to introduce a non-zero oscillatory tracking error at a greater $\approx 1.4~[\text{Hz}]$, at $t=70~[\text{s}]$. The auxiliary PD controller still maintains an acceptable error ($<5\%$) until a trajectory rate of $\approx 3.5~[\text{Hz}]$ is reached at $t=110~[\text{s}]$. The final, ideal backstepping controller in Fig:\ref{fig:backstepping} retains an error free trajectory for the longest, only introducing oscillating tracking errors at $\approx 1.8~[\text{Hz}]$, at $t=80~[\text{s}]$, but continues tracking the trajectory with an acceptable ($<5\%$) error up to an orbital rate of $\approx 5.4~[\text{Hz}]$ until $t=140~[\text{s}]$. Trajectory errors could be reduced (\emph{improved}) further with the application of higher order state derivative trajectory setpoints for each controller with $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$).
+\newpage
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/PD_Position_Trajectory}
-\vspace{-12pt}
-\caption{Diagonal Proportional Derivative Controller}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
-\vspace{-2pt}
+\vspace{-8pt}
+\begin{subfigure}{0.9\textwidth}
 \centering
-\includegraphics[width=0.85\textwidth]{graphs/IBC_Position_Trajectory}
-\vspace{-12pt}
-\caption{Ideal Backstepping Controller}
+\includegraphics[width=\textwidth]{graphs/PD_Position_Trajectory}
+\vspace{-18pt}
+\caption{Position trajectory}
+\label{fig:pd_position_trajectory}
 \end{subfigure}
-\vspace{-6pt}
-\caption{Position Trajectory Tracking}
-\label{fig:position-trajectory-tracking}
+\begin{subfigure}{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/PD_Position_Error}
+\vspace{-18pt}
+\caption{Position trajectory error}
+\label{fig:pd_position_error}
+\end{subfigure}
 \vspace{-10pt}
+\caption{PD position controller}
+\label{fig:pd_position}
 \end{figure}
-\par
-There is a small lag behind the position controller's trajectories, Fig:\ref{fig:position-trajectory-tracking}. Once again this is a consequence of tracking only first order setpoints; if a velocity setpoint was applied as well that tracking error would be diminished\ldots
+\begin{figure}[htbp]
+\centering
+\vspace{-8pt}
+\begin{subfigure}{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/IBC_Position_Trajectory}
+\vspace{-18pt}
+\caption{Position trajectory}
+\label{fig:ibc_position_trajectory}
+\end{subfigure}
+\begin{subfigure}{0.9\textwidth}
+\centering
+\includegraphics[width=\textwidth]{graphs/IBC_Position_Error}
+\vspace{-18pt}
+\caption{Position trajectory error}
+\label{fig:ibc_position_error}
+\end{subfigure}
+\vspace{-10pt}
+\caption{Backstepping position controller}
+\label{fig:ibc_position}
+\end{figure}
+Ideal backstepping and PD position controllers manifest a small lag behind the generated XYZ position trajectorys. This is a consequence of tracking only first order setpoints, if a velocity setpoint was applied as well that tracking error would be diminished. Both controllers track the trajectory setpoint with a non-zero error from the start of the simulation. The ideal backstepping position controller does, however, track increasingly faster trajectories with a smaller error, shown in Fig:\ref{fig:ibc_position_error}.
 %====================================================
 \section{Robust Stability and Disturbance Rejection}
 \label{sec:simulation.disturbance}
 %====================================================
-Despite deriving adaptive control laws in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep} and Sec:\ref{subsec:control.position.bacstepping} for attitude and position controllers respectively; each of the proposed controls demonstrated acceptable stability under sizeable disturbances. App:\ref{app:disturbance} shows each controller's trajectory response to uncompensated disturbances acting on the vehicle. The torque and force disturbances are now detailed\ldots
+Despite deriving adaptive control laws in Sec:\ref{subsubsec:control.attitude.nonlinear.adaptivebackstep} and Sec:\ref{subsec:control.position.bacstepping} for attitude and position controllers respectively, each of the proposed control law demonstrated acceptable stability under sizable disturbances. Trajectories tested under distrubance conditions are simple oscillatory ones, similar to the trajectory setpoint illustrated in Fig:\ref{fig:trajectory} but with a \emph{constant} orbital rate of $0.5~[\text{Hz}]$ applied. The purpose of the subsequent tests is to evaluate the disturbance approximator's performance, not a particular controller's trajectory tracking ability. App:\ref{app:disturbance} shows each non-adaptive controller's trajectory response to uncompensated disturbances acting on the vehicle.
 %====================================================
 \subsection{Torque Disturbance Rejection}
 \label{subsec:simulation.disturbance.torque}
