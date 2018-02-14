@@ -414,6 +414,25 @@ ABC - Adaptive backstepping control\\
 \chapter{Symbols}
 \label{ch:symbol}
 %---------------------------------------------------------------------
+An arrowed overbar implies vector quantity (column vector)\\
+A vector with an $T$ superscript refers to that vector's transpose\\
+A subscript $\mu$ denotes a control input quantity\\
+A subscript $i$ refers to a quantity associated with the $i^{\text{th}}$ motor module\\
+Any subscript numbered $1\rightarrow 4$ refer to quantities associated with a particular motor module\\
+Axes are referred to with hat accents and described as an axis in context\\
+Estimated quantities are also denoted with a hat accent but are similarly described as an estimate in context\\
+Lower case axis quantities are unit vectors in a particular axial direction\\
+Upper case axis quantities refer to the axes themselves\\
+Bold faced vectors are lumped state variables\\
+Dot accents denote derivatives of vectors or quantities\\
+Subscripts $M_i$ imply reference to the $i^{\text{th}}$ motor module's frame\\
+The frame $\mathcal{F}^i$ refers to the $i^{\text{th}}$ reference frame\\
+An origin of a frame is given by $\vec{\mathbf{O}}_i$\\
+Lowercase body vectors imply state trajectories\\
+Upper case bold vectors represent Euler-Lagrange generalized forces acting as a result of the same case's lowercase trajectory
+\par
+Where possible, typical conventions for quantities and notations have been adhered to
+\par
 $\phi$ pitch rotation about $\hat{X}$ axis in [rad] \\
 $\theta$ roll rotation about $\hat{Y}$ axis in [rad] \\
 $\psi$ yaw rotation about $\hat{Z}$ axis in [rad]\\
@@ -440,6 +459,32 @@ $\vec{\tau}_d = h(\vec{\eta}_e,~\dot{\vec{\eta}}_e,~t)~~\in\mathcal{F}^b$ attitu
 $\vec{F}_\mu=[F_x~F_y~F_z]^T~~\in\mathcal{F}^b$ input force in [N]\\
 $\vec{F}_d=g(\vec{\mathcal{E}}_e,~\dot{\vec{\mathcal{E}}}_e,~t)~~\in\mathcal{F}^b$ position controller generated force input in [n]\\
 $\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d\hspace{2pt}]^T\in\mathcal{F}^b$ generalized virtual control input\\
+$J_x$ moment of inertia for body x, relative to the frame provided in context measured in $[\text{Kg.m}^{2}]$\\
+$\vec{\mathbf{O}}_b$ body frame origin of motion\\
+$\vec{\mathbf{M}}_i$ $i^\text{th}$ motor module center of rotation\\
+$\vec{L}_i$ vector arm length from $\vec{\mathbf{O}}_b$ origin in $[\text{m}]$\\
+$\vec{C}_x$ center of mass for body x, relative to origin $\vec{\mathbf{O}}_b$\\
+$m_x$ mass for body x in $[\text{Kg}]$\\
+$r$ subscript for rotor body\\
+$n$ subscript for inner ring assembly\\
+$in$ subscript for inner ring assembly \emph{without} rotor body contribution\\
+$m$ subscript for middle ring assembly\\
+$p$ subscript for net motor module assembly\\
+$y$ subscript for constant body frame structure\\
+$b$ subscript for net multibody assembly\\
+$\mathcal{L}_x$ Lagrangian scalar with respect to body x\\
+$T$ Kinetic energy\\
+$U$ Potential energy
+$\vec{r}(t)$ generalized path trajectory for Euler-Lagrange equation\\
+$\vec{\xi}$ generalized position coordinate\\
+$\vec{H}$ generalized attitude coordinate\\
+$\rho$ STP airdensity\\
+$c$ propeller chord length\\
+$D$ propeller diameter\\
+$J$ aerodynamic advance ratio, inflow velocity relative to propeller's rotational speed\\
+$C_T(J)$ aerodynamic thrust coefficient, varies as function of the advance ratio\\
+$C_P(J)$ aerodynamic power coefficient, varies as function of the advance ratio\\
+$\vec{D}(\vec{v}_b)$ aerodynamic drag as a function of the vehicle's net translational velocity
 %---------------------------------------------------------------------
 %	Dedication (optional)
 %---------------------------------------------------------------------
