@@ -1087,7 +1087,7 @@ A pseudo inverse allocation solves for $\vec{T}_{[1:4]}$ using $B^\ddagger(\vec{
 \centering
 \includegraphics[width=0.6\textwidth]{graphs/pseudo_inverse_input}
 \vspace{-6pt}
-\caption{Pseudo inverse actuator commands}
+\caption{Actuator commands}
 \label{fig:pseudo_inverse_input}
 \end{subfigure}
 \vspace{-10pt}
@@ -1171,7 +1171,7 @@ Testing the same attitude and position setpoint steps, but with preferred actuat
 \centering
 \includegraphics[width=0.6\textwidth]{graphs/inertial_norm_input}
 \vspace{-6pt}
-\caption{Pseudo inverse actuator commands}
+\caption{Actuator commands}
 \label{fig:inertia_norm_input}
 \end{subfigure}
 \vspace{-10pt}
@@ -1216,7 +1216,7 @@ Hovering conditions are then always a function of the body's instantaneous attit
 \centering
 \includegraphics[width=0.58\textwidth]{graphs/body_norm_input}
 \vspace{-4pt}
-\caption{Pseudo inverse actuator commands}
+\caption{Actuator commands}
 \label{fig:body_norm_input}
 \end{subfigure}
 \caption{Body frame hover preferred actuator step response}
@@ -1332,13 +1332,13 @@ The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} does no
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/weighted_inverse_attitude}
-\vspace{-12pt}
+\vspace{-6pt}
 \caption{Attitude Step}
 \label{fig:weighted_inverse_attitude}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{graphs/body_norm_position}
+\includegraphics[width=0.8\textwidth]{graphs/weighted_inverse_position}
 \vspace{-2pt}
 \caption{Position Step}
 \label{fig:weighted_inverse_position}
@@ -1347,7 +1347,7 @@ The weighted allocator's response in Fig:\ref{fig:weighted-inverse-step} does no
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.6\textwidth]{graphs/body_norm_input}
-\caption{Pseudo inverse actuator commands}
+\caption{Actuator commands}
 \label{fig:weighted_inverse_input}
 \end{subfigure}
 \caption{Weighted actuator allocation step response}
@@ -1474,14 +1474,14 @@ Both position and attitude control loops, testing with the basic Proportional De
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/discrete_attitude_step}
-\vspace{-12pt}
+\vspace{-6pt}
 \caption{Attitude step}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
 \vspace{-3pt}
 \centering
 \includegraphics[width=0.8\textwidth]{graphs/discrete_position_step}
-\vspace{-12pt}
+\vspace{-6pt}
 \caption{Position step}
 \end{subfigure}
 \vspace{-8pt}
