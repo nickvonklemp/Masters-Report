@@ -368,97 +368,78 @@ Firstly, I'd like to thank Prof Edward Boje for the supervision he provided thro
 %---------------------------------------------------------------------
 \underline{In order of appearance:}
 \par
-DOF - Degree of Freedom(s)\\
-$\mu$C - micro-controller\\
-UAV - Unmanned aerial vehicle\\
-SISO - Single input single output, control loop\\
-MEMS - Micro-electromechanical system\\
-DIY - Do it yourself\\
-VTOL - Vertical takeoff/landing\\
-IMU - Inertial measurement unit\\
-BLDC - Brushless direct current, motor type\\
-KV - Kilo-volt, BLDC motor rating\\
-$\mu$C - Micro-controller shorthand\\
-PWM - Pulse width modulation\\
-CH - Channel, radio control \& PWM signals typically\\
-RC - Radio control\\
-OAT - Opposed active tilting\\
-dOAT - Dual axis opposed active tilting\\
-PD - Proportional derivative, control law\\
-PID - Proportional integral derivative, control law\\
+UAV : Unmanned aerial vehicle, any autonomous aircraft\\
+6-DOF : 6 Degrees of freedom, full attitude and position states\\
+4-DOF : 4 Degrees of freedom, reduced attitude control
+SISO : Single input single output, typical control loop\\
+MEMS : Micro-electromechanical system, accelerometer or gyroscopes\\
+DIY : Do it yourself, quadcopter assembly kit in context example\\
+VTOL : Vertical takeoff/landing. Helicopter or quad/bi-rotor\\
+3-D : three-dimensional vector components in Cartesian XYZ axial directions\\
+MPC : Model predictive control\\
+QFT : Quantitative feedback theory\\
+IMU : Inertial measurement unit, an MEM 9-DOF accelerometer/gyroscope/magnetometer\\
+RPM : Revolution per minute, units for propeller rotational velocity\\
+BLDC : Brushless-DC, motor\\
+KV : Kilo-volt, thousan RPM per V applied, BLDC motor rating\\
+OAT : Opposed active tilting, single axis birotor rotation\\
+dOAT : Dual axis opposed active tilting, two axis birotor rotation\\
+PD : Controller structure proportional to error and error derivative\\
+PID : Controller proportional error, error derivative and error integral\\
+PSO : Particle swarm optimization, gradient free genetic algorithm\\
+ITAE : Integral time additive error, cost function used for optimization\\
+BEM : Blade element theory, calculation for produced thrust from propeller\\
+RPS : Revolution per second, units for propeller speed when calculating BEM thrust\\
+FTC : Fault tolerant control\\
+TSK : Takagi-Sugeno-kang, fuzzy logic paradigm\\
+LQR : Linear quadratic regulator control structure\\
+CMG : Control moment gyroscope, satellite actuator\\
+GCS : Ground control station, supplements onboard control loops for UAVs\\
+$\mu$C : micro-controller\\
+USART : Universal synchronous/asynchronous receiver transmitter, 2 wire comms\\
+PWM : Pulse width modulation\\
+CH: Channel, number of PWM lines or RC channels
+S.bus : Serial.Bus, proprietary encoding of UART comms\\
+Rx : Receiver channel, comms line input\\
+Tx : Transmitter channel, comms line output
+ESC : Electronic speed controller\\
+STP : Standard temperature and pressure
+LCF : Lyupanov candidate function\\
+P.D : Positive definite, NOT proportional derivative\\
 IBC - Ideal backstepping control\\
 ABC - Adaptive backstepping control\\
-PSO - Particle swarm optimization, gradient free genetic algorithm\\
-BEM - Blade element theory\\
-ESC - Electronic speed controller\\
-MPC - Model predictive control\\
-LQR - Linear quadratic regulator\\
-LCF - Lyupanov candidate function\\
-ITAE - Integral time additive error\\
-TSK - Takagi-Sugeno-kang\\
-I/O - Input/Output\\
-RPM - Revolution Per Minute\\
-RPS - Revolution Per Second\\
-W.R.T - With respect to\\
-LCF - Lyupanov Candidate Function\\
-\emph{iff} - If and only if\\
-P.D - Positive definite, NOT proportional derivative\\
-S.T - such that\\
-FTC - Fault Tolerant Control
-
 %---------------------------------------------------------------------
 %	Symbols
 %---------------------------------------------------------------------
 \chapter{Symbols}
 \label{ch:symbol}
 %---------------------------------------------------------------------
-Propeller Rotational Speed: $\Omega_i~~[rpm]~~\text{for motors:}~~i\in\begin{bmatrix}
-1,&2,&3,&4
-\end{bmatrix}$
-\\
-\emph{\color{Gray} Rotational speeds in [RPS] are used for Blade Element Theory Calculations in Chapter:\ref{ch:dynamics}}
-\\
-Net body torque: $\mu\vec{\tau}=\begin{bmatrix}
-\tau_\phi & \tau_\theta & \tau_\psi
-\end{bmatrix}\text{}^T~~~~\in\mathcal{F}^b$
-\\
-Net body thrust: $\mu\vec{T}=\begin{bmatrix}
-T_x & T_y & T_z
-\end{bmatrix}\text{}^T~~~~\in\mathcal{F}^b$
-\\
-Body Position: $\vec{\mathcal{E}}=\begin{bmatrix}
-x & y & z
-\end{bmatrix}^T~~~~\in\mathcal{F}^I$
-\\
-Euler Angles: $\vec{\mathcal{E}}=\begin{bmatrix}
-\phi & \theta & \psi
-\end{bmatrix}^T~~~~\in\mathcal{F}^{I,v1,b}$
-\\
-Servo 1 Position: $\lambda_i~~[rad]$
-\\
-Servo 2 Position: $\alpha_i~~[rad]$
-\\
-Motor module actuator positions: $\begin{bmatrix}
-\Omega_i & \lambda_i & \alpha_i
-\end{bmatrix}^T~~~~\in\mathcal{F}^{M_i}$
-\\
-Actuator matrix: $u=\begin{bmatrix}
-M_1 & \ldots & M_4
-\end{bmatrix}~~~~\in\mathbb{U}^{12}$
-\\
-Motor module displacement arm: $\vec{L}_{arm}=195.16~~[mm]$
-\\
-Euler Rates: $\frac{d}{dt}\vec{\eta}=\dot{\vec{\eta}}=\Phi(\eta)\dot{\omega}_b=\begin{bmatrix}
-\dot{\phi} & \dot{\theta} & \dot{\psi}
-\end{bmatrix}^T~~~~\in\mathcal{F}^{v1,v2,I}$
-\\
-Angular Velocity: $\omega=\begin{bmatrix}
-p & q & r\\
-\end{bmatrix}^T~\in\mathcal{F}^b$
-\\
-Linear Velocity: $\nu=\begin{bmatrix}
-u & v & w
-\end{bmatrix}^T~\in\mathcal{F}^b$
+$\phi$ pitch rotation about $\hat{X}$ axis in [rad] \\
+$\theta$ roll rotation about $\hat{Y}$ axis in [rad] \\
+$\psi$ yaw rotation about $\hat{Z}$ axis in [rad]\\
+$\vec{\eta}=[\phi~\theta~\psi]^T~~\in\mathcal{F}^{I,v_1,v_2}$ Euler angle set\\
+$\vec{\eta}_b \in\mathcal{F}^b$ transformed Euler angles in common shared body frame\\
+$Q_b=[q_0~\vec{q}\hspace{2pt}]^T$ attitude quaternion with scalar $q_0$ and vector $\vec{q}$ components\\
+$\vec{\omega}_b=[p~q~r]^T~~\in\mathcal{F}^b$ angular velocity in body frame with units $[\text{rad.s}^{-1}]$\\
+$x$ translational position in the $\hat{X}_I$ axis direction\\
+$y$ translational position in the $\hat{Y}_I$ axis direction\\
+$z$ translational height in the $\hat{Z}_I$ axis direction\\
+$\vec{\mathcal{E}}_I=[x~y~z]^T~~\in\mathcal{F}^{I}$ inertial position in [m]\\
+$\vec{v}_b=[u~v~w]^T~~\in\mathcal{F}^b$ translational velocity in body frame with units $[\text{m.s}^{-1}]$\\
+$\vec{\mathbf{x}}_b$ full 6-DOF state for combined attitude and position\\
+$\vec{\mathbf{x}}_d$ desired state setpoint\\
+$\vec{\mathbf{x}}_e$ error state, not necessarily subtractive, quaternion errors are multiplicative\\
+$\Omega_i$ rotational velocity of $i^{\text{th}}$ propeller, in [RPM] or [RPS] specified\\
+$T(\Omega_i)$ scalar propeller thrust as a function of rotational speed\\
+$\vec{u}=[\Omega_1~...~\alpha_4]^T$ actuator plant input matrix, $\in\mathbb{R}^{12}$\\
+$\lambda_i$ motor module rotation about the $\hat{X}_{M_i}$ axis\\
+$\alpha_i$ motor module rotation about the $\hat{Y}_{M_i'}$ axis\\
+$\sigma_i$ motor module rotation about the $\hat{Z}_{M_i''}$ axis\\
+$\vec{\tau}_\mu = [\tau_\phi~\tau_\theta~\tau_\psi]^T~~\in\mathcal{F}^b$ input torque in [Nm]\\
+$\vec{\tau}_d = h(\vec{\eta}_e,~\dot{\vec{\eta}}_e,~t)~~\in\mathcal{F}^b$ attitude controller generated torque input in [Nm]\\
+$\vec{F}_\mu=[F_x~F_y~F_z]^T~~\in\mathcal{F}^b$ input force in [N]\\
+$\vec{F}_d=g(\vec{\mathcal{E}}_e,~\dot{\vec{\mathcal{E}}}_e,~t)~~\in\mathcal{F}^b$ position controller generated force input in [n]\\
+$\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d\hspace{2pt}]^T\in\mathcal{F}^b$ generalized virtual control input\\
 %---------------------------------------------------------------------
 %	Dedication (optional)
 %---------------------------------------------------------------------
