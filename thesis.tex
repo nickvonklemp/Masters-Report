@@ -345,13 +345,13 @@ I, \auth,  hereby:
 			\vskip 1cm
 \end{center}
 %---------------------------------------------------------------------
-This dissertation aims to apply non-zero attitude and position setpoint tracking to a quadrotor aircraft; achieved by solving the problem of a quadrotor's inherent underactuation. The introduction of extra actuation aims to mechanically accommodate for stable tracking of non-zero state trajectories. The requirement of the project is to design, model, simulate and control a novel quadrotor platform which can articulate all six degrees of rotational and translational freedom (6-\emph{DOF}) by redirecting and vectoring each propeller's individually produced thrust. 
+This dissertation aims to apply non-zero attitude and position setpoint tracking to a quadrotor aircraft, achieved by solving the problem of a quadrotor's inherent underactuation. The introduction of extra actuation aims to mechanically accommodate for stable tracking of non-zero state trajectories. The requirement of the project is to design, model, simulate and control a novel quadrotor platform which can articulate all six degrees of rotational and translational freedom (6-\emph{DOF}) by redirecting and vectoring each propeller's individually produced thrust. 
 \par
 Considering the extended articulation, the proposal is to add an additional two axes (degrees) of actuation to each propeller on a traditional quadrotor frame. Each lift propeller can be independently pitched or rolled relative to the body frame. Such an adaptation, to what is an otherwise well understood aircraft, produces an over-actuated control problem. Being first and foremost a control engineering project, the focus of this work is plant model identification and control solution of the proposed aircraft design. A higher level setpoint tracking control loop designs a generalized plant input (net forces and torques) to act on the vehicle. An allocation rule then distributes that \emph{virtual} input in solving for explicit actuator servo positions and rotational propeller speeds.
 \par
-The dissertation is structured as follows: First a schedule of relevant existing works is reviewed in Ch:\ref{ch:intro} following an introduction to the project. Thereafter the prototype's design is detailed in Ch:\ref{ch:proto} but only the final outcome of the design stage is presented. Following that, kinematics associated with generalized rigid body motion are derived in Ch:\ref{ch:dynamics} and subsequently expanded to incorporate any aerodynamic and multibody nonlinearities which may arise as a result of the aircraft's configuration (changes). Higher level state tracking control design is applied in Ch:\ref{ch:control} whilst lower level control allocation rules are then proposed in Ch:\ref{ch:allocation}. Next, a comprehensive simulation is constructed in Ch:\ref{ch:simulation}, based on the plant dynamics derived in order to test and compare the proposed controller techniques. Finally a conclusion on the design(s) proposed and results achieved is presented in Ch:\ref{ch:conclusion}.
+The dissertation is structured as follows: First a schedule of relevant existing works is reviewed in Ch:\ref{ch:intro} following an introduction to the project. Thereafter the prototype's design is detailed in Ch:\ref{ch:proto}, however only the final outcome of the design stage is presented. Following that, kinematics associated with generalized rigid body motion are derived in Ch:\ref{ch:dynamics} and subsequently expanded to incorporate any aerodynamic and multibody nonlinearities which may arise as a result of the aircraft's configuration (changes). Higher level state tracking control design is applied in Ch:\ref{ch:control} whilst lower level control allocation rules are then proposed in Ch:\ref{ch:allocation}. Next, a comprehensive simulation is constructed in Ch:\ref{ch:simulation}, based on the plant dynamics derived in order to test and compare the proposed controller techniques. Finally a conclusion on the design(s) proposed and results achieved is presented in Ch:\ref{ch:conclusion}.
 \par
-Throughout the research, physical tests and simulations are used to corroborate proposed models or theorems. It was decided to omit flight tests of the platform due to time constraints, those aspects of the project remain open to further investigation. The subsequent embedded systems design stemming from the proposed control plant, however, is outlined in the latter of Ch:\ref{ch:proto}, Sec:\ref{sec:proto.layout}. Such implementations are not investigated here but design proposals are suggested. The primary outcome of the investigation is ascertaining the practicality and feasibility of such a design, most importantly whether or not the complexity of the mechanical design is an acceptable compromise for the additional degrees of control actuation introduced. Control derivations and the prototype design presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the whole system and not just a single aspect of it.
+Throughout the research, physical tests and simulations are used to corroborate proposed models or theorems. It was decided to omit flight tests of the platform due to time constraints, those aspects of the project remain open to further investigation. The subsequent embedded systems design stemming from the proposed control plant is outlined in the latter of Ch:\ref{ch:proto}, Sec:\ref{sec:proto.layout}. Such implementations are not investigated here but design proposals are suggested. The primary outcome of the investigation is ascertaining the practicality and feasibility of such a design, most importantly whether or not the complexity of the mechanical design is an acceptable compromise for the additional degrees of control actuation introduced. Control derivations and the prototype design presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the whole system and not just a single aspect of it.
 \par
 %---------------------------------------------------------------------
 %	Acknowledgements
@@ -359,7 +359,7 @@ Throughout the research, physical tests and simulations are used to corroborate 
 \chapter{Acknowledgements}		
 \label{ch:ack}
 %---------------------------------------------------------------------
-Firstly, I'd like to thank Prof Edward Boje for the supervision he provided throughout this research. Secondly, without the support of everyone in the Mechatronics Lab (Room 6.00) at the University of Cape Town, this project would not have been possible. And last, but certainly not least, I would like to thank my parents, without whom none of this would have been possible. 
+Firstly, I'd like to thank Prof Edward Boje for the supervision he provided throughout this research. Secondly, without the support of everyone in the Mechatronics Lab (Room 6.00) at the University of Cape Town, this project would not have been possible. And last, but certainly not least, I would like to thank my parents who supported and guided me throughout the tenure of my studies. 
 %---------------------------------------------------------------------
 %	Nomenclature
 %---------------------------------------------------------------------
@@ -403,7 +403,7 @@ S.bus : Serial.Bus, proprietary encoding of UART comms\\
 Rx : Receiver channel, comms line input\\
 Tx : Transmitter channel, comms line output
 ESC : Electronic speed controller\\
-STP : Standard temperature and pressure
+STP : Standard temperature and pressure\\
 LCF : Lyupanov candidate function\\
 P.D : Positive definite, NOT proportional derivative\\
 IBC - Ideal backstepping control\\
@@ -484,7 +484,17 @@ $D$ propeller diameter\\
 $J$ aerodynamic advance ratio, inflow velocity relative to propeller's rotational speed\\
 $C_T(J)$ aerodynamic thrust coefficient, varies as function of the advance ratio\\
 $C_P(J)$ aerodynamic power coefficient, varies as function of the advance ratio\\
-$\vec{D}(\vec{v}_b)$ aerodynamic drag as a function of the vehicle's net translational velocity
+$\vec{D}(\vec{v}_b)$ aerodynamic drag as a function of the vehicle's net translational velocity\\
+$\varepsilon$ stable trajectory initial bounding manifold\\
+$\delta (\varepsilon)$ stable trajectory's maximum bound\\
+$\mathbf{S}$ general stability\\
+$\mathbf{US}$ uniform stability\\
+$\mathbf{AS}$ asymptotic stability\\
+$\mathbf{UAS}$ uniform asymptotic stability\\
+$\mathbf{ES}$ exponential stability\\
+$\mathbf{GUAS}$ global uniform asymptotic stability\\
+$\mathbf{GUES}$ global uniform exponential stability\\
+$V(\vec{\mathbf{r}})$ Lyapunov function of some trajectory $\vec{\mathbf{r}}(t)$\\
 %---------------------------------------------------------------------
 %	Dedication (optional)
 %---------------------------------------------------------------------

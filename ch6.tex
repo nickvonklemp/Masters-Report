@@ -17,9 +17,9 @@ The proposed attitude and position control laws, together with the system's equa
 \label{fig:simulation-block}
 \end{figure}
 \par
-An abstracted simulation loop is illustrated in Fig:\ref{fig:simulation-block}, incorporating both attitude and position control loops together with the additive nonlinearities. Certain feedback elements were omitted to retain clarity in the diagram, both Coriolis and Gyroscopic nonlinear cross-products were included to highlight the inherent coupling between attitude and position. Not shown, but implied, is some form of state-estimation or discretization between the state-tracking output $y=\vec{\mathbf{x}}=[\vec{\mathcal{E}}_I~Q_b\hspace{2pt}]^T$ and the feedback state estimate $\hat{\mathbf{x}}$ used for setpoint tracking. Discretized effects of state-estimators are discussed later in Sec:\ref{sec:simulation.state}. Initial conditions for each state's integrator, both position $\vec{\mathcal{E}}_I(0)$ and attitude $Q_b(0)$ origins, for their velocities $\dot{\mathcal{E}}_b$ and $\dot{Q}_b$ (and accelerations $\dot{\vec{v}}_b$ and $\dot{\vec{\omega}}_b$ in the body frame $\mathcal{F}^b$) are not illustrated but implied. Obviously starting conditions are important for each trajectory's simulation, but are specifically defined for each simulation in question. Actuator transfer functions from Sec:\ref{subsec:proto.design.transfer} are combined into a bundled $C_{i}(S)$ block, accounting for transfer functions and nonlinear saturation limits of each motor module. Each bundled input $u_{[1:4]}$ is similarly the projected actuator matrix:
+An abstracted simulation loop is illustrated in Fig:\ref{fig:simulation-block}, incorporating both attitude and position control loops together with the additive nonlinearities. Certain feedback elements were omitted to retain clarity in the diagram, both Coriolis and Gyroscopic nonlinear cross-products were included to highlight the inherent coupling between attitude and position. Not shown, but implied, is some form of state-estimation or discretization between the state-tracking output $y=\vec{\mathbf{x}}=[\vec{\mathcal{E}}_I~Q_b\hspace{2pt}]^T$ and the feedback state estimate $\hat{\mathbf{x}}$ used for setpoint tracking. Discretized effects of state-estimators are discussed later in Sec:\ref{sec:simulation.state}. Initial conditions for each state's integrator, both position $\vec{\mathcal{E}}_I(0)$ and attitude $Q_b(0)$ origins, for their velocities $\dot{\mathcal{E}}_b$ and $\dot{Q}_b$ (and accelerations $\dot{\vec{v}}_b$ and $\dot{\vec{\omega}}_b$ in the body frame $\mathcal{F}^b$) are not illustrated but implied. Obviously starting conditions are important for each trajectory's simulation, but are specifically defined for each simulation in question. Actuator transfer functions from Sec:\ref{subsec:proto.design.transfer} are combined into a bundled $C_{i}(S)$ block, accounting for transfer functions and nonlinear saturation limits of each motor module. Each bundled input $\vec{u}_{[1:4]}$ is similarly the projected actuator matrix:
 \begin{equation}
-u_i = \begin{bmatrix}
+\vec{u}_i = \begin{bmatrix}
 \Omega_i & \lambda_i & \alpha_i
 \end{bmatrix}~~~~\text{for}~i\in[1:4]
 \end{equation}
@@ -56,7 +56,7 @@ Q_d(t)=\begin{bmatrix}
 \end{bmatrix}^T
 \end{equation}
 \end{subequations}
-Whilst the trajectory equation itself may have a non-zero time derivative, both attitude and position controllers still apply the respective rate setpoints to the state variables $\dot{\vec{\mathcal{E}}}_d(t)=\vec{0}$ and $\dot{Q}_d(t)=\vec{0}$ throughout the entire trajectory, as per Eq:\ref{eq:4.85a} and Eq:\ref{eq:4.27c}. The plot in Fig:\ref{fig:Trajectory_Plot} shows a chirp quaternion and attitude trajectory, $Q_d(t)$ and $\vec{\mathcal{E}}_d(t)$ respectively, over a time period of $240~[\text{s}]$. The trajectory starts at $\vec{\mathcal{E}}_d(t_0)=[6~6~5]^T~[\text{m}]$, which produces a non-zero starting attitude $Q_d(t_0)=[0.38~0.42~0.24~0.7]^T$.\ref{fig:Position_Trajectory}.
+Whilst the trajectory equation itself may have a non-zero time derivative, both attitude and position controllers still apply the respective rate setpoints to the state variables $\dot{\vec{\mathcal{E}}}_d(t)=\vec{0}$ and $\dot{Q}_d(t)=\vec{0}$ throughout the entire trajectory, as per Eq:\ref{eq:4.85a} and Eq:\ref{eq:4.27c}. The plot in Fig:\ref{fig:Trajectory_Plot} shows a chirp quaternion and attitude trajectory, $Q_d(t)$ and $\vec{\mathcal{E}}_d(t)$ respectively, over a time period of $240~[\text{s}]$. The trajectory starts at $\vec{\mathcal{E}}_d(t_0)=[6~6~5]^T~[\text{m}]$, which produces a non-zero starting attitude $Q_d(t_0)=[0.38~0.42~0.24~0.7]^T$, Eq:\ref{fig:Position_Trajectory}.
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
@@ -130,7 +130,7 @@ Termination conditions for the iterative optimization loop either limit the numb
 \begin{equation}
 \vec{v}_{n+1}=\vec{v}_n+\frac{tx}{1000}\ast r_1(\vec{P}_{best}-\vec{x}_n)+\frac{1000-tx}{1000}\ast r_2(\vec{G}_{best}-\vec{x}_n)~~~~\text{for}~~tx\in[1:1000]
 \end{equation}
-Each particle's progression was constrained such that it never violated the Lyapunov stability conditions of its respective control laws, mostly ensuring that the coefficient matrices were kept positive definite and symmetrical.
+Each particle's progression was constrained such that it never violated the Lyapunov stability conditions of its respective control laws, ensuring that the coefficient matrices were kept positive definite and symmetrical.
 %====================================================
 \section{Attitude Controllers}
 \label{sec:simulation.attitude}
@@ -190,7 +190,7 @@ Then each controller's settling time to $95$\% of its final value $t_{95}$ and i
 %====================================================
 The first controller evaluated, the Proportional-Derivative structure, is investigated under three different circumstances. Before discussing each of the different scenarios, it is worth recalling that control structure from Sec:\ref{subsubsec:control.attitude.controllers.pd}. Control torque is designed by two coefficient matrices $K_p$ and $K_d$:
 \begin{equation}\label{eq:simulation-attitde-pd}
-\vec{\tau}_{_{PD}}=\underbrace{K_p\vec{q}_e+K_d\vec{\omega}_e}_{Independent}+\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H}_{Compensation}~~~~\in\mathcal{F}^{b}
+\vec{\tau}_{_{PD}}=\underbrace{J_b(\hat{u})\big(K_p\vec{q}_e+K_d\vec{\omega}_e\big)}_{Independent}+\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H}_{Compensation}~~~~\in\mathcal{F}^{b}
 \end{equation}
 The first two tests regard both coefficient matrices as purely diagonal, with no skew elements, testing the effect inclusion of plant dependent compensation has on the controller's performance. Finally, a plant dependent compensating PD controller is tested \emph{with} symmetrical coefficient matrices. The diagonal coefficient matrices are defined as follows:
 \begin{equation}\label{eq:simulation-attitde-pd-diagonal-coefficients}
@@ -600,7 +600,7 @@ Test angles $\phi_x$ and $\theta_y$ rotate the radial arm  $C$ for a range $\phi
 \begin{equation}\label{eq:position-performance}
 \vec{\zeta}_{\mathcal{E}}=\int_{t=0}^{15}C_{X}*t*||\vec{X}_e(t)||.dt+\int_{t=0}^{15}C_{v}*t*|\vec{v}_e(t)|.dt
 \end{equation}
-As with the attitude steps, each position steps simulation is given $t=15~\text{s}$ to reach its settling point when stepped from the starting point. Weighting coefficients $C_X$ and $C_v$ prioritize position and velocity errors respectively, both are weighted at unity. Each particle is then stepped 91 times for position ranges described above and the resultant cost of Eq:\ref{eq:position-performance} is averaged for an overall performance metric. Only plant dependent compensating position controllers are considered and optimized for the position control loop.
+As with the attitude steps, each position steps simulation is given $t=15~\text{s}$ to reach its settling point when stepped from the starting point. Weighting coefficients $C_X$ and $C_v$ prioritize position and velocity errors respectively, both are weighted at unity. Each particle is then stepped 91 times for position ranges described above and the resultant cost of Eq:\ref{eq:position-performance} is averaged for an overall performance metric. Only \emph{plant dependent compensating} position controllers are considered and optimized for the position control loop.
 \par
 Not compensating for the gravitational force acceleration applied to the vehicle in its differential equation of motion, Eq:\ref{eq:quaternion-states-acceleration}, \emph{would} result in instability. An uncompensated gravitational force of $15.45~[\text{N}]$ would drive both Lyapunov function derivatives, Eq:\ref{eq:position-pd-stability} for PD control and Eq:\ref{eq:4.109c} for backstepping control, away from stabilizing negative definite conditions. 
 \par
@@ -708,7 +708,7 @@ The second and final position controller to be tested is the Ideal Backstabbing 
 \begin{equation}\label{eq:simulation-position-IBC}
 \vec{F}_{_{IBC}}=m_b\Big(\big(1+\Gamma_1\Gamma_2\big)\vec{\zeta}_1-\big(\Gamma_1+\Gamma_2\big)\hat{v}_b\big)\Big)+\hat{\omega}_b\times m_b\hat{v}_b-m_b\vec{G}_b~~~~\in\mathcal{F}^{b}
 \end{equation}
-with the backstepping variable $\vec{\zeta}_1$ defined $\vec{z}_1\triangleq \vec{X}_e$, from Eq:\ref{eq:102a}. 
+with the backstepping variable $\vec{\zeta}_1$ defined $\vec{\zeta}_1\triangleq \vec{X}_e$, from Eq:\ref{eq:102a}. 
 \par
 The two positive symmetric coefficient gain matrices in Eq:\ref{eq:simulation-position-IBC} are structured as:
 \begin{equation}\label{eq:simulation-position-diagonal-coefficients}
@@ -801,7 +801,7 @@ The improved performance from the position Ideal Backstepping controller is due 
 \section{Setpoint Control Results}
 \label{sec:simulation.autopilot}
 %====================================================
-None of the proposed attitude or position controllers are unstable, each one achieves the goal of setpoint tracking in the context of stepped inputs. To corroborate dynamic setpoint tracking, an increasing (\emph{chirp}) trajectory is commanded, illustrated in Fig:\ref{fig:trajectory}. The trajectory applies an increasing frequency rate of $1/60~[\text{Hz}.s^{-1}]$, starting from zero, such that at $t=60~[\text{s}]$ the trajectory orbits a central point $\vec{C}_0$ and completes a single orbit every minute. Eventually the increasing orbital frequency will push each controller beyond its tracking limit. Only two Proportional Derivative \emph{attitude} controllers are tested here, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}), to compare the effects of plant dependent compensation. It was shown previously that symmetric gain coefficients yield no performance improvements for the PD case, so only diagonal coefficient matrices were used. 
+None of the proposed attitude or position controllers are unstable, each one achieves the goal of setpoint tracking in the context of stepped inputs. To corroborate dynamic setpoint tracking, an increasing (\emph{chirp}) trajectory is commanded, illustrated in Fig:\ref{fig:trajectory}. The trajectory applies an increasing frequency rate of $1/60~[\text{Hz}.s^{-1}]$, starting from zero, such that at $t=60~[\text{s}]$ the trajectory orbits a central point $\vec{C}_0$ at a frequency of $1~[\text{Hz}]$. Eventually the increasing orbital frequency will push each controller beyond its tracking limit. Only two Proportional Derivative \emph{attitude} controllers are tested here, both with diagonal gain matrices (from Eq:\ref{eq:optimized-pd-independent}), to compare the effects of plant dependent compensation. It was shown previously that symmetric gain coefficients yield no performance improvements for the PD case, so only diagonal coefficient matrices were used. 
 \par
 Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated that plant independent controllers result in steady state errors. The same is shown to be true for trajectory tracking. Adaptive backstepping controllers and their disturbance rejection properties are only discussed next in Sec:\ref{sec:simulation.disturbance}. Each attitude controller is tested together with a common PD position controller, tracking the orbital XYZ position. Similarly, each position controller is tested using a simple diagonal PD controller to track the attitude. The attitude controllers have an initial step to reach the orbital attitude from their starting attitude, $Q_0=[+1~\vec{0}\hspace{2pt}]^T$. Each controller's trajectory setpoint response and its respective tracking error are plotted together in pairs.
 \begin{figure}[htbp]
@@ -896,7 +896,7 @@ Furthermore, Sec:\ref{subsec:simulation.attitude.pd} demonstrated that plant ind
 \end{figure}
 Interestingly, even the uncompensated (still compensating for gravitational force however) controller can still track the generated trajectory. The independent PD controller, illustrated in Fig:\ref{fig:independent}, has a \emph{roughly} constant quaternion error which oscillates with the trajectory setpoint. Only beyond an orbital rate of $\approx 1~[\text{Hz}]$, at $t=60~[\text{s}]$, does the trajectory begin to lose its stability, where the quaternion errors start to drift. Introducing plant compensation in Fig:\ref{fig:dependent} reduces the trajectory's initial error. The plant dependent PD controller begins to show oscillatory tracking errors at the same $\approx 1~[\text{Hz}]$ point and slowly drifts from its setpoint.
 \par
-The exponentially stable controllers performed better and maintained approximately zero error trajectory tracking for longer. The auxiliary PD controller, Fig:\ref{fig:auxiliary}, starts to introduce a non-zero oscillatory tracking error at a greater $\approx 1.4~[\text{Hz}]$, at $t=70~[\text{s}]$. The auxiliary PD controller still maintains an acceptable error ($<5\%$) until a trajectory rate of $\approx 3.5~[\text{Hz}]$ is reached at $t=110~[\text{s}]$. The final, ideal backstepping controller in Fig:\ref{fig:backstepping} retains an error free trajectory for the longest, only introducing oscillating tracking errors at $\approx 1.8~[\text{Hz}]$, at $t=80~[\text{s}]$, but continues tracking the trajectory with an acceptable ($<5\%$) error up to an orbital rate of $\approx 5.4~[\text{Hz}]$ until $t=140~[\text{s}]$. Trajectory errors could be reduced (\emph{improved}) further with the application of higher order state derivative trajectory setpoints for each controller with $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$).
+The exponentially stable controllers performed better and maintained approximately zero error trajectory tracking for longer. The auxiliary PD controller, Fig:\ref{fig:auxiliary}, starts to introduce a non-zero oscillatory tracking error at a tracking frequency only greater $\approx 1.4~[\text{Hz}]$, at $t=70~[\text{s}]$. The auxiliary PD controller still maintains an acceptable error ($<5\%$) until a trajectory rate of $\approx 3.5~[\text{Hz}]$ is reached at $t=110~[\text{s}]$. The final, ideal backstepping controller in Fig:\ref{fig:backstepping} retains an error free trajectory for the longest, only introducing oscillating tracking errors at $\approx 1.8~[\text{Hz}]$, at $t=80~[\text{s}]$, but continues tracking the trajectory with an acceptable ($<5\%$) error up to an orbital rate of $\approx 5.4~[\text{Hz}]$ until $t=140~[\text{s}]$. Trajectory errors could be reduced (\emph{improved}) further with the application of higher order state derivative trajectory setpoints for each controller with $\vec{\omega}_d\not=\vec{0}$ and $\vec{v}_d\not=\vec{0}$).
 \newpage
 \begin{figure}[htbp]
 \centering
@@ -954,7 +954,7 @@ Torque turbulences are difficult to define without in-depth accompanying statist
 \par
 Without deliberating on the details of the model, the Dryden Wind model produces turbulence signals from white noise filtered through a specified power spectrum. That power spectrum varies as per an aircraft's orientation, altitude and translational velocity. For the aircraft and trajectory under consideration here, such a disturbance model is sufficient for simulating small interference patterns. Recall the torque disturbance observer derived for the attitude backstepping plant, from Eq:\ref{eq:asymptotic-disturbance}:
 \begin{equation}\label{eq:stability-torque-overserver}
-\dot{\hat{\tau}}_L=-\Gamma_L J_b^{-1}(u)\big(\Gamma_1\vec{q}_e-\hat{\omega_b}\big)
+\dot{\hat{\tau}}_L=-\Gamma_L J_b^{-1}(\hat{u})\big(\Gamma_1\vec{q}_e-\hat{\omega_b}\big)
 \end{equation}
 The gain adaptivity matrix $\Gamma_L$ is tuned using a PSO iteration loop, simulated in steady state with a cost function to minimize the observer's error $\Delta\hat{\tau}_L$ over the course of a $t=60~[\text{s}]$ simulation. The resultant \emph{diagonal} $[3\times 3]$ adaptivity matrix is $\Gamma_L=diag(29.58,~28.43,~4.60)$. The approximator tracks an applied disturbance as shown in Fig:\ref{fig:torque-observer} over a disturbance range of $\pm 0.2~[\text{N.m}]$ (which is 20\% of a typical controller's commanded input for a stepped attitude from Eq:\ref{eq:attitude-step-position}) for a short steady state test. Both pitch $\phi$ and roll $\theta$ torque approximator channels track the torque with a relatively small error, averaged $16\%$ and $15\%$ respectively. Greater deviation from the applied torque occurs in the $\psi$ channel about the $\hat{Z}_b$ axis, approximate $36\%$ averaged over the short steady state.
 \begin{figure}[htbp]
@@ -1015,15 +1015,15 @@ The various allocation rules, as derived in Ch:\ref{ch:allocation}, implement vi
 The abstraction applied to achieve an affine relationship required for inversion allocation (in Eq:\ref{eq:allocator-test}) meant that actuator transfer rates were independent of the allocation rule applied. As a result, the affect of different allocation laws is depreciated.
 \begin{subequations}\label{eq:allocator-test}
 \begin{equation}\label{eq:allocator-test.a}
-\vec{\nu}_c=B'(\vec{\mathbf{x}},t)u=\begin{bmatrix}
+\vec{\nu}_c=B'(\vec{\mathbf{x}},t)\vec{u}=\begin{bmatrix}
 \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3} & \mathbb{I}_{3\times 3}\\
 [\vec{L}_1]_\times & [\vec{L}_2]_\times & [\vec{L}_3]_\times & [\vec{L}_4]_\times
 \end{bmatrix}
-\vec{T}_{[1:4]}^T
+\vec{T}_{[1:4]}\hspace{2pt}^T
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-u_i = \begin{bmatrix}
+\vec{u}_i = \begin{bmatrix}
 \Omega_i & \lambda_i & \alpha_i
 \end{bmatrix}^T = R^\dagger(\vec{\mathbf{x}},\vec{T}_i,t)~~\text{for}~i\in[1:4]
 \end{equation}
@@ -1465,9 +1465,9 @@ The final aspect of the control simulation to consider is the effect that state 
 \par
 Such components of the embedded system loop could indeed be tested in simulation, but owing to the large amounts of noise a physical flight test would induce on those components, would not prove useful in evaluating the efficacy of the net proposed control system. Given the amount of vibrations and disturbances the prototype will undergo, simulations will not be able to accurately approximate such affects. Instead a suitable, approximated discretization is applied to the simulation's state variables used for feedback in the control loop.
 \par
-Quaternion position, angular velocity and translational velocity feedback terms are discretized and sampled at a rate of $70~[\text{Hz}]$ with a $5~[\mu s]$ sample delay to emulate a perfect IMU system derived from the hardware proposed (Sec:\ref{sec:proto.layout}). In reality, those signals would be processed by an online Kalman filter and be subject to a relative degree of noise and integral drift. The inertial position feedback is sampled at $50~\text{Hz}$ to emulate the proposed camera based state estimation from \cite{arnold} with a propagation delay of $40~[\mu s]$.
+Quaternion position, angular velocity and translational velocity feedback terms are discretized and sampled at a rate of $50~[\text{Hz}]$ with a $5~[\mu s]$ sample delay to emulate a perfect IMU system derived from the hardware proposed (Sec:\ref{sec:proto.layout}). In reality, those signals would be processed by an online Kalman filter and be subject to a relative degree of noise and integral drift. The inertial position feedback is sampled at $50~[\text{Hz}]$ to emulate the proposed camera based state estimation from \cite{arnold} with a propagation delay of $40~[\mu s]$.
 \par
-Both position and attitude control loops, testing with the basic Proportional Derivative controllers in both cases, were stable for the above proposed sampling rates. In fact, the entire system was stable for sample rates as slow as $5~\text{Hz}$, whose response for a typical attitude and position step (Eq:\ref{eq:simulation-state-step}) is plotted in Fig:\ref{fig:discrete_step}.
+Both position and attitude control loops, testing with the basic Proportional Derivative controllers in both cases, were stable for the above proposed sampling rates. In fact, the entire system was stable for sample rates as slow as $5~[\text{Hz}]$, whose response for a typical attitude and position step (Eq:\ref{eq:simulation-state-step}) is plotted in Fig:\ref{fig:discrete_step}.
 \newpage
 \begin{figure}[htbp]
 \centering

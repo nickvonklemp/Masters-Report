@@ -44,7 +44,7 @@ The allocator solves for commanded actuator values $\vec{u}_c$ such that $\vec{\
 \end{equation}
 This chapter derives higher level controllers for $\vec{\nu}_d=\mathcal{H}(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)$. Allocation rules are discussed next in Ch:\ref{ch:allocation}. A collection of attitude and position controllers is presented here and stability is proven with Lyapunov theory \cite{lyapunovconference}. Each controller is compared in the context of an overactuated quadrotor plant, similarly a series of allocation schemes are presented. Propagation delays of the actuator input $\vec{u}_c$ result from the actuator plant's transfer function $C(s)$. Those delays are assumed to have far slower time constants than the controller. If actuator estimates $\hat{u}_c$ (incorporating the transfer functions) are used for feedback compensation calculations then major loop controller coefficients will account for the minor loop errors between a commanded $\vec{u}_c$ and its estimate $\hat{u}_c$. Comparisons of the designed controllers as well as their explicit coefficients and efficacy are evaluated subsequently in Ch:\ref{ch:simulation}. 
 \par
-A generalized overactuated control loop consists of a series of cascaded control blocks (Fig:\ref{fig:control-loop}). From the trajectory's error state $\vec{\mathbf{x}}_e$, a control law designs a virtual control input $\vec{\nu}_d$ which is applied to the allocation block. The allocation law $B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ solves for physical actuator positions $u_c\in\mathbb{U}$. Commanded actuator (\emph{estimate}) positions affect a physical input $\vec{\nu}_c=B(\vec{\mathbf{x}},\hat{u},t)$, which is an input applied to the state's dynamics, Eq:\ref{eq:control-loop-states}. Finally the output tracking state is estimated with some filter paradigm $\hat{\mathbf{x}}=A(\vec{\mathbf{x}},t)$ which is fed back for error state calculation (Sec:\ref{sec:simulation.state}).
+A generalized overactuated control loop consists of a series of cascaded control blocks (Fig:\ref{fig:control-loop}). From the trajectory's error state $\vec{\mathbf{x}}_e$, a control law designs a virtual control input $\vec{\nu}_d$ which is applied to the allocation block. The allocation law $B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ solves for physical actuator positions $\vec{u}_c\in\mathbb{U}$. Commanded actuator (\emph{estimate}) positions affect a physical input $\vec{\nu}_c=B(\vec{\mathbf{x}},\hat{u},t)$, which is an input applied to the state's dynamics, Eq:\ref{eq:control-loop-states}. Finally the output tracking state is estimated with some filter paradigm $\hat{\mathbf{x}}=A(\vec{\mathbf{x}},t)$ which is fed back for error state calculation (Sec:\ref{sec:simulation.state}).
 \begin{figure}[htbp]
 \vspace{-6pt}
 \centering
@@ -76,7 +76,7 @@ Control inputs for the state's differential equations, from Eq:\ref{eq:quaternio
 \vec{\tau}_\mu(\hat{u}_c)=\sum_{i=1}^4 \vec{L}_i\times\big(Q_{M_i}^*(\lambda_i,\alpha_i)\otimes \vec{T}(\Omega_i)\otimes Q_{M_i}(\lambda_i,\alpha_i)\big)~~~~\in\mathcal{F}^b
 \end{equation}
 \end{subequations}
-As mentioned previously, a higher level controller $\mathcal{H}(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)$ designs desired net plant inputs $\vec{\nu}_d=\begin{bmatrix}\vec{F}_d&\vec{\tau}_d\end{bmatrix}^T$ whilst a lower level allocator commands actuator positions $u_c=B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ such that $\vec{\nu}_c\rightarrow\vec{\nu}_d$. Actuator dynamics produce a tracking commanded input and not an instantaneously assumed actuator state. Separating the higher lever controller and lower level allocator accommodates comparison between the proposed controllers and respective allocation laws. However, typical allocation rules like pseudo-inversion require an invertible relationship between plant and control inputs, detailed previously in Sec:\ref{subsubsec:intro.lit.control.allocation} and expanded on next in Sec\ref{sec:allocation.slack}.
+As mentioned previously, a higher level controller $\mathcal{H}(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)$ designs desired net plant inputs $\vec{\nu}_d=\begin{bmatrix}\vec{F}_d&\vec{\tau}_d\end{bmatrix}^T$ whilst a lower level allocator commands actuator positions $\vec{u}_c=B^{\dagger}(\vec{\mathbf{x}},\vec{\nu}_d,t)$ such that $\vec{\nu}_c\rightarrow\vec{\nu}_d$. Actuator dynamics produce a tracking commanded input and not an instantaneously assumed actuator state. Separating the higher lever controller and lower level allocator accommodates comparison between the proposed controllers and respective allocation laws. However, typical allocation rules like pseudo-inversion require an invertible relationship between plant and control inputs, detailed previously in Sec:\ref{subsubsec:intro.lit.control.allocation} and expanded on next in Sec\ref{sec:allocation.slack}.
 \par
 The vector relationship in Eq:\ref{eq:control-input} is not reducible to a single multiplicative relationship between the commanded actuator matrix $\vec{u}_c\in\mathbb{U}\in\mathbb{R}^12$ (estimated or otherwise) and the dynamic plant input $\vec{\nu}_c\in\mathbb{R}^{6}$. So the effectiveness function needs an extra layer of abstraction to incorporate a multiplicative relationship. Rather than calculating explicit actuator positions directly from $\vec{\nu}_d$, a set of four 3-D thrust vectors $\vec{T}_{[1:4]}\in\mathbb{R}^{1\times 12}$ for each motor module is first calculated.
 \begin{subequations}\label{eq:4.7}
@@ -277,7 +277,7 @@ Initial trajectory conditions are dropped in Eq:\ref{eq:global-exponential-stabi
 %====================================================
 Lyapunov's stability theory is an important aspect of nonlinear controller design. If the reader is unfamiliar with Lyapunov's theorem,  \cite{noteonlyapunov,nonlinearsystems,bojelayupanov} each provide thorough explanations of the concept. The following is adapted from \cite{lyapunovconference} and \cite{lyapunovpaper} and briefly outlines how Lyapunov's stability theory is used to prove (\emph{global}) asymptotic stability for continuous time invariant systems, linear or otherwise. 
 \par
-The theory analyzes a generalized energy function of a system's autonomous trajectory, if the trajectory has a negative energy derivative that implies the system's energy will always dissipate towards a state of zero energy or stable equilibrium point. Lyapunov analysis is a powerful tool for stability verification because the system's trajectory itself need not be explicitly defined for stability to be determined. It is worth reiterating Lyapunov fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control.
+The theory analyzes a generalized energy function of a system's autonomous trajectory, if the trajectory has a negative energy derivative that implies the system's energy will always dissipate towards a state of zero energy or stable equilibrium point. Lyapunov analysis is a powerful tool for stability verification because the system's trajectory itself need not be explicitly defined for stability to be determined. It is worth repeating Lyapunov fundamentals given that backstepping controllers are proposed later in Sec:\ref{subsec:control.attitude.nonlinear} for attitude control.
 \newpage
 A backstepping controller enforces Lyapunov stability criteria onto the system through iterative control structure design, \cite{backstepping,adaptivebackstep,intelligentbackstep}. In general, given a nonlinear time invariant system that follows some continually differentiable trajectory $\vec{\mathbf{x}}(t)$, typically the trajectory is going to progress subject to some autonomous rule:
 \begin{equation}\label{eq:4.17}
@@ -377,7 +377,7 @@ cos(\theta_e/2)\\
 sin(\theta_e/2)\hat{u}_e
 \end{bmatrix}
 \end{equation}
-then a constraint applied to $q_0\in[0:1]$ limits the Euler-axis error rotation $\theta_e\in[-\pi:\pi]$. In practical terms the stability proofs for such a limited quaternion trajectory \emph{will not} guarantee global stability in the quaternion space $\mathbb{R}^4$, \emph{but} it will guarantee global 3-D stability in SO(3) or $\mathbb{R}^3$. That is not to say a particular controller cannot be stable for the full $q_0\in[-1:1]$, the stability is only \emph{guaranteed} for the constrained range. Because $Q=[\pm q_0~\vec{q}\hspace{2pt}]$ corresponds to the same physical attitude in $\mathbb{R}^{3}$, the calculated quaternion error $Q_e$, from Eq:\ref{eq:quaternion-error-control}, can be constrained with an absolute value quaternion scalar without limiting the rigid body attitude plant. Using the definition for quaternion multiplication in Eq:\ref{eq:quaternion-product} and the quaternion conjugate in Eq:\ref{eq:quaternion-conjugate}, the quaternion error is refined:
+then a constraint applied to $q_0\in[0:1]$ limits the Euler-axis error rotation $\theta_e\in[-\pi:\pi]$. In practical terms, the stability proofs for such a limited quaternion trajectory \emph{will not} guarantee global stability in the quaternion space $\mathbb{R}^4$, \emph{but} it will guarantee global 3-D stability in SO(3) or $\mathbb{R}^3$. That is not to say a particular controller cannot be stable for the full $q_0\in[-1:1]$, the stability is only \emph{guaranteed} for the constrained range. Because $Q=[\pm q_0~\vec{q}\hspace{2pt}]$ corresponds to the same physical attitude in $\mathbb{R}^{3}$, the calculated quaternion error $Q_e$, from Eq:\ref{eq:quaternion-error-control}, can be constrained with an absolute value quaternion scalar without limiting the rigid body attitude plant. Using the definition for quaternion multiplication in Eq:\ref{eq:quaternion-product} and the quaternion conjugate in Eq:\ref{eq:quaternion-conjugate}, the quaternion error is refined:
 \begin{equation}\label{eq:constrained-quaternion-error}
 Q_e = \begin{bmatrix}
 q_0\\
@@ -399,7 +399,7 @@ Using the constrained quaternion in Eq:\ref{eq:constrained-quaternion-error} for
 %====================================================
 The following control law is used as a reference case for comparing the subsequent designed controllers. It is a simple proportional-derivative (\emph{PD}) attitude controller, adapted from \cite{fullquaternion} and applies a stability proof similar to the one derived in \cite{attitudecontrolproblem}. An attitude PD controller is proportional only to the \emph{vector quaternion error}, so that the error is then of the same dimension as the angular velocity error, $\vec{q}_e\in\mathbb{R}^3$. A PD controller generates the commanded torque input:
 \begin{equation}\label{eq:independent-pd}
-\vec{\tau}_{_{PD}}=J_b(u)\big(K_d\vec{\omega}_e+K_p\vec{q}_e\big)~~~~\in\mathcal{F}^b
+\vec{\tau}_{_{PD}}=J_b(\hat{u})\big(K_d\vec{\omega}_e+K_p\vec{q}_e\big)~~~~\in\mathcal{F}^b
 \end{equation}
 where both $K_d$ and $K_p$ are \emph{positive symmetrical} $3\times 3$ gain coefficient matrices to be determined at a later stage.
 \par
@@ -448,40 +448,40 @@ Substituting the error quaternion's scalar derivative $\dot{q}_0$ back into the 
 Recalling the angular velocity differential equation from Eq:\ref{eq:quaternion-states-angular} for $\dot{\vec{\omega}}_b$ with a control torque input $\vec{\tau}_{_{PD}}$ from Eq:\ref{eq:independent-pd}:
 \begin{subequations}
 \begin{equation}
-\dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{PD}}\big)~~~~\in\mathcal{F}^b
+\dot{\vec{\omega}}_b=J_b\text{}^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{PD}}\big)~~~~\in\mathcal{F}^b
 \end{equation}
 Using the definition of the proportional derivative torque control law from Eq:\ref{eq:independent-pd}, the angular acceleration equation Eq:\ref{eq:control-angular} for $\dot{\vec{\omega}}_b$ becomes:
 \begin{equation}
-\dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H\big)-K_d\vec{\omega}_b+K_p\vec{q}_e
+\dot{\vec{\omega}}_b=J_b\text{}^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H\big)-K_d\vec{\omega}_b+K_p\vec{q}_e
 \end{equation}
 \end{subequations}
 Substituting the above into the LFC derivative $\dot{V}_{_{PD}}$ in Eq:\ref{eq:lyapunov-pd-deriv} yields:
 \begin{subequations}
 \begin{equation}
-\dot{V}_{_{PD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^TK_p^{-1}\Big(-K_d\vec{\omega}_b+K_p\vec{q}_e+J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b+\vec{\tau}_g+\vec{\tau}_H\big)\Big)
+\dot{V}_{_{PD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^TK_p^{-1}\Big(-K_d\vec{\omega}_b+K_p\vec{q}_e+J_b^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H\big)\Big)
 \end{equation}
 \vspace{-18pt}
 \begin{equation}
-=-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^T\vec{q}_e-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b+\vec{\omega}_b\text{}^T\Big(K_pJ_b(u)\Big)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H\big)
+=-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^T\vec{q}_e-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b+\vec{\omega}_b\text{}^T\Big(K_pJ_b(\vec{u})\Big)^{-1}\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H\big)
 \end{equation}
 The transposed terms $\vec{q}_e\text{}^T\vec{\omega}_b ~\text{and}~\vec{\omega}_b\text{}^T\vec{q}_e$ are interchangeable so then $-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^T\vec{q}_e=0$. The LFC derivative $\dot{V}_{_{PD}}$ then simplifies to:
 \begin{equation}\label{eq:independent-lyapunov-derivative}
-\dot{V}_{_{PD}}=-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b+\vec{\omega}_b\text{}^T\Big(K_pJ_b(u)\Big)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q\big)
+\dot{V}_{_{PD}}=-\vec{\omega}_b\text{}^TK_p^{-1}K_d\vec{\omega}_b+\vec{\omega}_b\text{}^T\Big(K_pJ_b(\vec{u})\Big)^{-1}\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_Q\big)
 \end{equation}
 \end{subequations}
-Then, as long as the enitre term $\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q\big)$ is negative semi-definite or $<\vec{0}$, some element of stability is can be achieved. Under specific circumstances the following assumptions can be made to apply an asymptotic stability proof:
+Then, as long as the enitre term $\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_Q\big)$ is negative semi-definite or $<\vec{0}$, some element of stability is can be achieved. Under specific circumstances the following assumptions can be made to apply an asymptotic stability proof:
 \vspace{-10pt}
 \begin{enumerate}[itemsep=0em]
-\item The inertia matrix $J_b(u)$ is approximately diagonal, which, given the inertia eigenvalues from Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min}, is reasonable. Similarly, the angular velocity can be made small with an appropriately slow trajectory such that the torque gyroscopic cross-product is negligible:
+\item The inertia matrix $J_b(\vec{u})$ is approximately diagonal, which, given the inertia eigenvalues from Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min}, is reasonable. Similarly, the angular velocity can be made small with an appropriately slow trajectory such that the torque gyroscopic cross-product is negligible:
 \begin{center}
 \vspace{-10pt}
-$\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b\big)\approx\vec{0}$
+$\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b\big)\approx\vec{0}$
 \vspace{-8pt}
 \end{center}
-\item The actuator rate torque response, $\vec{\tau}_b(u)$, is a second order effect dependent on $d\vec{u}/dt$. Typically the actuator rates are going to be kept small. For small actuator step changes the inertia rates of change and servo accelerations in Eq:\ref{eq:actuator-torque} are small enough to be considered negligible. The assumption is then made:
+\item The actuator rate torque response, $\vec{\tau}_b(\vec{u})$, is a second order effect dependent on $d\vec{u}/dt$. Typically the actuator rates are going to be kept small. For small actuator step changes the inertia rates of change and servo accelerations in Eq:\ref{eq:actuator-torque} are small enough to be considered negligible. The assumption is then made:
 \begin{center}
 \vspace{-10pt}
-$\vec{\tau}_b(u)\approx\vec{0}$
+$\vec{\tau}_b(\vec{u})\approx\vec{0}$
 \vspace{-8pt}
 \end{center}
 \item Finally, for the sake of the stability proof, the eccentric gravitational torque arm, from a varying center of gravity $\Delta\vec{C}_G$, from Eq:\ref{eq:consolidated-grav-torque}, is neglected. Such a situation only holds true if $\vec{u}\approx\vec{0}$ or that servo actuator positions are close to their zero positions.
@@ -493,7 +493,7 @@ $\vec{\tau}_g\approx\vec{0}$
 \end{enumerate}
 All of the above assumptions are made under extraneous circumstances, the subsequent stability obviously breaks down if any of assumptions 1 through 3 fail. Stability achieved using the above plant \emph{independent} control law is only local, and will not hold true for most of the prototype's flight envelope, which involves time varying angular velocities $\vec{\omega}_b\not = \vec{0}$. 
 \par
-The plant independent case is considered and simulated in Sec:\ref{subsubsec:simulation.atttiude.pd.independent} only to demonstrate the need for plant dependent compensation. If each of the assumptions hold true, then the unwanted dynamic terms in Eq:\ref{eq:independent-lyapunov-derivative} are negligible or $\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_Q\big)\approx 0$, resulting in a negative definite Lyapunov function derivative. The stability proof for that very local trajectory is then:
+The plant independent case is considered and simulated in Sec:\ref{subsubsec:simulation.atttiude.pd.independent} only to demonstrate the need for plant dependent compensation. If each of the assumptions hold true, then the unwanted dynamic terms in Eq:\ref{eq:independent-lyapunov-derivative} are negligible or $\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_Q\big)\approx \vec{0}$, resulting in a negative definite Lyapunov function derivative. The stability proof for that very local trajectory is then:
 \begin{subequations}
 \begin{equation}
 \dot{V}_{_{PD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\vec{\omega}_b\text{}^TK_p^{-1}\big(-K_d\vec{\omega}_b+K_p\vec{q}_e\big)
@@ -538,7 +538,7 @@ The inverse qualifier of $K_p^{-1}$ in Eq:\ref{eq:4.40a} is redundant given that
 %====================================================
 Expanding on what has, in practice (Table:\ref{tab:controllers} from Sec:\ref{subsec:intro.lit.related}), proven to be a popular and effective controller for attitude stabilization, \cite{attitudestabilization} proposed adding auxiliary signals to a PD attitude controller which guarantees an exponentially bound stable trajectory. That control law has been adapted to fit the setpoint tracking control problem considered here. Most significantly, the altered PD controller introduces terms proportional to the quaternion error's derivative, Eq:\ref{eq:quaternion-deriv}, so that conditions in Eq:\ref{eq:lyapunov-exponential-stability} are met to ensure a bounding exponentially stable trajectory. Furthermore, part of the auxiliary plant is proportional to the \emph{quaternion scalar} $q_0$, a term that is otherwise neglected in the previous PD control law (Sec:\ref{subsubsec:control.attitude.controllers.pd}). That proportionality term ensures unnecessary quaternion unwinding of the error state is avoided. The \emph{auxilliarly} PD control torque is calculated as a function of error states:
 \begin{equation}\label{eq:control-aux-pd}
-\vec{\tau}_{_{XPD}}=\underbrace{\Gamma_2{\widetilde{\Omega}}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}}_{\text{Independent}}+\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H}_{\text{Compensation}}
+\vec{\tau}_{_{XPD}}=\underbrace{\Gamma_2{\widetilde{\Omega}}+\Gamma_3\vec{q}_e-J_b(\hat{u})\dot{\bar{\Omega}}}_{\text{Independent}}+\underbrace{\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H}_{\text{Compensation}}
 \end{equation}
 wherein the coefficients $\Gamma_2$ and $\Gamma_3$ are both diagonal positive $[3\times 3]$ coefficient matrices and $\Gamma_1$, used in Eq:\ref{eq:aux-pd-1}, is a symmetrical $[3\times 3]$ coefficient matrix. Each gain coefficient matrix is explicitly determined later. Auxiliary signals $\widetilde{\Omega}$ and $\dot{\bar{\Omega}}$ are defined as follows; the first auxiliary term $\bar{\Omega}$ is proportional to the quaternion error and hence its derivative $\dot{\bar{\Omega}}$ is a quaternion rate:
 \begin{subequations}\label{eq:aux-pd-1}
@@ -566,21 +566,21 @@ The second auxiliary term $\widetilde{\Omega}$ is proportional to both quaternio
 \end{subequations}
 Using an LFC similar to the basic $V_{_{PD}}$ function candidate from Eq:\ref{eq:lyapunov-pd}, but substituting an auxiliary term $\widetilde{\Omega}$ for the body's angular velocity $\vec{\omega}_b$ into the LFC, $V_{_{XPD}}$ is defined:
 \begin{equation}\label{eq:lyapunov-xpd}
-V_{_{XPD}}\big(Q_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}~~>0,~\forall(Q_e,\widetilde{\Omega})\not = \vec{0}
+V_{_{XPD}}\big(Q_e,~\widetilde{\Omega}\big)=\vec{q}_e\text{}^T\vec{q}_e+\big(1-q_0\big)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\widetilde{\Omega}~~>0,~\forall(Q_e,\widetilde{\Omega})\not = \vec{0}
 \end{equation}
 Because the stability proof limits the attitude quaternion's scalar $q_0\in[0:1]$, it follows that the trajectory's energy function is zero at the origin or $V_{_{XPD}}([1~\vec{0}\hspace{1pt}]^T,\vec{0}\hspace{1pt})=0$. Using the simplification from a quaternion's inherent properties in Eq:\ref{eq:4.17}, the LFC from Eq:\ref{eq:lyapunov-xpd} then simplifies with the following derivative:
 \begin{subequations}
 \vspace{-5pt}
 \begin{equation}
-V_{_{XPD}}=2(1-q_0)+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}
+V_{_{XPD}}=2(1-q_0)+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\widetilde{\Omega}
 \end{equation}
 \vspace{-11pt}
 \begin{equation}
-\dot{V}_{_{XPD}}=2\frac{1}{2}\vec{q}_e\text{}^T\vec{\omega}_e+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}
+\dot{V}_{_{XPD}}=2\frac{1}{2}\vec{q}_e\text{}^T\vec{\omega}_e+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\dot{\widetilde{\Omega}}
 \end{equation}
 \vspace{-8pt}
 \begin{equation}\label{eq:4.34c}
-\therefore\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
+\therefore\dot{V}_{_{XPD}}=-\vec{q}_e\text{}^T\vec{\omega}_b+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\widetilde{\Omega}+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\dot{\widetilde{\Omega}}\Big|_{\vec{\omega}_e=-\vec{\omega}_b}
 \end{equation}
 \end{subequations}
 It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, the auxiliary derivative term $\dot{\widetilde{\Omega}}$ is:
@@ -591,35 +591,35 @@ It then follows, substituting $\dot{\vec{\omega}}_b$ from Eq:\ref{eq:aux-pd-2}, 
 \end{equation}
 \vspace{-15pt}
 \begin{equation}
-\dot{\vec{\omega}}_b=J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)
+\dot{\vec{\omega}}_b=J_b^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\therefore\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)-\dot{\bar{\Omega}}
+\therefore\dot{\widetilde{\Omega}}=-J_b^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{_{XPD}}\big)-\dot{\bar{\Omega}}
 \end{equation}
 Substituting the auxiliary PD control law, $\vec{\tau}_{_{XPD}}$ from Eq:\ref{eq:control-aux-pd}, into the auxiliary derivative $\dot{\widetilde{\Omega}}$ gives:
 \begin{multline}
-\dot{\widetilde{\Omega}}=-J_b^{-1}(u)\Big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H
+\dot{\widetilde{\Omega}}=-J_b^{-1}(\vec{u})\Big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H
 \\
-+\big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}+\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H\big)\Big)-\dot{\bar{\Omega}}
++\big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(\hat{u})\dot{\bar{\Omega}}+\hat{\omega}_b\times J_b(\hat{u})\hat{\omega}_b+\vec{\tau}_b(\hat{u})-\vec{\tau}_g-\vec{\tau}_H\big)\Big)-\dot{\bar{\Omega}}
 \end{multline}
 \vspace{-15pt}
 \begin{equation}
-=-J_b^{-1}(u)\Big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(u)\dot{\bar{\Omega}}\Big)-\dot{\bar{\Omega}}
+=-J_b^{-1}(\vec{u})\Big(\Gamma_2\widetilde{\Omega}+\Gamma_3\vec{q}_e-J_b(\hat{u})\dot{\bar{\Omega}}\Big)-\dot{\bar{\Omega}}
 \end{equation}
 \vspace{-8pt}
 \begin{equation}
-=J_b^{-1}(u)\Big(-\Gamma_2\widetilde{\Omega}-\Gamma_3\vec{q}_e\Big)
+=J_b^{-1}(\vec{u})\Big(-\Gamma_2\widetilde{\Omega}-\Gamma_3\vec{q}_e\Big)
 \end{equation}
 \end{subequations}
-From the \emph{approximately} symmetric inertia matrix $J_b(u)$ (combined Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min} show its ranges) and the positive symmetric and diagonal constraints imposed on the coefficient matrices $\Gamma_1$,$\Gamma_2$ and $\Gamma_3$, the auxiliary plant $\dot{\widetilde{\Omega}}$ has a transpose:
+From the \emph{approximately} symmetric inertia matrix $J_b(\vec{u})$ (combined Eq:\ref{eq:inertia-max} and Eq:\ref{eq:inertia-min} show its ranges) and the positive symmetric and diagonal constraints imposed on the coefficient matrices $\Gamma_1$,$\Gamma_2$ and $\Gamma_3$, the auxiliary plant $\dot{\widetilde{\Omega}}$ has a transpose:
 \begin{equation}
-\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}=J_b^{-1}(u)\Big(-\Gamma_2\widetilde{\Omega}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)
+\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}=J_b^{-1}(\vec{u})\Big(-\Gamma_2\widetilde{\Omega}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)
 \end{equation}
 Splitting the PD auxiliary plant's LFC derivative, $\dot{V}_{_{XPD}}$ in Eq:\ref{eq:lyapunov-xpd}, into components and then simplifying each individually, it follows:
 \begin{subequations}
 \begin{equation}
-\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\Gamma_2\widetilde{\Omega}\text{}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)\Gamma_3^{-1}\widetilde{\Omega}
+\frac{1}{2}\dot{\widetilde{\Omega}}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\Gamma_2\widetilde{\Omega}\text{}^{\hspace{1pt}T}-\Gamma_3\vec{q}_e\text{}^T\Big)\Gamma_3^{-1}\widetilde{\Omega}
 \end{equation}
 \vspace{-12pt}
 \begin{equation}\label{eq:4.48b}
@@ -627,11 +627,11 @@ Splitting the PD auxiliary plant's LFC derivative, $\dot{V}_{_{XPD}}$ in Eq:\ref
 \end{equation}
 Substituting Eq:\ref{eq:aux-pd-2} for $\vec{q}_e\text{}^T\widetilde{\Omega}$ into Eq:\ref{eq:4.48b}:
 \begin{equation}\label{eq:4.48c}
-\therefore\frac{1}{2}\dot{\widetilde{\Omega}}^T\Big(\Gamma_3^{-}J_b(u)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}+\vec{q}_e\text{}^T\vec{\omega}_b-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e\Big)\Big|_{\vec{q}_e\text{}^{T}\widetilde{\Omega}=-\vec{q}_e\text{}^{T}\vec{\omega}_b+\Gamma_1\vec{q}_e\text{}^{T}}
+\therefore\frac{1}{2}\dot{\widetilde{\Omega}}^T\Big(\Gamma_3^{-}J_b(\vec{u}s)\Big)\widetilde{\Omega}=\frac{1}{2}\Big(-\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}+\vec{q}_e\text{}^T\vec{\omega}_b-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e\Big)\Big|_{\vec{q}_e\text{}^{T}\widetilde{\Omega}=-\vec{q}_e\text{}^{T}\vec{\omega}_b+\Gamma_1\vec{q}_e\text{}^{T}}
 \end{equation}
 Similarly, for the transposed counterpart of Eq:\ref{eq:4.48c} in Eq:\ref{eq:4.34c}:
 \begin{equation}
-\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(u)\Big)\dot{\widetilde{\Omega}}=\frac{1}{2}\Big(-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}+\vec{q}_e\vec{\omega}_b\text{}^T-\vec{q}_e\Gamma_1\vec{q}_e\text{}^T\Big)
+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\Big(\Gamma_3^{-1}J_b(\vec{u})\Big)\dot{\widetilde{\Omega}}=\frac{1}{2}\Big(-\widetilde{\Omega}\Gamma_2\Gamma_3^{-1}\widetilde{\Omega}\text{}^{\hspace{1pt}T}+\vec{q}_e\vec{\omega}_b\text{}^T-\vec{q}_e\Gamma_1\vec{q}_e\text{}^T\Big)
 \end{equation}
 which, when substituted back into Eq:\ref{eq:4.34c}, then simplifies the LFC derivative to negative definite:
 \end{subequations}
@@ -667,11 +667,11 @@ Whilst asymptotic stability is indeed satisfactory, stronger exponential stabili
 Exponential stability is a maximum boundedness proof. The relationship Eq:\ref{eq:4.34} can then replace the quaternion scalar term $2(1-q_0)$ in $V_{_{XPD}}$ as an upper bound. The LFC is then rewritten in terms of its component's norm(s) to produce a bounding inequality:
 \begin{subequations}\label{eq:xpd-ibc}
 \begin{equation}
-V_{_{XPD}}=\vec{q}_e\text{}^T\vec{q}_e+(q_0-1)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(u)\big)\widetilde{\Omega}
+V_{_{XPD}}=\vec{q}_e\text{}^T\vec{q}_e+(q_0-1)^2+\frac{1}{2}\widetilde{\Omega}\text{}^{\hspace{1pt}T}\big(\Gamma_3^{-1}J_b(\vec{u})\big)\widetilde{\Omega}
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
-\therefore V_{_{XPD}}\leq 2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\Gamma_3^{-1}J_b(u)||\widetilde{\Omega}||\text{}^2
+\therefore V_{_{XPD}}\leq 2\norm{\vec{q}_e}\text{}^2+\frac{1}{2}\Gamma_3^{-1}J_b(\vec{u})||\widetilde{\Omega}||\text{}^2
 \end{equation}
 Similarly the LFC's derivative can be written in terms of its norms as:
 \begin{equation}
@@ -680,21 +680,21 @@ Similarly the LFC's derivative can be written in terms of its norms as:
 \end{subequations}
 The LFC, $V_{_{XPD}}$, has a maximum such that:
 \begin{equation}
-V_{_{XPD}}\leq max \bigg\{ 2,\frac{\lambda_{max}(\Gamma_3^{-1}J_b(u))}{2}\bigg\}\big(\norm{\vec{q}_e}\text{}^2+||\widetilde{\Omega}||\text{}^2\big)
+V_{_{XPD}}\leq max \bigg\{ 2,\frac{\lambda_{max}(\Gamma_3^{-1}J_b(\vec{u}))}{2}\bigg\}\big(\norm{\vec{q}_e}\text{}^2+||\widetilde{\Omega}||\text{}^2\big)
 \end{equation}
-where the function $\lambda_{max}$ represents the maximum eigenvalue of its argument, in this case $\Gamma_3^{-1}J_b(u)$. Similarly the \emph{negative definite} LCF derivative is bound by the minimum:
+where the function $\lambda_{max}$ represents the maximum eigenvalue of its argument, in this case $\Gamma_3^{-1}J_b(\vec{u})$. Similarly the \emph{negative definite} LCF derivative is bound by the minimum:
 \begin{equation}
 \dot{V}_{_{XPD}} \leq -min \big\{ \lambda_{min}(\Gamma_1),\lambda_{min}(\Gamma_2\Gamma_3\text{}^{-1})\big\}\big(\norm{\vec{q}_e}\text{}^2+||\widetilde{\Omega}||^2 \big)
 \end{equation}
 Therefore there exists some ratio $\alpha>0$ that satisfies the relationship requirement between the LCF and its derivative, $\dot{V}_{_{XPD}}< -\alpha V_{_{XPD}}$, where $\alpha$ is defined as the ratio:
 \begin{equation}
-\alpha=\frac{min\big\{\lambda_{min}(\Gamma_1),\lambda_{min}(\Gamma_2\Gamma_3\text{}^{-1})\big\}}{max\big\{2,\frac{\lambda_{max}(\Gamma_3\text{}^{-1}J_b(u))}{2}\big\}}
+\alpha=\frac{min\big\{\lambda_{min}(\Gamma_1),\lambda_{min}(\Gamma_2\Gamma_3\text{}^{-1})\big\}}{max\big\{2,\frac{\lambda_{max}(\Gamma_3\text{}^{-1}J_b(\vec{u}))}{2}\big\}}
 \end{equation}
 The attitude trajectory $\big(\vec{q}_e(t),\widetilde{\Omega}(t)\big)$ is then exponentially bounded by:
 \begin{equation}\label{eq:exponential-pd}
 \big(\norm{\vec{q}_e(t)},||\widetilde{\Omega}(t)||\big)\leq Me^{-\alpha t}\big(\norm{\vec{q}_e(0)},||\widetilde{\Omega}(0)||\big)
 \end{equation}
-The bounding exponential coefficient $\alpha$ can be found using maximum Eigen values for the maximum inertia $J_b(u_{\Lambda})$ from Eq:\ref{eq:inertia-max}. Using the relationship in Eq:\ref{eq:exponential-pd} and testing proposed controller coefficients for $\Gamma_1,~\Gamma_2~\text{and}~\Gamma_3$ the settling rate can be optimized.
+The bounding exponential coefficient $\alpha$ can be found using maximum Eigen values for the maximum inertia $J_b(\vec{u}_{\Lambda})$ from Eq:\ref{eq:inertia-max}. Using the relationship in Eq:\ref{eq:exponential-pd} and testing proposed controller coefficients for $\Gamma_1,~\Gamma_2~\text{and}~\Gamma_3$ the settling rate can be optimized.
 \par
 \emph{\color{Gray}The above stability proof for the auxiliary attitude controller was expanded upon and derived from \cite{attitudestabilization}, adapted to fit attitude setpoint tracking. Introduction of the quaternion error, which is dependent on the quaternion scalar, dramatically improves controller performance. The exponential stability notably improves settling times and overshoot errors, demonstrated in Sec:\ref{subsec:simulation.attitude.xpd}.}
 \par
@@ -805,7 +805,7 @@ That first error $z_1$ has its own rate which, using the body's angular accelera
 \end{equation}
 \vspace{-6pt}
 \begin{equation}\label{eq:z-deriv}
-=-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-J_b(u)^{-1}\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)
+=-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b-J_b(\vec{u})^{-1}\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)
 \end{equation}
 \end{subequations}
 So using the stabilizing backstepping input's error rate $\dot{\vec{z}}_1$ from Eq:\ref{eq:z-deriv} to find the second LFC's derivative $\dot{V}_2$, where $\dot{V}_1=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{q}_e\text{}^T\vec{z}_1$ from Eq:\ref{eq:4.67e}, gives:
@@ -817,13 +817,13 @@ So using the stabilizing backstepping input's error rate $\dot{\vec{z}}_1$ from 
 \begin{multline}
 =-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{q}_e\text{}^T\vec{z}_1+\vec{z}_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
 \\
--J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)\bigg)
+-J_b^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)\bigg)
 \end{multline}
 \vspace{-26pt}
 \begin{multline}\label{eq:4.70c}
 =-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e+\vec{z}_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3X3}\big)\vec{\omega}_b
 \\
--J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)
+-J_b^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_{IBC}\big)
 \bigg)
 \end{multline}
 \end{subequations}
@@ -843,7 +843,7 @@ Substituting the backstepping control law $\vec{\tau}_{_{IBC}}$ into the Lyapuno
 \begin{multline}
 \therefore\dot{V}_2=-\vec{q}_e\text{}^{T}\Gamma_1\vec{q}_e+\vec{z}_1\text{}^T\bigg(\vec{q}_e-\frac{\Gamma_1}{2}\Big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\Big)\vec{\omega}_b
 \\
--J_b^{-1}(u)\Big(J_b(\hat{u})(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(\hat{u})\Gamma_2\hat{\omega}_b+J_b(\hat{u})\Gamma_1\dot{\vec{q}}_e\Big)\bigg)
+-J_b^{-1}(\vec{u})\Big(J_b(\hat{u})(\Gamma_1\Gamma_2+1)\vec{q}_e-J_b(\hat{u})\Gamma_2\hat{\omega}_b+J_b(\hat{u})\Gamma_1\dot{\vec{q}}_e\Big)\bigg)
 \end{multline}
 \vspace{-12pt}
 \begin{equation}
@@ -858,7 +858,7 @@ Because Eq:\ref{eq:4.72c} is negative definite, the following stabilizing limit 
 \begin{subequations}
 \begin{equation}
 \underset{t\rightarrow\infty}{\lim}Q_e = \begin{bmatrix}
-1 & \vec{0}\hspace{2pt}
+1 & \vec{0}\hspace{3pt}
 \end{bmatrix}^T
 \end{equation}
 Furthermore, the stabilizing backstepping input error $\vec{z}_1$ is limited:
@@ -909,9 +909,9 @@ The ideal backstepping controller requires exact plant matching and accounts for
 %====================================================
 A lot of work has been done on the statistical nature of disturbance approximation and how best to adapt a nonlinear control system to the influence of unwanted disturbances, \cite{nonlineardisturbance,disturbanceadaptivebackstepping,robusttrackingcontrol}. Only a lumped uncertainty/disturbance torque term is considered here for the adaptive case. It is assumed both plant dependent uncertainties and estimate errors can all be included in a single lumped torque $\vec{\tau}_L$, in the body frame $\mathcal{F}^b$. That disturbance term is introduced to the angular acceleration dynamics:
 \begin{equation}
-\dot{\vec{\omega}}_b=J_b\text{}^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_L+\vec{\tau}_{_{ABC}}\big)~~~~\in\mathcal{F}^{b}
+\dot{\vec{\omega}}_b=J_b\text{}^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_L+\vec{\tau}_{_{ABC}}\big)~~~~\in\mathcal{F}^{b}
 \end{equation}
-Unmodelled disturbances then act as external torques on the Lagrangian in Eq:\ref{eq:newton.b}. If the disturbance torque was known or modelled, then it could simply be compensated for in the control law $-\vec{L}_b$. But knowing or estimating a disturbance is difficult in practice, especially when no information about the nature of the disturbance is known. Noise compensation in sensors can be performed easily because of the known frequency spectrum which that noise occurs in. The same cannot be said for wind disturbances or large payload variations for a vehicle (large steps in inertia or mass).
+Unmodelled disturbances then act as external torques on the Lagrangian in Eq:\ref{eq:newton.b}. If the disturbance torque was known or modelled, then it could simply be compensated for in the control law $-\vec{\tau}_L$. But knowing or estimating a disturbance is difficult in practice, especially when no information about the nature of the disturbance is known. Noise compensation in sensors can be performed easily because of the known frequency spectrum which that noise occurs in. The same cannot be said for wind disturbances or large payload variations for a vehicle (large steps in inertia or mass).
 \par
 An approximate disturbance observer $\hat{\tau}_L$ is used for compensation in the generated control torque $\vec{\tau}_{_{ABC}}$. Each estimate will have its own error deviating from the physical $\vec{\tau}_L$ acting on the vehicle:
 \begin{equation}\label{eq:estimate-error}
@@ -942,7 +942,7 @@ Substituting the estimation error's derivative term back into the Lyapunov funct
 \begin{multline}\label{eq:abc-lfc-deriv}
 \dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T(\Gamma_1\vec{q}_e-z_1)+z_1\text{}^T\bigg(-\frac{\Gamma_1}{2}\big([\vec{q}_e]_\times+q_0\mathbb{I}_{3\times 3}\big)\vec{\omega}_b
 \\
--J_b^{-1}(u)\big(-\vec{\omega}_b\times J_b(u)\vec{\omega}_b-\vec{\tau}_b(u)+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_L+\vec{\tau}_{_{ABC}}\big)\bigg)-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\dot{\hat{\tau}}_L
+-J_b^{-1}(\vec{u})\big(-\vec{\omega}_b\times J_b(\vec{u})\vec{\omega}_b-\vec{\tau}_b(\vec{u})+\vec{\tau}_g+\vec{\tau}_H+\vec{\tau}_L+\vec{\tau}_{_{ABC}}\big)\bigg)-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\dot{\hat{\tau}}_L
 \end{multline}
 Note that the physical disturbance term $\vec{\tau}_L$ is included in  Eq:\ref{eq:abc-lfc-deriv}. Extending the ideal backstepping control law, $\vec{\tau}_{_{IBC}}$ from Eq:\ref{eq:control-ibc}, to include a \emph{disturbance estimate} term $\hat{\tau}_L$ for compensation:
 \begin{multline}
@@ -950,21 +950,21 @@ Note that the physical disturbance term $\vec{\tau}_L$ is included in  Eq:\ref{e
 \end{multline}
 The adaptive backstepping Lyapunov function candidate's derivative $\dot{V}_{_{ABC}}$ then reduces to:
 \begin{equation}
-\dot{V}_{_{ABC}}=\dot{V}_{_{IBC}}-z_1\text{}^TJ_b^{-1}(u)\Big(\vec{\tau}_L-\hat{\tau}_L\Big)-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\dot{\hat{\tau}}_L
+\dot{V}_{_{ABC}}=\dot{V}_{_{IBC}}-z_1\text{}^TJ_b^{-1}(\vec{u})\Big(\vec{\tau}_L-\hat{\tau}_L\Big)-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\dot{\hat{\tau}}_L
 \end{equation}
 and substituting in the estimate error $\Delta\hat{\tau}_L=\vec{\tau}_L-\hat{\tau}_L$:
 \begin{equation}
-\therefore\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-z_1\text{}^TJ_b^{-1}(u)\Delta\hat{\tau}_L-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\dot{\hat{\tau}}_L
+\therefore\dot{V}_{_{ABC}}=-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-z_1\text{}^TJ_b^{-1}(\vec{u})\Delta\hat{\tau}_L-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\dot{\hat{\tau}}_L
 \end{equation}
 \vspace{-10pt}
 \begin{equation}
 =-\vec{q}_e\text{}^T\Gamma_1\vec{q}_e-z_1\text{}^T\Gamma_2z_1-
-\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\Big(\dot{\hat{\tau}}_L+\Gamma_LJ_b^{-1}(u)z_1\Big)
+\Delta\hat{\tau}_L\text{}^T\Gamma_L^{-1}\Big(\dot{\hat{\tau}}_L+\Gamma_LJ_b^{-1}(\vec{u})z_1\Big)
 \end{equation}
 \end{subequations}
-The decision must then be made on how the disturbance estimate is updated such that its error $\Delta\hat{\tau}_L$ asymptotically stabilizes, or specifically that the LFC derivative $\dot{V}_{_{ABC}}$ is negative definite. The obvious choice for $\dot{\hat{\tau}}_L$ would be to exactly compensate for $\Gamma_LJ_b^{-1}(u)z_1$ in the LFC:
+The decision must then be made on how the disturbance estimate is updated such that its error $\Delta\hat{\tau}_L$ asymptotically stabilizes, or specifically that the LFC derivative $\dot{V}_{_{ABC}}$ is negative definite. The obvious choice for $\dot{\hat{\tau}}_L$ would be to exactly compensate for $\Gamma_LJ_b^{-1}(\vec{u})z_1$ in the LFC:
 \begin{equation}\label{eq:asymptotic-disturbance}
-\dot{\hat{\tau}}_L\triangleq\Gamma_L J_b^{-1}(\hat{u})z_1=-\Gamma_L J_b^{-1}(\hat{u})\big(\Gamma_1\vec{q}_e-\hat{\omega_b}\big)\Big|_{z_1=\Gamma_1\vec{q}_e-\hat{\omega}_b}
+\dot{\hat{\tau}}_L\triangleq - \Gamma_L J_b^{-1}(\hat{u})z_1=-\Gamma_L J_b^{-1}(\hat{u})\big(\Gamma_1\vec{q}_e-\hat{\omega_b}\big)\Big|_{z_1=\Gamma_1\vec{q}_e-\hat{\omega}_b}
 \end{equation}
 The disturbance is therefore compensated for and the estimate error is ensured to have asymptotic stability because $V_{_{ABC}}$ is positive definite.
 \begin{equation}\label{eq:abc-asymptotic}
@@ -1031,11 +1031,11 @@ The translational position rate error $\dot{\vec{\mathcal{E}}}_b(t)$, \emph{not 
 Position setpoint tracking aims is to produce a stabilizing control law $g(\vec{\mathbf{x}}_e,\dot{\vec{\mathbf{x}}}_e,t)$ that ensures the position tracking error asymptotically tends to $\vec{0}$. Or more formally that:
 \begin{subequations}
 \begin{equation}
-\vec{F}_\mu(\hat{u})=g\Big(\vec{\mathcal{E}}_d,\vec{v}_d,\vec{\mathcal{E}}_b,\vec{v}_b,t\Big)\equiv g(\vec{\mathcal{E}}_e,\dot{\vec{\mathcal{E}}}_e,t)~~~~\in\mathcal{F}^b
+\vec{F}_\mu(\hat{u})=g\Big(\vec{\mathcal{E}}_d,\vec{v}_d,\vec{\mathcal{E}}_b,\vec{v}_b,t\Big)\equiv g(\vec{\mathcal{E}}_e,\vec{v}_e,t)~~~~\in\mathcal{F}^b
 \end{equation}
 \vspace{-18pt}
 \begin{equation}
-\text{such that:}~~\underset{t\rightarrow\infty}{\lim}\vec{\mathcal{E}}_e\rightarrow\vec{0}
+\text{such that}~~\underset{t\rightarrow\infty}{\lim}\vec{\mathcal{E}}_e\rightarrow\vec{0}
 \end{equation}
 \end{subequations}
 %====================================================
@@ -1211,7 +1211,7 @@ That second Lyapunov function candidate has a derivative $\dot{V}_2$:
 \end{equation}
 Inserting the first LFC derivative $\dot{V}_1$ from Eq:\ref{eq:105}:
 \begin{equation}
-\therefore\dot{V}_2=-\vec{\zeta}_1^T\Gamma_1\vec{\zeta}_1+\vec{\zeta}_1\text{}^T\vec{\zeta}_2+\vec{\zeta}_2\text{}^T\dot{\vec{\zeta}}_2
+\therefore\dot{V}_2=-\vec{\zeta}_1\text{}^T\Gamma_1\vec{\zeta}_1+\vec{\zeta}_1\text{}^T\vec{\zeta}_2+\vec{\zeta}_2\text{}^T\dot{\vec{\zeta}}_2
 \end{equation}
 Substituting the backstepping error's derivative $\dot{\vec{\zeta}}_2$ from Eq:\ref{eq:102b} gives:
 \begin{equation}
