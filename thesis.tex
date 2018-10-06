@@ -93,7 +93,7 @@
 %---------------------------------------------------------------------
 \newcommand{\auth}{Nicholas Von Klemperer}								% Author
 \newcommand{\titl}{Dual-Axis Tilting Quadrotor Aircraft}						% Thesis title
-\newcommand{\subtitle}{Dynamic modelling and control thereof}						% Thesis subtitle
+\newcommand{\subtitle}{Dynamic modelling and Control of Dual-Axis Tilting Quadrotor Aircraft}						% Thesis subtitle
 \newcommand{\dept}{Department of Electrical Engineering}% Department 
 \newcommand{\uni}{University of Cape Town}				% University
 \newcommand{\city}{Rondebosch, Cape Town}				% City
@@ -111,7 +111,7 @@
 }
 
 \newdateformat{mydate}{\monthname[\THEMONTH] \THEYEAR} % Month Year date
-\newcommand{\key}{Non-linear, control, allocation, quadrotor, UAV}					   % Keywords (add logical keywords)
+\newcommand{\key}{Nonlinear Control, Control Allocation, Quadrotor, UAV}					   % Keywords (add logical keywords)
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 %---------------------------------------------------------------------
 %	MACROS
@@ -265,7 +265,7 @@
 %---------------------------------------------------------------------
 % Degree	
 %---------------------------------------------------------------------		
-		\degreeabv\ thesis submitted in fulfillment of the requirements for the degree of \degre\ in the \dept\ at the \uni
+		\degreeabv\ dissertation submitted in fulfillment of the requirements for the degree of \degre\ in the \dept\ at the \uni
 		
 		\vskip 15mm	
 %---------------------------------------------------------------------
@@ -298,13 +298,13 @@ Cave Johnson -Founder \& CEO of Aperture Science
 I, \auth,  hereby:
 
 \begin{enumerate}
-	\item		grant the \uni\  free license to reproduce the above thesis in whole or in part, for the purpose of research only;
+	\item		grant the \uni\  free license to reproduce the above dissertation in whole or in part, for the purpose of research only;
 	\item		declare that:
 	
 	\begin{enumerate}
-		\item		This thesis is my own unaided work, both in concept and execution, and apart from the normal guidance from my supervisor, I have received no assistance except as stated below:
+		\item		This dissertation is my own unaided work, both in concept and execution, and apart from the normal guidance from my supervisor, I have received no assistance except as stated below:
 				% Note any exceptions
-		\item		Neither the substance nor any part of the above thesis has been submitted in the past, or is being, or is to be submitted for a degree at this University or at any other university, except as stated below.
+		\item		Neither the substance nor any part of the above dissertation has been submitted in the past, or is being, or is to be submitted for a degree at this University or at any other university, except as stated below.
 		\item		Unless otherwise stated or cited, any and all illustrations or diagrams demonstrated in this work are my own productions.
 				% Note any exceptions
 		\item 		All the content used to compile this report and complete the investigation revolving around the whole project is collectively hosted on the following GIT repositories:
@@ -349,9 +349,9 @@ I, \auth,  hereby:
 %---------------------------------------------------------------------
 This dissertation aims to apply non-zero attitude and position setpoint tracking to a quadrotor aircraft, achieved by solving the problem of a quadrotor's inherent underactuation. The introduction of extra actuation aims to mechanically accommodate for stable tracking of non-zero state trajectories. The requirement of the project is to design, model, simulate and control a novel quadrotor platform which can articulate all six degrees of rotational and translational freedom (6-\emph{DOF}) by redirecting and vectoring each propeller's individually produced thrust. 
 \par
-Considering the extended articulation, the proposal is to add an additional two axes (degrees) of actuation to each propeller on a traditional quadrotor frame. Each lift propeller can be independently pitched or rolled relative to the body frame. Such an adaptation, to what is an otherwise well understood aircraft, produces an over-actuated control problem. Being first and foremost a control engineering project, the focus of this work is plant model identification and control solution of the proposed aircraft design. A higher level setpoint tracking control loop designs a generalized plant input (net forces and torques) to act on the vehicle. An allocation rule then distributes that \emph{virtual} input in solving for explicit actuator servo positions and rotational propeller speeds.
+Considering the extended articulation, the proposal is to add an additional two axes (degrees) of actuation to each propeller on a traditional quadrotor frame. Each lift propeller can be independently pitched or rolled relative to the body frame. Such an adaptation, to what is an otherwise well understood aircraft, produces an over-actuated control problem. Being first and foremost a control engineering project, the focus of this work is plant model identification and control solution of the proposed aircraft design. A higher-level setpoint tracking control loop designs a generalized plant input (net forces and torques) to act on the vehicle. An allocation rule then distributes that \emph{virtual} input in solving for explicit actuator servo positions and rotational propeller speeds.
 \par
-The dissertation is structured as follows: First a schedule of relevant existing works is reviewed in Ch:\ref{ch:intro} following an introduction to the project. Thereafter the prototype's design is detailed in Ch:\ref{ch:proto}, however only the final outcome of the design stage is presented. Following that, kinematics associated with generalized rigid body motion are derived in Ch:\ref{ch:dynamics} and subsequently expanded to incorporate any aerodynamic and multibody nonlinearities which may arise as a result of the aircraft's configuration (changes). Higher level state tracking control design is applied in Ch:\ref{ch:control} whilst lower level control allocation rules are then proposed in Ch:\ref{ch:allocation}. Next, a comprehensive simulation is constructed in Ch:\ref{ch:simulation}, based on the plant dynamics derived in order to test and compare the proposed controller techniques. Finally a conclusion on the design(s) proposed and results achieved is presented in Ch:\ref{ch:conclusion}.
+The dissertation is structured as follows: First a schedule of relevant existing works is reviewed in Ch:\ref{ch:intro} following an introduction to the project. Thereafter the prototype's design is detailed in Ch:\ref{ch:proto}, however only the final outcome of the design stage is presented. Following that, kinematics associated with generalized rigid body motion are derived in Ch:\ref{ch:dynamics} and subsequently expanded to incorporate any aerodynamic and multibody nonlinearities which may arise as a result of the aircraft's configuration (changes). Higher-level state tracking control design is applied in Ch:\ref{ch:control} whilst lower-level control allocation rules are then proposed in Ch:\ref{ch:allocation}. Next, a comprehensive simulation is constructed in Ch:\ref{ch:simulation}, based on the plant dynamics derived in order to test and compare the proposed controller techniques. Finally a conclusion on the design(s) proposed and results achieved is presented in Ch:\ref{ch:conclusion}.
 \par
 Throughout the research, physical tests and simulations are used to corroborate proposed models or theorems. It was decided to omit flight tests of the platform due to time constraints, those aspects of the project remain open to further investigation. The subsequent embedded systems design stemming from the proposed control plant is outlined in the latter of Ch:\ref{ch:proto}, Sec:\ref{sec:proto.layout}. Such implementations are not investigated here but design proposals are suggested. The primary outcome of the investigation is ascertaining the practicality and feasibility of such a design, most importantly whether or not the complexity of the mechanical design is an acceptable compromise for the additional degrees of control actuation introduced. Control derivations and the prototype design presented here are by no means optimal nor the most exhaustive solutions, focus is placed on the whole system and not just a single aspect of it.
 \par
@@ -361,7 +361,7 @@ Throughout the research, physical tests and simulations are used to corroborate 
 \chapter{Acknowledgements}		
 \label{ch:ack}
 %---------------------------------------------------------------------
-Firstly, I'd like to thank Prof Edward Boje for the supervision he provided throughout this research. Secondly, without the support of everyone in the Mechatronics Lab (Room 6.00) at the University of Cape Town, this project would not have been possible. And last, but certainly not least, I would like to thank my parents who supported and guided me throughout the tenure of my studies. 
+Firstly, I would like to thank Prof Edward Boje for the supervision he provided throughout this research. Secondly, without the support of everyone in the Mechatronics Lab (Room 6.00) at the University of Cape Town, this project would not have been possible. And last, but certainly not least, I would like to thank my parents who supported and guided me throughout the tenure of my studies. 
 %---------------------------------------------------------------------
 %	Nomenclature
 %---------------------------------------------------------------------
@@ -370,46 +370,48 @@ Firstly, I'd like to thank Prof Edward Boje for the supervision he provided thro
 %---------------------------------------------------------------------
 \underline{In order of appearance:}
 \par
-UAV : Unmanned aerial vehicle, any autonomous aircraft\\
+3-D : Three-dimensional vector components in Cartesian XYZ axial
+4-DOF : 4 Degrees of freedom, reduced attitude control\\
 6-DOF : 6 Degrees of freedom, full attitude and position states\\
-4-DOF : 4 Degrees of freedom, reduced attitude control
-SISO : Single input single output, typical control loop\\
-MEMS : Micro-electromechanical system, accelerometer or gyroscopes\\
-DIY : Do it yourself, quadcopter assembly kit in context example\\
-VTOL : Vertical takeoff/landing. Helicopter or quad/bi-rotor\\
-3-D : three-dimensional vector components in Cartesian XYZ axial directions\\
-MPC : Model predictive control\\
-QFT : Quantitative feedback theory\\
-IMU : Inertial measurement unit, an MEM 9-DOF accelerometer/gyroscope/magnetometer\\
-RPM : Revolution per minute, units for propeller rotational velocity\\
-BLDC : Brushless-DC, motor\\
-KV : Kilo-volt, thousan RPM per V applied, BLDC motor rating\\
-OAT : Opposed active tilting, single axis birotor rotation\\
-dOAT : Dual axis opposed active tilting, two axis birotor rotation\\
-PD : Controller structure proportional to error and error derivative\\
-PID : Controller proportional error, error derivative and error integral\\
-PSO : Particle swarm optimization, gradient free genetic algorithm\\
-ITAE : Integral time additive error, cost function used for optimization\\
-BEM : Blade element theory, calculation for produced thrust from propeller\\
-RPS : Revolution per second, units for propeller speed when calculating BEM thrust\\
-FTC : Fault tolerant control\\
-TSK : Takagi-Sugeno-kang, fuzzy logic paradigm\\
-LQR : Linear quadratic regulator control structure\\
-CMG : Control moment gyroscope, satellite actuator\\
-GCS : Ground control station, supplements onboard control loops for UAVs\\
-$\mu$C : micro-controller\\
-USART : Universal synchronous/asynchronous receiver transmitter, 2 wire comms\\
-PWM : Pulse width modulation\\
-CH: Channel, number of PWM lines or RC channels
-S.bus : Serial.Bus, proprietary encoding of UART comms\\
-Rx : Receiver channel, comms line input\\
-Tx : Transmitter channel, comms line output
-ESC : Electronic speed controller\\
-STP : Standard temperature and pressure\\
-LCF : Lyupanov candidate function\\
-P.D : Positive definite, NOT proportional derivative\\
-IBC - Ideal backstepping control\\
 ABC - Adaptive backstepping control\\
+BLDC : Brushless-DC, motor\\
+BEM : Blade element theory, calculation for produced thrust from propeller\\
+CMG : Control moment gyroscope, satellite actuator\\
+CH: Channel, number of PWM lines or RC channels \\
+DIY : Do it yourself, quadcopter assembly kit in context example\\
+dOAT : Dual-axis opposed active tilting, two-axis birotor rotation\\
+ESC : Electronic speed controller\\
+FTC : Fault tolerant control\\
+GCS : Ground control station, supplements onboard control loops for UAVs\\
+IBC - Ideal backstepping control\\
+IMU : Inertial measurement unit, an MEM 9-DOF accelerometer/gyroscope/magnetometer\\
+ITAE : Integral time absolute error, cost function used for optimization\\
+KV : Kilo-volt, thousand RPM per V applied, BLDC motor rating\\
+LQR : Linear quadratic regulator control structure\\
+LCF : Lyapunov candidate function\\
+MPC : Model predictive control\\
+MEMS : Micro-electromechanical system, accelerometer or gyroscopes\\
+OAT : Opposed active tilting, single-axis birotor rotation\\
+PD : Proportional + derivative controller\\
+P.D : Positive definite\\
+PWM : Pulse width modulation\\
+PID : Proportional + integral + derivative controller\\
+PSO : Particle swarm optimization\\
+QFT : Quantitative feedback theory\\
+RPM : Revolution per minute, units for propeller rotational 
+velocity\\
+RPS : Revolution per second, units for propeller speed when calculating BEM thrust\\
+Rx : Receiver channel, comms line input\\
+S.bus : Serial.Bus, proprietary encoding of UART comms\\
+SISO : Single input single output, typical control loop\\
+STP : Standard temperature and pressure\\
+TSK : Takagi-Sugeno-Kang, fuzzy logic paradigm\\
+Tx : Transmitter channel, comms line output
+$\mu$C : Micro-controller\\
+UAV : Unmanned aerial vehicle, any autonomous aircraft\\
+USART : Universal synchronous/asynchronous receiver transmitter, 2 wire comms\\
+VTOL : Vertical takeoff/landing. Helicopter or quad/bi-rotor\\
+ directions\\
 %---------------------------------------------------------------------
 %	Symbols
 %---------------------------------------------------------------------
@@ -423,80 +425,100 @@ A subscript $i$ refers to a quantity associated with the $i^{\text{th}}$ motor m
 Any subscript numbered $1\rightarrow 4$ refer to quantities associated with a particular motor module\\
 Axes are referred to with hat accents and described as an axis in context\\
 Estimated quantities are also denoted with a hat accent but are similarly described as an estimate in context\\
-Lower case axis quantities are unit vectors in a particular axial direction\\
-Upper case axis quantities refer to the axes themselves\\
+Lowercase axis quantities are unit vectors in a particular axial direction\\
+Uppercase axis quantities refer to the axes themselves\\
 Bold faced vectors are lumped state variables\\
 Dot accents denote derivatives of vectors or quantities\\
 Subscripts $M_i$ imply reference to the $i^{\text{th}}$ motor module's frame\\
 The frame $\mathcal{F}^i$ refers to the $i^{\text{th}}$ reference frame\\
 An origin of a frame is given by $\vec{\mathbf{O}}_i$\\
 Lowercase body vectors imply state trajectories\\
-Upper case bold vectors represent Euler-Lagrange generalized forces acting as a result of the same case's lowercase trajectory
+Uppercase bold vectors represent Euler-Lagrange generalized forces acting as a result of the same case's lowercase trajectory
 \par
 Where possible, typical conventions for quantities and notations have been adhered to
 \par
-$\phi$ pitch rotation about $\hat{X}$ axis in [rad] \\
-$\theta$ roll rotation about $\hat{Y}$ axis in [rad] \\
-$\psi$ yaw rotation about $\hat{Z}$ axis in [rad]\\
+$\alpha_i$ motor module rotation about the $\hat{Y}_{M_i'}$ axis\\
+$\delta (\varepsilon)$ stable trajectory's maximum bound\\
+$\varepsilon$ stable trajectory initial bounding manifold\\
 $\vec{\eta}=[\phi~\theta~\psi]^T~~\in\mathcal{F}^{I,v_1,v_2}$ Euler angle set\\
 $\vec{\eta}_b \in\mathcal{F}^b$ transformed Euler angles in common shared body frame\\
-$Q_b=[q_0~\vec{q}\hspace{2pt}]^T$ attitude quaternion with scalar $q_0$ and vector $\vec{q}$ components\\
-$\vec{\omega}_b=[p~q~r]^T~~\in\mathcal{F}^b$ angular velocity in body frame with units $[\text{rad.s}^{-1}]$\\
-$x$ translational position in the $\hat{X}_I$ axis direction\\
-$y$ translational position in the $\hat{Y}_I$ axis direction\\
-$z$ translational height in the $\hat{Z}_I$ axis direction\\
-$\vec{\mathcal{E}}_I=[x~y~z]^T~~\in\mathcal{F}^{I}$ inertial position in [m]\\
-$\vec{v}_b=[u~v~w]^T~~\in\mathcal{F}^b$ translational velocity in body frame with units $[\text{m.s}^{-1}]$\\
-$\vec{\mathbf{x}}_b$ full 6-DOF state for combined attitude and position\\
-$\vec{\mathbf{x}}_d$ desired state setpoint\\
-$\vec{\mathbf{x}}_e$ error state, not necessarily subtractive, quaternion errors are multiplicative\\
-$\Omega_i$ rotational velocity of $i^{\text{th}}$ propeller, in [RPM] or [RPS] specified\\
-$T(\Omega_i)$ scalar propeller thrust as a function of rotational speed\\
-$\vec{u}=[\Omega_1~...~\alpha_4]^T$ actuator plant input matrix, $\in\mathbb{R}^{12}$\\
+$\theta$ pitch rotation about $\hat{Y}$ axis in [rad] \\
 $\lambda_i$ motor module rotation about the $\hat{X}_{M_i}$ axis\\
-$\alpha_i$ motor module rotation about the $\hat{Y}_{M_i'}$ axis\\
+$\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d\hspace{2pt}]^T\in\mathcal{F}^b$ generalized virtual control input\\
+$\vec{\xi}$ generalized position coordinate\\
+$\rho$ STP airdensity\\
 $\sigma_i$ motor module rotation about the $\hat{Z}_{M_i''}$ axis\\
 $\vec{\tau}_\mu = [\tau_\phi~\tau_\theta~\tau_\psi]^T~~\in\mathcal{F}^b$ input torque in [Nm]\\
 $\vec{\tau}_d = h(\vec{\eta}_e,~\dot{\vec{\eta}}_e,~t)~~\in\mathcal{F}^b$ attitude controller generated torque input in [Nm]\\
-$\vec{F}_\mu=[F_x~F_y~F_z]^T~~\in\mathcal{F}^b$ input force in [N]\\
-$\vec{F}_d=g(\vec{\mathcal{E}}_e,~\dot{\vec{\mathcal{E}}}_e,~t)~~\in\mathcal{F}^b$ position controller generated force input in [n]\\
-$\vec{\nu}_d=[\vec{F}_d~\vec{\tau}_d\hspace{2pt}]^T\in\mathcal{F}^b$ generalized virtual control input\\
-$J_x$ moment of inertia for body x, relative to the frame provided in context measured in $[\text{Kg.m}^{2}]$\\
-$\vec{\mathbf{O}}_b$ body frame origin of motion\\
-$\vec{\mathbf{M}}_i$ $i^\text{th}$ motor module center of rotation\\
-$\vec{L}_i$ vector arm length from $\vec{\mathbf{O}}_b$ origin in $[\text{m}]$\\
-$\vec{C}_x$ center of mass for body x, relative to origin $\vec{\mathbf{O}}_b$\\
-$m_x$ mass for body x in $[\text{Kg}]$\\
-$r$ subscript for rotor body\\
-$n$ subscript for inner ring assembly\\
-$in$ subscript for inner ring assembly \emph{without} rotor body contribution\\
-$m$ subscript for middle ring assembly\\
-$p$ subscript for net motor module assembly\\
-$y$ subscript for constant body frame structure\\
+$\phi$ roll rotation about $\hat{X}$ axis in [rad] \\
+$\psi$ yaw rotation about $\hat{Z}$ axis in [rad]\\
+$\vec{\omega}_b=[p~q~r]^T~~\in\mathcal{F}^b$ angular velocity in body frame with units $[\text{rad.s}^{-1}]$\\
+$\Omega_i$ rotational velocity of $i^{\text{th}}$ propeller, in [RPM] or [RPS] specified\\
+\par
+$\mathbf{AS}$ asymptotic stability\\
 $b$ subscript for net multibody assembly\\
-$\mathcal{L}_x$ Lagrangian scalar with respect to body x\\
-$T$ Kinetic energy\\
-$U$ Potential energy
-$\vec{r}(t)$ generalized path trajectory for Euler-Lagrange equation\\
-$\vec{\xi}$ generalized position coordinate\\
-$\vec{H}$ generalized attitude coordinate\\
-$\rho$ STP airdensity\\
 $c$ propeller chord length\\
-$D$ propeller diameter\\
-$J$ aerodynamic advance ratio, inflow velocity relative to propeller's rotational speed\\
+$\vec{C}_x$ center of mass for body x, relative to origin $\vec{\mathbf{O}}_b$\\
 $C_T(J)$ aerodynamic thrust coefficient, varies as function of the advance ratio\\
 $C_P(J)$ aerodynamic power coefficient, varies as function of the advance ratio\\
+$D$ propeller diameter\\
 $\vec{D}(\vec{v}_b)$ aerodynamic drag as a function of the vehicle's net translational velocity\\
-$\varepsilon$ stable trajectory initial bounding manifold\\
-$\delta (\varepsilon)$ stable trajectory's maximum bound\\
-$\mathbf{S}$ general stability\\
-$\mathbf{US}$ uniform stability\\
-$\mathbf{AS}$ asymptotic stability\\
-$\mathbf{UAS}$ uniform asymptotic stability\\
+$\vec{\mathcal{E}}_I=[x~y~z]^T~~\in\mathcal{F}^{I}$ inertial position in [m]\\
 $\mathbf{ES}$ exponential stability\\
+$\vec{F}_d=g(\vec{\mathcal{E}}_e,~\dot{\vec{\mathcal{E}}}_e,~t)~~\in\mathcal{F}^b$ position controller generated force input in [N]\\
+$\vec{F}_\mu=[F_x~F_y~F_z]^T~~\in\mathcal{F}^b$ input force in [N]\\
 $\mathbf{GUAS}$ global uniform asymptotic stability\\
 $\mathbf{GUES}$ global uniform exponential stability\\
+$\vec{H}$ generalized attitude coordinate\\
+$in$ subscript for inner ring assembly \emph{without} rotor body contribution\\
+$J$ aerodynamic advance ratio, inflow velocity relative to propeller's rotational speed\\
+$J_x$ moment of inertia for body x, relative to the frame provided in context measured in $[\text{kg.m}^{2}]$\\
+$\vec{L}_i$ vector arm length from $\vec{\mathbf{O}}_b$ origin in $[\text{m}]$\\
+$\mathcal{L}_x$ Lagrangian scalar with respect to body x\\
+$m$ subscript for middle ring assembly\\
+$m_x$ mass for body x in $[\text{kg}]$\\
+$\vec{\mathbf{M}}_i$ $i^\text{th}$ motor module center of rotation\\
+$n$ subscript for inner ring assembly\\
+$\vec{\mathbf{O}}_b$ body frame origin of motion\\
+$p$ subscript for net motor module assembly\\
+$q_0$ and vector $\vec{q}$ components\\
+$Q_b=[q_0~\vec{q}\hspace{2pt}]^T$ attitude quaternion with scalar 
+$r$ subscript for rotor body\\
+$\vec{r}(t)$ generalized path trajectory for Euler-Lagrange equation\\
+$\mathbf{S}$ general stability\\
+$T$ Kinetic energy\\
+$T(\Omega_i)$ scalar propeller thrust as a function of rotational speed\\
+$\vec{u}=[\Omega_1~...~\alpha_4]^T$ actuator plant input matrix, $\in\mathbb{R}^{12}$\\
+$U$ Potential energy
+$\mathbf{UAS}$ uniform asymptotic stability\\
+$\mathbf{US}$ uniform stability\\
+$\vec{v}_b=[u~v~w]^T~~\in\mathcal{F}^b$ translational velocity in body frame with units $[\text{m.s}^{-1}]$\\
 $V(\vec{\mathbf{r}})$ Lyapunov function of some trajectory $\vec{\mathbf{r}}(t)$\\
+$x$ translational position in the $\hat{X}_I$ axis direction\\
+$\vec{\mathbf{x}}_b$ full 6-DOF state for combined attitude and position\\
+$\vec{\mathbf{x}}_d$ desired state setpoint\\
+$\vec{\mathbf{x}}_e$ error state, not necessarily subtractive, quaternion errors are multiplicative\\
+$y$ subscript for constant body frame structure\\
+$y$ translational position in the $\hat{Y}_I$ axis direction\\
+$z$ translational height in the $\hat{Z}_I$ axis direction\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %---------------------------------------------------------------------
 %	Dedication (optional)
 %---------------------------------------------------------------------

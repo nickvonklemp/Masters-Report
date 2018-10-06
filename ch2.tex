@@ -17,7 +17,7 @@
 \label{fig:iso-design}
 \end{figure}
 \par
-The final prototype (Fig:\ref{fig:iso-design}) went through a series of different design iterations, aimed at optimizing engineering time spent on construction and reducing the associated component costs. Significant consideration for the design process was the net weight whose upper limit is inherently limited by the thrust produced from lift motors. Some of the more important design factors, like inertia matrices and associated masses (Sec:\ref{sec:proto.inertia}), are discussed here in order to give context for the dynamics derived later in Ch:\ref{ch:dynamics}. The reference frame orientations (which those dynamics are developed with respect to) are detailed here. A brief overview of the electrical systems layout is then given with the associated components and their electrical characteristics included. Finally the actuator suite's functionality and transfer characteristics are quantified.
+The final prototype (Fig:\ref{fig:iso-design}) went through a series of different design iterations, aimed at optimizing engineering time spent on construction and reducing the associated component costs. Significant consideration for the design process was the net weight whose upper limit is inherently limited by the thrust produced from lift motors. Some of the more important design factors, like inertia matrices and associated masses (Sec:\ref{sec:proto.inertia}), are discussed here in order to give context for the dynamics derived later in Ch:\ref{ch:dynamics}. The reference frame orientations (which those dynamics are developed with respect to) are detailed here. A brief overview of the electrical systems layout is then given with the associated components and their electrical characteristics included. Finally, the actuator suite's functionality and transfer characteristics are quantified.
 %====================================================
 \subsection{Actuation Functionality}
 \label{subsec:proto.design.actuation}
@@ -51,7 +51,7 @@ The primary body structure is similar to a traditional quadcopter `+' configurat
 \label{fig:motor_prop}
 \vspace{-15pt}
 \end{figure}
-The propeller's rotational plane is not aligned exactly with the plane made by the $\hat{X}_{M_i}$ and $\hat{Y}_{M_i}$ rotational servo axes (Fig:\ref{fig:motor_prop}). The offset is approximately $23.0~[\text{mm}]$ and must be considered when evaluating pitch/roll inertia and gyroscopic torque responses later in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. The propellers are six inch ($6 \times 4.5$) three-bladed plastic Gemfam propellers, powered by Cobra CM2208-2000 KV Brushless DC motors (Fig:\ref{fig:bldc-motor}). The thrust produced as a function of angular velocity (in revolutions per second) for the propellers is derived later in Sec:\ref{subsec:dynamics.aero.bem}. 
+The propeller's rotational plane is not aligned exactly with the plane made by the $\hat{X}_{M_i}$ and $\hat{Y}_{M_i}$ rotational servo axes (Fig:\ref{fig:motor_prop}). The offset is approximately $23.0~[\text{mm}]$ and must be considered when evaluating pitch/roll inertia and gyroscopic torque responses later in Sec:\ref{subsec:dynamics.nonlinearities.gyrotorques}. The propellers are six inch ($6 \times 4.5$) three-bladed plastic Gemfam propellers, powered by Cobra CM2208-2000 KV Brushless DC (BLDC) motors (Fig:\ref{fig:bldc-motor}). The thrust produced as a function of angular velocity (in revolutions per second) for the propellers is derived later in Sec:\ref{subsec:dynamics.aero.bem}. 
 \newpage
 The BLDC motors are controlled with LDPower 20A ESC modules with an in-line OrangeRx RPM Sensor. The ESCs were reflashed with BLHeli\cite{BLHeli} firmware. The default firmware on the speed controllers had an unsatisfactory exponentially approaching, nonlinear input speed curve, in contrast to the linear unloaded speed curve in Fig:\ref{fig:rpm-sensor}. The net transfer functions for both ESC modules and the servos are detailed later in Sec:\ref{subsec:proto.design.transfer}. Power for the quadrotor is supplied from a power tether (not from a battery bank). Power lines to both the BLDC motors and servos are supplied through conventional wiring, however an ideal and more flexible design would see slip-rings for each module's power supply. 
 \begin{figure}[htbp]
@@ -73,7 +73,7 @@ The BLDC motors are controlled with LDPower 20A ESC modules with an in-line Oran
 \vspace{-15pt}
 \end{figure}
 \par
-Metal gear Corona DS-339MG digital servos are used for the two axes of rotation (Fig:\ref{fig:motor-servo}). Each servo has a rotational range of $\approx 180\text{\textdegree}$, positioned such that a $\text{zero}^{\text{th}}$ offset aligns the motor modules, adjacent to the body frame, and has a $\pm 90\text{\textdegree}$ rotational range. A digital servo updates at 330 Hz, faster than a 50 Hz analogue servo equivalent (Fig:\ref{fig:servo-timing}). This means the otherwise $20~\text{ms}$ zero-order ``analogue" sampling effect is a less significant $3.30~\text{ms}$ zero-order holding time. Both the $\hat{X}_{M_i}$ and $\hat{Y}_{M_i}$ axis servos will be rotating differing bodies, so their open loop transfer functions are individually determined through testing in Sec:\ref{subsec:proto.design.transfer}.
+Metal gear Corona DS-339MG digital servos are used for the two axes of rotation (Fig:\ref{fig:motor-servo}). Each servo has a rotational range of $\approx 180\text{\textdegree}$, positioned such that a $\text{zero}^{\text{th}}$ offset aligns the motor modules, adjacent to the body frame, and has a $\pm 90\text{\textdegree}$ rotational range. A digital servo updates at 330 Hz, faster than a 50 Hz analogue servo equivalent (Fig:\ref{fig:servo-timing}). This means the otherwise $20~\text{ms}$ zero-order ``analogue" sampling effect is a less significant $3.30~\text{ms}$ zero-order holding time. Both the $\hat{X}_{M_i}$ and $\hat{Y}_{M_i}$ axis servos will be rotating differing bodies, so their open-loop transfer functions are individually determined through testing in Sec:\ref{subsec:proto.design.transfer}.
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figs/servo-timing}
@@ -84,7 +84,7 @@ Metal gear Corona DS-339MG digital servos are used for the two axes of rotation 
 %====================================================
 \section{Reference Frames Used}
 \label{sec:proto.conventions}
-Attitude conventions used for deriving the system's dynamics in Ch:\ref{ch:dynamics}~are first discussed here. Often these aspects are assumed and are omitted. It is important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included but the focus is on the \emph{contrast} between rotation and transformation operations. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in-depth and thorough explanation of rotation matrices and direct cosine matrix attitude representation, if such concepts are unfamiliar to the reader. Later quaternions are used to replace rotation matrix notation for the dynamics in Sec:\ref{subsec:dynamics.rigidbody.quaternion}.
+Attitude conventions used for deriving the system's dynamics in Ch:\ref{ch:dynamics}~are first discussed here. Often these aspects are assumed and are omitted. It is important to clearly and unambiguously define a standard set of framing conventions to avoid uncertainty later. Rotation matrices are included but the focus is on the \emph{contrast} between rotation and transformation operations. Both \cite{spacecraftattitutdequaternions} and \cite{rigidbodylecture} provide an in-depth and thorough explanation of rotation matrices and direction cosine matrix (\emph{DCM}) attitude representation. Later, quaternions are used to replace rotation matrix notation for the dynamics in Sec:\ref{subsec:dynamics.rigidbody.quaternion}.
 %====================================================
 \subsection{Reference Frames Convention}
 \label{subsec:proto.conventions.frames}
@@ -422,7 +422,7 @@ The actuator space, including propeller speed $\Omega_i$, is then $\in\mathbb{R}
 \end{equation}
 \newpage
 %====================================================
-\section{Inertia Matrices \& Masses}
+\section{Inertia Matrices and Masses}
 \label{sec:proto.inertia}
 %====================================================
 \emph{\color{Gray}When transforming inertias between reference frames it is more appropriate to use rotation matrices to apply the transformation and not quaternions. Spatial rotations of inertia matrices are ill suited to quaternion parametrization.}
@@ -908,7 +908,7 @@ The flight-controller has the following onboard peripherals; an I2C MPU-6050 6-a
 \vspace{-20pt}
 \end{figure}
 \par
-Two separate wireless communication loops are to be used. Firstly, the system relays full state information for a complete 6-DOF XYZ position and an attitude autopilot system which is sent from an independent ground control station (\emph{GCS}) using 2.4 [GHz] XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\cite{arnold}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
+Two separate wireless communication loops are to be used. Firstly, the system relays full state information for a complete 6-DOF XYZ position and an attitude autopilot system which is sent from an independent ground control station (\emph{GCS}) using 2.4 [GHz] XBEE S1 module(s)\cite{xbees1} which is connected to the flight controller via USART. Full state-estimation, using a multi-camera system (\hspace{-3pt}\cite{arnold}), and basic trajectory generation is performed on the GCS for the vehicle to track that trajectory. 
 \par
 Secondly, a partial trajectory (basic orientation) augmented pilot control input system, fail safe and secondary to the autopilot loop, is transmitted through a six channel 2.4 [GHz] radio frequency module. The secondary system allows for phsyical control without the need of a trajectory generation loop. The six CH received signals, otherwise permeated as six individual 20 [kHz] PWM signals via an OrangeRx R615x receiver \cite{r615x}, are encoded into a single proprietary S.BUS data stream (Fig:\ref{fig:ppm-sbus}). 
 \par
@@ -975,7 +975,7 @@ Each of the eight digital servo actuators need to be controlled individually fro
 \par
 There are a total of twelve PWM output compare signals to be drawn from the flight controller, eight for the servos and four for the ESCs. The servos are to be powered by a regulated $6~[\text{V}]$ DC $10~[\text{A}]$ power supply \cite{rotorstar} whilst the ESCs switch unregulated $14.1~[\text{V}]$ DC supplied from an external power tether. The DC supply could be drawn from a battery bank, but that would adversely affect the weight of an already heavy platform.
 \par
-There is no integrated feedback for instantaneous RPM values available from the ESCs. Dedicated OrangeRX BLDC RPM sensors, \cite{orangerpm}, are used to measure each of the four motor's rotational speeds. Despite being termed \emph{brushless DC motors}, the motors are actually 3-phase motors which, when used with an ESC, behave like closed loop DC motors. The RPM sensors physically measure switching phases across two of the three motor phases, following that exact RPM can be ascertained. In general, the switching signal of a 3-Phase induction motor is shown by \cite{vfd} to be proportional to the rotational velocity:
+There is no integrated feedback for instantaneous RPM values available from the ESCs. Dedicated OrangeRX BLDC RPM sensors, \cite{orangerpm}, are used to measure each of the four motor's rotational speeds. Despite being termed \emph{brushless DC motors}, the motors are actually 3-phase motors which, when used with an ESC, behave like closed-loop DC motors. The RPM sensors physically measure switching phases across two of the three motor phases, following that exact RPM can be ascertained. In general, the switching signal of a 3-Phase induction motor is shown by \cite{vfd} to be proportional to the rotational velocity:
 \begin{equation}
 F_{rps}=\frac{2\times F_{poles}}{\text{No. of rotor poles}}~~[\text{Hz}]
 \end{equation}
@@ -1161,7 +1161,7 @@ Each Cobra 2208 BLDC motor, when loaded with a $6\times4.5$ propeller, has a qua
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.45\textwidth]{figs/bldc-rpm}
-\caption{BLDC rpm speed calibration and transfer function rig}
+\caption{BLDC RPM speed calibration and transfer function rig}
 \label{fig:bldc-rpm}
 \vspace{-16pt}
 \end{figure}
